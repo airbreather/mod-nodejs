@@ -9,7 +9,7 @@
 #include "NodeJs.h"
 #include "NodePropertySystem.h"
 
-void AddGlobalFunctions(TypedTemplate<NodeJs *> const ft) {
+void add_global_functions(TypedTemplate<NodeJs *> const ft) {
 	// don't register these as static.
 	reg_method(ft, "gc", [](NodeJs *) {
 		NodeJs::instance()->run_garbage_collection_once();

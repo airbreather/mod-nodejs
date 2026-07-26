@@ -1,6 +1,6 @@
 #include "Functions.h"
 
-v8::Local<v8::FunctionTemplate> jfn_raw_impl(void (*fn)(v8::FunctionCallbackInfo<v8::Value> const &)) {
+v8::Local<v8::FunctionTemplate> jfnt_raw_impl(void (*fn)(v8::FunctionCallbackInfo<v8::Value> const &)) {
 	return v8::FunctionTemplate::New(
 		v8::Isolate::GetCurrent(),
 		[](v8::FunctionCallbackInfo<v8::Value> const & args) {

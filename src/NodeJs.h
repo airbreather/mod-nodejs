@@ -34,9 +34,9 @@ class NodeJs {
 	NodePostToEventLoopMaster * post_to_event_loop_master_ = nullptr;
 	std::vector<std::string> errors_;
 	v8::Global<v8::Object> long_js_;
-	v8::Global<v8::Object> az_global_;
-	v8::Global<v8::Object> az_hooks_;
-	v8::Global<v8::Function> az_emit_;
+	v8::Global<v8::Object> acore_;
+	v8::Global<v8::Object> acore_hooks_;
+	v8::Global<v8::Function> acore_hooks_emit_;
 	bool run_microtasks_this_tick_ = false;
 
 	std::unordered_multimap<std::type_index, DerivedTemplateRTTIFunc> m_ac_derived_template_types;
@@ -140,6 +140,7 @@ private:
 	v8::Local<v8::FunctionTemplate> hook_arg_template(std::string const & hook_name, const std::vector<Arg *> & args);
 	std::unordered_map<std::string, v8::Global<v8::FunctionTemplate>>::iterator hook_arg_template_rare(std::string const & hook_name, const std::vector<Arg *> & args);
 	void invoke_hook_(std::string const & hook_name, std::vector<Arg *> & args);
+	static v8::Local<v8::Value> load_environment_callback(node::StartExecutionCallbackInfoWithModule const & info);
 
 	template <typename T>
 	requires std::is_base_of_v<MySQLConnection, T>

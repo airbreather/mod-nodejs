@@ -23,7 +23,8 @@
 #include "CtoJ.h"
 #include "DatabaseEnv.h"
 #include "Log.h"
-#include "mod-nodejs_generated.h"
+#include "NodeEmbeddedScriptFiles.h"
+#include "NodePropertySystem.h"
 #include "NodeWrappedObject.h"
 #include "QueryResult.h"
 #include "StringFormat.h"
@@ -370,9 +371,9 @@ void NodeJs::invoke_hook_(std::string const & hook_name, std::vector<Arg *> & ar
 		auto const obj = obj_creator->NewInstance(setup_->context()).ToLocalChecked();
 		reference_pointer_from(obj, &args);
 		v8::Local<v8::Value> args_v8[] = {jstr_intern(hook_name), obj};
-		auto const ignored = az_emit_.Get(setup_->isolate())->Call(
+		auto const ignored = acore_hooks_emit_.Get(setup_->isolate())->Call(
 			setup_->context(),
-			az_hooks_.Get(setup_->isolate()),
+			acore_hooks_.Get(setup_->isolate()),
 			2,
 			args_v8
 		);
@@ -382,95 +383,88 @@ void NodeJs::invoke_hook_(std::string const & hook_name, std::vector<Arg *> & ar
 	});
 }
 
+v8::Local<v8::Value> NodeJs::load_environment_callback(node::StartExecutionCallbackInfoWithModule const & info) {
+	instance()->post_to_event_loop_master_ = new NodePostToEventLoopMaster(instance()->setup_->event_loop());
+	instance()->reg_template<NodeJs *>(jcreate_template<NodeJs *>());
+	auto const isolate = v8::Isolate::GetCurrent();
+	auto const context = isolate->GetCurrentContext();
+	auto const global_this = context->Global();
+
+	// load Long.js
+	v8::Local<v8::Value> args[] = {
+		jstr(LONGJS_SCRIPT),
+		v8::Integer::New(isolate, static_cast<int>(node::ModuleFormat::kModule)),
+		jstr_intern("internal"),
+	};
+	v8::Local<v8::Value> long_result;
+	if (!info.run_module()->Call(context, context->Global(), 3, args).ToLocal(&long_result)) {
+		return {};
+	}
+
+	global_this->Set(context, jstr_intern("Long"), long_result).Check();
+
+	args[0] = jstr(INIT_SCRIPT);
+	v8::Local<v8::Object> init_result;
+	if (!info.run_module()->Call(context, context->Global(), 3, args).As<v8::Object>().ToLocal(&init_result)) {
+		return {};
+	}
+
+	v8::Local<v8::Function> finish_init;
+	if (!init_result->Get(context, jstr_intern("finishInit")).As<v8::Function>().ToLocal(&finish_init)) {
+		return {};
+	}
+
+	// export function finishInit(acore, addListenerCallback, removeListenerCallback)
+	auto const acore = jtemplated_object(instance());
+	args[0] = acore;
+	args[1] = jfn([](std::string hook_name) { instance()->add_listener(hook_name); });
+	args[2] = jfn([](std::string hook_name) { instance()->remove_listener(hook_name); });
+
+	v8::Local<v8::Function> run_user_script;
+	if (!finish_init->Call(context, context->Global(), 3, args).As<v8::Function>().ToLocal(&run_user_script)) {
+		return {};
+	};
+
+	if (
+		auto const script_path = sConfigMgr->GetOption<std::string>("NodeJs.Script", "");
+		!script_path.empty()
+	) {
+		auto const abs_script_path = std::filesystem::canonical(script_path).string();
+		args[0] = jstr(abs_script_path);
+		v8::TryCatch try_catch(isolate);
+		if (run_user_script->Call(context, jnull(), 1, args).IsEmpty()) {
+			log_and_reset_if_signaled(try_catch);
+		} else {
+			LOG_INFO("module.nodejs", "Loaded user script from {}", script_path);
+		}
+	}
+	return acore;
+}
+
 void NodeJs::actual_init() {
 	run_scoped([this] {
-		auto const result_maybe = node::LoadEnvironment(setup_->env(), [](node::StartExecutionCallbackInfoWithModule const & info) -> v8::Local<v8::Value> {
-			instance()->post_to_event_loop_master_ = new NodePostToEventLoopMaster(instance()->setup_->event_loop());
-			auto const isolate = v8::Isolate::GetCurrent();
-			auto const context = isolate->GetCurrentContext();
-
-			// Run default boot script first (always). it exports Long from long.js
-			v8::Local<v8::Value> args[] = {
-				jstr(ENTRY_SCRIPT),
-				v8::Integer::New(isolate, static_cast<int>(node::ModuleFormat::kModule)),
-				jstr_intern("ENTRY_SCRIPT"),
-			};
-			v8::Local<v8::Object> boot_result;
-			if (!info.run_module()->Call(context, context->Global(), 3, args).As<v8::Object>().ToLocal(&boot_result)) {
-				return {};
-			}
-
-			auto global_this = context->Global();
-			auto const stage_2_helpers = global_this->Get(
-				context,
-				jstr_intern("STAGE_2_HELPERS")
-			).As<v8::Object>().ToLocalChecked();
-
-			auto hooks_object = stage_2_helpers->Get(
-				context,
-				jstr_intern("hooks")
-			).ToLocalChecked();
-
-			auto const global_interop_object_template = create_global_interop_object_template();
-			auto const global_interop_object = global_interop_object_template
-				->GetFunction(context)
-				.ToLocalChecked()
-				->NewInstance(context, 1, &hooks_object)
-				.ToLocalChecked();
-			reference_pointer_from(global_interop_object, instance());
-
-			auto const add_listener_function = create_add_listener_callback_template()->GetFunction(context).ToLocalChecked();
-			auto const remove_listener_function = create_remove_listener_callback_template()->GetFunction(context).ToLocalChecked();
-			v8::Local<v8::Value> finish_init_args[3] = { global_interop_object, add_listener_function, remove_listener_function };
-			auto const finish_init = stage_2_helpers->Get(
-				context,
-				jstr_intern("finishInit")
-			).As<v8::Function>().ToLocalChecked();
-			auto const import_user_script = finish_init->Call(
-				context,
-				stage_2_helpers,
-				3,
-				finish_init_args
-			).As<v8::Function>().ToLocalChecked();
-
-			if (
-				auto const script_path = sConfigMgr->GetOption<std::string>("NodeJs.Script", "");
-				!script_path.empty()
-			) {
-				auto const abs_script_path = std::filesystem::canonical(script_path).string();
-				v8::Local<v8::Value> exports_val;
-				v8::Local<v8::Value> import_arg = jstr(abs_script_path);
-				v8::TryCatch try_catch(isolate);
-				if (import_user_script->Call(context, jnull(), 1, &import_arg).ToLocal(&exports_val)) {
-					LOG_INFO("module.nodejs", "Loaded user script from {}", script_path);
-				} else {
-					log_and_reset_if_signaled(try_catch);
-				}
-			}
-			return boot_result;
-		}).As<v8::Object>();
-		v8::Local<v8::Object> long_js;
-		if (!result_maybe.ToLocal(&long_js)) {
+		v8::Local<v8::Object> acore;
+		if (!node::LoadEnvironment(setup_->env(), load_environment_callback).As<v8::Object>().ToLocal(&acore)) {
 			throw InitializationFailure();
 		}
 
-		long_js_ = v8::Global<v8::Object>(setup_->isolate(), long_js);
 		auto const global_this = setup_->context()->Global();
-		auto const az = global_this->Get(
+		acore_ = v8::Global<v8::Object>(setup_->isolate(), acore);
+		auto const long_js = global_this->Get(
 			setup_->context(),
-			jstr_intern("Acore")
+			jstr_intern("Long")
 		).As<v8::Object>().ToLocalChecked();
-		az_global_ = v8::Global<v8::Object>(setup_->isolate(), az);
-		auto const hooks = az->Get(
+		long_js_ = v8::Global<v8::Object>(setup_->isolate(), long_js);
+		auto const hooks = acore->Get(
 			setup_->context(),
 			jstr_intern("hooks")
-			).As<v8::Object>().ToLocalChecked();
-		az_hooks_ = v8::Global<v8::Object>(setup_->isolate(), hooks);
+		).As<v8::Object>().ToLocalChecked();
+		acore_hooks_ = v8::Global<v8::Object>(setup_->isolate(), hooks);
 		auto const emit = hooks->Get(
 			setup_->context(),
 			jstr_intern("emit")
-			).As<v8::Function>().ToLocalChecked();
-		az_emit_ = v8::Global<v8::Function>(setup_->isolate(), emit);
+		).As<v8::Function>().ToLocalChecked();
+		acore_hooks_emit_ = v8::Global<v8::Function>(setup_->isolate(), emit);
 	});
 }
 

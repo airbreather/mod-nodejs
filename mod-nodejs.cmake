@@ -26,29 +26,19 @@ target_include_directories(modules SYSTEM PUBLIC
 # Embed a JS file as a constexpr char[] in a generated header.
 # Included automatically by modules/CMakeLists.txt after the 'modules' target is created.
 
-set(_ENTRY_SCRIPT_BEFORE_PATH "${CMAKE_SOURCE_DIR}/modules/mod-nodejs/src/entry-script-before.js")
-set(_LONG_JS_PATH "${CMAKE_SOURCE_DIR}/modules/mod-nodejs/src/long-5.3.2.min.js")
-set(_ENTRY_SCRIPT_AFTER_PATH "${CMAKE_SOURCE_DIR}/modules/mod-nodejs/src/entry-script-after.js")
-set(_GENERATED_HEADER "${CMAKE_BINARY_DIR}/mod-nodejs_generated.h")
+set(_LONG_JS_PATH ${CMAKE_SOURCE_DIR}/modules/mod-nodejs/src/long-5.3.2.min.js)
+set(_INIT_SCRIPT_PATH ${CMAKE_SOURCE_DIR}/modules/mod-nodejs/src/init-script.js)
+set(_HEADER_SOURCE_PATH ${CMAKE_SOURCE_DIR}/modules/mod-nodejs/src/NodeEmbeddedScriptFiles.h.in)
+set(_GENERATED_HEADER ${CMAKE_BINARY_DIR}/mod-nodejs/NodeEmbeddedScriptFiles.h)
 
-file(READ "${_ENTRY_SCRIPT_BEFORE_PATH}" _ENTRY_SCRIPT_BEFORE_CONTENT)
-file(READ "${_LONG_JS_PATH}" _LONG_JS_CONTENT)
-file(READ "${_ENTRY_SCRIPT_AFTER_PATH}" _ENTRY_SCRIPT_AFTER_CONTENT)
+set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
+        ${_LONG_JS_PATH}
+        ${_INIT_SCRIPT_PATH}
+)
 
-file(GENERATE
-        OUTPUT "${_GENERATED_HEADER}"
-        CONTENT "
-#ifndef MOD_NODEJS_GENERATED_H
-#define MOD_NODEJS_GENERATED_H
+file(READ ${_LONG_JS_PATH} _LONG_JS_CONTENT)
+file(READ ${_INIT_SCRIPT_PATH} _INIT_SCRIPT_CONTENT)
 
-static constexpr char ENTRY_SCRIPT[] = R\"__MOD_NODEJS__(
-${_ENTRY_SCRIPT_BEFORE_CONTENT}
-${_LONG_JS_CONTENT}
-${_ENTRY_SCRIPT_AFTER_CONTENT}
-)__MOD_NODEJS__\";
+configure_file(${_HEADER_SOURCE_PATH} ${_GENERATED_HEADER} @ONLY)
 
-#endif // MOD_NODEJS_GENERATED_H
-")
-
-target_include_directories(modules PRIVATE "${CMAKE_BINARY_DIR}")
-target_sources(modules PRIVATE "${_GENERATED_HEADER}")
+target_include_directories(modules PRIVATE ${CMAKE_BINARY_DIR}/mod-nodejs)

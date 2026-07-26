@@ -8,7 +8,7 @@
 #include "NodeWrappedObject.h"
 
 template <typename FnPtr, typename ArgsTuple, std::size_t... Is>
-void jfn_impl2_ret(v8::FunctionCallbackInfo<v8::Value> const & args, std::index_sequence<Is...>) {
+void jfnt_impl2_ret(v8::FunctionCallbackInfo<v8::Value> const & args, std::index_sequence<Is...>) {
 	auto failed = false;
 	auto converted_args = std::make_tuple(carg<std::tuple_element_t<Is, ArgsTuple>, Is>(args, failed)...);
 	if (failed) {
@@ -20,7 +20,7 @@ void jfn_impl2_ret(v8::FunctionCallbackInfo<v8::Value> const & args, std::index_
 }
 
 template <typename FnPtr, typename ArgsTuple, std::size_t... Is>
-void jfn_impl2_void(v8::FunctionCallbackInfo<v8::Value> const & args, std::index_sequence<Is...>) {
+void jfnt_impl2_void(v8::FunctionCallbackInfo<v8::Value> const & args, std::index_sequence<Is...>) {
 	auto failed = false;
 	auto converted_args = std::make_tuple(carg<std::tuple_element_t<Is, ArgsTuple>, Is>(args, failed)...);
 	if (failed) {
@@ -85,22 +85,22 @@ void jctor_impl2(v8::FunctionCallbackInfo<v8::Value> const & args, std::index_se
 }
 
 template <typename Ret, typename... Args>
-v8::Local<v8::FunctionTemplate> jfn_impl1(Ret (*fn)(Args...)) {
+v8::Local<v8::FunctionTemplate> jfnt_impl1(Ret (*fn)(Args...)) {
 	return v8::FunctionTemplate::New(
 		v8::Isolate::GetCurrent(),
 		[](v8::FunctionCallbackInfo<v8::Value> const & args) {
-			jfn_impl2_ret<Ret (*)(Args...), std::tuple<Args...>>(args, std::make_index_sequence<sizeof...(Args)>{});
+			jfnt_impl2_ret<Ret (*)(Args...), std::tuple<Args...>>(args, std::make_index_sequence<sizeof...(Args)>{});
 		},
 		v8::External::New(v8::Isolate::GetCurrent(), reinterpret_cast<void *>(fn))
 	);
 }
 
 template <typename... Args>
-v8::Local<v8::FunctionTemplate> jfn_impl1(void (*fn)(Args...)) {
+v8::Local<v8::FunctionTemplate> jfnt_impl1(void (*fn)(Args...)) {
 	return v8::FunctionTemplate::New(
 		v8::Isolate::GetCurrent(),
 		[](v8::FunctionCallbackInfo<v8::Value> const & args) {
-			jfn_impl2_void<void (*)(Args...), std::tuple<Args...>>(args, std::make_index_sequence<sizeof...(Args)>{});
+			jfnt_impl2_void<void (*)(Args...), std::tuple<Args...>>(args, std::make_index_sequence<sizeof...(Args)>{});
 		},
 		v8::External::New(v8::Isolate::GetCurrent(), reinterpret_cast<void *>(fn))
 	);
@@ -151,28 +151,7 @@ v8::Local<v8::FunctionTemplate> jctor_impl1(Obj (*fn)(Args...)) {
 	return ft;
 }
 
-template <typename Fn>
-v8::Local<v8::FunctionTemplate> jfn(Fn && fn) {
-	return jfn_impl1(+fn);
-}
-
-template <typename Obj, typename Fn>
-requires (std::is_pointer_v<Obj>)
-v8::Local<v8::FunctionTemplate> jmeth(Fn && fn) {
-	return jmeth_impl1(+fn);
-}
-
-template <typename Fn>
-v8::Local<v8::FunctionTemplate> jctor(Fn && fn) {
-	return jctor_impl1(+fn);
-}
-
-v8::Local<v8::FunctionTemplate> jfn_raw_impl(void (*fn)(v8::FunctionCallbackInfo<v8::Value> const &));
-
-template <typename Fn>
-v8::Local<v8::FunctionTemplate> jfn_raw(Fn && fn) {
-	return jfn_raw_impl(+fn);
-}
+v8::Local<v8::FunctionTemplate> jfnt_raw_impl(void (*fn)(v8::FunctionCallbackInfo<v8::Value> const &));
 
 template <typename Obj>
 requires (std::is_pointer_v<Obj>)
@@ -186,12 +165,6 @@ v8::Local<v8::FunctionTemplate> jmeth_raw_impl(void (*fn)(Obj, v8::FunctionCallb
 		},
 		v8::External::New(v8::Isolate::GetCurrent(), reinterpret_cast<void *>(fn))
 	);
-}
-
-template <typename Obj, typename Fn>
-requires (std::is_pointer_v<Obj>)
-v8::Local<v8::FunctionTemplate> jmeth_raw(Fn && fn) {
-	return jmeth_raw_impl(+fn);
 }
 
 template <typename Obj>
@@ -217,6 +190,40 @@ v8::Local<v8::FunctionTemplate> jctor_raw_impl(Obj (*fn)(v8::FunctionCallbackInf
 	);
 	ft->InstanceTemplate()->SetInternalFieldCount(2);
 	return ft;
+}
+
+template <typename Fn>
+v8::Local<v8::FunctionTemplate> jfnt(Fn && fn) {
+	return jfnt_impl1(+fn);
+}
+
+template <typename Fn>
+v8::Local<v8::Function> jfn(Fn && fn) {
+	auto const isolate = v8::Isolate::GetCurrent();
+	auto const ctx = isolate->GetCurrentContext();
+	return jfnt_impl1(+fn)->GetFunction(ctx).ToLocalChecked();
+}
+
+template <typename Obj, typename Fn>
+requires (std::is_pointer_v<Obj>)
+v8::Local<v8::FunctionTemplate> jmeth(Fn && fn) {
+	return jmeth_impl1(+fn);
+}
+
+template <typename Fn>
+v8::Local<v8::FunctionTemplate> jctor(Fn && fn) {
+	return jctor_impl1(+fn);
+}
+
+template <typename Fn>
+v8::Local<v8::FunctionTemplate> jfnt_raw(Fn && fn) {
+	return jfnt_raw_impl(+fn);
+}
+
+template <typename Obj, typename Fn>
+requires (std::is_pointer_v<Obj>)
+v8::Local<v8::FunctionTemplate> jmeth_raw(Fn && fn) {
+	return jmeth_raw_impl(+fn);
 }
 
 template <typename Fn>

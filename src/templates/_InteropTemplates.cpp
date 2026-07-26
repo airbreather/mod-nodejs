@@ -61,9 +61,13 @@ struct SpellEntry;
 using ChatCommandBuilderBuilderBox = std::shared_ptr<ChatCommandBuilderBuilder>;
 using QueryResult = std::shared_ptr<ResultSet>;
 
-void AddGlobalFunctions(TypedTemplate<NodeJs *> ft);
+void add_global_functions(TypedTemplate<NodeJs *> ft);
 
-void PopulateGlobalInteropObjectTemplate(TypedTemplate<NodeJs *> const ft) {
+template <>
+v8::Local<v8::FunctionTemplate> jcreate_template<NodeJs *>() {
+	TypedTemplate<NodeJs *> const ft = jctor();
+
+	ft->SetClassName(jstr_intern("Acore"));
 
 #define REGISTER_CLASS_PROP_SPLIT_NAMES(cname, jname) \
 	NodeJs::instance()->reg_template<cname *>(jcreate_template<cname *>()); \
@@ -128,45 +132,13 @@ void PopulateGlobalInteropObjectTemplate(TypedTemplate<NodeJs *> const ft) {
 
 	REGISTER_CLASS_PROP(Pet) // Guardian
 
+#undef REGISTER_CLASS_PROP_RO
 #undef REGISTER_CLASS_PROP
+#undef REGISTER_CLASS_PROP_SPLIT_NAMES
 
-	AddGlobalFunctions(ft);
-}
-
-v8::Local<v8::FunctionTemplate> create_global_interop_object_template() {
-	auto const isolate = v8::Isolate::GetCurrent();
-	auto const ft = v8::FunctionTemplate::New(isolate,
-		[](v8::FunctionCallbackInfo<v8::Value> const & info) {
-			auto const context = info.GetIsolate()->GetCurrentContext();
-			info.This().As<v8::Object>()->Set(
-				context,
-				jstr_intern("hooks"),
-				info[0]
-			).Check();
-		});
-	ft->InstanceTemplate()->SetInternalFieldCount(2);
-
-	PopulateGlobalInteropObjectTemplate(ft);
+	add_global_functions(ft);
 
 	return ft;
-}
-
-v8::Local<v8::FunctionTemplate> create_add_listener_callback_template() {
-	auto const isolate = v8::Isolate::GetCurrent();
-	return v8::FunctionTemplate::New(isolate,
-		[](v8::FunctionCallbackInfo<v8::Value> const & info) {
-			auto const event_name = *cval<std::string>(info[0]);
-			NodeJs::instance()->add_listener(event_name);
-		});
-}
-
-v8::Local<v8::FunctionTemplate> create_remove_listener_callback_template() {
-	auto const isolate = v8::Isolate::GetCurrent();
-	return v8::FunctionTemplate::New(isolate,
-		[](v8::FunctionCallbackInfo<v8::Value> const & info) {
-			auto const event_name = *cval<std::string>(info[0]);
-			NodeJs::instance()->remove_listener(event_name);
-		});
 }
 
 template<>

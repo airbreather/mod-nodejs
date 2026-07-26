@@ -111,7 +111,7 @@ void reg_method(TypedTemplate<Obj> const ft, std::string_view const name, Fn && 
 
 template <typename Fn>
 void reg_static_method(v8::Local<v8::FunctionTemplate> const ft, std::string_view const name, Fn && fn) {
-	ft->Set(jstr_intern(name), jfn(fn));
+	ft->Set(jstr_intern(name), jfnt(fn));
 }
 
 template <typename Obj, typename Fn>
@@ -122,7 +122,7 @@ void reg_method_raw(TypedTemplate<Obj> const ft, std::string_view const name, Fn
 
 template <typename Fn>
 void reg_static_method_raw(v8::Local<v8::FunctionTemplate> const ft, std::string_view const name, Fn && fn) {
-	ft->Set(jstr_intern(name), jfn(fn));
+	ft->Set(jstr_intern(name), jfnt(fn));
 }
 
 template <typename Obj, typename... Args>
