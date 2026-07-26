@@ -550,3 +550,13 @@ The previous section got you your `NODEJS_INCLUDE_DIR` and your `NODEJS_LIB`. Yo
 Add each one's `-DTHAT_VARIABLE=ITS_VALUE` to your cmake command. You may need to use quotes if you have spaces in your paths.
 
 This concludes the parts that are specific to `mod-nodejs`. Once you pass correct values for those extra args on your cmake command line, everything goes the same as with any other AC module.
+
+## Compatibility
+
+At this time, the ONLY commitment to script compatibility is this: if it's possible for a script to do something useful and well-defined with AC objects (hooks and methods both), then any future changes that make it impossible shall be considered bugs that should be fixed with reasonably high priority. Otherwise, there are NO commitments to script compatibility; in particular, it is very likely that several APIs will change in the future. I've even been on the fence about keeping `Acore.*` vs. putting lots of things in the global scope.
+
+I expect there to be a time in the future when all APIs available to scripts are considered stable and reliable for the sake of making bigger projects more palatable - nobody wants to sink hundreds of hours into an interesting module project where every interaction with AC can change dramatically. We are not there yet.
+
+To rephrase: there should only be two reasons why you would intentionally want to NOT update to a newer version of mod-nodejs:
+1. You don't have time to fix scripts to accommodate breaking changes yet, OR
+2. The latest version has a regression bug that you can expect to be fixed soon.
