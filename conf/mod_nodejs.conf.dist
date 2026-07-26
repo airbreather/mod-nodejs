@@ -1,0 +1,23 @@
+########################################
+# mod-nodejs configuration
+########################################
+#
+#    NodeJs.Scripts
+#        Description: JavaScript file to load.
+#                     Supports .mjs (ESM), .cjs (CJS), and .js extensions.
+#
+#                     NOTE: Due to a limitation in embedder-mode Node.js
+#                     (https://github.com/nodejs/node/issues/62726), top-level await
+#                     is not supported.
+#        Default:     "" (empty = no external scripts loaded)
+#
+
+NodeJs.Script = ""
+
+# Changes to the below args only take effect when the app restarts
+NodeJs.ExtraNodeArgsCount = 0
+# https://nodejs.org/learn/getting-started/debugging:
+# NodeJs.ExtraNodeArgsCount = 1
+# NodeJs.ExtraNodeArg.0 = "--inspect"
+# NodeJs.ExtraNodeArg.0 = "--inspect-brk"
+# NodeJs.ExtraNodeArg.0 = "--inspect-wait"

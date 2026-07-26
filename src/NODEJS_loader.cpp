@@ -1,0 +1,43 @@
+void AddSC_Account();
+void AddSC_AllBattleground();
+void AddSC_AllCreature();
+void AddSC_AllGameObject();
+void AddSC_AllItem();
+void AddSC_AllMap();
+void AddSC_AllSpell();
+void AddSC_AuctionHouse();
+void AddSC_Command();
+void AddSC_Group();
+void AddSC_Guild();
+void AddSC_Loot();
+void AddSC_Misc();
+void AddSC_Pet();
+void AddSC_Player();
+void AddSC_Ticket();
+void AddSC_Unit();
+void AddSC_Vehicle();
+void AddSC_WorldObject();
+void AddSC_World();
+
+void Addmod_nodejsScripts() {
+	AddSC_Account();
+	AddSC_AllBattleground();
+	AddSC_AllCreature();
+	AddSC_AllGameObject();
+	AddSC_AllItem();
+	AddSC_AllMap();
+	AddSC_AllSpell();
+	AddSC_AuctionHouse();
+	AddSC_Command();
+	AddSC_Group();
+	AddSC_Guild();
+	AddSC_Loot();
+	AddSC_Misc();
+	AddSC_Pet();
+	AddSC_Player();
+	AddSC_Ticket();
+	AddSC_Unit();
+	AddSC_Vehicle();
+	AddSC_WorldObject();
+	AddSC_World();
+}

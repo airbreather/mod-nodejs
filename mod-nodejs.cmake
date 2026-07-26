@@ -1,0 +1,54 @@
+if (CMAKE_SIZEOF_VOID_P LESS 8)
+    message(FATAL_ERROR "Node.js support requires a 64-bit build")
+endif()
+
+if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB))
+    message(FATAL_ERROR "Must pass -DNODEJS_INCLUDE_DIR and -DNODEJS_LIB flags when building with mod_nodejs.")
+endif()
+
+message(STATUS "Node.js include path: ${NODEJS_INCLUDE_DIR}")
+message(STATUS "Node.js library: ${NODEJS_LIB}")
+if (LIBUV_LIB)
+    message(STATUS "libuv library: ${LIBUV_LIB}")
+else()
+    # this needs to be passed in externally when Node.js was configured with --shared-libuv. Nix can
+    # get away with this because it's Nix, but most builders will just link it statically, so just
+    # using NODEJS_LIB for it is a fine fallback.
+    set(LIBUV_LIB ${NODEJS_LIB})
+    message(STATUS "libuv library: (use Node.js library)")
+endif()
+
+target_link_libraries(modules PUBLIC ${NODEJS_LIB} ${LIBUV_LIB})
+target_include_directories(modules SYSTEM PUBLIC
+        ${NODEJS_INCLUDE_DIR}
+)
+
+# Embed a JS file as a constexpr char[] in a generated header.
+# Included automatically by modules/CMakeLists.txt after the 'modules' target is created.
+
+set(_ENTRY_SCRIPT_BEFORE_PATH "${CMAKE_SOURCE_DIR}/modules/mod-nodejs/src/entry-script-before.js")
+set(_LONG_JS_PATH "${CMAKE_SOURCE_DIR}/modules/mod-nodejs/src/long-5.3.2.min.js")
+set(_ENTRY_SCRIPT_AFTER_PATH "${CMAKE_SOURCE_DIR}/modules/mod-nodejs/src/entry-script-after.js")
+set(_GENERATED_HEADER "${CMAKE_BINARY_DIR}/mod-nodejs_generated.h")
+
+file(READ "${_ENTRY_SCRIPT_BEFORE_PATH}" _ENTRY_SCRIPT_BEFORE_CONTENT)
+file(READ "${_LONG_JS_PATH}" _LONG_JS_CONTENT)
+file(READ "${_ENTRY_SCRIPT_AFTER_PATH}" _ENTRY_SCRIPT_AFTER_CONTENT)
+
+file(GENERATE
+        OUTPUT "${_GENERATED_HEADER}"
+        CONTENT "
+#ifndef MOD_NODEJS_GENERATED_H
+#define MOD_NODEJS_GENERATED_H
+
+static constexpr char ENTRY_SCRIPT[] = R\"__MOD_NODEJS__(
+${_ENTRY_SCRIPT_BEFORE_CONTENT}
+${_LONG_JS_CONTENT}
+${_ENTRY_SCRIPT_AFTER_CONTENT}
+)__MOD_NODEJS__\";
+
+#endif // MOD_NODEJS_GENERATED_H
+")
+
+target_include_directories(modules PRIVATE "${CMAKE_BINARY_DIR}")
+target_sources(modules PRIVATE "${_GENERATED_HEADER}")
