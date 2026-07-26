@@ -1,0 +1,12 @@
+{
+	"compilerOptions": {
+		"target": "ESNext",
+		"lib": ["ESNext"],
+		"types": [
+			"@types/node",
+			"long"
+		],
+		"strict": true,
+		"declaration": true
+	}
+}
