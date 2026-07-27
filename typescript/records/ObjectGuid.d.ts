@@ -1,6 +1,6 @@
-declare global {
-	const __opaque : unique symbol;
+declare const __opaque : unique symbol;
 
+declare global {
 	type ObjectGuidNative = {
 		[__opaque]: 'This type is opaque. Use Acore.decodeGuid() if you need its sub-components.',
 	}

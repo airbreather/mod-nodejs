@@ -3,6 +3,8 @@ export * from './AcoreStrings';
 export * from './ArenaType';
 export * from './AuctionHouseId';
 export * from './AuraRemoveMode';
+export * from './AuraType';
+export * from './BattlegroundQueueGroupTypes';
 export * from './BattlegroundTypeId';
 export * from './ChatMsg';
 export * from './Classes';

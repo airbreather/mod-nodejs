@@ -1,3 +1,4 @@
+#include <ranges>
 #include <v8-local-handle.h>
 #include <v8-template.h>
 
@@ -14,7 +15,11 @@ v8::Local<v8::FunctionTemplate> jcreate_template<BattlegroundQueue *>() {
 	ft->SetClassName(jstr_intern("BattlegroundQueue"));
 
 	reg_prop_ro(ft, "qp", [](BattlegroundQueue * bg) {
-		return jmap(bg->m_QueuedPlayers);
+		std::map<ObjectGuid::LowType, GroupQueueInfo *> result;
+		for (auto const [guid, info] : bg->m_QueuedPlayers) {
+			result.insert(std::make_pair(guid.GetCounter(), info));
+		}
+		return jmap(result);
 	});
 
 	reg_method(ft, "getAverageQueueWaitTime", [](BattlegroundQueue * bg) {

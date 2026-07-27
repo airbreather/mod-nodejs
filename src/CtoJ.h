@@ -68,25 +68,18 @@ v8::Local<v8::String> jstr_intern(char const (& s)[N]) {
 }
 
 template <MapLike M>
-requires std::is_trivially_copyable_v<typename M::mapped_type>
-v8::Local<v8::Map> jmap(M const & map) {
-	auto const isolate = v8::Isolate::GetCurrent();
-	auto const context = isolate->GetCurrentContext();
-	auto const result = v8::Map::New(isolate);
-	for (auto const [k, v] : map) {
-		result->Set(context, jval(k), jval(v)).ToLocalChecked();
-	}
-	return result;
-}
-
-template <MapLike M>
-requires (!std::is_trivially_copyable_v<typename M::mapped_type>)
 v8::Local<v8::Map> jmap(M const & map) {
 	auto const isolate = v8::Isolate::GetCurrent();
 	auto const context = isolate->GetCurrentContext();
 	auto const result = v8::Map::New(isolate);
 	for (auto [k, v] : map) {
-		result->Set(context, jval(k), jval<typename M::mapped_type *>(&v)).ToLocalChecked();
+		v8::Local<v8::Value> vv;
+		if constexpr (std::is_trivially_copyable_v<typename M::mapped_type>) {
+			vv = jval(v);
+		} else {
+			vv = jval<typename M::mapped_type *>(&v);
+		}
+		result->Set(context, jval(k), vv).ToLocalChecked();
 	}
 	return result;
 }
