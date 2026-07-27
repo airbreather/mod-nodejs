@@ -1,6 +1,10 @@
 import Long from 'long';
 import { EventEmitter } from 'node:events';
 
+type HooksConforming = {
+	[K in keyof Hooks]: [Hooks[K]];
+};
+
 declare global {
 	type LongLike =
 		| Long
