@@ -1,0 +1,172 @@
+declare global {
+	namespace Acore {
+		class Unit extends WorldObject {
+			readonly gender: Gender;
+			readonly creatureType: CreatureType;
+			readonly healthPct: number;
+			readonly movementType: MovementGeneratorType;
+			readonly mountId: number;
+			readonly vehicle: Vehicle | undefined;
+			readonly isDying: boolean;
+			readonly victim: Unit | undefined;
+			readonly isAttackingPlayer: boolean;
+			readonly isStandState: boolean;
+			readonly charmGuid: ObjectGuid | undefined;
+			readonly charmerGuid: ObjectGuid | undefined;
+			readonly charmerOrOwnerGuid: ObjectGuid | undefined;
+			readonly charmerOrOwnerOrOwnGuid: ObjectGuid | undefined;
+			readonly owner: Unit | undefined;
+			readonly followAngle: number;
+			readonly isAlive: boolean;
+			readonly isDead: boolean;
+			readonly isInCombat: boolean;
+			readonly isMounted: boolean;
+			readonly isInWater: boolean;
+			readonly isUnderWater: boolean;
+			readonly isFlying: boolean;
+			readonly isFalling: boolean;
+			readonly isStopped: boolean;
+			readonly isCharmed: boolean;
+			readonly isFullHealth: boolean;
+			readonly isPvP: boolean;
+			readonly isOnVehicle: boolean;
+			readonly isArmorer: boolean;
+			readonly isAuctioneer: boolean;
+			readonly isBanker: boolean;
+			readonly isBattleMaster: boolean;
+			readonly isGossip: boolean;
+			readonly isGuildMaster: boolean;
+			readonly isInnkeeper: boolean;
+			readonly isQuestGiver: boolean;
+			readonly isServiceProvider: boolean;
+			readonly isSpiritGuide: boolean;
+			readonly isSpiritHealer: boolean;
+			readonly isSpiritService: boolean;
+			readonly isTabardDesigner: boolean;
+			readonly isTaxi: boolean;
+			readonly isTrainer: boolean;
+			readonly isVendor: boolean;
+			readonly comboTarget: Unit | undefined;
+			readonly isMoving: boolean;
+			readonly comboPoints: 0 | 1 | 2 | 3 | 4 | 5;
+			readonly attackers: Unit[];
+			readonly unorderedThreatList: ThreatReference[];
+			// FactionTemplates in the C++ template has a bunch, but there's also things like
+			// KarazhanChessGameFactions, which are different numbers from what you'd expect, and
+			// magic number 2082 which seems to show up only in a Zul'Drak encounter with Drakuru.
+			faction: number;
+			health: number;
+			maxHealth: number;
+			displayId: number;
+			nativeDisplayId: number;
+			sheath: SheathState;
+			speedWalk: number;
+			speedRun: number;
+			speedSwim: number;
+			speedTurn: number;
+			level: number;
+			powerType: Powers;
+			isPvPFlagged: boolean;
+			standState: UnitStandStateType;
+			creatorGuid: ObjectGuid | undefined;
+			critterGuid: ObjectGuid | undefined;
+			ownerGuid: ObjectGuid | undefined;
+			petGuid: ObjectGuid | undefined;
+			isFFA: boolean;
+			isInSanctuary: boolean;
+			isRooted: boolean;
+			isConfused: boolean;
+			// sometimes aka feared
+			isFleeing: boolean;
+			emoteState: Emote;
+
+			getCurrentSpell(spellType?: CurrentSpellTypes): Spell | undefined;
+			isNonMeleeSpellCast(withDelayed: boolean, skipChanneled?: boolean, skipAutorepeat?: boolean, isAutoshoot?: boolean, skipInstant?: boolean): boolean;
+			getComboPointsOn(who: Unit): 0 | 1 | 2 | 3 | 4 | 5;
+			getAura(spellId: number, caster?: ObjectGuid, itemCaster?: ObjectGuid, requiredEffectMask?: number): Aura | undefined;
+			getStat(stat: Stats): number;
+			getPower(power: Powers): number;
+			getMaxPower(power: Powers): number;
+			getPowerPct(power: Powers): number;
+			getSpeed(type: UnitMoveType): number;
+			getSpeedRate(type: UnitMoveType): number;
+			getThreat(target: Unit, includeOffline?: boolean): number;
+			isInAccessiblePlaceFor(creature: Creature): boolean;
+			getFriendlyUnitsInRange(range: number): Unit[];
+			getUnfriendlyUnitsInRange(range: number): Unit[];
+			hasAura(spellId: number, caster?: ObjectGuid, itemCaster?: ObjectGuid, requiredEffectMask?: number): boolean;
+			healthAbovePct(pct: number): boolean;
+			healthBelowPct(pct: number): boolean;
+			countPctFromCurHealth(amount: number): boolean;
+			countPctFromMaxHealth(amount: number): boolean;
+			getBaseSpellPower(spellSchool: SpellSchools): number;
+			hasUnitState(state: UnitState): boolean;
+			sendChatMessageToPlayer(type: ChatMsg, lang: Language, msg: string, target: Player): void;
+			demorph(): void;
+			dismount(): void;
+			performEmote(emote: Emote): void;
+			mount(mountDisplayId: number, vehicleId?: number, creatureEntry?: number): void;
+			stopSpellCast(spellId?: number): void;
+			// set withDelayed to true to interrupt delayed spells too<br>
+			// delayed+channeled spells are always interrupted
+			interruptNonMeleeSpells(withDelayed: boolean, spellId?: number, withInstant?: boolean, bySelf?: boolean): void;
+			removeAllAuras(): void;
+			removeArenaAuras(): void;
+			setFacingToObject(target: WorldObject, timed?: number): void;
+			setInCombatWith(target: Unit, addSecondUnitSuppressed?: boolean): void;
+			clearThreatList(): void;
+			addUnitState(state: UnitState): void;
+			clearUnitState(state: UnitState): void;
+			nearTeleportTo(x: number, y: number, z: number, o?: number, casting?: boolean, vehicleTeleport?: boolean, withPet?: boolean, removeTransport?: boolean): void;
+			addThreat(target: Unit, amount: number, spell?: SpellInfo, ignoreModifiers?: boolean, ignoreRedirects?: boolean): void;
+			modifyThreatByPercent(target: Unit, pct: number): void;
+			resetThreat(target: Unit): void;
+			resetAllThreat(): void;
+			modifyPower(powerType: Powers, amount: number, withPowerUpdate?: boolean): void;
+			moveStop(): void;
+			moveExpire(reset?: boolean): void;
+			moveClear(reset?: boolean): void;
+			moveFollow(target: Unit, distance?: number, angle?: number, slot?: MovementSlot, inheritWalkState?: boolean, inheritSpeed?: boolean): void;
+			moveChase(target: Unit, distance?: ChaseRange, angle?: ChaseAngle): void;
+			moveFleeing(enemy: Unit, time?: number): void;
+			moveJump(x: number, y: number, z: number, velXY: number, velZ: number, id?: number, target?: Unit): void;
+			moveConfused(): void;
+			clearComboPoints(): void;
+			addComboPoints(count: number): void;
+			addAura(spellId: number, target: Unit): void;
+			removeAura(spellId: number, caster?: ObjectGuid, requiredEffectMask?: number, removeMode?: AuraRemoveMode): void;
+			kill(target: Unit, durabilityLoss?: boolean, attackType?: WeaponAttackType, spellProto?: SpellInfo, spell?: Spell): void;
+			clearInCombat(): void;
+			// TODO: use enums / alternate names / (overloads?) so the type checker can help a bit more.
+			// not doing that right now because it mirrors the C++ side anyway.
+			applySpellImmune(spellId: number, op: SpellImmunity, type: number, apply: boolean, blockType?: SpellImmuneBlockType): void;
+			setMaxPower(amt: number, type?: Powers): void;
+			setPower(amt: number, type?: Powers): void;
+			setSpeed(type: UnitMoveType, speed: number, forced?: boolean): void;
+			setSpeedRate(type: UnitMoveType, speed: number): void;
+			attack(target: Unit, meleeAttack: boolean): boolean;
+			attackStop(): boolean;
+			getFlatModifierValue(stat: UnitMods, type: UnitModifierFlatType): void;
+			getPctModifierValue(stat: UnitMods, type: UnitModifierPctType): void;
+			setStatFlatModifier(stat: UnitMods, type: UnitModifierFlatType, value: number): void;
+			setStatPctModifier(stat: UnitMods, type: UnitModifierPctType, value: number): void;
+			handleStatFlatModifier(stat: UnitMods, type: UnitModifierFlatType, value: number, apply: boolean): boolean;
+			// Usage outside of AuraEffect Handlers is discouraged as the value will be lost when auras change. Use an Aura instead.
+			applyStatPctModifier(stat: UnitMods, type: UnitModifierPctType, value: number): void;
+			sendUnitEmote(msg: string, receiver?: Unit, bossEmote?: boolean): void;
+			say(msg: string, language: Language): void;
+			yell(msg: string, language: Language): void;
+			whisper(msg: string, language: Language, target: Player): void;
+			bossWhisper(msg: string, language: Language, target: Player): void;
+			setDeathState(deathState: DeathState, despawn?: boolean): void;
+			setWalk(enable: boolean): void;
+			setDisableGravity(disable: boolean): void;
+			setSwim(enable: boolean): void;
+			setCanFly(enable: boolean): void;
+			setWaterWalking(enable: boolean): void;
+			setFeatherFall(enable: boolean): void;
+			setHover(enable: boolean): void;
+		}
+	}
+}
+export {};

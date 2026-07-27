@@ -1,0 +1,147 @@
+declare global {
+	namespace Acore {
+		class Player extends Unit {
+			readonly race: Races;
+			readonly raceMask: number;
+			readonly clazz: Classes;
+			readonly classMask: number;
+			readonly teamId: TeamId;
+			readonly guildId: number;
+			readonly isInGroup: boolean;
+			readonly isInGuild: boolean;
+			readonly isRested: boolean;
+			readonly hasCorpse: boolean;
+			readonly isMaxLevel: boolean;
+			readonly activeSpec: 0 | 1;
+			readonly specsCount: 0 | 1 | 2;
+			readonly restBonus: number;
+			readonly xp: number;
+			readonly battlegroundTypeId: BattlegroundTypeId;
+			readonly gmRank: AccountTypes;
+			readonly accountId: number;
+			readonly accountName: string;
+			readonly completedQuestsCount: number;
+			readonly corpse: Corpse | undefined;
+			readonly playerIP: string;
+			readonly mailCount: number;
+			readonly mostPointsTalentTree: 0 | 1 | 2;
+			readonly group: Group | undefined;
+			readonly difficulty: Difficulty;
+			readonly inventoryFreeSlots: number;
+			readonly canSpeak: boolean;
+			readonly canUninviteFromGroup: boolean;
+			readonly inBattlegroundQueue: boolean;
+			readonly inArena: boolean;
+			readonly inBattleground: boolean;
+			readonly hasTankSpec: boolean;
+			readonly hasMeleeSpec: boolean;
+			readonly hasCasterSpec: boolean;
+			readonly hasHealSpec: boolean;
+			readonly isExistPet: boolean;
+			readonly canTameExoticPets: boolean;
+			readonly canPetResurrect: boolean;
+			readonly canResummonPet: boolean;
+			readonly isPetNeedBeTempUnsummoned: boolean;
+			readonly inRandomLfgDungeon: boolean;
+			readonly isUsingLfg: boolean;
+			readonly achievementPoints: number;
+			readonly dodgeFromAgility: number;
+			readonly meleeCritFromAgility: number;
+			readonly spellCritFromIntellect: number;
+			readonly ammoDPS: number;
+			readonly canSeeDKPet: boolean;
+			readonly isImmuneToDamage: boolean;
+			readonly battlegroundId: number;
+			readonly championingFactionId: number;
+			readonly chatTag: PlayerChatTag;
+			readonly dbLocaleIndex: LocaleConstant;
+			readonly dbcLocale: LocaleConstant;
+			readonly latency: number;
+			readonly groupInvite: Group | undefined;
+			readonly inGameTime: number;
+			readonly healthBonusFromStamina: number;
+			readonly manaBonusFromIntellect: number;
+			readonly originalGroup: number
+			readonly originalSubGroup: number;
+			// used for proper set phase for DB at GM-mode creature/GO spawn
+			readonly phaseMaskForSpawn: number;
+			readonly selectedPlayer: Player | undefined;
+			readonly selectedUnit: Unit | undefined;
+			readonly shield: Item | undefined;
+			readonly shieldBlockValue: number;
+			readonly subGroup: number;
+			readonly todayHonorPoints: number;
+			readonly todayKills: number;
+			readonly trader: Player | undefined;
+			readonly yesterdayHonorPoints: number;
+			readonly yesterdayKills: number;
+			readonly recruiterId: number;
+			readonly bankFreeSlots: number;
+			readonly levelPlayedTime: number;
+			readonly averageItemLevel: number;
+			readonly totalPlayedTime: number;
+			readonly guildName: string;
+			readonly runesState: number;
+			// false if mod_playerbots is not installed
+			readonly isBot: boolean;
+			readonly isHorde: boolean;
+			readonly isAlliance: boolean;
+			readonly isInArena: boolean;
+			readonly isInBattleground: boolean;
+			readonly isInBattlegroundQueue: boolean;
+			readonly canTitanGrip: boolean;
+			readonly pet: Pet | undefined;
+			readonly homebind: Homebind;
+			readonly talentTreePoints: [number, number, number];
+			readonly completedAchievementsCount: number;
+			readonly completedAchievementsCountExcludingFeatsOfStrength: number;
+
+			static byGuid(guid: ObjectGuid): Player | undefined;
+			static byName(name: string): Player | undefined;
+			static allInWorld(): Player[];
+
+			resetTalentsCost(): void;
+			getRaceAsString(locale?: LocaleConstant): string;
+			getClassAsString(locale?: LocaleConstant): string;
+			hasSpell(spellId: number): boolean;
+			hasQuest(questId: number): boolean;
+			hasItemCount(itemId: number, count?: number, checkBank?: false): boolean;
+			getItemCount(itemId: number, checkBank?: false, skipItem?: Item): number;
+			getReputationWith(factionId: number): number;
+			getReputationRankWith(factionId: number): ReputationRank;
+			getQuestStatus(questId: number): QuestStatus;
+			// TODO: verify correctness
+			getEquippedItemBySlot(slot: number): Item | undefined;
+			// TODO: verify correctness
+			getInventoryItem(slot: number): Item | undefined;
+			// TODO: verify correctness
+			getBankItem(slot: number): Item | undefined;
+			getBarberShopCost(hairstyle: number, haircolor: number, facialhair: number, skincolor?: number): number;
+			getSkillValue(skill: SkillType): number;
+			getMaxSkillValue(skill: SkillType): number;
+			hasTalent(talentId: number, spec?: 0 | 1): boolean;
+			hasAchieved(achievementId: number): boolean;
+			hasQuestForItem(itemId: number, excludeQuestId?: number, turnIn?: boolean, showInLoot?: Box<boolean>): boolean;
+			canUseItem(itemId: number): boolean;
+			hasSpellCooldown(spellId: number): boolean;
+			canShareQuest(questId: number): boolean;
+			isGroupVisibleFor(player: Player): boolean;
+			isInSameRaidWith(player: Player): boolean;
+			isInSameGroupWith(player: Player): boolean;
+			isHonorOrXPTarget(target: Unit): boolean;
+			isVisibleFor(player: Player): boolean;
+			hasKnownTaxiNode(nodeId: number): boolean;
+			isAtGroupRewardDistanceFor(target: Unit): boolean;
+			isAtLootRewardDistanceFor(target: Unit): boolean;
+			canEquipNewItem(itemId: number, slot: number, swap: boolean): boolean;
+			isDailyQuestDone(quest: Quest): boolean;
+			canSeeStartQuest(quest: Quest): boolean;
+			canInteractWithQuestGiver(target: WorldObject): boolean;
+			hasArmorProficiency(armor: ItemSubclassArmor): boolean;
+			hasWeaponProficiency(weapon: ItemSubclassWeapon): boolean;
+			getGlyph(slot: number): GlyphPropertiesEntry | undefined;
+			sendSystemMessage(msg: string): void;
+		}
+	}
+}
+export {};
