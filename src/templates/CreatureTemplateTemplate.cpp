@@ -105,10 +105,12 @@ v8::Local<v8::FunctionTemplate> jcreate_template<CreatureTemplate const *>() {
 	reg_prop_ro(ft, "family", [](CreatureTemplate const * ct) {
 		return ct->family;
 	});
-	reg_prop_ro(ft, "type", [](CreatureTemplate const * ct) {
+	reg_prop_ro(ft, "creatureType", [](CreatureTemplate const * ct) {
+		// renamed because "type" is a keyword in TypeScript.
 		return ct->type;
 	});
-	reg_prop_ro(ft, "typeFlags", [](CreatureTemplate const * ct) {
+	reg_prop_ro(ft, "creatureTypeFlags", [](CreatureTemplate const * ct) {
+		// renamed to be consistent with "creatureType".
 		return ct->type_flags;
 	});
 	reg_prop_ro(ft, "lootId", [](CreatureTemplate const * ct) {

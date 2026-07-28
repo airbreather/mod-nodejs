@@ -71,8 +71,11 @@ declare global {
 			callAssistance(target?: Unit): void;
 			callForHelp(radius: number, target?: Unit): void;
 			fleeToGetAssistance(): void;
-			selectVictim(): void;
+			selectVictim(): Unit | undefined;
 			updateEntry(entry: number, spawnIdForCreatureData?: number, changeLevel?: boolean, updateAi?: boolean): void;
+			resetLootMode(): void;
+			removeLootMode(lootMode: LootModes): void;
+			addLootMode(lootMode: LootModes): void;
 		}
 	}
 }

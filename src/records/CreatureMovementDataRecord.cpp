@@ -14,8 +14,7 @@ template<>
 		jprop("rooted", m.Rooted),
 		jprop("chase", m.Chase),
 		jprop("random", m.Random),
-		jprop("interactionPauseTimer", m.InteractionPauseTimer),
-		jprop("isGroundAllowed", m.IsGroundAllowed())
+		jprop("interactionPauseTimer", m.InteractionPauseTimer)
 	);
 }
 

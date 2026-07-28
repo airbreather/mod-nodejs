@@ -2,6 +2,8 @@ export * from './BattlegroundScore';
 export * from './Box';
 export * from './ChaseAngle';
 export * from './ChaseRange';
+export * from './CreatureModel';
+export * from './CreatureMovementData';
 export * from './GlyphPropertiesEntry';
 export * from './GroupQueueInfo';
 export * from './Homebind';
