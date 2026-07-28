@@ -114,4 +114,5 @@ list(APPEND ${PRIVATE_SOURCES} (
         src/NodePropertySystem.cpp
         src/NodeWrappedObject.cpp
         src/PropertyImplementations.cpp
+        src/UnixTimestamp.cpp
 ))

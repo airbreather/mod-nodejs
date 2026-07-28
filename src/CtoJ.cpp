@@ -10,6 +10,7 @@
 #include "Pet.h"
 #include "StringFormat.h"
 #include "TemporarySummon.h"
+#include "UnixTimestamp.h"
 #include "fmt/base.h"
 
 v8::Local<v8::FunctionTemplate> jtemplate(std::type_index const typ) {
@@ -49,19 +50,6 @@ v8::Local<v8::String> jstr_intern(std::string_view const s) {
 		v8::NewStringType::kInternalized,
 		static_cast<int>(s.length())
 		).ToLocalChecked();
-}
-
-v8::Local<v8::FunctionTemplate> jctor() {
-	auto const ft = v8::FunctionTemplate::New(v8::Isolate::GetCurrent(), [](v8::FunctionCallbackInfo<v8::Value> const & args) {
-		if (args.Length() == 1 && args[0]->IsExternal()) {
-			reference_pointer_from(args.This(), args[0].As<v8::External>()->Value());
-			args.GetReturnValue().Set(args.This());
-		} else {
-			args.GetIsolate()->ThrowError("This type cannot be constructed directly from scripts.");
-		}
-	});
-	ft->InstanceTemplate()->SetInternalFieldCount(2);
-	return ft;
 }
 
 // the C++ class hierarchy kinda breaks the compile-time dispatch since we might have a pointer to
@@ -254,9 +242,7 @@ template<>
 	auto const isolate = v8::Isolate::GetCurrent();
 	auto const ctx = isolate->GetCurrentContext();
 
-	// Temporal.Instant.from( epochSeconds * 1000n )
-	auto const epoch_ms = data.epoch_seconds * 1000;
-	auto const bigIntMs = v8::BigInt::New(isolate, epoch_ms);
+	auto epoch_ms = jval<double>(data.epoch_milliseconds);
 
 	auto const global_this = ctx->Global();
 	auto const temporal =
@@ -264,8 +250,7 @@ template<>
 	auto const temporalInstant =
 		temporal->Get(ctx, jstr_intern("Instant")).As<v8::Object>().ToLocalChecked();
 	auto const temporalInstantFrom =
-		temporalInstant->Get(ctx, jstr_intern("from")).As<v8::Function>().ToLocalChecked();
+		temporalInstant->Get(ctx, jstr_intern("fromEpochMilliseconds")).As<v8::Function>().ToLocalChecked();
 
-	v8::Local<v8::Value> args[] = { bigIntMs };
-	return temporalInstantFrom->Call(ctx, v8::Undefined(isolate), 1, args).ToLocalChecked();
+	return temporalInstantFrom->Call(ctx, temporalInstant, 1, &epoch_ms).ToLocalChecked();
 }

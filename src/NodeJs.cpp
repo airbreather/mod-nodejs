@@ -22,11 +22,11 @@
 #include "Config.h"
 #include "CtoJ.h"
 #include "DatabaseEnv.h"
+#include "Guild.h"
 #include "Log.h"
 #include "NodeEmbeddedScriptFiles.h"
 #include "NodePropertySystem.h"
 #include "NodeWrappedObject.h"
-#include "QueryResult.h"
 #include "StringFormat.h"
 #include "fmt/base.h"
 
@@ -316,6 +316,49 @@ inline void NodeJs::run_scoped(std::function<void()> const & f) const {
 	log_and_reset_if_signaled(try_catch);
 }
 
+std::optional<uint64_t> NodeJs::get_u64(v8::Local<v8::Value> v) const {
+	if (v->IsExternal()) {
+		return reinterpret_cast<uint64_t>(v.As<v8::External>()->Value(v8::kExternalPointerTypeTagDefault));
+	}
+	auto norm = normalize_long_like_.Get(
+		setup_->isolate()
+	)->Call(
+		setup_->context(),
+		acore_.Get(setup_->isolate()),
+		1,
+		&v
+	).ToLocalChecked();
+	return norm->IsNumber()
+		? uint64_t{norm.As<v8::Number>()->NumberValue(setup_->context()).ToChecked()}
+		: norm.As<v8::BigInt>()->Uint64Value();
+}
+
+std::optional<int64_t> NodeJs::get_i64(v8::Local<v8::Value> v) const {
+	if (v->IsExternal()) {
+		return reinterpret_cast<int64_t>(v.As<v8::External>()->Value(v8::kExternalPointerTypeTagDefault));
+	}
+	auto norm = normalize_long_like_.Get(
+		setup_->isolate()
+	)->Call(
+		setup_->context(),
+		acore_.Get(setup_->isolate()),
+		1,
+		&v
+	).ToLocalChecked();
+	return norm->IsNumber()
+		? int64_t{norm.As<v8::Number>()->NumberValue(setup_->context()).ToChecked()}
+	: norm.As<v8::BigInt>()->Uint64Value();
+}
+
+std::optional<std::chrono::time_point<std::chrono::utc_clock, std::chrono::milliseconds>> NodeJs::convert_instant(v8::Local<v8::Object> v) const {
+	auto lng_maybe = cval<int64_t>(v, "epochMilliseconds");
+	if (!lng_maybe) {
+		return {};
+	}
+	auto millis = std::chrono::milliseconds(*lng_maybe);
+	return std::chrono::time_point<std::chrono::utc_clock, std::chrono::milliseconds>(millis);
+}
+
 v8::Local<v8::FunctionTemplate> NodeJs::hook_arg_template(std::string const & hook_name, const std::vector<Arg *> & args) {
 	auto it = m_hook_arg_templates.find(hook_name);
 	if (it == m_hook_arg_templates.end()) {
@@ -423,32 +466,23 @@ v8::Local<v8::Value> NodeJs::load_environment_callback(node::StartExecutionCallb
 	v8::Local<v8::Function> run_user_script;
 	if (!finish_init->Call(context, context->Global(), 3, args).As<v8::Function>().ToLocal(&run_user_script)) {
 		return {};
-	};
-
-	if (
-		auto const script_path = sConfigMgr->GetOption<std::string>("NodeJs.Script", "");
-		!script_path.empty()
-	) {
-		auto const abs_script_path = std::filesystem::canonical(script_path).string();
-		args[0] = jstr(abs_script_path);
-		v8::TryCatch try_catch(isolate);
-		if (run_user_script->Call(context, jnull(), 1, args).IsEmpty()) {
-			log_and_reset_if_signaled(try_catch);
-		} else {
-			LOG_INFO("module.nodejs", "Loaded user script from {}", script_path);
-		}
 	}
-	return acore;
+
+	return run_user_script;
 }
 
 void NodeJs::actual_init() {
 	run_scoped([this] {
-		v8::Local<v8::Object> acore;
-		if (!node::LoadEnvironment(setup_->env(), load_environment_callback).As<v8::Object>().ToLocal(&acore)) {
+		v8::Local<v8::Function> run_user_script;
+		if (!node::LoadEnvironment(setup_->env(), load_environment_callback).As<v8::Function>().ToLocal(&run_user_script)) {
 			throw InitializationFailure();
 		}
 
 		auto const global_this = setup_->context()->Global();
+		auto const acore = global_this->Get(
+			setup_->context(),
+			jstr_intern("Acore")
+		).As<v8::Object>().ToLocalChecked();
 		acore_ = v8::Global<v8::Object>(setup_->isolate(), acore);
 		auto const long_js = global_this->Get(
 			setup_->context(),
@@ -465,6 +499,24 @@ void NodeJs::actual_init() {
 			jstr_intern("emit")
 		).As<v8::Function>().ToLocalChecked();
 		acore_hooks_emit_ = v8::Global<v8::Function>(setup_->isolate(), emit);
+		auto const normalize_long_like = acore->Get(
+			setup_->context(),
+			jstr_intern("normalizeLongLike")
+		).As<v8::Function>().ToLocalChecked();
+		normalize_long_like_ = v8::Global<v8::Function>(setup_->isolate(), normalize_long_like);
+		if (
+			auto const script_path = sConfigMgr->GetOption<std::string>("NodeJs.Script", "");
+			!script_path.empty()
+		) {
+			auto const abs_script_path = std::filesystem::canonical(script_path).string();
+			v8::Local<v8::Value> jscript = jstr(abs_script_path);
+			v8::TryCatch try_catch(setup_->isolate());
+			if (run_user_script->Call(setup_->context(), jnull(), 1, &jscript).IsEmpty()) {
+				log_and_reset_if_signaled(try_catch);
+			} else {
+				LOG_INFO("module.nodejs", "Loaded user script from {}", script_path);
+			}
+		}
 	});
 }
 

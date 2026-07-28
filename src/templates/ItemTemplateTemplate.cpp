@@ -1,5 +1,4 @@
 #include <optional>
-#include <sstream>
 #include <v8-local-handle.h>
 #include <v8-template.h>
 

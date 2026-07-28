@@ -17,7 +17,8 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Field *>() {
 
 	ft->SetClassName(jstr_intern("Field"));
 
-	reg_prop_ro(ft, "typ", [](Field * f) {
+	reg_prop_ro(ft, "fieldType", [](Field * f) {
+		// rename because "type" is a keyword in TypeScript.
 		return f->GetType();
 	});
 	reg_prop_ro(ft, "isNull", [](Field * f) {

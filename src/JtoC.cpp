@@ -2,6 +2,8 @@
 
 #include <v8-context.h>
 
+#include "NodeJs.h"
+#include "UnixTimestamp.h"
 #include "Util.h"
 
 template<>
@@ -68,25 +70,7 @@ std::optional<uint32_t> cval<uint32_t>(v8::Local<v8::Value> const v) {
 
 template<>
 std::optional<uint64_t> cval<uint64_t>(v8::Local<v8::Value> const v) {
-	auto const isolate = v8::Isolate::GetCurrent();
-	auto const ctx = isolate->GetCurrentContext();
-	auto const global_this = ctx->Global();
-	auto const long_js = global_this->Get(ctx, jstr_intern("Long")).As<v8::Object>().ToLocalChecked();
-	auto const long_js_from_value = long_js->Get(ctx, jstr_intern("fromValue")).As<v8::Function>().ToLocalChecked();
-	auto const long_js_to_bigint = long_js->Get(ctx, jstr_intern("toBigInt")).As<v8::Function>().ToLocalChecked();
-	v8::TryCatch try_catch(isolate);
-
-	v8::Local<v8::Value> long_js_from_value_args[] = {
-		v, // val
-		v8::True(isolate), // unsigned
-	};
-	v8::Local<v8::Object> long_js_value;
-	if (!long_js_from_value->Call(ctx, v8::Undefined(isolate), 1, long_js_from_value_args).As<v8::Object>().ToLocal(&long_js_value)) {
-		return std::nullopt;
-	}
-
-	auto const bigint_value = long_js_to_bigint->Call(ctx, long_js_value, 0, nullptr).As<v8::BigInt>().ToLocalChecked();
-	return bigint_value->Uint64Value();
+	return NodeJs::instance()->get_u64(v);
 }
 
 template<>
@@ -136,26 +120,8 @@ std::optional<int32_t> cval<int32_t>(v8::Local<v8::Value> const v) {
 }
 
 template<>
-std::optional<int64_t> cval<int64_t>(v8::Local<v8::Value> const v) {
-	auto const isolate = v8::Isolate::GetCurrent();
-	auto const ctx = isolate->GetCurrentContext();
-	auto const global_this = ctx->Global();
-	auto const long_js = global_this->Get(ctx, jstr_intern("Long")).As<v8::Object>().ToLocalChecked();
-	auto const long_js_from_value = long_js->Get(ctx, jstr_intern("fromValue")).As<v8::Function>().ToLocalChecked();
-	auto const long_js_to_bigint = long_js->Get(ctx, jstr_intern("toBigInt")).As<v8::Function>().ToLocalChecked();
-	v8::TryCatch try_catch(isolate);
-
-	v8::Local<v8::Value> long_js_from_value_args[] = {
-		v, // val
-		v8::False(isolate), // unsigned
-	};
-	v8::Local<v8::Object> long_js_value;
-	if (!long_js_from_value->Call(ctx, v8::Undefined(isolate), 1, long_js_from_value_args).As<v8::Object>().ToLocal(&long_js_value)) {
-		return std::nullopt;
-	}
-
-	auto const bigint_value = long_js_to_bigint->Call(ctx, long_js_value, 0, nullptr).As<v8::BigInt>().ToLocalChecked();
-	return bigint_value->Int64Value();
+std::optional<int64_t> cval<int64_t>(v8::Local<v8::Value> v) {
+	return NodeJs::instance()->get_i64(v);
 }
 
 template<>
@@ -204,4 +170,15 @@ std::optional<flag96> cval<flag96>(v8::Local<v8::Value> const v) {
 		return std::nullopt;
 	}
 	return std::optional{flag96(words[0] >> 32, words[0] & (1ull << 32) - 1, words[1])};
+}
+
+template<>
+std::optional<UnixTimestamp> cval<UnixTimestamp>(v8::Local<v8::Value> const v) {
+	if (!v->IsObject()) {
+		return {};
+	}
+	auto const instant = NodeJs::instance()->convert_instant(v.As<v8::Object>());
+	return instant
+		? std::optional{UnixTimestamp::from_chrono(instant->time_since_epoch())}
+		: std::nullopt;
 }

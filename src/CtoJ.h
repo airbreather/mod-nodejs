@@ -32,14 +32,19 @@ v8::Local<v8::FunctionTemplate> jtemplate(T p) {
 template <typename T>
 requires std::is_pointer_v<T>
 v8::Local<v8::Object> jtemplated_object(T p) {
-	auto const context = v8::Isolate::GetCurrent()->GetCurrentContext();
+	auto const isolate = v8::Isolate::GetCurrent();
+	auto const context = isolate->GetCurrentContext();
 	v8::Local<v8::Value> arg;
 	if constexpr (std::is_same_v<T, std::add_pointer_t<std::remove_const_t<std::remove_pointer_t<T>>>>) {
-		arg = v8::External::New(v8::Isolate::GetCurrent(), p);
+		arg = v8::External::New(isolate, p, v8::kExternalPointerTypeTagDefault);
 	} else {
-		arg = v8::External::New(v8::Isolate::GetCurrent(), const_cast<std::add_pointer_t<std::remove_const_t<std::remove_pointer_t<T>>>>(p));
+		arg = v8::External::New(isolate, const_cast<std::add_pointer_t<std::remove_const_t<std::remove_pointer_t<T>>>>(p), v8::kExternalPointerTypeTagDefault);
 	}
-	return jtemplate<T>(p)->GetFunction(context).ToLocalChecked()->NewInstance(context, 1, &arg).ToLocalChecked();
+	v8::Local<v8::Value> args[2] = {
+		arg,
+		v8::Number::New(isolate, OBJECT_REFERENCE_MAGIC),
+	};
+	return jtemplate<T>(p)->GetFunction(context).ToLocalChecked()->NewInstance(context, 2, args).ToLocalChecked();
 }
 
 // ReSharper disable once CppFunctionIsNotImplemented
@@ -151,8 +156,6 @@ v8::Local<v8::Value> jset(R&& rng) {
 inline v8::Local<v8::Value> jset() {
 	return v8::Set::New(v8::Isolate::GetCurrent());
 }
-
-v8::Local<v8::FunctionTemplate> jctor();
 
 template <typename ArgsTuple, std::size_t... Is>
 void jfill_args_impl(v8::Local<v8::Value> * vals, ArgsTuple args, std::index_sequence<Is...>) {

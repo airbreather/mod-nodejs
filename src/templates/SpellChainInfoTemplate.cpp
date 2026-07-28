@@ -4,7 +4,6 @@
 
 #include "CtoJ.h"
 #include "NodePropertySystem.h"
-#include "SharedDefines.h"
 #include "Spells/SpellInfo.h"
 
 JVAL_CVAL_TMPLS_RW(SpellChainNode)

@@ -15,7 +15,7 @@ template<>
 	// both reading and writing, at the expense of JavaScript code not being able to work with them
 	// directly (so we provide helpers).
 	return p
-		? v8::External::New(v8::Isolate::GetCurrent(), reinterpret_cast<void *>(p.GetRawValue()))
+		? v8::External::New(v8::Isolate::GetCurrent(), reinterpret_cast<void *>(p.GetRawValue()), v8::kExternalPointerTypeTagDefault)
 		: jnull();
 }
 
@@ -71,7 +71,7 @@ template<>
 template<>
 [[nodiscard]] std::optional<ObjectGuid> cval<ObjectGuid>(v8::Local<v8::Value> const v) {
 	if (v->IsExternal()) {
-		auto const raw = reinterpret_cast<uint64_t>(v.As<v8::External>()->Value());
+		auto const raw = reinterpret_cast<uint64_t>(v.As<v8::External>()->Value(v8::kExternalPointerTypeTagDefault));
 		return std::optional{ObjectGuid(raw)};
 	}
 	return cval_guid_slow(v);

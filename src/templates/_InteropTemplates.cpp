@@ -1,10 +1,6 @@
 #include <optional>
-#include <string>
-#include <v8-function-callback.h>
 #include <v8-isolate.h>
 #include <v8-local-handle.h>
-#include <v8-maybe.h>
-#include <v8-object.h>
 #include <v8-template.h>
 
 #include "CtoJ.h"

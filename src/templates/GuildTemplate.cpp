@@ -9,6 +9,7 @@
 #include "GuildMgr.h"
 #include "NodePropertySystem.h"
 #include "ObjectGuid.h"
+#include "UnixTimestamp.h"
 #include "Database/DatabaseEnv.h"
 
 JVAL_CVAL_TMPLS_RW(Guild)
@@ -35,7 +36,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Guild *>() {
 		return guild->GetTotalBankMoney();
 	});
 	reg_prop_ro(ft, "createdDate", [](Guild * guild) {
-		return UnixTimestamp(guild->GetCreatedDate());
+		return UnixTimestamp::from_time_t_seconds(guild->GetCreatedDate());
 	});
 
 	reg_method(ft, "getMemberByGuid", [](Guild * guild, ObjectGuid const guid) {

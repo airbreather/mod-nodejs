@@ -16,9 +16,6 @@ v8::Local<v8::FunctionTemplate> jcreate_template<DynamicObject *>() {
 	ft->SetClassName(jstr_intern("DynamicObject"));
 	ft.safe_inherit<WorldObject *>();
 
-	reg_prop_ro(ft, "duration", [](DynamicObject * dyno) {
-		return dyno->GetDuration();
-	});
 	reg_prop_ro(ft, "caster", [](DynamicObject * dyno) {
 		return dyno->GetCaster();
 	});

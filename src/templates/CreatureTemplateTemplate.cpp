@@ -7,7 +7,7 @@
 #include "CtoJ.h"
 #include "NodePropertySystem.h"
 
-JVAL_CVAL_TMPLS_RO(CreatureTemplate)
+JVAL_CVAL_TMPLS_RO(CreatureTemplate const)
 
 template<>
 v8::Local<v8::FunctionTemplate> jcreate_template<CreatureTemplate const *>() {

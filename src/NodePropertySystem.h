@@ -50,11 +50,11 @@ void reg_prop_ro(TypedTemplate<Obj> const ft, std::string_view const name, Gette
 		jstr_intern(name),
 		[](v8::Local<v8::Name>, v8::PropertyCallbackInfo<v8::Value> const & args) {
 			auto obj = extract_native_pointer_from<Obj>(args.HolderV2());
-			auto recovered_getter_ptr = reinterpret_cast<GetterPtr>(args.Data().As<v8::External>()->Value());
+			auto recovered_getter_ptr = reinterpret_cast<GetterPtr>(args.Data().As<v8::External>()->Value(v8::kExternalPointerTypeTagDefault));
 			args.GetReturnValue().Set(jval<Prop>((*recovered_getter_ptr)(obj)));
 		},
 		nullptr,
-		v8::External::New(isolate, reinterpret_cast<void *>(getter_ptr))
+		v8::External::New(isolate, reinterpret_cast<void *>(getter_ptr), v8::kExternalPointerTypeTagDefault)
 	);
 }
 
@@ -86,7 +86,7 @@ void reg_prop(TypedTemplate<Obj> const ft, std::string_view const name, Getter &
 		jstr_intern(name),
 		[](v8::Local<v8::Name>, v8::PropertyCallbackInfo<v8::Value> const & args) {
 			auto obj = extract_native_pointer_from<Obj>(args.HolderV2());
-			auto const recovered_getter_ptr = reinterpret_cast<GetterPtr>(args.Data().As<v8::External>()->Value());
+			auto const recovered_getter_ptr = reinterpret_cast<GetterPtr>(args.Data().As<v8::External>()->Value(v8::kExternalPointerTypeTagDefault));
 			args.GetReturnValue().Set(jval<Prop>((*recovered_getter_ptr)(obj)));
 		},
 		[](v8::Local<v8::Name>, v8::Local<v8::Value> const value, v8::PropertyCallbackInfo<void> const & args) {
@@ -96,15 +96,15 @@ void reg_prop(TypedTemplate<Obj> const ft, std::string_view const name, Getter &
 				return;
 			}
 			auto obj = extract_native_pointer_from<Obj>(args.HolderV2());
-			auto const recovered_setter_ptr = reinterpret_cast<SetterPtr>(SETTERS_BY_GETTER[args.Data().As<v8::External>()->Value()]);
+			auto const recovered_setter_ptr = reinterpret_cast<SetterPtr>(SETTERS_BY_GETTER[args.Data().As<v8::External>()->Value(v8::kExternalPointerTypeTagDefault)]);
 			(*recovered_setter_ptr)(obj, *val);
 		},
-		v8::External::New(isolate, getter_void_ptr)
+		v8::External::New(isolate, getter_void_ptr, v8::kExternalPointerTypeTagDefault)
 	);
 }
 
 template <typename Obj, typename Fn>
-requires (std::is_pointer_v<Obj>)
+requires std::is_pointer_v<Obj>
 void reg_method(TypedTemplate<Obj> const ft, std::string_view const name, Fn && fn) {
 	ft->PrototypeTemplate()->Set(jstr_intern(name), jmeth<Obj>(fn));
 }
@@ -115,7 +115,7 @@ void reg_static_method(v8::Local<v8::FunctionTemplate> const ft, std::string_vie
 }
 
 template <typename Obj, typename Fn>
-requires (std::is_pointer_v<Obj>)
+requires std::is_pointer_v<Obj>
 void reg_method_raw(TypedTemplate<Obj> const ft, std::string_view const name, Fn && fn) {
 	ft->PrototypeTemplate()->Set(jstr_intern(name), jmeth_raw<Obj>(fn));
 }
@@ -136,6 +136,18 @@ v8::Local<v8::Value> jnew(Args... args) {
 		return jnull();
 	}
 	return jtemplate<Obj>()->GetFunction(ctx).ToLocalChecked()->NewInstance(ctx, sizeof...(Args), vals).ToLocalChecked();
+}
+
+template <typename Obj>
+requires std::is_pointer_v<Obj>
+v8::Local<v8::Object> jmove(Obj o) {
+	auto const isolate = v8::Isolate::GetCurrent();
+	auto const ctx = isolate->GetCurrentContext();
+	v8::Local<v8::Value> vals[2] = {
+		v8::External::New(isolate, o, v8::kExternalPointerTypeTagDefault),
+		v8::Number::New(isolate, OWNERSHIP_TRANSFER_MAGIC),
+	};
+	return jtemplate<Obj>()->GetFunction(ctx).ToLocalChecked()->NewInstance(ctx, 2, vals).ToLocalChecked();
 }
 
 template <size_t T>

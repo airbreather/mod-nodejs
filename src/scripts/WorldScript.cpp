@@ -1,7 +1,5 @@
-#include <memory>
 #include <node.h>
 #include <string>
-#include <v8-initialization.h>
 #include <vector>
 
 #include "WorldScript.h"

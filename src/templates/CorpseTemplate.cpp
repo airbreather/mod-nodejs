@@ -7,6 +7,7 @@
 #include "Object.h"
 #include "ObjectAccessor.h"
 #include "ObjectGuid.h"
+#include "UnixTimestamp.h"
 
 JVAL_CVAL_TMPLS_RW(Corpse)
 
@@ -18,7 +19,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Corpse *>() {
 	ft.safe_inherit<WorldObject *>();
 
 	reg_prop_ro(ft, "ghostTime", [](Corpse * corpse) {
-		return UnixTimestamp{corpse->GetGhostTime()};
+		return UnixTimestamp::from_time_t_seconds(corpse->GetGhostTime());
 	});
 	reg_prop_ro(ft, "type", [](Corpse * corpse) {
 		return corpse->GetType();

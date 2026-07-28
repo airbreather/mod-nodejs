@@ -17,7 +17,7 @@ JVAL_CVAL_TMPLS_RW(Loot)
 
 template<>
 v8::Local<v8::FunctionTemplate> jcreate_template<Loot *>() {
-	TypedTemplate<Loot *> const ft = jctor();
+	TypedTemplate<Loot *> const ft = jctor<Loot *>();
 
 	ft->SetClassName(jstr_intern("Loot"));
 

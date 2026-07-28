@@ -3,22 +3,22 @@ import Long from 'long';
 declare global {
 	namespace Acore {
 		class Field {
-			readonly typ: DatabaseFieldTypes;
+			readonly fieldType: DatabaseFieldTypes;
 			readonly isNull: boolean;
 
-			asBool(): boolean;
-			asU8(): number;
-			asI8(): number;
-			asU16(): number;
-			asI16(): number;
-			asU32(): number;
-			asI32(): number;
-			asU64(): Long;
-			asI64(): Long;
-			asF32(): number;
-			asF64(): number;
-			asString(): string;
-			asBinary(): Uint8Array<ArrayBuffer>;
+			getBool(): boolean;
+			getU8(): number;
+			getI8(): number;
+			getU16(): number;
+			getI16(): number;
+			getU32(): number;
+			getI32(): number;
+			getU64(): Long;
+			getI64(): Long;
+			getF32(): number;
+			getF64(): number;
+			getString(): string;
+			getBinary(): Uint8Array<ArrayBuffer>;
 		}
 	}
 }
