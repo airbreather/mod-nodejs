@@ -10,7 +10,9 @@ if ! git --no-pager -C $ACORE_BASE_DIR show --no-patch --oneline e8e94a0a663be0a
 	exit 1
 fi
 
-REBUILD_BRANCH="for-mod-nodejs-Playerbot"
+# "sprinkles" = includes changes from the two downstream forks that are required for other modules.
+# eventually, I feel like I'm well on my way to have yet another one of my own forks, but we'll see.
+REBUILD_BRANCH="for-mod-nodejs-sprinkles"
 REBUILD_TMP_BRANCH="${REBUILD_BRANCH}-rebuild"
 
 if git -C $ACORE_BASE_DIR show-branch $REBUILD_TMP_BRANCH 2>/dev/null; then
@@ -18,11 +20,11 @@ if git -C $ACORE_BASE_DIR show-branch $REBUILD_TMP_BRANCH 2>/dev/null; then
 	exit 2
 fi
 
-git -C $ACORE_BASE_DIR fetch Grimfeather
+git -C $ACORE_BASE_DIR fetch --all
 touch $ACORE_BASE_DIR/.workaround
 git -C $ACORE_BASE_DIR stash --include-untracked
-git -C $ACORE_BASE_DIR checkout -b $REBUILD_TMP_BRANCH Grimfeather/master
-git -C $ACORE_BASE_DIR merge for-mod-nodejs-on-merge-base fix-socket-file-connections -m "Merge branches 'for-mod-nodejs-on-merge-base' and 'fix-socket-file-connections'"
+git -C $ACORE_BASE_DIR checkout -b $REBUILD_TMP_BRANCH mod-playerbots/Playerbot
+git -C $ACORE_BASE_DIR merge for-mod-nodejs-on-merge-base Grimfeather/master fix-socket-file-connections -m "Merge branches 'for-mod-nodejs-on-merge-base', 'Grimfeather/master', and 'fix-socket-file-connections'"
 git -C $ACORE_BASE_DIR cherry-pick 584637dc
 git -C $ACORE_BASE_DIR checkout $REBUILD_BRANCH
 git -C $ACORE_BASE_DIR reset --hard $REBUILD_TMP_BRANCH
