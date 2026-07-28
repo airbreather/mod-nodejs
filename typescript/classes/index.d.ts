@@ -10,6 +10,7 @@ export * from './ConditionSourceInfo';
 export * from './Config';
 export * from './Corpse';
 export * from './Creature';
+export * from './CreatureTemplate';
 export * from './DynamicObject';
 export * from './Field';
 export * from './GameObject';

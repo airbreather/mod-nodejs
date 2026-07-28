@@ -13,8 +13,6 @@
 #include "MotionMaster.h"
 #include "NodePropertySystem.h"
 #include "ObjectMgr.h"
-#include "QuestDef.h"
-#include "SpellInfo.h"
 #include "ThreatManager.h"
 #include "Unit.h"
 #include "UnitDefines.h"
@@ -31,254 +29,257 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Creature *>() {
 	ft->SetClassName(jstr_intern("Creature"));
 	ft.safe_inherit<Unit *>();
 
-	reg_prop_ro(ft, "spawnId", [](Creature * creature) {
-		return creature->GetSpawnId();
+	reg_prop_ro(ft, "spawnId", [](Creature * c) {
+		return c->GetSpawnId();
 	});
-	reg_prop_ro(ft, "rank", [](Creature * creature) {
-		return creature->GetCreatureTemplate()->rank;
+	reg_prop_ro(ft, "template", [](Creature * c) {
+		return c->GetCreatureTemplate();
 	});
-	reg_prop_ro(ft, "shieldBlockValue", [](Creature * creature) {
-		return creature->GetShieldBlockValue();
+	reg_prop_ro(ft, "shieldBlockValue", [](Creature * c) {
+		return c->GetShieldBlockValue();
 	});
-	reg_prop_ro(ft, "creatureFamily", [](Creature * creature) {
-		auto const entry = creature->GetEntry();
-		auto const cInfo = sObjectMgr->GetCreatureTemplate(entry);
-		return cInfo ? cInfo->family : 0u;
+	reg_prop_ro(ft, "isInEvadeMode", [](Creature * c) {
+		return c->IsInEvadeMode();
 	});
-	reg_prop_ro(ft, "extraFlags", [](Creature * creature) {
-		return creature->GetCreatureTemplate()->flags_extra;
+	reg_prop_ro(ft, "isElite", [](Creature * c) {
+		// differs from what would be on CreatureTemplateTemplate because it excludes pets.
+		return c->isElite();
 	});
-	reg_prop_ro(ft, "isInEvadeMode", [](Creature * creature) {
-		return creature->IsInEvadeMode();
+	reg_prop_ro(ft, "isGuard", [](Creature * c) {
+		// probably belongs on CreatureTemplateTemplate instead.
+		return c->IsGuard();
 	});
-	reg_prop_ro(ft, "isElite", [](Creature * creature) {
-		return creature->isElite();
+	reg_prop_ro(ft, "isCivilian", [](Creature * c) {
+		// probably belongs on CreatureTemplateTemplate instead.
+		return c->IsCivilian();
 	});
-	reg_prop_ro(ft, "isGuard", [](Creature * creature) {
-		return creature->IsGuard();
+	reg_prop_ro(ft, "isRacialLeader", [](Creature * c) {
+		// probably belongs on CreatureTemplateTemplate instead.
+		return c->IsRacialLeader();
 	});
-	reg_prop_ro(ft, "isCivilian", [](Creature * creature) {
-		return creature->IsCivilian();
+	reg_prop_ro(ft, "isDungeonBoss", [](Creature * c) {
+		// differs from what would be on CreatureTemplateTemplate because it excludes owned units.
+		return c->IsDungeonBoss();
 	});
-	reg_prop_ro(ft, "isRacialLeader", [](Creature * creature) {
-		return creature->IsRacialLeader();
+	reg_prop_ro(ft, "isWorldBoss", [](Creature * c) {
+		// differs from what would be on CreatureTemplateTemplate because it excludes pets.
+		return c->isWorldBoss();
 	});
-	reg_prop_ro(ft, "isDungeonBoss", [](Creature * creature) {
-		return creature->IsDungeonBoss();
+	reg_prop_ro(ft, "isTrigger", [](Creature * c) {
+		// probably belongs on CreatureTemplateTemplate instead.
+		return c->IsTrigger();
 	});
-	reg_prop_ro(ft, "isWorldBoss", [](Creature * creature) {
-		return creature->isWorldBoss();
+	reg_prop_ro(ft, "isDamageEnoughForLootingAndReward", [](Creature * c) {
+		return c->IsDamageEnoughForLootingAndReward();
 	});
-	reg_prop_ro(ft, "isTrigger", [](Creature * creature) {
-		return creature->IsTrigger();
+	reg_prop_ro(ft, "canSwim", [](Creature * c) {
+		return c->CanSwim();
 	});
-	reg_prop_ro(ft, "isDamageEnoughForLootingAndReward", [](Creature * creature) {
-		return creature->IsDamageEnoughForLootingAndReward();
+	reg_prop_ro(ft, "canWalk", [](Creature * c) {
+		return c->CanWalk();
 	});
-	reg_prop_ro(ft, "canSwim", [](Creature * creature) {
-		return creature->CanSwim();
+	reg_prop_ro(ft, "canFly", [](Creature * c) {
+		return c->CanFly();
 	});
-	reg_prop_ro(ft, "canWalk", [](Creature * creature) {
-		return creature->CanWalk();
+	reg_prop_ro(ft, "hasSearchedAssistance", [](Creature * c) {
+		return c->HasSearchedAssistance();
 	});
-	reg_prop_ro(ft, "canFly", [](Creature * creature) {
-		return creature->CanFly();
+	reg_prop_ro(ft, "hasLootRecipient", [](Creature * c) {
+		return c->hasLootRecipient();
 	});
-	reg_prop_ro(ft, "hasSearchedAssistance", [](Creature * creature) {
-		return creature->HasSearchedAssistance();
+	reg_prop_ro(ft, "canAggro", [](Creature * c) {
+		return !c->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_NPC);
 	});
-	reg_prop_ro(ft, "hasLootRecipient", [](Creature * creature) {
-		return creature->hasLootRecipient();
+	reg_prop_ro(ft, "waypointPath", [](Creature * c) {
+		return c->GetWaypointPath();
 	});
-	reg_prop_ro(ft, "canAggro", [](Creature * creature) {
-		return !creature->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_NPC);
+	reg_prop_ro(ft, "currentWaypointId", [](Creature * c) {
+		return c->GetCurrentWaypointID();
 	});
-	reg_prop_ro(ft, "waypointPath", [](Creature * creature) {
-		return creature->GetWaypointPath();
+	reg_prop_ro(ft, "scriptName", [](Creature * c) {
+		return c->GetScriptName();
 	});
-	reg_prop_ro(ft, "currentWaypointId", [](Creature * creature) {
-		return creature->GetCurrentWaypointID();
+	reg_prop_ro(ft, "aiName", [](Creature * c) {
+		return c->GetAIName();
 	});
-	reg_prop_ro(ft, "scriptName", [](Creature * creature) {
-		return creature->GetScriptName();
+	reg_prop_ro(ft, "scriptId", [](Creature * c) {
+		return c->GetScriptId();
 	});
-	reg_prop_ro(ft, "aiName", [](Creature * creature) {
-		return creature->GetAIName();
+	reg_prop_ro(ft, "lootRecipientGuid", [](Creature * c) {
+		return c->GetLootRecipientGUID();
 	});
-	reg_prop_ro(ft, "scriptId", [](Creature * creature) {
-		return creature->GetScriptId();
+	reg_prop_ro(ft, "lootRecipient", [](Creature * c) {
+		return c->GetLootRecipient();
 	});
-	reg_prop_ro(ft, "lootRecipient", [](Creature * creature) {
-		return creature->GetLootRecipient();
+	reg_prop_ro(ft, "lootRecipientGroupId", [](Creature * c) {
+		// not actually an ObjectGuid
+		return c->GetLootRecipientGroupGUID();
 	});
-	reg_prop_ro(ft, "lootRecipientGroup", [](Creature * creature) {
-		return creature->GetLootRecipientGroup();
+	reg_prop_ro(ft, "lootRecipientGroup", [](Creature * c) {
+		return c->GetLootRecipientGroup();
 	});
-	reg_prop_ro(ft, "homePosition", [](Creature * creature) {
-		return creature->GetHomePosition();
+	reg_prop_ro(ft, "homePosition", [](Creature * c) {
+		return c->GetHomePosition();
 	});
 
-	reg_method(ft, "canCompleteQuest", [](Creature * creature, Quest const * quest) {
-		return creature->hasInvolvedQuest(quest->GetQuestId());
+	reg_method(ft, "canCompleteQuest", [](Creature * c, uint32_t quest_id) {
+		return c->hasInvolvedQuest(quest_id);
 	});
-	reg_method(ft, "canAssistTo", [](Creature * creature, Unit * fren, Unit * enemy, std::optional<bool> const checkFaction) {
-		return creature->CanAssistTo(fren, enemy, checkFaction.value_or(true));
+	reg_method(ft, "canAssistTo", [](Creature * c, Unit * fren, Unit * enemy, std::optional<bool> const check_faction) {
+		return c->CanAssistTo(fren, enemy, check_faction.value_or(true));
 	});
-	reg_method(ft, "isTappedBy", [](Creature * creature, Player * player) {
-		return creature->isTappedBy(player);
+	reg_method(ft, "isTappedBy", [](Creature * c, Player * player) {
+		return c->isTappedBy(player);
 	});
-	reg_method(ft, "isTargetableForAttack", [](Creature * creature, std::optional<bool> const mustBeDead) {
-		return creature->isTargetableForAttack(mustBeDead.value_or(false));
+	reg_method(ft, "isTargetableForAttack", [](Creature * c, std::optional<bool> const must_be_dead, std::optional<Unit *> by_whom) {
+		return c->isTargetableForAttack(must_be_dead.value_or(false), by_whom.value_or(nullptr));
 	});
-	reg_method(ft, "canStartAttack", [](Creature * creature, Unit * target) {
-		return creature->CanStartAttack(target);
+	reg_method(ft, "canStartAttack", [](Creature * c, Unit * target, std::optional<bool> force) {
+		return c->CanStartAttack(target, force.value_or(false));
 	});
-	reg_method(ft, "getAggroRange", [](Creature * creature, Unit * target) {
-		return creature->GetAggroRange(target);
+	reg_method(ft, "getAggroRange", [](Creature * c, Unit * target) {
+		return c->GetAggroRange(target);
 	});
-	reg_method(ft, "hasSpell", [](Creature * creature, SpellInfo const * si) {
-		return creature->HasSpell(si->Id);
+	reg_method(ft, "hasSpell", [](Creature * c, uint32_t spell_id) {
+		return c->HasSpell(spell_id);
 	});
-	reg_method(ft, "hasSpellCooldown", [](Creature * creature, SpellInfo const * si) {
-		return creature->HasSpellCooldown(si->Id);
+	reg_method(ft, "hasSpellCooldown", [](Creature * c, uint32_t spell_id) {
+		return c->HasSpellCooldown(spell_id);
 	});
-	reg_method(ft, "hasCategoryCooldown", [](Creature * creature, SpellInfo const * si) {
-		return si->GetCategory() && creature->HasSpellCooldown(si->Id);
+	reg_method(ft, "getSpellCooldown", [](Creature * c, uint32_t spell_id) {
+		return c->GetSpellCooldown(spell_id);
 	});
-	reg_method(ft, "getSpellCooldownDelayMilliseconds", [](Creature * creature, SpellInfo const * si) {
-		return creature->GetSpellCooldown(si->Id);
+	reg_method(ft, "hasQuest", [](Creature * c, uint32_t quest_id) {
+		return c->hasQuest(quest_id);
 	});
-	reg_method(ft, "hasQuest", [](Creature * creature, Quest const * quest) {
-		return creature->hasQuest(quest->GetQuestId());
+	reg_method(ft, "hasLootMode", [](Creature * c, uint16_t const lootMode) {
+		return c->HasLootMode(lootMode);
 	});
-	reg_method(ft, "hasLootMode", [](Creature * creature, uint16_t const lootMode) {
-		return creature->HasLootMode(lootMode);
-	});
-	reg_method(ft, "getAITargets", [](Creature * creature) {
-		auto const & threatMgr = creature->GetThreatMgr();
+	reg_method(ft, "getAITargets", [](Creature * c) {
+		auto const & threatMgr = c->GetThreatMgr();
 		auto const list = threatMgr.GetSortedThreatList();
 		return jarr(list.begin(), list.end());
 	});
-	reg_method(ft, "getAITargetsCount", [](Creature * creature) {
-		return creature->GetThreatMgr().GetThreatListSize();
+	reg_method(ft, "getAITargetsCount", [](Creature * c) {
+		return c->GetThreatMgr().GetThreatListSize();
 	});
-	reg_method(ft, "setInCombatWithZone", [](Creature * creature) {
-		if (creature->IsAIEnabled) {
-			creature->AI()->DoZoneInCombat();
+	reg_method(ft, "setInCombatWithZone", [](Creature * c) {
+		if (c->IsAIEnabled) {
+			c->AI()->DoZoneInCombat();
 		}
 	});
-	reg_method(ft, "attackStart", [](Creature * creature, Unit * target) {
-		creature->AI()->AttackStart(target);
+	reg_method(ft, "attackStart", [](Creature * c, Unit * target) {
+		c->AI()->AttackStart(target);
 	});
 
 	reg_prop(ft, "regeneratingHealth",
-		[](Creature * creature) { return creature->isRegeneratingHealth(); },
-		[](Creature * creature, bool const val) { creature->SetRegeneratingHealth(val); }
+		[](Creature * c) { return c->isRegeneratingHealth(); },
+		[](Creature * c, bool const val) { c->SetRegeneratingHealth(val); }
 	);
 	reg_prop(ft, "reputationGainDisabled",
-		[](Creature * creature) { return creature->IsReputationRewardDisabled(); },
-		[](Creature * creature, bool const val) { creature->SetReputationRewardDisabled(val); }
+		[](Creature * c) { return c->IsReputationRewardDisabled(); },
+		[](Creature * c, bool const val) { c->SetReputationRewardDisabled(val); }
 	);
 	reg_prop(ft, "respawnDelay",
-		[](Creature * creature) { return creature->GetRespawnDelay(); },
-		[](Creature * creature, uint32_t const val) { creature->SetRespawnDelay(val); }
+		[](Creature * c) { return c->GetRespawnDelay(); },
+		[](Creature * c, uint32_t const val) { c->SetRespawnDelay(val); }
 	);
 	reg_prop(ft, "wanderRadius",
-		[](Creature * creature) { return creature->GetWanderDistance(); },
-		[](Creature * creature, float const val) { creature->SetWanderDistance(val); }
+		[](Creature * c) { return c->GetWanderDistance(); },
+		[](Creature * c, float const val) { c->SetWanderDistance(val); }
 	);
 	reg_prop(ft, "corpseDelay",
-		[](Creature * creature) { return creature->GetCorpseDelay(); },
-		[](Creature * creature, uint32_t const val) { creature->SetCorpseDelay(val); }
+		[](Creature * c) { return c->GetCorpseDelay(); },
+		[](Creature * c, uint32_t const val) { c->SetCorpseDelay(val); }
 	);
 	reg_prop(ft, "defaultMovementType",
-		[](Creature * creature) { return creature->GetDefaultMovementType(); },
-		[](Creature * creature, MovementGeneratorType const val) { creature->SetDefaultMovementType(val); }
+		[](Creature * c) { return c->GetDefaultMovementType(); },
+		[](Creature * c, MovementGeneratorType const val) { c->SetDefaultMovementType(val); }
 	);
 	reg_prop(ft, "npcFlags",
-		[](Creature * creature) { return creature->GetUInt32Value(UNIT_NPC_FLAGS); },
-		[](Creature * creature, uint32_t const val) { creature->SetUInt32Value(UNIT_NPC_FLAGS, val); }
+		[](Creature * c) { return c->GetUInt32Value(UNIT_NPC_FLAGS); },
+		[](Creature * c, uint32_t const val) { c->SetUInt32Value(UNIT_NPC_FLAGS, val); }
 	);
 	reg_prop(ft, "unitFlags",
-		[](Creature * creature) { return creature->GetUInt32Value(UNIT_FIELD_FLAGS); },
-		[](Creature * creature, uint32_t const val) { creature->SetUInt32Value(UNIT_FIELD_FLAGS, val); }
+		[](Creature * c) { return c->GetUInt32Value(UNIT_FIELD_FLAGS); },
+		[](Creature * c, uint32_t const val) { c->SetUInt32Value(UNIT_FIELD_FLAGS, val); }
 	);
 	reg_prop(ft, "unitFlags2",
-		[](Creature * creature) { return creature->GetUInt32Value(UNIT_FIELD_FLAGS_2); },
-		[](Creature * creature, uint32_t const val) { creature->SetUInt32Value(UNIT_FIELD_FLAGS_2, val); }
+		[](Creature * c) { return c->GetUInt32Value(UNIT_FIELD_FLAGS_2); },
+		[](Creature * c, uint32_t const val) { c->SetUInt32Value(UNIT_FIELD_FLAGS_2, val); }
 	);
 	reg_prop(ft, "reactState",
-		[](Creature * creature) { return creature->GetReactState(); },
-		[](Creature * creature, ReactStates const val) { creature->SetReactState(val); }
+		[](Creature * c) { return c->GetReactState(); },
+		[](Creature * c, ReactStates const val) { c->SetReactState(val); }
 	);
 	reg_prop(ft, "lootMode",
-		[](Creature * creature) { return creature->GetLootMode(); },
-		[](Creature * creature, uint16_t const val) { creature->SetLootMode(val); }
+		[](Creature * c) { return c->GetLootMode(); },
+		[](Creature * c, uint16_t const val) { c->SetLootMode(val); }
 	);
 
-	reg_method(ft, "setHomePosition", [](Creature * creature, float const x, float const y, float const z, float const o) {
-		creature->SetHomePosition(x, y, z, o);
+	reg_method(ft, "setHomePosition", [](Creature * c, float const x, float const y, float const z, float const o) {
+		c->SetHomePosition(x, y, z, o);
 	});
-	reg_method(ft, "setAggroEnabled", [](Creature * creature, std::optional<bool> const allow) {
+	reg_method(ft, "setAggroEnabled", [](Creature * c, std::optional<bool> const allow) {
 		if (allow.value_or(true)) {
-			creature->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_NPC);
+			c->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_NPC);
 		} else {
-			creature->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_NPC);
+			c->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_IMMUNE_TO_NPC);
 		}
 	});
-	reg_method(ft, "setEquipmentSlots", [](Creature * creature, uint32_t const mainHand, uint32_t const offHand, uint32_t const ranged) {
-		creature->SetUInt32Value(UNIT_VIRTUAL_ITEM_SLOT_ID + 0, mainHand);
-		creature->SetUInt32Value(UNIT_VIRTUAL_ITEM_SLOT_ID + 1, offHand);
-		creature->SetUInt32Value(UNIT_VIRTUAL_ITEM_SLOT_ID + 2, ranged);
+	reg_method(ft, "setEquipmentSlots", [](Creature * c, uint32_t const mainHand, uint32_t const offHand, uint32_t const ranged) {
+		c->SetUInt32Value(UNIT_VIRTUAL_ITEM_SLOT_ID + 0, mainHand);
+		c->SetUInt32Value(UNIT_VIRTUAL_ITEM_SLOT_ID + 1, offHand);
+		c->SetUInt32Value(UNIT_VIRTUAL_ITEM_SLOT_ID + 2, ranged);
 	});
-	reg_method(ft, "setNoSearchAssistance", [](Creature * creature, std::optional<bool> const val) {
-		creature->SetNoSearchAssistance(val.value_or(true));
+	reg_method(ft, "setNoSearchAssistance", [](Creature * c, std::optional<bool> const val) {
+		c->SetNoSearchAssistance(val.value_or(true));
 	});
-	reg_method(ft, "setNoCallAssistance", [](Creature * creature, std::optional<bool> const val) {
-		creature->SetNoCallAssistance(val.value_or(true));
+	reg_method(ft, "setNoCallAssistance", [](Creature * c, std::optional<bool> const val) {
+		c->SetNoCallAssistance(val.value_or(true));
 	});
-	reg_method(ft, "despawnOrUnsummon", [](Creature * creature, std::optional<uint32_t> const ms) {
-		creature->DespawnOrUnsummon(Milliseconds(ms.value_or(0)));
+	reg_method(ft, "despawnOrUnsummon", [](Creature * c, std::optional<uint32_t> const ms_time_to_despawn, std::optional<uint32_t> forced_respawn_timer) {
+		c->DespawnOrUnsummon(Milliseconds(ms_time_to_despawn.value_or(0)), Seconds(forced_respawn_timer.value_or(0)));
 	});
-	reg_method(ft, "respawn", [](Creature * creature) {
-		creature->Respawn();
+	reg_method(ft, "respawn", [](Creature * c, std::optional<bool> force) {
+		c->Respawn(force.value_or(false));
 	});
-	reg_method(ft, "removeCorpse", [](Creature * creature) {
-		creature->RemoveCorpse();
+	reg_method(ft, "removeCorpse", [](Creature * c, std::optional<bool> set_spawn_time, std::optional<bool> skip_visibility) {
+		c->RemoveCorpse(set_spawn_time.value_or(true), skip_visibility.value_or(false));
 	});
-	reg_method(ft, "allLootRemovedFromCorpse", [](Creature * creature) {
-		creature->AllLootRemovedFromCorpse();
+	reg_method(ft, "allLootRemovedFromCorpse", [](Creature * c) {
+		c->AllLootRemovedFromCorpse();
 	});
-	reg_method(ft, "saveToDB", [](Creature * creature) {
-		creature->SaveToDB();
+	reg_method(ft, "saveToDB", [](Creature * c) {
+		c->SaveToDB();
 	});
-	reg_method(ft, "moveWaypoint", [](Creature * creature) {
-		creature->GetMotionMaster()->MoveWaypoint(creature->GetWaypointPath(), true);
+	reg_method(ft, "moveWaypoint", [](Creature * c) {
+		c->GetMotionMaster()->MoveWaypoint(c->GetWaypointPath(), true);
 	});
-	reg_method(ft, "callAssistance", [](Creature * creature) {
-		creature->CallAssistance();
+	reg_method(ft, "callAssistance", [](Creature * c, std::optional<Unit *> target) {
+		c->CallAssistance(target.value_or(nullptr));
 	});
-	reg_method(ft, "callForHelp", [](Creature * creature, float const radius) {
-		creature->CallForHelp(radius);
+	reg_method(ft, "callForHelp", [](Creature * c, float const radius, std::optional<Unit *> target) {
+		c->CallForHelp(radius, target.value_or(nullptr));
 	});
-	reg_method(ft, "fleeToGetAssistance", [](Creature * creature) {
-		creature->DoFleeToGetAssistance();
+	reg_method(ft, "fleeToGetAssistance", [](Creature * c) {
+		c->DoFleeToGetAssistance();
 	});
-	reg_method(ft, "selectVictim", [](Creature * creature) {
-		return creature->SelectVictim();
+	reg_method(ft, "selectVictim", [](Creature * c) {
+		return c->SelectVictim();
 	});
-	reg_method(ft, "updateEntry", [](Creature * creature, uint32_t const entry, std::optional<uint32_t> const spawn_id, std::optional<bool> change_level, std::optional<bool> update_ai) {
+	reg_method(ft, "updateEntry", [](Creature * c, uint32_t const entry, std::optional<uint32_t> const spawn_id, std::optional<bool> change_level, std::optional<bool> update_ai) {
 		auto const data = spawn_id ? sObjectMgr->GetCreatureData(spawn_id.value()) : nullptr;
-		creature->UpdateEntry(entry, data, change_level.value_or(true), update_ai.value_or(false));
+		c->UpdateEntry(entry, data, change_level.value_or(true), update_ai.value_or(false));
 	});
-	reg_method(ft, "resetLootMode", [](Creature * creature) {
-		creature->ResetLootMode();
+	reg_method(ft, "resetLootMode", [](Creature * c) {
+		c->ResetLootMode();
 	});
-	reg_method(ft, "removeLootMode", [](Creature * creature, uint16_t const lootMode) {
-		creature->RemoveLootMode(lootMode);
+	reg_method(ft, "removeLootMode", [](Creature * c, uint16_t const lootMode) {
+		c->RemoveLootMode(lootMode);
 	});
-	reg_method(ft, "addLootMode", [](Creature * creature, uint16_t const lootMode) {
-		creature->AddLootMode(lootMode);
+	reg_method(ft, "addLootMode", [](Creature * c, uint16_t const lootMode) {
+		c->AddLootMode(lootMode);
 	});
 
 	return ft;

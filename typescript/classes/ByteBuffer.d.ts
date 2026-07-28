@@ -12,8 +12,8 @@ declare global {
 			readFloat(): number;
 			readDouble(): number;
 			readString(): string;
-			readGuid(): ObjectGuidNative;
-			readPackedGuid(): ObjectGuidNative;
+			readGuid(): ObjectGuidNative | undefined;
+			readPackedGuid(): ObjectGuidNative | undefined;
 
 			writeByte(v: number): void;
 			writeUByte(v: number): void;
@@ -25,9 +25,9 @@ declare global {
 			writeDouble(v: number): void;
 			writeString(v: string): void;
 			writeGuidFrom(obj: ACObject): void;
-			writeGuid(v: ObjectGuid): void;
+			writeGuid(v: ObjectGuid | undefined): void;
 			writePackedGuidFrom(obj: ACObject): void;
-			writePackedGuid(v: ObjectGuid): void;
+			writePackedGuid(v: ObjectGuid | undefined): void;
 		}
 	}
 }
