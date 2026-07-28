@@ -22,6 +22,7 @@ class ChatHandler;
 class ConfigMgr;
 class Corpse;
 class Creature;
+class CreatureTemplate;
 class DynamicObject;
 class GameObject;
 class GmTicket;
@@ -87,6 +88,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<NodeJs *>() {
 	REGISTER_CLASS_PROP(Condition)
 	REGISTER_CLASS_PROP(ConditionSourceInfo)
 	REGISTER_CLASS_PROP_SPLIT_NAMES(ConfigMgr const, Config)
+	REGISTER_CLASS_PROP_RO(CreatureTemplate)
 	REGISTER_CLASS_PROP(Field)
 	REGISTER_CLASS_PROP(GmTicket)
 	REGISTER_CLASS_PROP(Group)

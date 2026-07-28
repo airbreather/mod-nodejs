@@ -4,6 +4,8 @@ list(APPEND ${PRIVATE_SOURCES} (
         src/records/CharTitlesEntryRecord.cpp
         src/records/ChaseAngleRecord.cpp
         src/records/ChaseRangeRecord.cpp
+        src/records/CreatureModelRecord.cpp
+        src/records/CreatureMovementDataRecord.cpp
         src/records/FactionEntryRecord.cpp
         src/records/GemPropertiesEntryRecord.cpp
         src/records/GlyphPropertiesEntryRecord.cpp
@@ -65,6 +67,7 @@ list(APPEND ${PRIVATE_SOURCES} (
         src/templates/ConditionSourceInfoTemplate.cpp
         src/templates/CorpseTemplate.cpp
         src/templates/CreatureTemplate.cpp
+        src/templates/CreatureTemplateTemplate.cpp
         src/templates/DynamicObjectTemplate.cpp
         src/templates/GameObjectTemplate.cpp
         src/templates/GmTicketTemplate.cpp

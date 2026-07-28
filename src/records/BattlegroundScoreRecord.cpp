@@ -53,14 +53,14 @@ template<>
 	} else if (auto const score_sa = dynamic_cast<BattlegroundSAScore const *>(score)) {
 		jobj_set(result,
 			jprop("type", "SA"),
-			jprop("basesAssaulted", score_sa->GetDemolishersDestroyed()),
-			jprop("basesDefended", score_sa->GetGatesDestroyed())
+			jprop("demolishersDestroyed", score_sa->GetDemolishersDestroyed()),
+			jprop("gatesDestroyed", score_sa->GetGatesDestroyed())
 		);
 	} else if (auto const score_wg = dynamic_cast<BattlegroundWGScore const *>(score)) {
 		jobj_set(result,
 			jprop("type", "WG"),
-			jprop("basesAssaulted", score_wg->GetFlagCaptures()),
-			jprop("basesDefended", score_wg->GetFlagReturns())
+			jprop("flagCaptures", score_wg->GetFlagCaptures()),
+			jprop("flagReturns", score_wg->GetFlagReturns())
 		);
 	}
 

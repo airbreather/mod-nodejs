@@ -33,7 +33,6 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Corpse *>() {
 	reg_method(ft, "resetGhostTime", [](Corpse * corpse) {
 		corpse->ResetGhostTime();
 	});
-
 	reg_method(ft, "saveToDB", [](Corpse * corpse) {
 		corpse->SaveToDB();
 	});

@@ -1,3 +1,4 @@
+export * from './BattlegroundScore';
 export * from './Box';
 export * from './ChaseAngle';
 export * from './ChaseRange';
