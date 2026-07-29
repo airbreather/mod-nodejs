@@ -20,6 +20,7 @@ export * from './Guardian';
 export * from './Guild';
 export * from './GuildMember';
 export * from './Item';
+export * from './ItemTemplate';
 export * from './Loot';
 export * from './LootStore';
 export * from './LootTemplate';

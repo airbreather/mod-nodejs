@@ -33,12 +33,6 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Item *>() {
 	ft->SetClassName(jstr_intern("Item"));
  	ft.safe_inherit<Object *>();
 
-	reg_prop_ro(ft, "ownerGuid", [](Item * item) {
-		return item->GetOwnerGUID();
-	});
-	reg_prop_ro(ft, "isSoulBound", [](Item * item) {
-		return item->IsSoulBound();
-	});
 	reg_prop_ro(ft, "isBoundAccountWide", [](Item * item) {
 		return item->IsBoundAccountWide();
 	});
@@ -84,12 +78,6 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Item *>() {
 	reg_prop_ro(ft, "isRefundExpired", [](Item * item) {
 		return item->IsRefundExpired();
 	});
-	reg_prop_ro(ft, "ownerGuid", [](Item * item) {
-		return item->GetOwnerGUID();
-	});
-	reg_prop_ro(ft, "count", [](Item * item) {
-		return item->GetCount();
-	});
 	reg_prop_ro(ft, "maxStackCount", [](Item * item) {
 		return item->GetMaxStackCount();
 	});
@@ -109,8 +97,8 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Item *>() {
 		return uint32_t{0};
 	});
 
-	reg_method(ft, "hasQuest", [](Item * item, Quest const * quest) {
-		return item->hasQuest(quest->GetQuestId());
+	reg_method(ft, "hasQuest", [](Item * item, uint32_t quest_id) {
+		return item->hasQuest(quest_id);
 	});
 	reg_method(ft, "getEnchantmentId", [](Item * item, EnchantmentSlot const slot) {
 		return item->GetEnchantmentId(slot);
@@ -187,10 +175,10 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Item *>() {
 		}
 	);
 
-	reg_method(ft, "setEnchantment", [](Item * item, EnchantmentSlot const slot, uint32_t const enchantment_id, uint32_t const duration, uint32_t const charges) {
+	reg_method(ft, "setEnchantment", [](Item * item, EnchantmentSlot const slot, uint32_t const enchantment_id, uint32_t const duration, uint32_t const charges, std::optional<ObjectGuid> caster) {
 		if (auto const owner = item->GetOwner()) {
 			owner->ApplyEnchantment(item, slot, false);
-			item->SetEnchantment(slot, enchantment_id, duration, charges);
+			item->SetEnchantment(slot, enchantment_id, duration, charges, caster.value_or({}));
 			owner->ApplyEnchantment(item, slot, true);
 			return true;
 		}
