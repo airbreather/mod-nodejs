@@ -48,7 +48,7 @@ declare global {
 			readonly isVendor: boolean;
 			readonly comboTarget: Unit | undefined;
 			readonly isMoving: boolean;
-			readonly comboPoints: 0 | 1 | 2 | 3 | 4 | 5;
+			readonly comboPoints: number;
 			readonly attackers: Unit[];
 			readonly unorderedThreatList: ThreatReference[];
 			// FactionTemplates in the C++ template has a bunch, but there's also things like
@@ -82,7 +82,7 @@ declare global {
 
 			getCurrentSpell(spellType?: CurrentSpellTypes): Spell | undefined;
 			isNonMeleeSpellCast(withDelayed: boolean, skipChanneled?: boolean, skipAutorepeat?: boolean, isAutoshoot?: boolean, skipInstant?: boolean): boolean;
-			getComboPointsOn(who: Unit): 0 | 1 | 2 | 3 | 4 | 5;
+			getComboPointsOn(who: Unit): number;
 			getAura(spellId: number, caster?: ObjectGuid, itemCaster?: ObjectGuid, requiredEffectMask?: number): Aura | undefined;
 			getStat(stat: Stats): number;
 			getPower(power: Powers): number;

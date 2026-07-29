@@ -2,8 +2,8 @@ declare global {
 	namespace Acore {
 		class CreatureTemplate {
 			readonly entry: number;
-			readonly difficultyEntry: [number, number, number];
-			readonly killCredit: [number, number];
+			readonly difficultyEntry: number[];
+			readonly killCredit: number[];
 			readonly models: CreatureModel[];
 			readonly name: string;
 			readonly subName: string;
@@ -36,8 +36,8 @@ declare global {
 			readonly lootId: number;
 			readonly pickpocketLootId: number;
 			readonly skinLootId: number;
-			readonly resistance: [number, number, number, number, number, number, number];
-			readonly spells: [number, number, number, number, number, number, number, number];
+			readonly resistance: number[];
+			readonly spells: number[];
 			readonly petSpellDataId: number;
 			readonly vehicleId: number;
 			readonly minGold: number;

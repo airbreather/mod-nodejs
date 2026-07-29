@@ -16,8 +16,8 @@ declare global {
 			static getI16(): number;
 			static getU32(): number;
 			static getI32(): number;
-			static getU64(): number | Long;
-			static getI64(): number | Long;
+			static getU64(): number | (Long & { unsigned: true });
+			static getI64(): number | (Long & { unsigned: false });
 		}
 	}
 }

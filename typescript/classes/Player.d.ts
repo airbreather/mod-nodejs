@@ -12,8 +12,8 @@ declare global {
 			readonly isRested: boolean;
 			readonly hasCorpse: boolean;
 			readonly isMaxLevel: boolean;
-			readonly activeSpec: 0 | 1;
-			readonly specsCount: 0 | 1 | 2;
+			readonly activeSpec: number;
+			readonly specsCount: number;
 			readonly restBonus: number;
 			readonly xp: number;
 			readonly battlegroundTypeId: BattlegroundTypeId;
@@ -24,7 +24,7 @@ declare global {
 			readonly corpse: Corpse | undefined;
 			readonly playerIP: string;
 			readonly mailCount: number;
-			readonly mostPointsTalentTree: 0 | 1 | 2;
+			readonly mostPointsTalentTree: number;
 			readonly group: Group | undefined;
 			readonly difficulty: Difficulty;
 			readonly inventoryFreeSlots: number;
@@ -92,7 +92,7 @@ declare global {
 			readonly canTitanGrip: boolean;
 			readonly pet: Pet | undefined;
 			readonly homebind: Homebind;
-			readonly talentTreePoints: [number, number, number];
+			readonly talentTreePoints: number[];
 			readonly completedAchievementsCount: number;
 			readonly completedAchievementsCountExcludingFeatsOfStrength: number;
 
@@ -119,7 +119,7 @@ declare global {
 			getBarberShopCost(hairstyle: number, haircolor: number, facialhair: number, skincolor?: number): number;
 			getSkillValue(skill: SkillType): number;
 			getMaxSkillValue(skill: SkillType): number;
-			hasTalent(talentId: number, spec?: 0 | 1): boolean;
+			hasTalent(talentId: number, spec?: number): boolean;
 			hasAchieved(achievementId: number): boolean;
 			hasQuestForItem(itemId: number, excludeQuestId?: number, turnIn?: boolean, showInLoot?: Box<boolean>): boolean;
 			canUseItem(itemId: number): boolean;

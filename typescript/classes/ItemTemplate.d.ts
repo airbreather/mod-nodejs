@@ -29,10 +29,10 @@ declare global {
 			readonly stackable: number; // 0: not allowed, -1: put in player coin info tab and don't limit stacking (so 1 slot)
 			readonly containerSlots: number;
 			readonly statsCount: number;
-			readonly itemStat: [ItemStat, ItemStat, ItemStat, ItemStat, ItemStat, ItemStat, ItemStat, ItemStat, ItemStat, ItemStat];
+			readonly itemStat: ItemStat[];
 			readonly scalingStatDistribution: number; // id from ScalingStatDistribution.dbc
 			readonly scalingStatValue: number; // mask for selecting column in ScalingStatValues.dbc
-			readonly damage: [ItemDamage, ItemDamage];
+			readonly damage: ItemDamage[];
 			readonly armor: number;
 			readonly holyRes: number;
 			readonly fireRes: number;
@@ -43,7 +43,7 @@ declare global {
 			readonly delay: number;
 			readonly ammoType: ItemSubclassProjectile;
 			readonly rangedModRange: number;
-			readonly spells: [ItemSpell, ItemSpell, ItemSpell, ItemSpell, ItemSpell];
+			readonly spells: ItemSpell[];
 			readonly bonding: ItemBondingType;
 			readonly description: string;
 			readonly pageText: number;
@@ -62,7 +62,7 @@ declare global {
 			readonly map: number; // id from Map.dbc
 			readonly bagFamily: BAG_FAMILY_MASK; // bit mask (1 << id from ItemBagFamily.dbc)
 			readonly totemCategory: number; // id from TotemCategory.dbc
-			readonly socket: [ItemSocket, ItemSocket, ItemSocket];
+			readonly socket: ItemSocket[];
 			readonly socketBonus: number; // id from SpellItemEnchantment.dbc
 			readonly gemProperties: number; // id from GemProperties.dbc
 			readonly requiredDisenchantSkill: number;
