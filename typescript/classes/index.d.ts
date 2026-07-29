@@ -17,6 +17,7 @@ export * from './GameObject';
 export * from './GmTicket';
 export * from './Group';
 export * from './Guardian';
+export * from './Guild';
 export * from './GuildMember';
 export * from './Item';
 export * from './Loot';

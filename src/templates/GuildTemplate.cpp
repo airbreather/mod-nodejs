@@ -78,12 +78,6 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Guild *>() {
 	reg_method(ft, "disband", [](Guild * g) {
 		g->Disband();
 	});
-	reg_method(ft, "getMemberByGuid", [](Guild * guild, ObjectGuid const guid) {
-		return guild->GetMember(guid);
-	});
-	reg_method(ft, "getMemberByName", [](Guild * guild, std::string const name) {
-		return guild->GetMember(name);
-	});
 	reg_method(ft, "modifyBankMoney", [](Guild * guild, int64_t const money) {
 		auto const trans = CharacterDatabase.BeginTransaction();
 		auto const success = guild->ModifyBankMoney(trans, static_cast<uint64_t>(money), money >= 0);
