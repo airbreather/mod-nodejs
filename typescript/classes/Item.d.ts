@@ -19,7 +19,7 @@ declare global {
 			readonly maxStackCount: number;
 			readonly slot: number;
 			readonly bagSlot: number;
-			readonly template: ItemTemplate;
+			readonly template: ItemTemplateNarrowable;
 			readonly bagSize: number;
 			ownerGuid: ObjectGuid;
 			count: number;
