@@ -29,12 +29,10 @@ declare global {
 			readonly stackable: number; // 0: not allowed, -1: put in player coin info tab and don't limit stacking (so 1 slot)
 			readonly containerSlots: number;
 			readonly statsCount: number;
-			// TODO (soon!): there's a record type for this in C++, I just haven't ported it here.
-			readonly itemStat: [unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown];
+			readonly itemStat: [ItemStat, ItemStat, ItemStat, ItemStat, ItemStat, ItemStat, ItemStat, ItemStat, ItemStat, ItemStat];
 			readonly scalingStatDistribution: number; // id from ScalingStatDistribution.dbc
 			readonly scalingStatValue: number; // mask for selecting column in ScalingStatValues.dbc
-			// TODO (soon!): there's a record type for this in C++, I just haven't ported it here.
-			readonly damage: [unknown, unknown];
+			readonly damage: [ItemDamage, ItemDamage];
 			readonly armor: number;
 			readonly holyRes: number;
 			readonly fireRes: number;
@@ -45,8 +43,7 @@ declare global {
 			readonly delay: number;
 			readonly ammoType: ItemSubclassProjectile;
 			readonly rangedModRange: number;
-			// TODO (soon!): there's a record type for this in C++, I just haven't ported it here.
-			readonly spells: [unknown, unknown, unknown, unknown, unknown];
+			readonly spells: [ItemSpell, ItemSpell, ItemSpell, ItemSpell, ItemSpell];
 			readonly bonding: ItemBondingType;
 			readonly description: string;
 			readonly pageText: number;
@@ -65,8 +62,7 @@ declare global {
 			readonly map: number; // id from Map.dbc
 			readonly bagFamily: BAG_FAMILY_MASK; // bit mask (1 << id from ItemBagFamily.dbc)
 			readonly totemCategory: number; // id from TotemCategory.dbc
-			// TODO (soon!): there's a record type for this in C++, I just haven't ported it here.
-			readonly socket: [unknown, unknown, unknown];
+			readonly socket: [ItemSocket, ItemSocket, ItemSocket];
 			readonly socketBonus: number; // id from SpellItemEnchantment.dbc
 			readonly gemProperties: number; // id from GemProperties.dbc
 			readonly requiredDisenchantSkill: number;

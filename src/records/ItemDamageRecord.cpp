@@ -8,9 +8,9 @@
 template<>
 [[nodiscard]] v8::Local<v8::Value> jval<_Damage const &>(_Damage const & v) {
 	return jobj(
-		jprop("min", v.DamageMin),
-		jprop("max", v.DamageMax),
-		jprop("type", v.DamageType)
+		jprop("damageType", v.DamageType),
+		jprop("damageMin", v.DamageMin),
+		jprop("damageMax", v.DamageMax)
 	);
 }
 

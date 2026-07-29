@@ -8,13 +8,13 @@
 template<>
 [[nodiscard]] v8::Local<v8::Value> jval<_Spell const &>(_Spell const & p) {
 	return jobj(
-		jprop("id", p.SpellId),
-		jprop("trigger", p.SpellTrigger),
-		jprop("charges", p.SpellCharges),
-		jprop("ppmRate", p.SpellPPMRate),
-		jprop("cooldown", p.SpellCooldown),
-		jprop("category", p.SpellCategory),
-		jprop("categoryCooldown", p.SpellCategoryCooldown)
+		jprop("spellId", p.SpellId),
+		jprop("spellTrigger", p.SpellTrigger),
+		jprop("spellCharges", p.SpellCharges),
+		jprop("spellPPMRate", p.SpellPPMRate),
+		jprop("spellCooldown", p.SpellCooldown),
+		jprop("spellCategory", p.SpellCategory),
+		jprop("spellCategoryCooldown", p.SpellCategoryCooldown)
 	);
 }
 

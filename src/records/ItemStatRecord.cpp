@@ -8,8 +8,8 @@
 template<>
 [[nodiscard]] v8::Local<v8::Value> jval<_ItemStat const &>(_ItemStat const & v) {
 	return jobj(
-		jprop("type", v.ItemStatType),
-		jprop("value", v.ItemStatValue)
+		jprop("itemStatType", v.ItemStatType),
+		jprop("itemStatValue", v.ItemStatValue)
 	);
 }
 
