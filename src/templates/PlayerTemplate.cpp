@@ -121,6 +121,9 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 	reg_prop_ro(ft, "accountId", [](Player * player) {
 		return player->GetSession()->GetAccountId();
 	});
+	reg_prop_ro(ft, "accountFlags", [](Player * player) {
+		return player->GetSession()->GetAccountFlags();
+	});
 	reg_prop_ro(ft, "accountName", [](Player * player) {
 		auto const accId = player->GetSession()->GetAccountId();
 		if (std::string accName; AccountMgr::GetName(accId, accName)) {
@@ -194,7 +197,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 	reg_prop_ro(ft, "hasHealSpec", [](Player * player) {
 		return player->HasHealSpec();
 	});
-	reg_prop_ro(ft, "isExistPet", [](Player * player) {
+	reg_prop_ro(ft, "hasPet", [](Player * player) {
 		return player->GetPet() != nullptr;
 	});
 	reg_prop_ro(ft, "canTameExoticPets", [](Player * player) {
@@ -206,10 +209,6 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 	reg_prop_ro(ft, "canResummonPet", [](Player * player) {
 		Pet const * pet = player->GetPet();
 		return pet && player->CanResummonPet(0);
-	});
-	reg_prop_ro(ft, "isPetNeedBeTempUnsummoned", [](Player * player) {
-		Pet const * pet = player->GetPet();
-		return pet && !pet->isControlled();
 	});
 	reg_prop_ro(ft, "inRandomLfgDungeon", [](Player * player) {
 		return player->inRandomLfgDungeon();
@@ -416,6 +415,15 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 		return count;
 	});
 
+	reg_method(ft, "hasAccountFlag", [](Player * player, AccountFlag flag) {
+		return player->GetSession()->HasAccountFlag(flag);
+	});
+	reg_method(ft, "setAccountFlag", [](Player * player, AccountFlag flag) {
+		return player->GetSession()->UpdateAccountFlag(flag, /* remove = */ false);
+	});
+	reg_method(ft, "clearAccountFlag", [](Player * player, AccountFlag flag) {
+		return player->GetSession()->UpdateAccountFlag(flag, /* remove = */ true);
+	});
 	reg_method(ft, "resetTalentsCost", [](Player * player) {
 		return player->resetTalentsCost();
 	});

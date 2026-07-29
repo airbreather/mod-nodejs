@@ -76,6 +76,7 @@ std::optional<Enum> cval_enum(v8::Local<v8::Value> const v) {
 	enum class enum_type; \
 	ENUM_JVAL_CVAL_EO(enum_type, uint32_t);
 
+ENUM_JVAL_CVAL_IP(AccountFlag)
 ENUM_JVAL_CVAL_IP(AccountTypes)
 ENUM_JVAL_CVAL_IP(AcoreStrings)
 ENUM_JVAL_CVAL_EP(ActiveStates, uint8_t)

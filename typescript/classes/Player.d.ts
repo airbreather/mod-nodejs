@@ -19,6 +19,7 @@ declare global {
 			readonly battlegroundTypeId: BattlegroundTypeId;
 			readonly gmRank: AccountTypes;
 			readonly accountId: number;
+			readonly accountFlags: AccountFlag;
 			readonly accountName: string;
 			readonly completedQuestsCount: number;
 			readonly corpse: Corpse | undefined;
@@ -37,11 +38,10 @@ declare global {
 			readonly hasMeleeSpec: boolean;
 			readonly hasCasterSpec: boolean;
 			readonly hasHealSpec: boolean;
-			readonly isExistPet: boolean;
+			readonly hasPet: boolean;
 			readonly canTameExoticPets: boolean;
 			readonly canPetResurrect: boolean;
 			readonly canResummonPet: boolean;
-			readonly isPetNeedBeTempUnsummoned: boolean;
 			readonly inRandomLfgDungeon: boolean;
 			readonly isUsingLfg: boolean;
 			readonly achievementPoints: number;
@@ -100,6 +100,9 @@ declare global {
 			static byName(name: string): Player | undefined;
 			static allInWorld(): Player[];
 
+			hasAccountFlag(flag: AccountFlag): boolean;
+			setAccountFlag(flag: AccountFlag): boolean;
+			clearAccountFlag(flag: AccountFlag): boolean;
 			resetTalentsCost(): void;
 			getRaceAsString(locale?: LocaleConstant): string;
 			getClassAsString(locale?: LocaleConstant): string;
