@@ -14,6 +14,7 @@ export * from './CreatureTemplate';
 export * from './DynamicObject';
 export * from './Field';
 export * from './GameObject';
+export * from './GmTicket';
 export * from './Group';
 export * from './Guardian';
 export * from './Item';

@@ -28,6 +28,7 @@ export * from './Difficulty';
 export * from './Emote';
 export * from './Expansions';
 export * from './Gender';
+export * from './GMTicketEscalationStatus';
 export * from './GOState';
 export * from './HighGuid';
 export * from './ItemSubclassArmor';

@@ -6,6 +6,7 @@
 #include "NodePropertySystem.h"
 #include "ObjectGuid.h"
 #include "TicketMgr.h"
+#include "UnixTimestamp.h"
 
 JVAL_CVAL_TMPLS_RW(GmTicket)
 
@@ -18,8 +19,10 @@ v8::Local<v8::FunctionTemplate> jcreate_template<GmTicket *>() {
 	reg_prop_ro(ft, "ticketId", [](GmTicket * ticket) {
 		return ticket->GetId();
 	});
-	reg_prop_ro(ft, "createTime", [](GmTicket * ticket) {
-		return ticket->GetLastModifiedTime();
+	reg_prop_ro(ft, "lastModifiedTime", [](GmTicket * ticket) {
+		return UnixTimestamp::from_chrono(
+			std::chrono::seconds(ticket->GetLastModifiedTime())
+		);
 	});
 	reg_prop_ro(ft, "escalatedStatus", [](GmTicket * ticket) {
 		return ticket->GetEscalatedStatus();
@@ -28,7 +31,8 @@ v8::Local<v8::FunctionTemplate> jcreate_template<GmTicket *>() {
 		return ticket->GetPlayerName();
 	});
 	reg_prop_ro(ft, "assignedGmName", [](GmTicket * ticket) {
-		return ticket->GetAssignedToName();
+		auto name = ticket->GetAssignedToName();
+		return name.empty() ? jstr(ticket->GetAssignedToName()) : jnull();
 	});
 	reg_prop_ro(ft, "isClosed", [](GmTicket * ticket) {
 		return ticket->IsClosed();
