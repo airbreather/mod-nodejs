@@ -1,15 +1,22 @@
 declare global {
 	namespace Acore {
 		class Loot {
-			readonly lootType: LootType;
 			readonly itemCount: number;
-			readonly unlootedCount: number;
-			readonly gold: number;
+			readonly isLooted: boolean;
+			readonly isEmpty: boolean;
+			readonly hasQuestItems: boolean;
+			readonly hasItemForAll: boolean;
+			readonly hasOverThresholdItem: boolean;
+			readonly items: LootItem[];
+			readonly questItems: LootItem[];
+			lootType: LootType;
+			unlootedCount: number;
+			gold: number;
 			// SOME of these `| undefined` MAY be incorrect. SOME of them are DEFINITELY correct.
-			readonly roundRobinPlayer: ObjectGuidNative | undefined;
-			readonly lootOwnerGuid: ObjectGuidNative | undefined;
-			readonly containerGuid: ObjectGuidNative | undefined;
-			readonly sourceWorldObjectGuid: ObjectGuidNative | undefined;
+			roundRobinPlayer: ObjectGuidNative | undefined;
+			lootOwnerGuid: ObjectGuidNative | undefined;
+			containerGuid: ObjectGuidNative | undefined;
+			sourceWorldObjectGuid: ObjectGuidNative | undefined;
 
 			addItem(itemId: number, minCount: number, maxCount: number, chance: number, lootMode: LootModes, needsQuest?: boolean, allowStacking?: boolean, maxStackSize?: number): void;
 			clear(): void;

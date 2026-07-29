@@ -1,6 +1,6 @@
 declare global {
 	namespace Acore {
-		class LootStoreObject {
+		class LootStore {
 			readonly name: string;
 			readonly entryName: string;
 			readonly ratesAllowed: boolean;
@@ -10,7 +10,7 @@ declare global {
 			getLootFor(lootId: number): LootTemplate;
 		}
 
-		type LootStore = Acore.LootStoreObject | LootStoreType;
+		type LootStoreArg = LootStore | LootStoreType;
 	}
 }
 export {};

@@ -11,5 +11,6 @@ export * from './ItemDamage';
 export * from './ItemSocket';
 export * from './ItemSpell';
 export * from './ItemStat';
+export * from './LootItem';
 export * from './ObjectGuid';
 export * from './Position';

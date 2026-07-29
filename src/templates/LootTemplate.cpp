@@ -21,29 +21,8 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Loot *>() {
 
 	ft->SetClassName(jstr_intern("Loot"));
 
-	reg_prop_ro(ft, "lootType", [](Loot * loot) {
-		return loot->loot_type;
-	});
 	reg_prop_ro(ft, "itemCount", [](Loot * loot) {
 		return uint32_t{loot->items.size() + loot->quest_items.size()};
-	});
-	reg_prop_ro(ft, "unlootedCount", [](Loot * loot) {
-		return loot->unlootedCount;
-	});
-	reg_prop_ro(ft, "gold", [](Loot * loot) {
-		return loot->gold;
-	});
-	reg_prop_ro(ft, "roundRobinPlayer", [](Loot * loot) {
-		return loot->roundRobinPlayer;
-	});
-	reg_prop_ro(ft, "lootOwnerGuid", [](Loot * loot) {
-		return loot->lootOwnerGUID;
-	});
-	reg_prop_ro(ft, "containerGuid", [](Loot * loot) {
-		return loot->containerGUID;
-	});
-	reg_prop_ro(ft, "sourceWorldObjectGuid", [](Loot * loot) {
-		return loot->sourceWorldObjectGUID;
 	});
 	reg_prop_ro(ft, "isLooted", [](Loot * loot) {
 		return loot->isLooted();
@@ -108,17 +87,14 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Loot *>() {
 		[](Loot * loot) { return loot->roundRobinPlayer; },
 		[](Loot * loot, ObjectGuid const val) { loot->roundRobinPlayer = val; }
 	);
-
 	reg_prop(ft, "lootOwnerGuid",
 		[](Loot * loot) { return loot->lootOwnerGUID; },
 		[](Loot * loot, ObjectGuid const val) { loot->lootOwnerGUID = val; }
 	);
-
 	reg_prop(ft, "containerGuid",
 		[](Loot * loot) { return loot->containerGUID; },
 		[](Loot * loot, ObjectGuid const val) { loot->containerGUID = val; }
 	);
-
 	reg_prop(ft, "sourceWorldObjectGuid",
 		[](Loot * loot) { return loot->sourceWorldObjectGUID; },
 		[](Loot * loot, ObjectGuid const val) { loot->sourceWorldObjectGUID = val; }

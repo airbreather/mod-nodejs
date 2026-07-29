@@ -44,11 +44,9 @@ v8::Local<v8::FunctionTemplate> jcreate_template<LootStore const *>() {
 	reg_prop_ro(ft, "name", [](LootStore const * ls) {
 		return ls->GetName();
 	});
-
 	reg_prop_ro(ft, "entryName", [](LootStore const * ls) {
 		return ls->GetEntryName();
 	});
-
 	reg_prop_ro(ft, "ratesAllowed", [](LootStore const * ls) {
 		return ls->IsRatesAllowed();
 	});
@@ -56,13 +54,11 @@ v8::Local<v8::FunctionTemplate> jcreate_template<LootStore const *>() {
 	reg_method(ft, "haveLootFor", [](LootStore const * ls, uint32_t const loot_id) {
 		return ls->HaveLootFor(loot_id);
 	});
-
 	reg_method(ft, "haveQuestLootFor", [](LootStore const * ls, uint32_t const loot_id, std::optional<Player *> const player) {
 		return player
 			? ls->HaveQuestLootForPlayer(loot_id, *player)
 			: ls->HaveQuestLootFor(loot_id);
 	});
-
 	reg_method(ft, "getLootFor", [](LootStore const * ls, uint32_t const loot_id) {
 		return ls->GetLootFor(loot_id);
 	});
