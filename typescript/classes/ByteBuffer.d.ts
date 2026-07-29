@@ -15,19 +15,19 @@ declare global {
 			readGuid(): ObjectGuidNative | undefined;
 			readPackedGuid(): ObjectGuidNative | undefined;
 
-			writeByte(v: number): void;
-			writeUByte(v: number): void;
-			writeShort(v: number): void;
-			writeUShort(v: number): void;
-			writeLong(v: number): void;
-			writeULong(v: number): void;
-			writeFloat(v: number): void;
-			writeDouble(v: number): void;
-			writeString(v: string): void;
-			writeGuidFrom(obj: ACObject): void;
-			writeGuid(v: ObjectGuid | undefined): void;
-			writePackedGuidFrom(obj: ACObject): void;
-			writePackedGuid(v: ObjectGuid | undefined): void;
+			writeByte(v: number): this;
+			writeUByte(v: number): this;
+			writeShort(v: number): this;
+			writeUShort(v: number): this;
+			writeLong(v: number): this;
+			writeULong(v: number): this;
+			writeFloat(v: number): this;
+			writeDouble(v: number): this;
+			writeString(v: string): this;
+			writeGuidFrom(obj: ACObject): this;
+			writeGuid(v: ObjectGuid | undefined): this;
+			writePackedGuidFrom(obj: ACObject): this;
+			writePackedGuid(v: ObjectGuid | undefined): this;
 		}
 	}
 }

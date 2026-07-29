@@ -6,11 +6,11 @@
 
 #include "CtoJ.h"
 #include "Group.h"
+#include "LFG.h"
 #include "NodePropertySystem.h"
 #include "ObjectGuid.h"
 #include "Player.h"
 #include "SharedDefines.h"
-#include "Unit.h"
 
 JVAL_CVAL_TMPLS_RW(Group)
 
@@ -66,11 +66,11 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Group *>() {
 	reg_method(ft, "changeSubgroup", [](Group * grp, ObjectGuid const guid, uint8_t const subgroup) {
 		grp->ChangeMembersGroup(guid, subgroup);
 	});
-	reg_method(ft, "setTargetIcon", [](Group * grp, uint8_t const icon, ObjectGuid const setter, Unit * target) {
-		grp->SetTargetIcon(icon, setter, target->GetGUID());
+	reg_method(ft, "setTargetIcon", [](Group * grp, uint8_t const icon, ObjectGuid const setter, ObjectGuid target) {
+		grp->SetTargetIcon(icon, setter, target);
 	});
-	reg_method(ft, "addMember", [](Group * grp, Player * player) {
-		auto const success = grp->AddMember(player);
+	reg_method(ft, "addMember", [](Group * grp, Player * player, std::optional<lfg::LfgRoles> roles) {
+		auto const success = grp->AddMember(player, roles.value_or(lfg::PLAYER_ROLE_NONE));
 		if (success) {
 			grp->BroadcastGroupUpdate();
 		}

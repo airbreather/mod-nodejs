@@ -11,8 +11,8 @@ template<>
 	return jobj(
 		jprop("guid", p.guid),
 		jprop("name", p.name),
-		jprop("lfgRoles", p.roles),
-		jprop("groupFlags", p.flags)
+		jprop("roles", p.roles),
+		jprop("flags", p.flags)
 	);
 }
 

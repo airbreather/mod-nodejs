@@ -1,0 +1,9 @@
+declare global {
+	const enum RemoveMethod {
+		GROUP_REMOVEMETHOD_DEFAULT  = 0,
+		GROUP_REMOVEMETHOD_KICK     = 1,
+		GROUP_REMOVEMETHOD_LEAVE    = 2,
+		GROUP_REMOVEMETHOD_KICK_LFG = 3,
+	}
+}
+export {};

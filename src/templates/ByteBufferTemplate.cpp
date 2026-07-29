@@ -57,43 +57,43 @@ v8::Local<v8::FunctionTemplate> jcreate_template<ByteBuffer *>() {
 	});
 
 	reg_method(ft, "writeByte", [](ByteBuffer * buf, int8_t const v) {
-		*buf<<v;
+		*buf<<v; return buf;
 	});
 	reg_method(ft, "writeUByte", [](ByteBuffer * buf, uint8_t const v) {
-		*buf<<v;
+		*buf<<v; return buf;
 	});
 	reg_method(ft, "writeShort", [](ByteBuffer * buf, int16_t const v) {
-		*buf<<v;
+		*buf<<v; return buf;
 	});
 	reg_method(ft, "writeUShort", [](ByteBuffer * buf, uint16_t const v) {
-		*buf<<v;
+		*buf<<v; return buf;
 	});
 	reg_method(ft, "writeLong", [](ByteBuffer * buf, int32_t const v) {
-		*buf<<v;
+		*buf<<v; return buf;
 	});
 	reg_method(ft, "writeULong", [](ByteBuffer * buf, uint32_t const v) {
-		*buf<<v;
+		*buf<<v; return buf;
 	});
 	reg_method(ft, "writeFloat", [](ByteBuffer * buf, float const v) {
-		*buf<<v;
+		*buf<<v; return buf;
 	});
 	reg_method(ft, "writeDouble", [](ByteBuffer * buf, double const v) {
-		*buf<<v;
+		*buf<<v; return buf;
 	});
 	reg_method(ft, "writeString", [](ByteBuffer * buf, std::string v) {
-		*buf<<v;
+		*buf<<v; return buf;
 	});
 	reg_method(ft, "writeGuidFrom", [](ByteBuffer * buf, Object const * obj) {
-		*buf<<obj->GetGUID();
+		*buf<<obj->GetGUID(); return buf;
 	});
 	reg_method(ft, "writeGuid", [](ByteBuffer * buf, ObjectGuid const guid) {
-		*buf<<guid;
+		*buf<<guid; return buf;
 	});
 	reg_method(ft, "writePackedGuidFrom", [](ByteBuffer * buf, Object const * obj) {
-		*buf<<obj->GetPackGUID();
+		*buf<<obj->GetPackGUID(); return buf;
 	});
 	reg_method(ft, "writePackedGuid", [](ByteBuffer * buf, ObjectGuid const guid) {
-		*buf<<guid.WriteAsPacked();
+		*buf<<guid.WriteAsPacked(); return buf;
 	});
 
 	return ft;
