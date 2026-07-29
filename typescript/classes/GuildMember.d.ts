@@ -13,8 +13,12 @@ declare global {
 			readonly isOnline: boolean;
 			readonly remainingWithdrawalAllowedTodayTotal: number;
 			rankId: GuildDefaultRanks | number;
+			publicNote: string;
+			officerNote: string;
 
 			remainingWithdrawalAllowedTodayOnTab(tab: number): number;
+			refresh(): void;
+			updateLogoutTime(): void;
 		}
 	}
 }
