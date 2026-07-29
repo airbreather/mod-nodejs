@@ -32,6 +32,8 @@ export * from './GMTicketEscalationStatus';
 export * from './GOState';
 export * from './GroupMemberFlags';
 export * from './GroupType';
+export * from './GuildDefaultRanks';
+export * from './GuildMemberFlags';
 export * from './HighGuid';
 export * from './ItemSubclassArmor';
 export * from './ItemSubclassWeapon';

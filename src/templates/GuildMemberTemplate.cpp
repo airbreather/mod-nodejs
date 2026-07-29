@@ -6,6 +6,7 @@
 #include "Guild.h"
 #include "NodePropertySystem.h"
 #include "ObjectGuid.h"
+#include "UnixTimestamp.h"
 
 JVAL_CVAL_TMPLS_RW(Guild::Member)
 
@@ -33,8 +34,10 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Guild::Member *>() {
 	reg_prop_ro(ft, "accountId", [](Guild::Member * m) {
 		return m->GetAccountId();
 	});
-	reg_prop_ro(ft, "logoutTimeSeconds", [](Guild::Member * m) {
-		return m->GetLogoutTime();
+	reg_prop_ro(ft, "logoutTime", [](Guild::Member * m) {
+		return UnixTimestamp::from_chrono(
+			std::chrono::seconds{m->GetLogoutTime()}
+		);
 	});
 	reg_prop_ro(ft, "flags", [](Guild::Member * m) {
 		// is it called "flags" or "status"? both are used interchangeably...
@@ -72,13 +75,8 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Guild::Member *>() {
 			m->SetStats(p);
 		}
 	});
-	reg_method(ft, "updateLogoutTimeSeconds", [](Guild::Member * m) {
+	reg_method(ft, "updateLogoutTime", [](Guild::Member * m) {
 		m->UpdateLogoutTime();
-	});
-	reg_method(ft, "refresh", [](Guild::Member * m) {
-		if (auto const p = m->FindPlayer()) {
-			m->SetStats(p);
-		}
 	});
 
 	return ft;
