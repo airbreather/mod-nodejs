@@ -4,6 +4,7 @@
 #include "CtoJ.h"
 #include "NodeJPropHelpers.h"
 #include "PetDefines.h"
+#include "UnixTimestamp.h"
 
 template<>
 [[nodiscard]] v8::Local<v8::Value> jval<PetStable::PetInfo const &>(PetStable::PetInfo const & p) {
@@ -17,7 +18,7 @@ template<>
 		jprop("health", p.Health),
 		jprop("mana", p.Mana),
 		jprop("happiness", p.Happiness),
-		jprop("lastSaveTime", p.LastSaveTime),
+		jprop("lastSaveTime", UnixTimestamp::from_chrono(std::chrono::seconds{p.LastSaveTime})),
 		jprop("createdBySpellId", p.CreatedBySpellId),
 		jprop("level", p.Level),
 		jprop("reactState", p.ReactState),

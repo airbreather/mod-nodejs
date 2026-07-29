@@ -44,12 +44,6 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Pet *>() {
 	reg_prop_ro(ft, "autoSpellSize", [](Pet * pet) {
 		return pet->GetPetAutoSpellSize();
 	});
-	reg_prop_ro(ft, "generateActionBarData", [](Pet * pet) {
-		return pet->GenerateActionBarData();
-	});
-	reg_prop_ro(ft, "owner", [](Pet * pet) {
-		return pet->GetOwner();
-	});
 	reg_prop_ro(ft, "petInfo", [](Pet * pet) {
 		PetStable::PetInfo info;
 		pet->FillPetInfo(&info);
@@ -69,6 +63,9 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Pet *>() {
 		return jarr(pet->GetDeclinedNames()->name);
 	});
 
+	reg_method(ft, "generateActionBarData", [](Pet * pet) {
+		return pet->GenerateActionBarData();
+	});
 	reg_method(ft, "isPermanentPetFor", [](Pet * pet, Player * owner) {
 		return pet->IsPermanentPetFor(owner);
 	});

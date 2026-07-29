@@ -13,4 +13,5 @@ export * from './ItemSpell';
 export * from './ItemStat';
 export * from './LootItem';
 export * from './ObjectGuid';
+export * from './PetInfo';
 export * from './Position';

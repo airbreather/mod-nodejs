@@ -80,6 +80,8 @@ export * from './MovementSlot';
 export * from './NearObjectsMask';
 export * from './NPCFlags';
 export * from './PetDiet';
+export * from './PetSpellState';
+export * from './PetType';
 export * from './PlayerChatTag';
 export * from './Powers';
 export * from './QuestStatus';

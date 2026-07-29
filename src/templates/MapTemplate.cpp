@@ -19,7 +19,7 @@ template<>
 v8::Local<v8::FunctionTemplate> jcreate_template<Map *>() {
 	TypedTemplate<Map *> const ft = jctor();
 
-	ft->SetClassName(jstr_intern("Map"));
+	ft->SetClassName(jstr_intern("ACMap"));
 
 	reg_prop_ro(ft, "mapId", [](Map * m) {
 		return m->GetId();
@@ -54,14 +54,17 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Map *>() {
 	reg_prop_ro(ft, "playerCount", [](Map * m) {
 		return m->GetPlayersCountExceptGMs(false);
 	});
+	reg_prop_ro(ft, "alivePlayerCount", [](Map * m) {
+		return m->GetPlayersCountExceptGMs(true);
+	});
 	reg_prop_ro(ft, "name", [](Map * m) {
 		return std::string(m->GetMapName());
 	});
-
-	reg_method(ft, "getPlayers", [](Map * map) {
+	reg_prop_ro(ft, "players", [](Map * map) {
 		std::vector<MapReference> players{map->GetPlayers().begin(), map->GetPlayers().end()};
 		return jarr(players | std::ranges::views::transform([](MapReference const & r) { return r.GetSource(); }));
 	});
+
 	reg_method(ft, "getPlayersInTeam", [](Map * map, TeamId const teamId) {
 		std::vector<Player *> matching;
 		for (auto const & it : map->GetPlayers()) {
@@ -73,10 +76,10 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Map *>() {
 		}
 		return jarr(matching);
 	});
-	reg_method(ft, "getHeight", [](Map * map, float const x, float const y, float const z, std::optional<uint32_t> const phaseMask, std::optional<bool> const vmap, std::optional<float> const maxSearchDist) {
+	reg_method(ft, "getHeightAt", [](Map * map, float const x, float const y, float const z, std::optional<uint32_t> const phaseMask, std::optional<bool> const vmap, std::optional<float> const maxSearchDist) {
 		return map->GetHeight(phaseMask.value_or(1), x, y, z, vmap.value_or(true), maxSearchDist.value_or(DEFAULT_HEIGHT_SEARCH));
 	});
-	reg_method(ft, "getAreaId", [](Map * map, float const x, float const y, float const z, std::optional<uint32_t> const phaseMask) {
+	reg_method(ft, "getAreaIdAt", [](Map * map, float const x, float const y, float const z, std::optional<uint32_t> const phaseMask) {
 		return map->GetAreaId(phaseMask.value_or(1), x, y, z);
 	});
 
