@@ -35,6 +35,15 @@ declare global {
 			readonly implicitTargetType: SpellEffectImplicitTargetTypes;
 			readonly usedTargetObjectType: SpellTargetObjectTypes;
 			readonly immunityInfo: ImmunityInfo;
+
+			hasEffectOf(effect: SpellEffects): boolean;
+			appliesAura(aura: AuraType): boolean;
+			calcValue(caster?: Unit, basePoints?: number, target?: Unit): number;
+			calcBaseValue(value: number): number;
+			calcValueMultiplier(caster: Unit, spell?: Spell): number;
+			calcDamageMultiplier(caster: Unit, spell?: Spell): number;
+			calcRadius(caster: Unit, spell?: Spell): number;
+			getMissingTargetMask(srcSet?: boolean, destSet?: boolean, mask?: SpellCastTargetFlags): SpellCastTargetFlags;
 		}
 	}
 }
