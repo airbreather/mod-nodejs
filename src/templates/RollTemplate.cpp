@@ -32,8 +32,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Roll *>() {
 	reg_prop_ro(ft, "itemCount", [](Roll * r) {
 		return r->itemCount;
 	});
-
-	reg_method(ft, "isRollInProgress", [](Roll * r) {
+	reg_prop_ro(ft, "isRollInProgress", [](Roll * r) {
 		return !r->playerVote.empty();
 	});
 

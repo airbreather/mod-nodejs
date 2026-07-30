@@ -13,8 +13,8 @@ declare global {
 			getI16(): number;
 			getU32(): number;
 			getI32(): number;
-			getU64(): Long;
-			getI64(): Long;
+			getU64(): number | (Long & { unsigned: true });
+			getI64(): number | (Long & { unsigned: false });
 			getF32(): number;
 			getF64(): number;
 			getString(): string;
