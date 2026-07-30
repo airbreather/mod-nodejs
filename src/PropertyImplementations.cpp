@@ -51,7 +51,7 @@ std::optional<Enum> cval_enum(v8::Local<v8::Value> const v) {
 	: std::nullopt;
 }
 
-// I/E: (I)mplicit / (E)xplicit (enums with implicit storage use uint32_t to avoid Long.js overhead)
+// I/E: (I)mplicit / (E)xplicit (enums with implicit storage use uint32_t)
 // O/P/C: (O)nly the jval/cval, forward-declare as (P)lain enum, or forward-declare as enum (C)lass
 
 #define ENUM_JVAL_CVAL_EO(enum_type, underlying_type) \

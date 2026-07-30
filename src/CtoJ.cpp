@@ -195,17 +195,7 @@ template<>
 	if (v < 1L<<53) {
 		return v8::Number::New(v8::Isolate::GetCurrent(), double{v});
 	}
-	auto const isolate = v8::Isolate::GetCurrent();
-	auto const ctx = isolate->GetCurrentContext();
-	auto const global_this = ctx->Global();
-	auto const long_js = global_this->Get(ctx, jstr_intern("Long")).As<v8::Object>().ToLocalChecked();
-	auto const long_js_from_bits = long_js->Get(ctx, jstr_intern("fromBits")).As<v8::Function>().ToLocalChecked();
-	v8::Local<v8::Value> args[] = {
-		jval<uint32_t>(uint32_t{v}), // lowBits
-		jval<uint32_t>(uint32_t{v >> 32}), // highBits
-		v8::True(isolate), // unsigned
-	};
-	return long_js_from_bits->Call(ctx, v8::Undefined(isolate), 3, args).ToLocalChecked();
+	return v8::BigInt::NewFromUnsigned(v8::Isolate::GetCurrent(), v);
 }
 
 template<>
@@ -213,17 +203,7 @@ template<>
 	if (v > -1L<<53 && v < 1L<<53) {
 		return v8::Number::New(v8::Isolate::GetCurrent(), double{v});
 	}
-	auto const isolate = v8::Isolate::GetCurrent();
-	auto const ctx = isolate->GetCurrentContext();
-	auto const global_this = ctx->Global();
-	auto const long_js = global_this->Get(ctx, jstr_intern("Long")).As<v8::Object>().ToLocalChecked();
-	auto const long_js_from_bits = long_js->Get(ctx, jstr_intern("fromBits")).As<v8::Function>().ToLocalChecked();
-	v8::Local<v8::Value> args[] = {
-		jval<int32_t>(int32_t{v}), // lowBits
-		jval<int32_t>(int32_t{v >> 32}), // highBits
-		v8::False(isolate), // unsigned
-	};
-	return long_js_from_bits->Call(ctx, v8::Undefined(isolate), 3, args).ToLocalChecked();
+	return v8::BigInt::New(v8::Isolate::GetCurrent(), v);
 }
 
 template<>
