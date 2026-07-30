@@ -26,17 +26,14 @@ target_include_directories(modules SYSTEM PUBLIC
 # Embed a JS file as a constexpr char[] in a generated header.
 # Included automatically by modules/CMakeLists.txt after the 'modules' target is created.
 
-set(_LONG_JS_PATH ${CMAKE_SOURCE_DIR}/modules/mod-nodejs/src/long-5.3.2.min.js)
 set(_INIT_SCRIPT_PATH ${CMAKE_SOURCE_DIR}/modules/mod-nodejs/src/init-script.js)
 set(_HEADER_SOURCE_PATH ${CMAKE_SOURCE_DIR}/modules/mod-nodejs/src/NodeEmbeddedScriptFiles.h.in)
 set(_GENERATED_HEADER ${CMAKE_BINARY_DIR}/mod-nodejs/NodeEmbeddedScriptFiles.h)
 
 set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
-        ${_LONG_JS_PATH}
         ${_INIT_SCRIPT_PATH}
 )
 
-file(READ ${_LONG_JS_PATH} _LONG_JS_CONTENT)
 file(READ ${_INIT_SCRIPT_PATH} _INIT_SCRIPT_CONTENT)
 
 configure_file(${_HEADER_SOURCE_PATH} ${_GENERATED_HEADER} @ONLY)

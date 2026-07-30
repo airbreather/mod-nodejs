@@ -316,40 +316,6 @@ inline void NodeJs::run_scoped(std::function<void()> const & f) const {
 	log_and_reset_if_signaled(try_catch);
 }
 
-std::optional<uint64_t> NodeJs::get_u64(v8::Local<v8::Value> v) const {
-	if (v->IsExternal()) {
-		return reinterpret_cast<uint64_t>(v.As<v8::External>()->Value(v8::kExternalPointerTypeTagDefault));
-	}
-	auto norm = normalize_long_like_.Get(
-		setup_->isolate()
-	)->Call(
-		setup_->context(),
-		acore_.Get(setup_->isolate()),
-		1,
-		&v
-	).ToLocalChecked();
-	return norm->IsNumber()
-		? uint64_t{norm.As<v8::Number>()->NumberValue(setup_->context()).ToChecked()}
-		: norm.As<v8::BigInt>()->Uint64Value();
-}
-
-std::optional<int64_t> NodeJs::get_i64(v8::Local<v8::Value> v) const {
-	if (v->IsExternal()) {
-		return reinterpret_cast<int64_t>(v.As<v8::External>()->Value(v8::kExternalPointerTypeTagDefault));
-	}
-	auto norm = normalize_long_like_.Get(
-		setup_->isolate()
-	)->Call(
-		setup_->context(),
-		acore_.Get(setup_->isolate()),
-		1,
-		&v
-	).ToLocalChecked();
-	return norm->IsNumber()
-		? int64_t{norm.As<v8::Number>()->NumberValue(setup_->context()).ToChecked()}
-	: norm.As<v8::BigInt>()->Uint64Value();
-}
-
 std::optional<std::chrono::time_point<std::chrono::utc_clock, std::chrono::milliseconds>> NodeJs::convert_instant(v8::Local<v8::Object> v) const {
 	auto lng_maybe = cval<int64_t>(v, "epochMilliseconds");
 	if (!lng_maybe) {
@@ -431,22 +397,12 @@ v8::Local<v8::Value> NodeJs::load_environment_callback(node::StartExecutionCallb
 	instance()->reg_template<NodeJs *>(jcreate_template<NodeJs *>());
 	auto const isolate = v8::Isolate::GetCurrent();
 	auto const context = isolate->GetCurrentContext();
-	auto const global_this = context->Global();
 
-	// load Long.js
 	v8::Local<v8::Value> args[] = {
-		jstr(LONGJS_SCRIPT),
+		jstr(INIT_SCRIPT),
 		v8::Integer::New(isolate, static_cast<int>(node::ModuleFormat::kModule)),
 		jstr_intern("internal"),
 	};
-	v8::Local<v8::Value> long_result;
-	if (!info.run_module()->Call(context, context->Global(), 3, args).ToLocal(&long_result)) {
-		return {};
-	}
-
-	global_this->Set(context, jstr_intern("Long"), long_result).Check();
-
-	args[0] = jstr(INIT_SCRIPT);
 	v8::Local<v8::Object> init_result;
 	if (!info.run_module()->Call(context, context->Global(), 3, args).As<v8::Object>().ToLocal(&init_result)) {
 		return {};
@@ -484,11 +440,6 @@ void NodeJs::actual_init() {
 			jstr_intern("Acore")
 		).As<v8::Object>().ToLocalChecked();
 		acore_ = v8::Global<v8::Object>(setup_->isolate(), acore);
-		auto const long_js = global_this->Get(
-			setup_->context(),
-			jstr_intern("Long")
-		).As<v8::Object>().ToLocalChecked();
-		long_js_ = v8::Global<v8::Object>(setup_->isolate(), long_js);
 		auto const hooks = acore->Get(
 			setup_->context(),
 			jstr_intern("hooks")
@@ -499,11 +450,6 @@ void NodeJs::actual_init() {
 			jstr_intern("emit")
 		).As<v8::Function>().ToLocalChecked();
 		acore_hooks_emit_ = v8::Global<v8::Function>(setup_->isolate(), emit);
-		auto const normalize_long_like = acore->Get(
-			setup_->context(),
-			jstr_intern("normalizeLongLike")
-		).As<v8::Function>().ToLocalChecked();
-		normalize_long_like_ = v8::Global<v8::Function>(setup_->isolate(), normalize_long_like);
 		if (
 			auto const script_path = sConfigMgr->GetOption<std::string>("NodeJs.Script", "");
 			!script_path.empty()

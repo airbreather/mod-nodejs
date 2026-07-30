@@ -1,5 +1,3 @@
-import Long from 'long';
-
 declare global {
 	namespace Acore {
 		class Field {
@@ -13,8 +11,8 @@ declare global {
 			getI16(): number;
 			getU32(): number;
 			getI32(): number;
-			getU64(): number | (Long & { unsigned: true });
-			getI64(): number | (Long & { unsigned: false });
+			getU64(): number | bigint;
+			getI64(): number | bigint;
 			getF32(): number;
 			getF64(): number;
 			getString(): string;

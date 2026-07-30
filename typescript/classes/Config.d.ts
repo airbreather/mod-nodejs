@@ -1,5 +1,3 @@
-import type Long from 'long';
-
 declare global {
 	namespace Acore {
 		class Config {
@@ -16,8 +14,8 @@ declare global {
 			static getI16(): number;
 			static getU32(): number;
 			static getI32(): number;
-			static getU64(): number | (Long & { unsigned: true });
-			static getI64(): number | (Long & { unsigned: false });
+			static getU64(): number | bigint;
+			static getI64(): number | bigint;
 		}
 	}
 }

@@ -6,19 +6,6 @@ import util from 'node:util';
 // it's just so much more convenient to write some of this code in JavaScript.
 export function finishInit(acore, addListenerCallback, removeListenerCallback) {
 	acore.hooks = new EventEmitter().setMaxListeners(0);
-	// TODO: this will probably go to the C++ side
-	// just trying to wrap up this commit once I see it work.
-	acore.normalizeLongLike = ll => {
-		if (typeof ll == 'number') {
-			return ll;
-		}
-		if (!globalThis.Long.isLong(ll)) {
-			ll = globalThis.Long.fromValue(ll);
-		}
-		return ll.isSafeInteger()
-			? ll.toNumber()
-			: ll.toBigInt();
-	};
 
 	Object.freeze(acore);
 	Object.seal(acore.hooks);

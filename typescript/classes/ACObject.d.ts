@@ -1,5 +1,3 @@
-import Long from 'long';
-
 declare global {
 	namespace Acore {
 		class ACObject {
@@ -17,7 +15,7 @@ declare global {
 			getByteValue(field: number, offset: 0 | 1 | 2 | 3): number;
 			getUInt16Value(field: number, offset: 0 | 1): number;
 			getInt16Value(field: number, offset: 0 | 1): number;
-			getUInt64Value(field: number): number | (Long & { unsigned: true });
+			getUInt64Value(field: number): number | bigint;
 
 			setFlag(field: number, flag: number): void;
 			removeFlag(field: number, flag: number): void;
@@ -28,7 +26,7 @@ declare global {
 			setByteValue(field: number, offset: 0 | 1 | 2 | 3, value: number): void;
 			setUInt16Value(field: number, offset: 0 | 1, value: number): void;
 			setInt16Value(field: number, offset: 0 | 1, value: number): void;
-			setUInt64Value(field: number, value: LongLike): void;
+			setUInt64Value(field: number, value: number | bigint): void;
 		}
 	}
 }

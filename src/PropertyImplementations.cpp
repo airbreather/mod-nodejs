@@ -8,6 +8,7 @@
 #include "GameObject.h"
 #include "GameObjectData.h"
 #include "JtoC.h"
+#include "LFG.h"
 #include "LootMgr.h"
 #include "MotionMaster.h"
 #include "NodePropertySystem.h"
@@ -137,6 +138,7 @@ ENUM_JVAL_CVAL_IP(ItemModType)
 ENUM_JVAL_CVAL_IP(ItemSubclassArmor)
 ENUM_JVAL_CVAL_IP(ItemSubclassWeapon)
 ENUM_JVAL_CVAL_IP(Language)
+ENUM_JVAL_CVAL_IO(lfg::LfgRoles)
 ENUM_JVAL_CVAL_IP(LocaleConstant)
 ENUM_JVAL_CVAL_EP(LogLevel, uint8_t)
 ENUM_JVAL_CVAL_IP(LootState)

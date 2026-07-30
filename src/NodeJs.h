@@ -33,11 +33,9 @@ class NodeJs {
 	QueryCallbackProcessor query_processor_;
 	NodePostToEventLoopMaster * post_to_event_loop_master_ = nullptr;
 	std::vector<std::string> errors_;
-	v8::Global<v8::Object> long_js_;
 	v8::Global<v8::Object> acore_;
 	v8::Global<v8::Object> acore_hooks_;
 	v8::Global<v8::Function> acore_hooks_emit_;
-	v8::Global<v8::Function> normalize_long_like_;
 	bool run_microtasks_this_tick_ = false;
 
 	std::unordered_multimap<std::type_index, DerivedTemplateRTTIFunc> m_ac_derived_template_types;
@@ -112,8 +110,6 @@ public:
 
 	void run_scoped(std::function<void()> const & f) const;
 
-	std::optional<uint64_t> get_u64(v8::Local<v8::Value>) const;
-	std::optional<int64_t> get_i64(v8::Local<v8::Value>) const;
 	std::optional<std::chrono::time_point<std::chrono::utc_clock, std::chrono::milliseconds>> convert_instant(v8::Local<v8::Object>) const;
 
 	template <typename T, typename... Args>

@@ -1,5 +1,3 @@
-import type Long from 'long';
-
 declare global {
 	namespace Acore {
 		class Guild {
@@ -11,7 +9,7 @@ declare global {
 			readonly leaderGuid: ObjectGuidNative;
 			readonly memberCount: GuildMember[];
 			readonly members: number;
-			readonly totalBankMoney: number | (Long & { unsigned: true });
+			readonly totalBankMoney: number | bigint;
 			readonly createdDate: Temporal.Instant;
 			name: string;
 			motd: string;
@@ -22,7 +20,7 @@ declare global {
 			addMember(guid: ObjectGuid, rank?: GuildDefaultRanks | number): void;
 			removeMember(guid: ObjectGuid, kicked?: boolean): void;
 			disband(): void;
-			modifyBankMoney(money: LongLike): boolean;
+			modifyBankMoney(money: number | bigint): boolean;
 			// more to come, see the TODOs on the C++ side.
 		}
 	}

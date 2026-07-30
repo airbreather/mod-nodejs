@@ -70,7 +70,13 @@ std::optional<uint32_t> cval<uint32_t>(v8::Local<v8::Value> const v) {
 
 template<>
 std::optional<uint64_t> cval<uint64_t>(v8::Local<v8::Value> const v) {
-	return NodeJs::instance()->get_u64(v);
+	if (v->IsNumber()) {
+		return {v.As<v8::Number>()->Value()};
+	}
+	if (v->IsBigInt()) {
+		return {v.As<v8::BigInt>()->Uint64Value()};
+	}
+	return {};
 }
 
 template<>
@@ -121,7 +127,13 @@ std::optional<int32_t> cval<int32_t>(v8::Local<v8::Value> const v) {
 
 template<>
 std::optional<int64_t> cval<int64_t>(v8::Local<v8::Value> v) {
-	return NodeJs::instance()->get_i64(v);
+	if (v->IsNumber()) {
+		return {v.As<v8::Number>()->Value()};
+	}
+	if (v->IsBigInt()) {
+		return {v.As<v8::BigInt>()->Int64Value()};
+	}
+	return {};
 }
 
 template<>

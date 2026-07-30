@@ -1,4 +1,3 @@
-import Long from 'long';
 import { EventEmitter } from 'node:events';
 
 type HooksConforming = {
@@ -6,13 +5,6 @@ type HooksConforming = {
 };
 
 declare global {
-	type LongLike =
-		| Long
-		| number
-		| bigint
-		| string
-		| { low: number; high: number; unsigned: boolean };
-
 	namespace Acore {
 		const hooks: EventEmitter<HooksConforming>;
 
