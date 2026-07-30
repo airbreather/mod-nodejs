@@ -55,6 +55,8 @@ list(APPEND ${PRIVATE_SOURCES} (
         src/templates/_GlobalFunctions.cpp
         src/templates/_InteropTemplates.cpp
         src/templates/ACObjectTemplate.cpp
+        src/templates/AuctionHouseTemplate.cpp
+        src/templates/AuctionTemplate.cpp
         src/templates/AuraApplicationTemplate.cpp
         src/templates/AuraEffectTemplate.cpp
         src/templates/AuraTemplate.cpp

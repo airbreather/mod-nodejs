@@ -9,6 +9,7 @@
 #include "NodeJs.h"
 #include "NodePropertySystem.h"
 
+class AuctionHouseObject;
 class Aura;
 class Battleground;
 class BattlegroundQueue;
@@ -18,7 +19,6 @@ class ChatHandler;
 class ConfigMgr;
 class Corpse;
 class Creature;
-class CreatureTemplate;
 class DynamicObject;
 class GameObject;
 class GmTicket;
@@ -48,8 +48,10 @@ class Unit;
 class Vehicle;
 class WorldObject;
 class WorldPacket;
+struct AuctionEntry;
 struct Condition;
 struct ConditionSourceInfo;
+struct CreatureTemplate;
 struct ItemTemplate;
 struct Loot;
 struct SpellChainNode;
@@ -75,6 +77,8 @@ v8::Local<v8::FunctionTemplate> jcreate_template<NodeJs *>() {
 #define REGISTER_CLASS_PROP_RO(tclass) REGISTER_CLASS_PROP_SPLIT_NAMES(tclass const, tclass)
 
 	REGISTER_CLASS_PROP_SPLIT_NAMES(Object, ACObject)
+	REGISTER_CLASS_PROP_SPLIT_NAMES(AuctionEntry, Auction)
+	REGISTER_CLASS_PROP_SPLIT_NAMES(AuctionHouseObject, AuctionHouse)
 	REGISTER_CLASS_PROP(Aura)
 	REGISTER_CLASS_PROP(Battleground)
 	REGISTER_CLASS_PROP(BattlegroundQueue)
