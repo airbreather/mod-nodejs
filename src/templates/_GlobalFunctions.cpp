@@ -51,6 +51,15 @@ void add_global_functions(TypedTemplate<NodeJs *> const ft) {
 	reg_method(ft, "characterDbQuery", [](NodeJs *, std::string s) {
 		return CharacterDatabase.Query(s);
 	});
+	reg_method(ft, "worldDbNonQuery", [](NodeJs *, std::string s) {
+		NodeJs::maybe_transactional(WorldDatabase, s);
+	});
+	reg_method(ft, "loginDbNonQuery", [](NodeJs *, std::string s) {
+		NodeJs::maybe_transactional(LoginDatabase, s);
+	});
+	reg_method(ft, "characterDbNonQuery", [](NodeJs *, std::string s) {
+		NodeJs::maybe_transactional(CharacterDatabase, s);
+	});
 	reg_method(ft, "getCurrTime", [](NodeJs *) {
 		return getMSTime();
 	});

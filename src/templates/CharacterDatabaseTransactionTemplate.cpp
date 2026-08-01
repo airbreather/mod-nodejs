@@ -15,21 +15,11 @@ v8::Local<v8::FunctionTemplate> jcreate_template<CharacterDatabaseTransaction *>
 	ft->SetClassName(jstr_intern("CharacterDatabaseTransaction"));
 
 	reg_static_method(ft, "runSync", [](v8::Local<v8::Function> f) {
-		auto const isolate = v8::Isolate::GetCurrent();
-		if (!NodeJs::instance()->enter_transaction(CharacterDatabase)) {
-			isolate->ThrowError("Already in a transaction (MySQL does not support nesting).");
-			return;
-		}
-		v8::TryCatch try_catch(isolate);
-		auto trans = *NodeJs::instance()->current_transaction(CharacterDatabase);
-		auto jtrans = jval(trans);
-		auto fail = f->Call(isolate->GetCurrentContext(), jnull(), 1, &jtrans).IsEmpty();
-		if (fail) {
-			try_catch.ReThrow();
-		} else {
-			CharacterDatabase.CommitTransaction(*trans);
-		}
-		NodeJs::instance()->exit_transaction(std::move(*trans));
+		NodeJs::transactional(CharacterDatabase, [f](auto trans) {
+			auto jtrans = jval(&trans);
+			f->Call(v8::Isolate::GetCurrent()->GetCurrentContext(), jnull(), 1, &jtrans)
+				.FromMaybe(jtrans); // just get rid of the warning
+		});
 	});
 
 	reg_method(ft, "appendRaw", [](CharacterDatabaseTransaction * t, std::string cmd) {

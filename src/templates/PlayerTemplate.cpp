@@ -356,7 +356,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 			: 0;
 	});
 	reg_prop_ro(ft, "isBot", [](Player * player) {
-		#if defined(MOD_PLAYERBOTS)
+		#ifdef MOD_PLAYERBOTS
 			return player->GetSession()->IsBot();
 		#else
 			return false;

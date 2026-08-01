@@ -65,14 +65,6 @@ public:
 	}
 };
 
-class WrongTransactionError : public std::runtime_error {
-public:
-	explicit WrongTransactionError()
-		: std::runtime_error(
-			"NodeRuntime: tried to complete a different transaction than what we began.") {
-	}
-};
-
 class CannotRegisterSameCommandTwice : public std::logic_error {
 public:
 	explicit CannotRegisterSameCommandTwice()
@@ -474,6 +466,28 @@ void NodeJs::actual_init() {
 	});
 }
 
+template<>
+CharacterDatabaseTransaction * NodeJs::transaction_var<CharacterDatabaseConnection>() {
+	return &current_character_db_transaction_;
+}
+
+template<>
+LoginDatabaseTransaction * NodeJs::transaction_var<LoginDatabaseConnection>() {
+	return &current_login_db_transaction_;
+}
+
+template<>
+WorldDatabaseTransaction * NodeJs::transaction_var<WorldDatabaseConnection>() {
+	return &current_world_db_transaction_;
+}
+
+#ifdef MOD_PLAYERBOTS
+template<>
+PlayerbotsDatabaseTransaction * NodeJs::transaction_var<PlayerbotsDatabaseConnection>() {
+	return &current_playerbots_db_transaction_;
+}
+#endif
+
 void NodeJs::post_to_event_loop(std::function<void()> f) const {
 	post_to_event_loop_master_->post(std::move(f));
 }
@@ -488,78 +502,6 @@ v8::Local<v8::Promise> NodeJs::login_db_query_async(std::string_view s) {
 
 v8::Local<v8::Promise> NodeJs::character_db_query_async(std::string_view s) {
 	return db_query_async(CharacterDatabase, s);
-}
-
-template<>
-std::optional<CharacterDatabaseTransaction *> NodeJs::current_transaction<CharacterDatabaseConnection>(DatabaseWorkerPool<CharacterDatabaseConnection> &) {
-	return current_character_db_transaction_.get()
-		? &current_character_db_transaction_
-		: std::optional<CharacterDatabaseTransaction *>{};
-}
-
-template<>
-bool NodeJs::enter_transaction<CharacterDatabaseConnection>(DatabaseWorkerPool<CharacterDatabaseConnection> &) {
-	if (current_character_db_transaction_) {
-		return false;
-	}
-	current_character_db_transaction_ = CharacterDatabase.BeginTransaction();
-	return true;
-}
-
-template<>
-void NodeJs::exit_transaction<CharacterDatabaseConnection>(SQLTransaction<CharacterDatabaseConnection> && trans) {
-	if (current_character_db_transaction_.get() != std::move(trans).get()) {
-		throw WrongTransactionError();
-	}
-	current_character_db_transaction_.reset();
-}
-
-template<>
-std::optional<LoginDatabaseTransaction *> NodeJs::current_transaction<LoginDatabaseConnection>(DatabaseWorkerPool<LoginDatabaseConnection> &) {
-	return current_login_db_transaction_.get()
-		? &current_login_db_transaction_
-		: std::optional<LoginDatabaseTransaction *>{};
-}
-
-template<>
-bool NodeJs::enter_transaction<LoginDatabaseConnection>(DatabaseWorkerPool<LoginDatabaseConnection> &) {
-	if (current_login_db_transaction_) {
-		return false;
-	}
-	current_login_db_transaction_ = LoginDatabase.BeginTransaction();
-	return true;
-}
-
-template<>
-void NodeJs::exit_transaction<LoginDatabaseConnection>(SQLTransaction<LoginDatabaseConnection> && trans) {
-	if (current_login_db_transaction_.get() != std::move(trans).get()) {
-		throw WrongTransactionError();
-	}
-	current_login_db_transaction_.reset();
-}
-
-template<>
-std::optional<WorldDatabaseTransaction *> NodeJs::current_transaction<WorldDatabaseConnection>(DatabaseWorkerPool<WorldDatabaseConnection> &) {
-	return current_world_db_transaction_.get()
-		? &current_world_db_transaction_
-		: std::optional<WorldDatabaseTransaction *>{};
-}
-
-template<>
-bool NodeJs::enter_transaction<WorldDatabaseConnection>(DatabaseWorkerPool<WorldDatabaseConnection> &) {
-	if (current_world_db_transaction_) {
-		return false;
-	}
-	current_world_db_transaction_ = WorldDatabase.BeginTransaction();
-	return true;
-}
-
-template<>
-void NodeJs::exit_transaction<WorldDatabaseConnection>(SQLTransaction<WorldDatabaseConnection> && trans) {
-	if (current_world_db_transaction_.get() != std::move(trans).get()) {
-		throw WrongTransactionError();
-	}
-	current_world_db_transaction_.reset();
 }
 
 template <typename T>

@@ -40,6 +40,9 @@ class NodeJs {
 	CharacterDatabaseTransaction current_character_db_transaction_ = {};
 	LoginDatabaseTransaction current_login_db_transaction_ = {};
 	WorldDatabaseTransaction current_world_db_transaction_ = {};
+#ifdef MOD_PLAYERBOTS
+	PlayerbotsDatabaseTransaction current_playerbots_db_transaction_ = {};
+#endif
 
 	std::unordered_multimap<std::type_index, DerivedTemplateRTTIFunc> m_ac_derived_template_types;
 	std::unordered_map<std::type_index, v8::Global<v8::FunctionTemplate>> m_ac_templates;
@@ -142,15 +145,32 @@ public:
 
 	template <typename T>
 	requires std::is_base_of_v<MySQLConnection, T>
-	std::optional<SQLTransaction<T> *> current_transaction(DatabaseWorkerPool<T> &);
+	static void maybe_transactional(DatabaseWorkerPool<T> & db, std::string_view cmd) {
+		SQLTransaction<T>* tv = instance()->transaction_var<T>();
+		db.ExecuteOrAppend(*tv, cmd);
+	}
 
-	template <typename T>
-	requires std::is_base_of_v<MySQLConnection, T>
-	bool enter_transaction(DatabaseWorkerPool<T> &);
-
-	template <typename T>
-	requires std::is_base_of_v<MySQLConnection, T>
-	void exit_transaction(SQLTransaction<T> &&);
+	template <typename T, typename F>
+	requires std::is_base_of_v<MySQLConnection, T> && std::is_void_v<std::invoke_result_t<F, SQLTransaction<T> &&>>
+	static void transactional(DatabaseWorkerPool<T> & db, F && fn) {
+		SQLTransaction<T>* tv = instance()->transaction_var<T>();
+		bool create_transaction = *tv == nullptr;
+		SQLTransaction<T> trans = create_transaction
+			? *tv = db.BeginTransaction()
+			: *tv;
+		auto isolate = v8::Isolate::GetCurrent();
+		v8::TryCatch try_catch(isolate);
+		fn(std::move(trans));
+		if (create_transaction) {
+			if (!try_catch.HasCaught()) {
+				db.CommitTransaction(std::move(*tv));
+			}
+			tv->reset();
+		}
+		if (try_catch.HasCaught()) {
+			try_catch.ReThrow();
+		}
+	}
 
 private:
 	v8::Local<v8::FunctionTemplate> hook_arg_template(std::string const & hook_name, const std::vector<Arg *> & args);
@@ -163,6 +183,10 @@ private:
 	v8::Local<v8::Promise> db_query_async(DatabaseWorkerPool<T> & db, std::string_view s);
 
 	void actual_init();
+
+	template <typename T>
+	requires std::is_base_of_v<MySQLConnection, T>
+	SQLTransaction<T> * transaction_var();
 };
 
 #endif //MOD_NODEJS_NODEJS_H

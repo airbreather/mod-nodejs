@@ -91,7 +91,7 @@ ENUM_JVAL_CVAL_IP(AuraType)
 ENUM_JVAL_CVAL_EP(BattlegroundBracketId, uint8_t)
 ENUM_JVAL_CVAL_EP(BattlegroundDesertionType, uint8_t)
 ENUM_JVAL_CVAL_EP(BattlegroundTypeId, uint8_t)
-#if defined(MOD_PLAYERBOTS)
+#ifdef MOD_PLAYERBOTS
 	ENUM_JVAL_CVAL_EP(ChatMsg, uint32_t)
 #else
 	ENUM_JVAL_CVAL_IP(ChatMsg)
@@ -111,10 +111,11 @@ ENUM_JVAL_CVAL_EC(CreatureGroundMovementType, uint8_t)
 ENUM_JVAL_CVAL_EC(CreatureRandomMovementType, uint8_t)
 ENUM_JVAL_CVAL_IP(CurrentSpellTypes)
 ENUM_JVAL_CVAL_EP(DamageEffectType, uint8_t)
+ENUM_JVAL_CVAL_EC(DatabaseSelection, uint8_t)
 ENUM_JVAL_CVAL_EC(DatabaseFieldTypes, uint8_t)
 ENUM_JVAL_CVAL_EC(DeathState, uint8_t)
 ENUM_JVAL_CVAL_EP(Difficulty, uint8_t)
-#if defined(MOD_PLAYERBOTS)
+#ifdef MOD_PLAYERBOTS
 ENUM_JVAL_CVAL_EP(DispelType, uint8_t)
 #else
 ENUM_JVAL_CVAL_IP(DispelType)

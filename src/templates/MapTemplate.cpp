@@ -61,7 +61,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Map *>() {
 		return std::string(m->GetMapName());
 	});
 	reg_prop_ro(ft, "players", [](Map * map) {
-		std::vector<MapReference> players{map->GetPlayers().begin(), map->GetPlayers().end()};
+		std::vector players(map->GetPlayers().getFirst(), map->GetPlayers().getLast());
 		return jarr(players | std::ranges::views::transform([](MapReference const & r) { return r.GetSource(); }));
 	});
 
