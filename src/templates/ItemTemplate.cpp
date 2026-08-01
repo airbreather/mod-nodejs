@@ -33,6 +33,10 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Item *>() {
 	ft->SetClassName(jstr_intern("Item"));
  	ft.safe_inherit<Object *>();
 
+	reg_static_method(ft, "create", [](uint32_t entry, uint32_t count, std::optional<Player *> player, std::optional<uint32_t> random_property_id, std::optional<bool> temp) {
+		return jmove(Item::CreateItem(entry, count, player.value_or(nullptr), false, random_property_id.value_or(0), temp.value_or(false)));
+	});
+
 	reg_prop_ro(ft, "isBoundAccountWide", [](Item * item) {
 		return item->IsBoundAccountWide();
 	});

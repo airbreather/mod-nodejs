@@ -12,10 +12,19 @@ template<>
 v8::Local<v8::FunctionTemplate> jcreate_template<AuctionHouseObject *>() {
 	TypedTemplate<AuctionHouseObject *> const ft = jctor();
 
-	ft->SetClassName(jstr_intern("AuctionHouseObject"));
+	ft->SetClassName(jstr_intern("AuctionHouse"));
 
 	reg_static_method(ft, "forId", [](AuctionHouseId id) {
 		return sAuctionMgr->GetAuctionsMapByHouseId(id);
+	});
+	// TODO: only the ItemTemplate is used, and only its sell price at that.
+	// so we shouldn't need a fully realized Item object to call this.
+	reg_static_method(ft, "getAuctionDeposit", [](AuctionHouseId id, uint32_t time, Item * item, uint32_t count) {
+		auto ah = sAuctionMgr->GetAuctionHouseEntryFromHouse(id);
+		return sAuctionMgr->GetAuctionDeposit(ah, time, item, count);
+	});
+	reg_static_method(ft, "getAItem", [](ObjectGuid guid) {
+		return sAuctionMgr->GetAItem(guid);
 	});
 
 	reg_prop_ro(ft, "auctionCount", [](AuctionHouseObject * ah) {
@@ -25,8 +34,12 @@ v8::Local<v8::FunctionTemplate> jcreate_template<AuctionHouseObject *>() {
 		return jarr(ah->GetAuctions() | std::ranges::views::values);
 	});
 
-	reg_method(ft, "addAuction", [](AuctionHouseObject * ah, AuctionEntry * auction) {
+	reg_method(ft, "addAuction", [](AuctionHouseObject * ah, AuctionEntry * auction, Item * item) {
+		sAuctionMgr->AddAItem(item);
 		ah->AddAuction(auction);
+	});
+	reg_method(ft, "getAuction", [](AuctionHouseObject * ah, uint32_t id) {
+		return ah->GetAuction(id);
 	});
 	reg_method(ft, "removeAuction", [](AuctionHouseObject * ah, AuctionEntry * auction) {
 		return ah->RemoveAuction(auction);

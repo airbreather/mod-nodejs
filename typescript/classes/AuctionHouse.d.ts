@@ -1,0 +1,18 @@
+declare global {
+	namespace Acore {
+		class AuctionHouse {
+			static forId(id: AuctionHouseId): AuctionHouse;
+			static getAuctionDeposit(id: AuctionHouseId, time: number, item: Item, count: number): number;
+			static getAItem(guid: ObjectGuid): Item | undefined;
+
+			readonly auctionCount: number;
+			readonly allAuctions: Auction[];
+
+			addAuction(auction: Auction, item: Item): void;
+			getAuction(id: number): Auction | undefined;
+			removeAuction(id: number): boolean;
+			update(): void;
+		}
+	}
+}
+export {};

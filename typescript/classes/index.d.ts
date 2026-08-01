@@ -1,5 +1,7 @@
 export * from './ACMap';
 export * from './ACObject';
+export * from './Auction';
+export * from './AuctionHouse';
 export * from './Aura';
 export * from './BattlegroundQueue';
 export * from './Battleground';
