@@ -37,6 +37,9 @@ class NodeJs {
 	v8::Global<v8::Object> acore_hooks_;
 	v8::Global<v8::Function> acore_hooks_emit_;
 	bool run_microtasks_this_tick_ = false;
+	CharacterDatabaseTransaction current_character_db_transaction_ = {};
+	LoginDatabaseTransaction current_login_db_transaction_ = {};
+	WorldDatabaseTransaction current_world_db_transaction_ = {};
 
 	std::unordered_multimap<std::type_index, DerivedTemplateRTTIFunc> m_ac_derived_template_types;
 	std::unordered_map<std::type_index, v8::Global<v8::FunctionTemplate>> m_ac_templates;
@@ -136,6 +139,18 @@ public:
 		instance()->invoke_hook_(hook_name, args_vec);
 		LOG_TRACE("module.nodejs", "end hook {}", hook_name);
 	}
+
+	template <typename T>
+	requires std::is_base_of_v<MySQLConnection, T>
+	std::optional<SQLTransaction<T> *> current_transaction(DatabaseWorkerPool<T> &);
+
+	template <typename T>
+	requires std::is_base_of_v<MySQLConnection, T>
+	bool enter_transaction(DatabaseWorkerPool<T> &);
+
+	template <typename T>
+	requires std::is_base_of_v<MySQLConnection, T>
+	void exit_transaction(SQLTransaction<T> &&);
 
 private:
 	v8::Local<v8::FunctionTemplate> hook_arg_template(std::string const & hook_name, const std::vector<Arg *> & args);

@@ -4,6 +4,7 @@ export * from './Aura';
 export * from './BattlegroundQueue';
 export * from './Battleground';
 export * from './ByteBuffer';
+export * from './CharacterDatabaseTransaction';
 export * from './ChatCommandBuilder';
 export * from './ChatHandler';
 export * from './Condition';

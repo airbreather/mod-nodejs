@@ -83,6 +83,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<NodeJs *>() {
 	REGISTER_CLASS_PROP(Battleground)
 	REGISTER_CLASS_PROP(BattlegroundQueue)
 	REGISTER_CLASS_PROP(ByteBuffer)
+	REGISTER_CLASS_PROP(CharacterDatabaseTransaction)
 	REGISTER_CLASS_PROP_SPLIT_NAMES(ChatCommandBuilderBuilderBox, ChatCommandBuilder)
 	REGISTER_CLASS_PROP(ChatHandler)
 	REGISTER_CLASS_PROP(Condition)
