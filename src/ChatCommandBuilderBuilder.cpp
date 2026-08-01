@@ -10,16 +10,16 @@
 #include "NodePropertySystem.h"
 
 namespace {
-	class IncompleteVariantError : public std::runtime_error {
+	class IncompleteVariantError : public std::logic_error {
 	public:
 		explicit IncompleteVariantError()
-			: std::runtime_error("Tried to build a runnable command without all required parameters.") {
+			: std::logic_error("Tried to build a runnable command without all required parameters.") {
 		}
 	};
-	class IncompatibleVariantError : public std::runtime_error {
+	class IncompatibleVariantError : public std::logic_error {
 	public:
 		explicit IncompatibleVariantError()
-			: std::runtime_error("Tried to mix mutually exclusive calls to ChatCommandBuilderBuilder.") {
+			: std::logic_error("Tried to mix mutually exclusive calls to ChatCommandBuilderBuilder.") {
 		}
 	};
 	class TooManyCommandsError : public std::runtime_error {

@@ -57,10 +57,10 @@ v8::Local<v8::String> jstr_intern(std::string_view const s) {
 // be able to do Player stuff with it, provided that they also have reason to know what type it is.
 // fortunately, we have one bulletproof way to know which types the
 
-class UntemplatedObjectType : public std::runtime_error {
+class UntemplatedObjectType : public std::logic_error {
 public:
 	explicit UntemplatedObjectType(TypeID type_id)
-		: std::runtime_error(Acore::StringFormat("wrap_object: Object type {} does not have a template", type_id)) {
+		: std::logic_error(Acore::StringFormat("wrap_object: Object type {} does not have a template", type_id)) {
 	}
 };
 

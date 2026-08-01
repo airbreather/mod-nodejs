@@ -5,17 +5,17 @@
 #include <v8-object.h>
 
 namespace {
-class NotOurTemplatedObjectError : public std::runtime_error {
+class NotOurTemplatedObjectError : public std::logic_error {
 public:
 	explicit NotOurTemplatedObjectError()
-		: std::runtime_error("The object was not created by one of our templates - i.e., it has fewer than 2 internal fields.") {
+		: std::logic_error("The object was not created by one of our templates - i.e., it has fewer than 2 internal fields.") {
 	}
 };
 
-class AlreadyWrappedError : public std::runtime_error {
+class AlreadyWrappedError : public std::logic_error {
 public:
 	explicit AlreadyWrappedError()
-		: std::runtime_error("The v8 object is already wrapping a native object. It cannot be modified to wrap a different one.") {
+		: std::logic_error("The v8 object is already wrapping a native object. It cannot be modified to wrap a different one.") {
 	}
 };
 

@@ -65,10 +65,10 @@ public:
 	}
 };
 
-class CannotRegisterSameCommandTwice : public std::runtime_error {
+class CannotRegisterSameCommandTwice : public std::logic_error {
 public:
 	explicit CannotRegisterSameCommandTwice()
-		: std::runtime_error(
+		: std::logic_error(
 			"NodeRuntime: cannot register the same command more than once.") {
 	}
 };

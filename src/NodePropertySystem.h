@@ -8,10 +8,10 @@
 #include "NodeJs.h"
 #include "NodeWrappedObject.h"
 
-class DifferentSettersForSameGetter : public std::runtime_error {
+class DifferentSettersForSameGetter : public std::logic_error {
 public:
 	explicit DifferentSettersForSameGetter()
-		: std::runtime_error("NodeRuntime: cannot have different setters for the same getter.") {
+		: std::logic_error("NodeRuntime: cannot have different setters for the same getter.") {
 	}
 };
 
