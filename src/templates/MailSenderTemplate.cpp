@@ -29,6 +29,9 @@ v8::Local<v8::FunctionTemplate> jcreate_template<MailSender *>() {
 		return s->GetStationery();
 	});
 
+	reg_static_method(ft, "thePostmaster", [](std::optional<MailStationery> stationery) {
+		return jnew<MailSender *>(MAIL_CREATURE, 34337, stationery.value_or(MAIL_STATIONERY_DEFAULT));
+	});
 	reg_static_method(ft, "forCreature", [](uint32_t entry, std::optional<MailStationery> stationery) {
 		return jnew<MailSender *>(MAIL_CREATURE, entry, stationery.value_or(MAIL_STATIONERY_DEFAULT));
 	});

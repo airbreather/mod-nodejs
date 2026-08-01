@@ -12,6 +12,7 @@ declare global {
 			readonly senderId: number;
 			readonly stationery: MailStationery;
 
+			static thePostmaster(stationery?: MailStationery): MailSender;
 			static forCreature(entry: number, stationery?: MailStationery): MailSender;
 			static forPlayer(guid: ObjectGuid, stationery?: MailStationery): MailSender;
 			static forGameObject(entry: number, stationery?: MailStationery): MailSender;

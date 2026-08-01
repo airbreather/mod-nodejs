@@ -3,6 +3,7 @@
 #include <v8-local-handle.h>
 #include <v8-object.h>
 
+#include "AuctionHouseMgr.h"
 #include "Common.h"
 #include "CtoJ.h"
 #include "GameObject.h"
@@ -83,7 +84,7 @@ ENUM_JVAL_CVAL_IP(AcoreStrings)
 ENUM_JVAL_CVAL_EP(ActiveStates, uint8_t)
 ENUM_JVAL_CVAL_EP(ArenaTeamInfoType, uint8_t)
 ENUM_JVAL_CVAL_IP(AtLoginFlags)
-ENUM_JVAL_CVAL_EP(AuctionHouseId, uint8_t)
+ENUM_JVAL_CVAL_EC(AuctionHouseId, uint8_t)
 ENUM_JVAL_CVAL_EP(AuraRemoveMode, uint8_t)
 ENUM_JVAL_CVAL_IP(AuraStateType)
 ENUM_JVAL_CVAL_IP(AuraType)
@@ -143,6 +144,7 @@ ENUM_JVAL_CVAL_IP(LocaleConstant)
 ENUM_JVAL_CVAL_EP(LogLevel, uint8_t)
 ENUM_JVAL_CVAL_IP(LootState)
 ENUM_JVAL_CVAL_IP(LootType)
+ENUM_JVAL_CVAL_IP(MailAuctionAnswers)
 ENUM_JVAL_CVAL_EP(MailCheckMask, uint8_t)
 ENUM_JVAL_CVAL_IP(MailMessageType)
 ENUM_JVAL_CVAL_IP(MailStationery)

@@ -31,6 +31,9 @@ v8::Local<v8::FunctionTemplate> jcreate_template<AuctionHouseObject *>() {
 	reg_method(ft, "removeAuction", [](AuctionHouseObject * ah, AuctionEntry * auction) {
 		return ah->RemoveAuction(auction);
 	});
+	reg_method(ft, "update", [](AuctionHouseObject * ah) {
+		ah->Update();
+	});
 
 	return ft;
 }
