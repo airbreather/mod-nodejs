@@ -10,7 +10,7 @@
 
 #include "AsyncCallbackProcessor.h"
 #include "ChatCommand.h"
-#include "DatabaseWorkerPool.h"
+#include "Db.h"
 #include "Log.h"
 #include "MySQLConnection.h"
 #include "NodeJPropHelpers.h"
@@ -37,12 +37,6 @@ class NodeJs {
 	v8::Global<v8::Object> acore_hooks_;
 	v8::Global<v8::Function> acore_hooks_emit_;
 	bool run_microtasks_this_tick_ = false;
-	CharacterDatabaseTransaction current_character_db_transaction_ = {};
-	LoginDatabaseTransaction current_login_db_transaction_ = {};
-	WorldDatabaseTransaction current_world_db_transaction_ = {};
-#ifdef MOD_PLAYERBOTS
-	PlayerbotsDatabaseTransaction current_playerbots_db_transaction_ = {};
-#endif
 
 	std::unordered_multimap<std::type_index, DerivedTemplateRTTIFunc> m_ac_derived_template_types;
 	std::unordered_map<std::type_index, v8::Global<v8::FunctionTemplate>> m_ac_templates;
@@ -107,9 +101,21 @@ public:
 	std::vector<ChatCommandBuilder> get_commands();
 	bool exec_chat_command(size_t, ChatHandler *, char const *) const;
 
-	v8::Local<v8::Promise> world_db_query_async(std::string_view s);
-	v8::Local<v8::Promise> login_db_query_async(std::string_view s);
-	v8::Local<v8::Promise> character_db_query_async(std::string_view s);
+	template <Db Db>
+	v8::Local<v8::Promise> db_query_async(std::string_view s) {
+		auto const prom = v8::Promise::Resolver::New(setup_->context()).ToLocalChecked();
+		auto resolver_ref = new v8::Global<v8::Promise::Resolver>(setup_->isolate(), prom);
+		query_processor_.AddCallback(db<Db>().worker().AsyncQuery(s).WithCallback([this, resolver_ref](QueryResult result) {
+			post_to_event_loop([this, resolver_ref, result = std::move(result)] {
+				auto const resolver = resolver_ref->Get(setup_->isolate());
+				delete resolver_ref;
+				resolver->Resolve(setup_->context(), jval(result)).Check();
+				// TODO: figure out why DrainTasks isn't enough to make this respond in a timely fashion
+				run_microtasks_this_tick_ = true;
+			});
+		}));
+		return prom->GetPromise();
+	}
 
 	void tick();
 	void run_garbage_collection_once() const;
@@ -143,50 +149,13 @@ public:
 		LOG_TRACE("module.nodejs", "end hook {}", hook_name);
 	}
 
-	template <typename T>
-	requires std::is_base_of_v<MySQLConnection, T>
-	static void maybe_transactional(DatabaseWorkerPool<T> & db, std::string_view cmd) {
-		SQLTransaction<T>* tv = instance()->transaction_var<T>();
-		db.ExecuteOrAppend(*tv, cmd);
-	}
-
-	template <typename T, typename F>
-	requires std::is_base_of_v<MySQLConnection, T> && std::is_void_v<std::invoke_result_t<F, SQLTransaction<T> &&>>
-	static void transactional(DatabaseWorkerPool<T> & db, F && fn) {
-		SQLTransaction<T>* tv = instance()->transaction_var<T>();
-		bool create_transaction = *tv == nullptr;
-		SQLTransaction<T> trans = create_transaction
-			? *tv = db.BeginTransaction()
-			: *tv;
-		auto isolate = v8::Isolate::GetCurrent();
-		v8::TryCatch try_catch(isolate);
-		fn(std::move(trans));
-		if (create_transaction) {
-			if (!try_catch.HasCaught()) {
-				db.CommitTransaction(std::move(*tv));
-			}
-			tv->reset();
-		}
-		if (try_catch.HasCaught()) {
-			try_catch.ReThrow();
-		}
-	}
-
 private:
 	v8::Local<v8::FunctionTemplate> hook_arg_template(std::string const & hook_name, const std::vector<Arg *> & args);
 	std::unordered_map<std::string, v8::Global<v8::FunctionTemplate>>::iterator hook_arg_template_rare(std::string const & hook_name, const std::vector<Arg *> & args);
 	void invoke_hook_(std::string const & hook_name, std::vector<Arg *> & args);
 	static v8::Local<v8::Value> load_environment_callback(node::StartExecutionCallbackInfoWithModule const & info);
 
-	template <typename T>
-	requires std::is_base_of_v<MySQLConnection, T>
-	v8::Local<v8::Promise> db_query_async(DatabaseWorkerPool<T> & db, std::string_view s);
-
 	void actual_init();
-
-	template <typename T>
-	requires std::is_base_of_v<MySQLConnection, T>
-	SQLTransaction<T> * transaction_var();
 };
 
 #endif //MOD_NODEJS_NODEJS_H

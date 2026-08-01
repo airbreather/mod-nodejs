@@ -31,14 +31,14 @@ v8::Local<v8::FunctionTemplate> jcreate_template<MailDraft *>() {
 	});
 	reg_method(ft, "createAndAddItem", [](MailDraft * m, uint32_t entry, std::optional<uint32_t> const amount) {
 		auto const item = Item::CreateItem(entry, amount.value_or(1));
-		NodeJs::transactional(CharacterDatabase, [item](auto trans) {
+		db<Db::Character>().transactional([item](auto trans) {
 			item->SaveToDB(std::move(trans));
 		});
 		m->AddItem(item);
 		return item->GetGUID();
 	});
 	reg_method(ft, "send", [](MailDraft * m, ObjectGuid receiver_guid, MailSender const * sender, std::optional<MailCheckMask> checked, std::optional<uint32_t> deliver_delay, std::optional<uint32_t> custom_expiration) {
-		NodeJs::transactional(CharacterDatabase, [m, receiver_guid, sender, checked, deliver_delay, custom_expiration](auto trans) {
+		db<Db::Character>().transactional([m, receiver_guid, sender, checked, deliver_delay, custom_expiration](auto trans) {
 			// if the receiver is online, they'll need to get a packet, but you can send mail to players
 			// even if they're offline, so this is a less-common instance where null is perfectly fine.
 			auto const receiver_player = ObjectAccessor::FindConnectedPlayer(receiver_guid);
@@ -53,7 +53,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<MailDraft *>() {
 		});
 	});
 	reg_method(ft, "sendReturnToSender", [](MailDraft * m, uint32_t sender_acc, ObjectGuid sender_guid, ObjectGuid receiver_guid) {
-		NodeJs::transactional(CharacterDatabase, [m, sender_acc, sender_guid, receiver_guid](auto trans) {
+		db<Db::Character>().transactional([m, sender_acc, sender_guid, receiver_guid](auto trans) {
 			m->SendReturnToSender(sender_acc, sender_guid.GetCounter(), receiver_guid.GetCounter(), std::move(trans));
 		});
 	});

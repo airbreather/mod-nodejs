@@ -21,7 +21,6 @@
 #include "ChatCommandBuilderBuilder.h"
 #include "Config.h"
 #include "CtoJ.h"
-#include "DatabaseEnv.h"
 #include "Guild.h"
 #include "Log.h"
 #include "NodeEmbeddedScriptFiles.h"
@@ -466,57 +465,6 @@ void NodeJs::actual_init() {
 	});
 }
 
-template<>
-CharacterDatabaseTransaction * NodeJs::transaction_var<CharacterDatabaseConnection>() {
-	return &current_character_db_transaction_;
-}
-
-template<>
-LoginDatabaseTransaction * NodeJs::transaction_var<LoginDatabaseConnection>() {
-	return &current_login_db_transaction_;
-}
-
-template<>
-WorldDatabaseTransaction * NodeJs::transaction_var<WorldDatabaseConnection>() {
-	return &current_world_db_transaction_;
-}
-
-#ifdef MOD_PLAYERBOTS
-template<>
-PlayerbotsDatabaseTransaction * NodeJs::transaction_var<PlayerbotsDatabaseConnection>() {
-	return &current_playerbots_db_transaction_;
-}
-#endif
-
 void NodeJs::post_to_event_loop(std::function<void()> f) const {
 	post_to_event_loop_master_->post(std::move(f));
-}
-
-v8::Local<v8::Promise> NodeJs::world_db_query_async(std::string_view const s) {
-	return db_query_async(WorldDatabase, s);
-}
-
-v8::Local<v8::Promise> NodeJs::login_db_query_async(std::string_view s) {
-	return db_query_async(LoginDatabase, s);
-}
-
-v8::Local<v8::Promise> NodeJs::character_db_query_async(std::string_view s) {
-	return db_query_async(CharacterDatabase, s);
-}
-
-template <typename T>
-requires std::is_base_of_v<MySQLConnection, T>
-v8::Local<v8::Promise> NodeJs::db_query_async(DatabaseWorkerPool<T> & db, std::string_view s) {
-	auto const prom = v8::Promise::Resolver::New(setup_->context()).ToLocalChecked();
-	auto resolver_ref = new v8::Global<v8::Promise::Resolver>(setup_->isolate(), prom);
-	query_processor_.AddCallback(db.AsyncQuery(s).WithCallback([this, resolver_ref](QueryResult result) {
-		post_to_event_loop([this, resolver_ref, result = std::move(result)] {
-			auto const resolver = resolver_ref->Get(setup_->isolate());
-			delete resolver_ref;
-			resolver->Resolve(setup_->context(), jval(result)).Check();
-			// TODO: figure out why DrainTasks isn't enough to make this respond in a timely fashion
-			run_microtasks_this_tick_ = true;
-		});
-	}));
-	return prom->GetPromise();
 }

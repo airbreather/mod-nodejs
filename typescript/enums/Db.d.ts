@@ -1,5 +1,5 @@
 declare global {
-	const enum DatabaseSelection {
+	const enum Db {
 		Character = 0,
 		Login = 1,
 		World = 2,

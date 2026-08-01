@@ -74,12 +74,12 @@ v8::Local<v8::FunctionTemplate> jcreate_template<AuctionEntry *>() {
 	});
 
 	reg_method(ft, "deleteFromDB", [](AuctionEntry * auction) {
-		NodeJs::transactional(CharacterDatabase, [auction](auto trans) {
+		db<Db::Character>().transactional([auction](auto trans) {
 			auction->DeleteFromDB(std::move(trans));
 		});
 	});
 	reg_method(ft, "saveToDB", [](AuctionEntry * auction) {
-		NodeJs::transactional(CharacterDatabase, [auction](auto trans) {
+		db<Db::Character>().transactional([auction](auto trans) {
 			auction->SaveToDB(std::move(trans));
 		});
 	});

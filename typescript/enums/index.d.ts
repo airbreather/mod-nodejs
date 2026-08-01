@@ -25,6 +25,7 @@ export * from './CreatureType';
 export * from './CreatureTypeFlags';
 export * from './CurrentSpellTypes';
 export * from './DatabaseFieldTypes';
+export * from './Db';
 export * from './DeathState';
 export * from './Difficulty';
 export * from './DispelType';

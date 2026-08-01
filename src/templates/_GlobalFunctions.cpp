@@ -33,32 +33,65 @@ void add_global_functions(TypedTemplate<NodeJs *> const ft) {
 			g.GetCounter()
 		});
 	});
-	reg_method(ft, "worldDbQueryAsync", [](NodeJs *, std::string s) {
-		return NodeJs::instance()->world_db_query_async(s);
+	reg_method(ft, "dbQueryAsync", [](NodeJs *, Db db, std::string s) {
+		switch (db) {
+			case Db::Character:
+				return NodeJs::instance()->db_query_async<Db::Character>(s);
+
+			case Db::Login:
+				return NodeJs::instance()->db_query_async<Db::Login>(s);
+
+			case Db::World:
+				return NodeJs::instance()->db_query_async<Db::World>(s);
+
+#ifdef MOD_PLAYERBOTS
+			case Db::Playerbots:
+				return NodeJs::instance()->db_query_async<Db::Playerbots>(s);
+#endif
+		}
+		v8::Isolate::GetCurrent()->ThrowError("unrecognized db");
+		return jnull().As<v8::Promise>();
 	});
-	reg_method(ft, "loginDbQueryAsync", [](NodeJs *, std::string s) {
-		return NodeJs::instance()->login_db_query_async(s);
+	reg_method(ft, "dbQuery", [](NodeJs *, Db d, std::string s) {
+		switch (d) {
+			case Db::Character:
+				return db<Db::Character>().query(s);
+
+			case Db::Login:
+				return db<Db::Login>().query(s);
+
+			case Db::World:
+				return db<Db::World>().query(s);
+
+#ifdef MOD_PLAYERBOTS
+			case Db::Playerbots:
+				return db<Db::Playerbots>().query(s);
+#endif
+		}
+		v8::Isolate::GetCurrent()->ThrowError("unrecognized db");
+		return QueryResult{};
 	});
-	reg_method(ft, "characterDbQueryAsync", [](NodeJs *, std::string s) {
-		return NodeJs::instance()->character_db_query_async(s);
-	});
-	reg_method(ft, "worldDbQuery", [](NodeJs *, std::string s) {
-		return WorldDatabase.Query(s);
-	});
-	reg_method(ft, "loginDbQuery", [](NodeJs *, std::string s) {
-		return LoginDatabase.Query(s);
-	});
-	reg_method(ft, "characterDbQuery", [](NodeJs *, std::string s) {
-		return CharacterDatabase.Query(s);
-	});
-	reg_method(ft, "worldDbNonQuery", [](NodeJs *, std::string s) {
-		NodeJs::maybe_transactional(WorldDatabase, s);
-	});
-	reg_method(ft, "loginDbNonQuery", [](NodeJs *, std::string s) {
-		NodeJs::maybe_transactional(LoginDatabase, s);
-	});
-	reg_method(ft, "characterDbNonQuery", [](NodeJs *, std::string s) {
-		NodeJs::maybe_transactional(CharacterDatabase, s);
+	reg_method(ft, "dbNonQuery", [](NodeJs *, Db d, std::string s) {
+		switch (d) {
+			case Db::Character:
+				db<Db::Character>().execute_or_append(s);
+				return;
+
+			case Db::Login:
+				db<Db::Login>().execute_or_append(s);
+				return;
+
+			case Db::World:
+				db<Db::World>().execute_or_append(s);
+				return;
+
+#ifdef MOD_PLAYERBOTS
+			case Db::Playerbots:
+				db<Db::Playerbots>().execute_or_append(s);
+				return;
+#endif
+		}
+		v8::Isolate::GetCurrent()->ThrowError("unrecognized db");
 	});
 	reg_method(ft, "getCurrTime", [](NodeJs *) {
 		return getMSTime();
@@ -131,5 +164,11 @@ void add_global_functions(TypedTemplate<NodeJs *> const ft) {
 	});
 	reg_method(ft, "shutdown", [](NodeJs *, uint32_t time, ShutdownMask options, uint8_t exit_code, std::optional<std::string> reason) {
 		sWorld->ShutdownServ(time, options, exit_code, reason.value_or({}));
+	});
+	reg_method(ft, "hasPlayerbotsModule", [](NodeJs *) {
+#ifdef MOD_PLAYERBOTS
+		return true;
+#endif
+		return false;
 	});
 }

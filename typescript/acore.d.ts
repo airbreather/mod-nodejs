@@ -14,12 +14,9 @@ declare global {
 		function getCurrTime(): number;
 		function getTimeDiff(ms: number): number;
 		function isGameEventActive(id: number): boolean;
-		function worldDbQueryAsync(q: string): Promise<QueryResult>;
-		function loginDbQueryAsync(q: string): Promise<QueryResult>;
-		function characterDbQueryAsync(q: string): Promise<QueryResult>;
-		function worldDbQuery(q: string): QueryResult;
-		function loginDbQuery(q: string): QueryResult;
-		function characterDbQuery(q: string): QueryResult;
+		function dbQuery(db: Db, q: string): QueryResult;
+		function dbQueryAsync(db: Db, q: string): Promise<QueryResult>;
+		function dbNonQuery(db: Db, q: string): void;
 		function log(level: LogLevel, filter: string, msg: string): void;
 		function logTrace(filter: string, msg: string): void;
 		function logDebug(filter: string, msg: string): void;
@@ -32,5 +29,6 @@ declare global {
 		function box<T>(val: T): Box<T>;
 		function registerCommand(command: ChatCommandBuilder): void;
 		function shutdown(time: number, optionsMask: ShutdownMask, exitCode: number, reason?: string): void;
+		function hasPlayerbotsModule(): boolean;
 	}
 }
