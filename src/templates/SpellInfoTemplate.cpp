@@ -215,7 +215,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<SpellInfo const *>() {
 	reg_prop_ro(ft, "spellName", [](SpellInfo const * si) {
 		return jarr(si->SpellName);
 	});
-	reg_prop_ro(ft, "rank", [](SpellInfo const * si) {
+	reg_prop_ro(ft, "rankName", [](SpellInfo const * si) {
 		return jarr(si->Rank);
 	});
 	reg_prop_ro(ft, "maxTargetLevel", [](SpellInfo const * si) {
@@ -252,9 +252,6 @@ v8::Local<v8::FunctionTemplate> jcreate_template<SpellInfo const *>() {
 	});
 	reg_prop_ro(ft, "chainEntry", [](SpellInfo const * si) {
 		return si->ChainEntry;
-	});
-	reg_prop_ro(ft, "isAffectingArea", [](SpellInfo const * si) {
-		return si->IsAffectingArea();
 	});
 	reg_prop_ro(ft, "category", [](SpellInfo const * si) {
 		return si->GetCategory();
@@ -364,9 +361,6 @@ v8::Local<v8::FunctionTemplate> jcreate_template<SpellInfo const *>() {
 	reg_prop_ro(ft, "isSingleTarget", [](SpellInfo const * si) {
 		return si->IsSingleTarget();
 	});
-	reg_prop_ro(ft, "schoolMask", [](SpellInfo const * si) {
-		return si->GetSchoolMask();
-	});
 	reg_prop_ro(ft, "allEffectsMechanicMask", [](SpellInfo const * si) {
 		return si->GetAllEffectsMechanicMask();
 	});
@@ -375,9 +369,6 @@ v8::Local<v8::FunctionTemplate> jcreate_template<SpellInfo const *>() {
 	});
 	reg_prop_ro(ft, "dispelMask", [](SpellInfo const * si) {
 		return si->GetDispelMask();
-	});
-	reg_prop_ro(ft, "explicitTargetMask", [](SpellInfo const * si) {
-		return si->GetExplicitTargetMask();
 	});
 	reg_prop_ro(ft, "auraState", [](SpellInfo const * si) {
 		return si->GetAuraState();
@@ -428,8 +419,8 @@ v8::Local<v8::FunctionTemplate> jcreate_template<SpellInfo const *>() {
 	reg_method(ft, "isAbilityOfSkillType", [](SpellInfo const * si, uint32_t const skillType) {
 		return si->IsAbilityOfSkillType(skillType);
 	});
-	reg_method(ft, "needsToBeTriggeredByCaster", [](SpellInfo const * si, SpellInfo const * trigger) {
-		return si->NeedsToBeTriggeredByCaster(trigger);
+	reg_method(ft, "needsToBeTriggeredByCaster", [](SpellInfo const * si, SpellInfo const * trigger, std::optional<uint8_t> eff_index) {
+		return si->NeedsToBeTriggeredByCaster(trigger, eff_index.value_or(3));
 	});
 	reg_method(ft, "isPositiveEffect", [](SpellInfo const * si, uint8_t const effIndex) {
 		return si->IsPositiveEffect(effIndex);
@@ -447,7 +438,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<SpellInfo const *>() {
 		return si->CanDispelAura(auraSpell);
 	});
 	reg_method(ft, "applyAllSpellImmunitiesTo", [](SpellInfo const * si, Unit * target, SpellEffectInfo const * effect, bool const apply) {
-		return si->ApplyAllSpellImmunitiesTo(target, effect, apply);
+		si->ApplyAllSpellImmunitiesTo(target, effect, apply);
 	});
 	reg_method(ft, "canSpellProvideImmunityAgainstAura", [](SpellInfo const * si, SpellInfo const * aura) {
 		return si->CanSpellProvideImmunityAgainstAura(aura);

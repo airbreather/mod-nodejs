@@ -9,7 +9,7 @@ template<>
 [[nodiscard]] v8::Local<v8::Value> jval<SpellCastTimesEntry const &>(SpellCastTimesEntry const & p) {
 	return jobj(
 		jprop("id", p.ID),
-		jprop("flags", p.CastTime)
+		jprop("castTime", p.CastTime)
 	);
 }
 

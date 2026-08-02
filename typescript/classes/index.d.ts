@@ -39,7 +39,7 @@ export * from './QueryResult';
 export * from './Quest';
 export * from './Roll';
 export * from './Spell';
-export * from './SpellChainInfo';
+export * from './SpellChainNode';
 export * from './SpellEffectInfo';
 export * from './SpellImplicitTargetInfo';
 export * from './SpellInfo';

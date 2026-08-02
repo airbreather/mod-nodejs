@@ -18,5 +18,25 @@ declare global {
 		| ItemSubclassTradeGoods
 		| ItemSubclassWeapon
 		;
+	// mod-nodejs invention
+	type ItemSubclassMask =
+		| ItemSubclassMaskArmor
+		| ItemSubclassMaskConsumable
+		| ItemSubclassMaskContainer
+		| ItemSubclassMaskGem
+		| ItemSubclassMaskGeneric
+		| ItemSubclassMaskGlyph
+		| ItemSubclassMaskJunk
+		| ItemSubclassMaskKey
+		| ItemSubclassMaskMoney
+		| ItemSubclassMaskPermanent
+		| ItemSubclassMaskProjectile
+		| ItemSubclassMaskQuest
+		| ItemSubclassMaskQuiver
+		| ItemSubclassMaskReagent
+		| ItemSubclassMaskRecipe
+		| ItemSubclassMaskTradeGoods
+		| ItemSubclassMaskWeapon
+		;
 }
 export {};

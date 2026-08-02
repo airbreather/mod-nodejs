@@ -93,7 +93,7 @@ list(APPEND ${PRIVATE_SOURCES} (
         src/templates/QueryResultSetTemplate.cpp
         src/templates/QuestTemplate.cpp
         src/templates/RollTemplate.cpp
-        src/templates/SpellChainInfoTemplate.cpp
+        src/templates/SpellChainNodeTemplate.cpp
         src/templates/SpellEffectInfoTemplate.cpp
         src/templates/SpellEntryTemplate.cpp
         src/templates/SpellImplicitTargetInfoTemplate.cpp

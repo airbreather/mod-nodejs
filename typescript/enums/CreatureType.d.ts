@@ -15,5 +15,21 @@ declare global {
 		CREATURE_TYPE_NON_COMBAT_PET   = 12,
 		CREATURE_TYPE_GAS_CLOUD        = 13,
 	}
+	// mod-nodejs invention
+	const enum CreatureTypeMask {
+		CREATURE_TYPE_MASK_BEAST            = 1 << (CreatureType.CREATURE_TYPE_BEAST - 1),
+		CREATURE_TYPE_MASK_DRAGONKIN        = 1 << (CreatureType.CREATURE_TYPE_DRAGONKIN - 1),
+		CREATURE_TYPE_MASK_DEMON            = 1 << (CreatureType.CREATURE_TYPE_DEMON - 1),
+		CREATURE_TYPE_MASK_ELEMENTAL        = 1 << (CreatureType.CREATURE_TYPE_ELEMENTAL - 1),
+		CREATURE_TYPE_MASK_GIANT            = 1 << (CreatureType.CREATURE_TYPE_GIANT - 1),
+		CREATURE_TYPE_MASK_UNDEAD           = 1 << (CreatureType.CREATURE_TYPE_UNDEAD - 1),
+		CREATURE_TYPE_MASK_HUMANOID         = 1 << (CreatureType.CREATURE_TYPE_HUMANOID - 1),
+		CREATURE_TYPE_MASK_CRITTER          = 1 << (CreatureType.CREATURE_TYPE_CRITTER - 1),
+		CREATURE_TYPE_MASK_MECHANICAL       = 1 << (CreatureType.CREATURE_TYPE_MECHANICAL - 1),
+		CREATURE_TYPE_MASK_NOT_SPECIFIED    = 1 << (CreatureType.CREATURE_TYPE_NOT_SPECIFIED - 1),
+		CREATURE_TYPE_MASK_TOTEM            = 1 << (CreatureType.CREATURE_TYPE_TOTEM - 1),
+		CREATURE_TYPE_MASK_NON_COMBAT_PET   = 1 << (CreatureType.CREATURE_TYPE_NON_COMBAT_PET - 1),
+		CREATURE_TYPE_MASK_GAS_CLOUD        = 1 << (CreatureType.CREATURE_TYPE_GAS_CLOUD - 1),
+	}
 }
 export {};

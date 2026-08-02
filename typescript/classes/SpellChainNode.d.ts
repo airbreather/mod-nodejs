@@ -1,6 +1,6 @@
 declare global {
 	namespace Acore {
-		class SpellChainInfo {
+		class SpellChainNode {
 		}
 	}
 }

@@ -30,5 +30,37 @@ declare global {
 		INVTYPE_QUIVER                              = 27,
 		INVTYPE_RELIC                               = 28,
 	}
+	// mod-nodejs invention
+	const enum InventoryTypeMask {
+		INVTYPE_MASK_NON_EQUIP                      = 1 << InventoryType.INVTYPE_NON_EQUIP,
+		INVTYPE_MASK_HEAD                           = 1 << InventoryType.INVTYPE_HEAD,
+		INVTYPE_MASK_NECK                           = 1 << InventoryType.INVTYPE_NECK,
+		INVTYPE_MASK_SHOULDERS                      = 1 << InventoryType.INVTYPE_SHOULDERS,
+		INVTYPE_MASK_BODY                           = 1 << InventoryType.INVTYPE_BODY,
+		INVTYPE_MASK_CHEST                          = 1 << InventoryType.INVTYPE_CHEST,
+		INVTYPE_MASK_WAIST                          = 1 << InventoryType.INVTYPE_WAIST,
+		INVTYPE_MASK_LEGS                           = 1 << InventoryType.INVTYPE_LEGS,
+		INVTYPE_MASK_FEET                           = 1 << InventoryType.INVTYPE_FEET,
+		INVTYPE_MASK_WRISTS                         = 1 << InventoryType.INVTYPE_WRISTS,
+		INVTYPE_MASK_HANDS                          = 1 << InventoryType.INVTYPE_HANDS,
+		INVTYPE_MASK_FINGER                         = 1 << InventoryType.INVTYPE_FINGER,
+		INVTYPE_MASK_TRINKET                        = 1 << InventoryType.INVTYPE_TRINKET,
+		INVTYPE_MASK_WEAPON                         = 1 << InventoryType.INVTYPE_WEAPON,
+		INVTYPE_MASK_SHIELD                         = 1 << InventoryType.INVTYPE_SHIELD,
+		INVTYPE_MASK_RANGED                         = 1 << InventoryType.INVTYPE_RANGED,
+		INVTYPE_MASK_CLOAK                          = 1 << InventoryType.INVTYPE_CLOAK,
+		INVTYPE_MASK_2HWEAPON                       = 1 << InventoryType.INVTYPE_2HWEAPON,
+		INVTYPE_MASK_BAG                            = 1 << InventoryType.INVTYPE_BAG,
+		INVTYPE_MASK_TABARD                         = 1 << InventoryType.INVTYPE_TABARD,
+		INVTYPE_MASK_ROBE                           = 1 << InventoryType.INVTYPE_ROBE,
+		INVTYPE_MASK_WEAPONMAINHAND                 = 1 << InventoryType.INVTYPE_WEAPONMAINHAND,
+		INVTYPE_MASK_WEAPONOFFHAND                  = 1 << InventoryType.INVTYPE_WEAPONOFFHAND,
+		INVTYPE_MASK_HOLDABLE                       = 1 << InventoryType.INVTYPE_HOLDABLE,
+		INVTYPE_MASK_AMMO                           = 1 << InventoryType.INVTYPE_AMMO,
+		INVTYPE_MASK_THROWN                         = 1 << InventoryType.INVTYPE_THROWN,
+		INVTYPE_MASK_RANGEDRIGHT                    = 1 << InventoryType.INVTYPE_RANGEDRIGHT,
+		INVTYPE_MASK_QUIVER                         = 1 << InventoryType.INVTYPE_QUIVER,
+		INVTYPE_MASK_RELIC                          = 1 << InventoryType.INVTYPE_RELIC,
+	}
 }
 export {};
