@@ -10,7 +10,7 @@ JVAL_CVAL_TMPLS_RW(CastSpellBuilder)
 
 template<>
 v8::Local<v8::FunctionTemplate> jcreate_template<CastSpellBuilder *>() {
-	TypedTemplate<CastSpellBuilder *> const ft = jctor();
+	TypedTemplate<CastSpellBuilder *> const ft = jctor<CastSpellBuilder *>();
 
 	ft->SetClassName(jstr_intern("CastSpellBuilder"));
 

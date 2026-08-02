@@ -28,7 +28,7 @@ JVAL_CVAL_TMPLS_RW(Item)
 
 template<>
 v8::Local<v8::FunctionTemplate> jcreate_template<Item *>() {
-	TypedTemplate<Item *> const ft = jctor();
+	TypedTemplate<Item *> const ft = jctor<Item *>();
 
 	ft->SetClassName(jstr_intern("Item"));
  	ft.safe_inherit<Object *>();

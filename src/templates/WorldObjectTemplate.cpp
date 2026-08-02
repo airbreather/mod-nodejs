@@ -32,6 +32,9 @@ v8::Local<v8::FunctionTemplate> jcreate_template<WorldObject *>() {
 	reg_prop_ro(ft, "mapId", [](WorldObject * wo) {
 		return wo->GetMapId();
 	});
+	reg_prop_ro(ft, "map", [](WorldObject * wo) {
+		return wo->GetMap();
+	});
 	reg_prop_ro(ft, "zoneId", [](WorldObject * wo) {
 		return wo->GetZoneId();
 	});

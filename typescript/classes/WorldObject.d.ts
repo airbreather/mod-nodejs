@@ -2,6 +2,7 @@ declare global {
 	namespace Acore {
 		class WorldObject extends ACObject {
 			readonly mapId: number;
+			readonly map: ACMap | undefined;
 			readonly zoneId: number;
 			readonly areaId: number;
 			readonly phaseMask: number;
