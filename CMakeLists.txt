@@ -62,6 +62,7 @@ list(APPEND ${PRIVATE_SOURCES} (
         src/templates/AuraTemplate.cpp
         src/templates/BattlegroundTemplate.cpp
         src/templates/ByteBufferTemplate.cpp
+        src/templates/CastSpellBuilderTemplate.cpp
         src/templates/ChatCommandBuilderBuilderBoxTemplate.cpp
         src/templates/ChatHandlerTemplate.cpp
         src/templates/ConfigTemplate.cpp
@@ -106,6 +107,7 @@ list(APPEND ${PRIVATE_SOURCES} (
         src/templates/WorldObjectTemplate.cpp
         src/templates/WorldPacketTemplate.cpp
 
+        src/CastSpellBuilder.cpp
         src/ChatCommandBuilderBuilder.cpp
         src/CtoJ.cpp
         src/Db.cpp

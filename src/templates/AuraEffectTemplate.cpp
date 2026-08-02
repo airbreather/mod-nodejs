@@ -133,9 +133,11 @@ v8::Local<v8::FunctionTemplate> jcreate_template<AuraEffect *>() {
 		eff->ChangeAmount(new_amount, mark.value_or(true), on_stack_or_reapply.value_or(false));
 	});
 	reg_method(ft, "recalculateAmount", [](AuraEffect * eff, std::optional<Unit *> const caster) {
-		return caster
-			? eff->RecalculateAmount(*caster)
-			: eff->RecalculateAmount();
+		if (caster) {
+			eff->RecalculateAmount(*caster);
+		} else {
+			eff->RecalculateAmount();
+		}
 	});
 	reg_method_raw(ft, "handleEffect", [](AuraEffect * eff, v8::FunctionCallbackInfo<v8::Value> const & args) {
 		if (args.Length() < 3) {

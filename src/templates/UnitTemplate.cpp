@@ -5,9 +5,9 @@
 #include <v8-template.h>
 #include <vector>
 
+#include "CastSpellBuilder.h"
 #include "Cell.h"
 #include "Chat.h"
-#include "Common.h"
 #include "CtoJ.h"
 #include "DBCStores.h"
 #include "GridNotifiers.h"
@@ -647,6 +647,9 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Unit *>() {
 	});
 	reg_method(ft, "setHover", [](Unit * unit, bool enable) {
 		unit->SetHover(enable);
+	});
+	reg_method(ft, "buildCastSpell", [](Unit * unit, SpellInfo const * spell) {
+		return jmove(new CastSpellBuilder(unit, spell));
 	});
 
 	return ft;

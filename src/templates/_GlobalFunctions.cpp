@@ -93,6 +93,34 @@ void add_global_functions(TypedTemplate<NodeJs *> const ft) {
 		}
 		v8::Isolate::GetCurrent()->ThrowError("unrecognized db");
 	});
+	reg_method(ft, "inTransaction", [](NodeJs *, Db d, v8::Local<v8::Function> f) {
+		std::function<void()> fn = [f] {
+			auto isolate = v8::Isolate::GetCurrent();
+			auto ctx = isolate->GetCurrentContext();
+			f->Call(ctx, jnull(), 0, nullptr)
+				.FromMaybe(jnull());
+		};
+		switch (d) {
+			case Db::Character:
+				db<Db::Character>().transactional([& fn](auto const&){fn();});
+				return;
+
+			case Db::Login:
+				db<Db::Login>().transactional([& fn](auto const&){fn();});
+				return;
+
+			case Db::World:
+				db<Db::World>().transactional([& fn](auto const&){fn();});
+				return;
+
+#ifdef MOD_PLAYERBOTS
+			case Db::Playerbots:
+				db<Db::Playerbots>().transactional([& fn](auto const&){fn();});
+				return;
+#endif
+		}
+		v8::Isolate::GetCurrent()->ThrowError("unrecognized db");
+	});
 	reg_method(ft, "getCurrTime", [](NodeJs *) {
 		return getMSTime();
 	});

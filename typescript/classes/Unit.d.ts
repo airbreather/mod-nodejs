@@ -166,6 +166,7 @@ declare global {
 			setWaterWalking(enable: boolean): void;
 			setFeatherFall(enable: boolean): void;
 			setHover(enable: boolean): void;
+			buildCastSpell(spell: SpellInfo): CastSpellBuilder;
 		}
 	}
 }

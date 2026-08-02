@@ -17,6 +17,7 @@ declare global {
 		function dbQuery(db: Db, q: string): QueryResult;
 		function dbQueryAsync(db: Db, q: string): Promise<QueryResult>;
 		function dbNonQuery(db: Db, q: string): void;
+		function inTransaction(db: Db, f: () => void): void;
 		function log(level: LogLevel, filter: string, msg: string): void;
 		function logTrace(filter: string, msg: string): void;
 		function logDebug(filter: string, msg: string): void;

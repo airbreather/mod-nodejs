@@ -16,4 +16,5 @@ export * from './LootItem';
 export * from './ObjectGuid';
 export * from './PetInfo';
 export * from './Position';
+export * from './SpellModifier';
 export * from './SpellRadiusEntry';
