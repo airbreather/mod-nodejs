@@ -1,9 +1,37 @@
 {
 	"name": "@airbreather/mod-nodejs-types",
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"description": "Type declarations (only) for the mod-nodejs AzerothCore module.",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/airbreather/mod-nodejs",
+		"directory": "typescript"
+	},
+	"license": "AGPL-3.0-only",
+	"contributors": [
+		{
+			"name": "airbreather"
+		}
+	],
+	"sideEffects": false,
+	"type": "module",
+	"exports": {
+		".": {
+			"import": "./index.d.ts",
+			"types": "./index.d.ts"
+		}
+	},
 	"types": "./index.d.ts",
-	"dependencies": {
+	"files": [
+		"./acore.d.ts",
+		"./classes",
+		"./enums",
+		"./hooks",
+		"./records"
+	],
+	"devDependencies": {
+		"eslint": "^10.8.0",
+		"eslint-plugin-package-json": "^1.6.2",
 		"typescript": "^7.0.2"
 	}
 }
