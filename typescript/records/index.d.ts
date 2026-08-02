@@ -16,6 +16,7 @@ export * from './LootItem';
 export * from './ObjectGuid';
 export * from './PetInfo';
 export * from './Position';
+export * from './PvPDifficultyEntry';
 export * from './SpellCastTimesEntry';
 export * from './SpellCategoryEntry';
 export * from './SpellDurationEntry';

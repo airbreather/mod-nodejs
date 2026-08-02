@@ -3,6 +3,7 @@
 #include <string>
 
 #include "BattlegroundQueue.h"
+#include "DurationWrapper.h"
 #include "Group.h"
 #include "NodeJPropHelpers.h"
 #include "NodeJs.h"
@@ -19,7 +20,7 @@ public:
 		NodeJs::invoke_hook("battleground:end-reward", jarg("bg", bg), jarg("player", player), jarg("winnerTeamId", winnerTeamId));
 	}
 	void OnBattlegroundUpdate(Battleground * bg, uint32_t const diff) override {
-		NodeJs::invoke_hook("battleground:update", jarg("bg", bg), jarg("diff", diff));
+		NodeJs::invoke_hook("battleground:update", jarg("bg", bg), jarg("diff", DurationWrapper::from_milliseconds(diff)));
 	}
 	void OnBattlegroundAddPlayer(Battleground * bg, Player * player) override {
 		NodeJs::invoke_hook("battleground:add-player", jarg("bg", bg), jarg("player", player));
@@ -31,11 +32,11 @@ public:
 		NodeJs::invoke_hook("battleground:remove-player-at-leave", jarg("bg", bg), jarg("player", player));
 	}
 	void OnQueueUpdate(BattlegroundQueue * queue, uint32_t const diff, BattlegroundTypeId const bgTypeId, BattlegroundBracketId const bracket_id, uint8_t const arenaType, bool const isRated, uint32_t const arenaRating) override {
-		NodeJs::invoke_hook("battleground-queue:update", jarg("queue", queue), jarg("diff", diff), jarg("bgTypeId", bgTypeId), jarg("bracketId", bracket_id), jarg("arenaType", arenaType), jarg("isRated", isRated), jarg("arenaRating", arenaRating));
+		NodeJs::invoke_hook("battleground-queue:update", jarg("queue", queue), jarg("diff", DurationWrapper::from_milliseconds(diff)), jarg("bgTypeId", bgTypeId), jarg("bracketId", bracket_id), jarg("arenaType", arenaType), jarg("isRated", isRated), jarg("arenaRating", arenaRating));
 	}
 	[[nodiscard]] bool OnQueueUpdateValidity(BattlegroundQueue * queue, uint32_t const diff, BattlegroundTypeId const bgTypeId, BattlegroundBracketId const bracket_id, uint8_t const arenaType, bool const isRated, uint32_t const arenaRating) override {
 		return NodeJs::invoke_hook_t("battleground-queue:update-validity", AllBattlegroundScript::OnQueueUpdateValidity(queue, diff, bgTypeId, bracket_id, arenaType, isRated, arenaRating)
-			, jarg("queue", queue), jarg("diff", diff), jarg("bgTypeId", bgTypeId), jarg("bracketId", bracket_id), jarg("arenaType", arenaType), jarg("isRated", isRated), jarg("arenaRating", arenaRating));
+			, jarg("queue", queue), jarg("diff", DurationWrapper::from_milliseconds(diff)), jarg("bgTypeId", bgTypeId), jarg("bracketId", bracket_id), jarg("arenaType", arenaType), jarg("isRated", isRated), jarg("arenaRating", arenaRating));
 	 }
 	void OnAddGroup(BattlegroundQueue * queue, GroupQueueInfo * ginfo, uint32_t & index, Player* leader, Group * group, BattlegroundTypeId const bgTypeId, PvPDifficultyEntry const * bracketEntry, uint8_t const arenaType, bool const isRated, bool const isPremade, uint32_t const arenaRating, uint32_t const matchmakerRating, uint32_t const arenaTeamId, uint32_t const opponentsArenaTeamId) override {
 		NodeJs::invoke_hook("battleground-queue:add-group", jarg("queue", queue), jarg("gInfo", ginfo), jarg_inout("index", index), jarg("leader", leader), jarg("group", group), jarg("bgTypeId", bgTypeId), jarg("bracketEntry", bracketEntry), jarg("arenaType", arenaType), jarg("isRated", isRated), jarg("isPremade", isPremade), jarg("arenaRating", arenaRating), jarg("matchmakerRating", matchmakerRating), jarg("arenaTeamId", arenaTeamId), jarg("opponentsArenaTeamId", opponentsArenaTeamId));
@@ -75,7 +76,7 @@ public:
 	}
 	[[nodiscard]] bool GetPlayerMatchmakingRating(ObjectGuid const playerGuid, BattlegroundTypeId const bgTypeId, float & outRating) override {
 		return NodeJs::invoke_hook_t("battleground-queue:get-player-matchmaking-rating", AllBattlegroundScript::GetPlayerMatchmakingRating(playerGuid, bgTypeId, outRating)
-			, jarg("playerGuid", playerGuid.GetRawValue()), jarg("bgTypeId", bgTypeId), jarg_inout("outRating", outRating));
+			, jarg("playerGuid", playerGuid), jarg("bgTypeId", bgTypeId), jarg_inout("outRating", outRating));
 	}
 };
 

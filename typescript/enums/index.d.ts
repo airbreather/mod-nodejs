@@ -35,6 +35,8 @@ export * from './Emote';
 export * from './Expansions';
 export * from './Gender';
 export * from './GMTicketEscalationStatus';
+export * from './GossipAction';
+export * from './GossipSender';
 export * from './GOState';
 export * from './GroupMemberFlags';
 export * from './GroupType';
