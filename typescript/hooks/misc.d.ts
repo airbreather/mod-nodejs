@@ -2,12 +2,12 @@ declare global {
 	interface Hooks {
 		['misc:item-create']: {
 			readonly item: Acore.Item;
-			readonly proto: Acore.ItemTemplate;
+			readonly proto: Acore.ItemTemplateNarrowable;
 			readonly owner: Acore.Player;
 		};
 		['misc:can-apply-soulbound-flag']: {
 			readonly item: Acore.Item;
-			readonly proto: Acore.ItemTemplate;
+			readonly proto: Acore.ItemTemplateNarrowable;
 			__return: boolean;
 		};
 		['misc:can-item-apply-equip-spell']: {

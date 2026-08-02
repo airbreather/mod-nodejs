@@ -19,7 +19,7 @@ declare global {
 		};
 		['item:can-expire']: {
 			readonly player: Acore.Player;
-			readonly proto: Acore.ItemTemplate;
+			readonly proto: Acore.ItemTemplateNarrowable;
 			__return: boolean;
 		};
 		['item:gossip-select']: {

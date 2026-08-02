@@ -139,6 +139,13 @@ public:
 		return dfault;
 	}
 
+	static bool hook_has_listeners(std::string const & hook_name) {
+		if (!(instance_is_fully_initialized() && instance()->m_active_listeners.contains(hook_name))) {
+			[[likely]] return false;
+		}
+		return true;
+	}
+
 	template <typename... Args>
 	static void invoke_hook(std::string const & hook_name, Args && ... args) {
 		if (!(instance_is_fully_initialized() && instance()->m_active_listeners.contains(hook_name))) {

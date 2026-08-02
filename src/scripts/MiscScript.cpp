@@ -43,7 +43,7 @@ public:
 	}
 
 	void OnAfterLootTemplateProcess(Loot * loot, LootTemplate const * tab, LootStore const & store, Player * lootOwner, bool const personal, bool const noEmptyError, uint16_t const lootMode) override {
-		NodeJs::invoke_hook("misc:after-loot-template-process", jarg("loot", loot), jarg("tab", tab), jarg("store", store), jarg("lootOwner", lootOwner), jarg("personal", personal), jarg("noEmptyError", noEmptyError), jarg("lootMode", lootMode));
+		NodeJs::invoke_hook("misc:after-loot-template-process", jarg("loot", loot), jarg("tab", tab), jarg("store", &store), jarg("lootOwner", lootOwner), jarg("personal", personal), jarg("noEmptyError", noEmptyError), jarg("lootMode", lootMode));
 	}
 
 	void OnPlayerSetPhase(AuraEffect const * auraEff, AuraApplication const * aurApp, uint8_t const mode, bool const apply, uint32_t & newPhase) override {
