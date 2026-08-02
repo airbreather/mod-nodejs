@@ -95,7 +95,6 @@ list(APPEND ${PRIVATE_SOURCES} (
         src/templates/RollTemplate.cpp
         src/templates/SpellChainNodeTemplate.cpp
         src/templates/SpellEffectInfoTemplate.cpp
-        src/templates/SpellEntryTemplate.cpp
         src/templates/SpellImplicitTargetInfoTemplate.cpp
         src/templates/SpellInfoTemplate.cpp
         src/templates/SpellTemplate.cpp

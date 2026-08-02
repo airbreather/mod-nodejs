@@ -3,6 +3,7 @@
 #include <v8-template.h>
 
 #include "CtoJ.h"
+#include "DurationWrapper.h"
 #include "Item.h"
 #include "NodeJPropHelpers.h"
 #include "NodePropertySystem.h"
@@ -22,7 +23,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Spell *>() {
 		return spell->GetSpellInfo();
 	});
 	reg_prop_ro(ft, "castTime", [](Spell * spell) {
-		return spell->GetCastTime();
+		return DurationWrapper::from_milliseconds(spell->GetCastTime());
 	});
 	reg_prop_ro(ft, "powerCost", [](Spell * spell) {
 		return spell->GetPowerCost();

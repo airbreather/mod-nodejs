@@ -56,7 +56,6 @@ struct CreatureTemplate;
 struct ItemTemplate;
 struct Loot;
 struct SpellChainNode;
-struct SpellEntry;
 
 using ChatCommandBuilderBuilderBox = std::shared_ptr<ChatCommandBuilderBuilder>;
 using QueryResult = std::shared_ptr<ResultSet>;
@@ -107,7 +106,6 @@ v8::Local<v8::FunctionTemplate> jcreate_template<NodeJs *>() {
 	REGISTER_CLASS_PROP_RO(Quest)
 	REGISTER_CLASS_PROP(Roll)
 	REGISTER_CLASS_PROP(SpellChainNode)
-	REGISTER_CLASS_PROP_RO(SpellEntry)
 	REGISTER_CLASS_PROP_RO(SpellEffectInfo)
 	REGISTER_CLASS_PROP_RO(SpellImplicitTargetInfo)
 	REGISTER_CLASS_PROP_RO(SpellInfo)

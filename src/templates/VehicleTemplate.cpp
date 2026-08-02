@@ -21,17 +21,16 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Vehicle *>() {
 	reg_prop_ro(ft, "availableSeatCount", [](Vehicle * v) {
 		return v->GetAvailableSeatCount();
 	});
-
-	reg_method(ft, "getOwner", [](Vehicle * v) {
+	reg_prop_ro(ft, "owner", [](Vehicle * v) {
 		return v->GetBase();
 	});
+
 	reg_method(ft, "getPassenger", [](Vehicle * v, int8_t const seatId) {
 		return v->GetPassenger(seatId);
 	});
 	reg_method(ft, "isOnBoard", [](Vehicle * v, Unit * passenger) {
 		return passenger->IsOnVehicle(v->GetBase());
 	});
-
 	reg_method(ft, "addPassenger", [](Vehicle * v, Unit * passenger, std::optional<int8_t> const seatIdOpt) {
 		v->AddPassenger(passenger, seatIdOpt.value_or(-1));
 	});

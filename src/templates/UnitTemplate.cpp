@@ -503,48 +503,9 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Unit *>() {
 	reg_method(ft, "addComboPoints", [](Unit * u, int8_t const count) {
 		u->AddComboPoints(count);
 	});
-	// TODO: "cast spell" is going to want to look significantly different on the other side.
-	// something like this as the most flexible version, plus more usable variations:
-	// unit.castSpellBuilder(spellId)
-	//     .target(otherUnit) // either this defaults to self or make it required on castSpellBuilder
-	//     .triggeredByAura(aura)
-	//     .originalCaster(org)
-	//     .cast();
-	// unit.castSpellBuilder(28783)
-	//     .target(impaleVictim)
-	//     // .customSpellMod0(undefined)
-	//     .customSpellMod1(3937)
-	//     .customSpellMod2(299)
-	//     .cast();
-	// unit.castSpellBuilder(backfire ? 13004 : 13003)
-	//     .target(backfire ? unit : intendedTarget)
-	//     .triggered()
-	//     .cast();
-	// unit.castSpellBuilder(43878)
-	//     .target(crystal)
-	//     .triggeredByItem(controllerItem) // or .triggered() and .castItem()? idk
-	//     .cast();
-#if false
-	reg_method(ft, "castSpell", [](Unit * u, Unit * target, uint32_t const spellId, std::optional<bool> const triggered) {
-		u->CastSpell(target, spellId, triggered.value_or(false));
+	reg_method(ft, "buildCastSpell", [](Unit * unit, SpellInfo const * spell) {
+		return jmove(new CastSpellBuilder(unit, spell));
 	});
-	reg_method(ft, "castCustomSpell", [](Unit * u, Unit * target, uint32_t const spell, std::optional<bool> const triggered, std::optional<int32_t> const bp0, std::optional<int32_t> const bp1, std::optional<int32_t> const bp2, std::optional<Item *> const cast_item, std::optional<AuraEffect *> const triggered_by_aura, std::optional<ObjectGuid const> const original_caster) {
-		u->CastCustomSpell(
-			target,
-			spell,
-			bp0 ? &*bp0 : nullptr,
-			bp1 ? &*bp1 : nullptr,
-			bp2 ? &*bp2 : nullptr,
-			triggered.value_or(false),
-			cast_item.value_or(nullptr),
-			triggered_by_aura.value_or(nullptr),
-			original_caster.value_or(ObjectGuid::Empty)
-		);
-	});
-	reg_method(ft, "castSpellAoF", [](Unit * u, float const x, float const y, float const z, uint32_t const spell, std::optional<bool> const triggered) {
-		u->CastSpell(x, y, z, spell, triggered.value_or(true));
-	});
-#endif
 	reg_method(ft, "addAura", [](Unit * u, Unit * target, uint32_t const spellId) {
 		u->AddAura(spellId, target);
 	});
@@ -652,9 +613,6 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Unit *>() {
 	});
 	reg_method(ft, "setHover", [](Unit * unit, bool enable) {
 		unit->SetHover(enable);
-	});
-	reg_method(ft, "buildCastSpell", [](Unit * unit, SpellInfo const * spell) {
-		return jmove(new CastSpellBuilder(unit, spell));
 	});
 
 	return ft;

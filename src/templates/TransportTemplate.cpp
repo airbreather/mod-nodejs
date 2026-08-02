@@ -18,8 +18,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Transport *>() {
 	reg_prop_ro(ft, "isMotionTransport", [](Transport * transport) {
 		return dynamic_cast<MotionTransport *>(transport) != nullptr;
 	});
-
-	reg_method(ft, "getPassengers", [](Transport * transport) {
+	reg_prop_ro(ft, "passengers", [](Transport * transport) {
 		return jarr(transport->GetPassengers());
 	});
 
