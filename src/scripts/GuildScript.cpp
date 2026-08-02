@@ -53,11 +53,11 @@ public:
 				break;
 
 			case GUILD_EVENT_LOG_DEMOTE_PLAYER:
-				NodeJs::invoke_hook("guild:demote-player", jarg("guild", guild), jarg("demoterGuid", playerGuid1), jarg("demotee", playerGuid2), jarg("newRank", newRank));
+				NodeJs::invoke_hook("guild:demote-player", jarg("guild", guild), jarg("demoterGuid", playerGuid1), jarg("demoteeGuid", playerGuid2), jarg("newRank", newRank));
 				break;
 
 			case GUILD_EVENT_LOG_PROMOTE_PLAYER:
-				NodeJs::invoke_hook("guild:promote-player", jarg("guild", guild), jarg("promoterGuid", playerGuid1), jarg("promotee", playerGuid2), jarg("newRank", newRank));
+				NodeJs::invoke_hook("guild:promote-player", jarg("guild", guild), jarg("promoterGuid", playerGuid1), jarg("promoteeGuid", playerGuid2), jarg("newRank", newRank));
 				break;
 		}
 		// regardless of if we logged something else or not, always invoke this generic one

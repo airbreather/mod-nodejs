@@ -12,16 +12,16 @@ public:
 	}
 
 	void OnAddMember(Group * group, ObjectGuid const guid) override {
-		NodeJs::invoke_hook("group:add-member", jarg("group", group), jarg("guid", guid.GetRawValue()));
+		NodeJs::invoke_hook("group:add-member", jarg("group", group), jarg("guid", guid));
 	}
 	void OnInviteMember(Group * group, ObjectGuid const guid) override {
-		NodeJs::invoke_hook("group:invite-member", jarg("group", group), jarg("guid", guid.GetRawValue()));
+		NodeJs::invoke_hook("group:invite-member", jarg("group", group), jarg("guid", guid));
 	}
 	void OnRemoveMember(Group * group, ObjectGuid const guid, RemoveMethod const method, ObjectGuid const kicker, const char * reason) override {
-		NodeJs::invoke_hook("group:remove-member", jarg("group", group), jarg("guid", guid.GetRawValue()), jarg("method", method), jarg("kicker", kicker.GetRawValue()), jarg("reason", reason));
+		NodeJs::invoke_hook("group:remove-member", jarg("group", group), jarg("guid", guid), jarg("method", method), jarg("kicker", kicker), jarg("reason", reason));
 	}
 	void OnChangeLeader(Group * group, ObjectGuid const newLeaderGuid, ObjectGuid const oldLeaderGuid) override {
-		NodeJs::invoke_hook("group:change-leader", jarg("group", group), jarg("newLeaderGuid", newLeaderGuid.GetRawValue()), jarg("oldLeaderGuid", oldLeaderGuid.GetRawValue()));
+		NodeJs::invoke_hook("group:change-leader", jarg("group", group), jarg("newLeaderGuid", newLeaderGuid), jarg("oldLeaderGuid", oldLeaderGuid));
 	}
 	void OnDisband(Group * group) override {
 		NodeJs::invoke_hook("group:disband", jarg("group", group));

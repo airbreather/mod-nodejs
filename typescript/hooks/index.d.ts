@@ -3,6 +3,8 @@ export * from './auction';
 export * from './battleground';
 export * from './battleground-queue';
 export * from './creature';
+export * from './group';
+export * from './guild';
 export * from './item';
 export * from './map';
 export * from './misc';
