@@ -20,9 +20,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<GmTicket *>() {
 		return ticket->GetId();
 	});
 	reg_prop_ro(ft, "lastModifiedTime", [](GmTicket * ticket) {
-		return UnixTimestamp::from_chrono(
-			std::chrono::seconds(ticket->GetLastModifiedTime())
-		);
+		return UnixTimestamp::from_chrono(Seconds{ticket->GetLastModifiedTime()});
 	});
 	reg_prop_ro(ft, "escalatedStatus", [](GmTicket * ticket) {
 		return ticket->GetEscalatedStatus();

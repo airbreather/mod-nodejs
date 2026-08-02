@@ -5,16 +5,16 @@ declare global {
 			readonly base: Aura;
 			readonly slot: number;
 			readonly flags: AURA_FLAGS;
-			readonly effectMask: number;
+			readonly effectMask: AURA_FLAGS_ONLY_EFFECTS;
 			readonly isPositive: boolean;
 			readonly isSelfcasted: boolean;
-			readonly effectsToApply: number;
+			readonly effectsToApply: SpellEffIndexMask;
 			removeMode: AuraRemoveMode;
 
-			hasEffect(effect: number): boolean;
-			isActive(effectIndex: number): boolean;
-			setDisableMask(effectIndex: number): void;
-			removeDisableMask(effectIndex: number): void;
+			hasEffect(effect: SpellEffIndex): boolean;
+			isActive(effectIndex: SpellEffIndex): boolean;
+			setDisableMask(effectIndex: SpellEffIndex): void;
+			removeDisableMask(effectIndex: SpellEffIndex): void;
 		}
 	}
 }

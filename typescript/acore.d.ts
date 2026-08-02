@@ -11,8 +11,8 @@ declare global {
 		function gc(): void;
 		function guidsEqual(a: ObjectGuid | undefined, b: ObjectGuid | undefined): boolean;
 		function decodeGuid(g: ObjectGuid | undefined): ObjectGuidDecoded;
-		function getCurrTime(): number;
-		function getTimeDiff(ms: number): number;
+		function getCurrTime(): Temporal.Instant;
+		function getTimeDiff(before: Temporal.Instant): Temporal.Duration;
 		function isGameEventActive(id: number): boolean;
 		function dbQuery(db: Db, q: string): QueryResult;
 		function dbQueryAsync(db: Db, q: string): Promise<QueryResult>;

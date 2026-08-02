@@ -32,9 +32,9 @@ declare global {
 			readonly homePosition: Position;
 			regeneratingHealth: boolean;
 			reputationGainDisabled: boolean;
-			respawnDelay: number;
+			respawnDelay: Temporal.Duration;
 			wanderRadius: number;
-			corpseDelay: number;
+			corpseDelay: Temporal.Duration;
 			defaultMovementType: MovementGeneratorType;
 			npcFlags: NPCFlags;
 			unitFlags: UnitFlags;
@@ -62,7 +62,7 @@ declare global {
 			setEquipmentSlots(mainHand: number, offHand: number, ranged: number): void;
 			setNoSearchAssistance(v?: boolean): void;
 			setNoCallAssistance(v?: boolean): void;
-			despawnOrUnsummon(msTimeToDespawn?: number, forcedRespawnTimer?: number): void;
+			despawnOrUnsummon(timeToDespawn?: Temporal.Duration, forcedRespawnTimer?: Temporal.Duration): void;
 			respawn(force?: boolean): void;
 			removeCorpse(setSpawnTime?: boolean, skipVisibility?: boolean): void;
 			allLootRemovedFromCorpse(): void;

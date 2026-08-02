@@ -2,6 +2,7 @@
 #include <v8-local-handle.h>
 
 #include "CtoJ.h"
+#include "DurationWrapper.h"
 #include "ItemTemplate.h"
 #include "NodeJPropHelpers.h"
 
@@ -12,9 +13,9 @@ template<>
 		jprop("spellTrigger", p.SpellTrigger),
 		jprop("spellCharges", p.SpellCharges),
 		jprop("spellPPMRate", p.SpellPPMRate),
-		jprop("spellCooldown", p.SpellCooldown),
+		jprop("spellCooldown", DurationWrapper::from_milliseconds(p.SpellCooldown)),
 		jprop("spellCategory", p.SpellCategory),
-		jprop("spellCategoryCooldown", p.SpellCategoryCooldown)
+		jprop("spellCategoryCooldown", DurationWrapper::from_milliseconds(p.SpellCategoryCooldown))
 	);
 }
 

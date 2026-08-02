@@ -1,9 +1,15 @@
 #include "UnixTimestamp.h"
 
+#include "GameTime.h"
+
 constexpr UnixTimestamp::UnixTimestamp(double t) : epoch_milliseconds(t) {}
 
 UnixTimestamp UnixTimestamp::from_epoch_milliseconds(double t) {
 	return UnixTimestamp{t};
+}
+
+UnixTimestamp UnixTimestamp::from_game_time_milliseconds(uint32_t ms) {
+	return from_game_time(Milliseconds{ms});
 }
 
 UnixTimestamp UnixTimestamp::from_time_t_seconds(time_t seconds) {

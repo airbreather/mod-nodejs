@@ -22,3 +22,4 @@ export * from './SpellDurationEntry';
 export * from './SpellModifier';
 export * from './SpellRadiusEntry';
 export * from './SpellRangeEntry';
+export * from './SummonPropertiesEntry';

@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <v8-local-handle.h>
 
+#include "DurationWrapper.h"
 #include "NodeJs.h"
 #include "Object.h"
 #include "ObjectGuid.h"
@@ -233,4 +234,21 @@ template<>
 		temporalInstant->Get(ctx, jstr_intern("fromEpochMilliseconds")).As<v8::Function>().ToLocalChecked();
 
 	return temporalInstantFrom->Call(ctx, temporalInstant, 1, &epoch_ms).ToLocalChecked();
+}
+
+template<>
+[[nodiscard]] v8::Local<v8::Value> jval<DurationWrapper>(DurationWrapper const data) {
+	auto const isolate = v8::Isolate::GetCurrent();
+	auto const ctx = isolate->GetCurrentContext();
+
+	auto const global_this = ctx->Global();
+	auto const temporal =
+		global_this->Get(ctx, jstr_intern("Temporal")).As<v8::Object>().ToLocalChecked();
+	auto const temporalDuration =
+		temporal->Get(ctx, jstr_intern("Duration")).As<v8::Object>().ToLocalChecked();
+	auto const temporalDurationFrom =
+		temporalDuration->Get(ctx, jstr_intern("from")).As<v8::Function>().ToLocalChecked();
+
+	v8::Local<v8::Value> obj = jobj(jprop("milliseconds", data.milliseconds));
+	return temporalDurationFrom->Call(ctx, temporalDuration, 1, &obj).ToLocalChecked();
 }

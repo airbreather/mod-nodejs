@@ -83,7 +83,7 @@ declare global {
 			getCurrentSpell(spellType?: CurrentSpellTypes): Spell | undefined;
 			isNonMeleeSpellCast(withDelayed: boolean, skipChanneled?: boolean, skipAutorepeat?: boolean, isAutoshoot?: boolean, skipInstant?: boolean): boolean;
 			getComboPointsOn(who: Unit): number;
-			getAura(spellId: number, caster?: ObjectGuid, itemCaster?: ObjectGuid, requiredEffectMask?: number): Aura | undefined;
+			getAura(spellId: number, caster?: ObjectGuid, itemCaster?: ObjectGuid, requiredEffectMask?: SpellEffIndexMask): Aura | undefined;
 			getStat(stat: Stats): number;
 			getPower(power: Powers): number;
 			getMaxPower(power: Powers): number;
@@ -94,7 +94,7 @@ declare global {
 			isInAccessiblePlaceFor(creature: Creature): boolean;
 			getFriendlyUnitsInRange(range: number): Unit[];
 			getUnfriendlyUnitsInRange(range: number): Unit[];
-			hasAura(spellId: number, caster?: ObjectGuid, itemCaster?: ObjectGuid, requiredEffectMask?: number): boolean;
+			hasAura(spellId: number, caster?: ObjectGuid, itemCaster?: ObjectGuid, requiredEffectMask?: SpellEffIndexMask): boolean;
 			healthAbovePct(pct: number): boolean;
 			healthBelowPct(pct: number): boolean;
 			countPctFromCurHealth(amount: number): boolean;
@@ -134,7 +134,7 @@ declare global {
 			clearComboPoints(): void;
 			addComboPoints(count: number): void;
 			addAura(spellId: number, target: Unit): void;
-			removeAura(spellId: number, caster?: ObjectGuid, requiredEffectMask?: number, removeMode?: AuraRemoveMode): void;
+			removeAura(spellId: number, caster?: ObjectGuid, requiredEffectMask?: SpellEffIndexMask, removeMode?: AuraRemoveMode): void;
 			kill(target: Unit, durabilityLoss?: boolean, attackType?: WeaponAttackType, spellProto?: SpellInfo, spell?: Spell): void;
 			clearInCombat(): void;
 			// TODO: use enums / alternate names / (overloads?) so the type checker can help a bit more.

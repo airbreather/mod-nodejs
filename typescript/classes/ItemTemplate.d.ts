@@ -40,7 +40,7 @@ declare global {
 			readonly frostRes: number;
 			readonly shadowRes: number;
 			readonly arcaneRes: number;
-			readonly delay: number;
+			readonly delay: Temporal.Duration;
 			readonly ammoType: ItemSubclassProjectile;
 			readonly rangedModRange: number;
 			readonly spells: ItemSpell[];
@@ -67,7 +67,7 @@ declare global {
 			readonly gemProperties: number; // id from GemProperties.dbc
 			readonly requiredDisenchantSkill: number;
 			readonly armorDamageModifier: number;
-			readonly duration: number;
+			readonly duration: Temporal.Duration;
 			readonly itemLimitCategory: number; // id from ItemLimitCategory.dbc
 			readonly holidayId: HolidayIds;
 			readonly scriptId: number;

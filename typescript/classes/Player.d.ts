@@ -56,9 +56,15 @@ declare global {
 			readonly chatTag: PlayerChatTag;
 			readonly dbLocaleIndex: LocaleConstant;
 			readonly dbcLocale: LocaleConstant;
-			readonly latency: number;
+			readonly latency: Temporal.Duration;
 			readonly groupInvite: Group | undefined;
+			/**
+			 * Keeping this for parity with C++, but it has a weak name and an awkward type.
+			 *
+			 * Some may prefer the mod-nodejs invention {@link loginTimestamp} instead.
+			 */
 			readonly inGameTime: number;
+			readonly loginTimestamp: Temporal.Instant;
 			readonly healthBonusFromStamina: number;
 			readonly manaBonusFromIntellect: number;
 			readonly originalGroup: number
@@ -77,9 +83,9 @@ declare global {
 			readonly yesterdayKills: number;
 			readonly recruiterId: number;
 			readonly bankFreeSlots: number;
-			readonly levelPlayedTime: number;
+			readonly levelPlayedTime: Temporal.Duration;
 			readonly averageItemLevel: number;
-			readonly totalPlayedTime: number;
+			readonly totalPlayedTime: Temporal.Duration;
 			readonly guildName: string;
 			readonly runesState: number;
 			// false if mod_playerbots is not installed

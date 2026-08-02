@@ -8,6 +8,7 @@
 #include "CreatureData.h"
 #include "CtoJ.h"
 #include "Duration.h"
+#include "DurationWrapper.h"
 #include "Group.h"
 #include "IteratorPair.h"
 #include "MotionMaster.h"
@@ -181,16 +182,16 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Creature *>() {
 		[](Creature * c, bool const val) { c->SetReputationRewardDisabled(val); }
 	);
 	reg_prop(ft, "respawnDelay",
-		[](Creature * c) { return c->GetRespawnDelay(); },
-		[](Creature * c, uint32_t const val) { c->SetRespawnDelay(val); }
+		[](Creature * c) { return DurationWrapper::from_chrono(Seconds{c->GetRespawnDelay()}); },
+		[](Creature * c, DurationWrapper const val) { c->SetRespawnDelay(val.count<Seconds>()); }
 	);
 	reg_prop(ft, "wanderRadius",
 		[](Creature * c) { return c->GetWanderDistance(); },
 		[](Creature * c, float const val) { c->SetWanderDistance(val); }
 	);
 	reg_prop(ft, "corpseDelay",
-		[](Creature * c) { return c->GetCorpseDelay(); },
-		[](Creature * c, uint32_t const val) { c->SetCorpseDelay(val); }
+		[](Creature * c) { return DurationWrapper::from_chrono(Seconds{c->GetCorpseDelay()}); },
+		[](Creature * c, DurationWrapper const val) { c->SetCorpseDelay(val.count<Seconds>()); }
 	);
 	reg_prop(ft, "defaultMovementType",
 		[](Creature * c) { return c->GetDefaultMovementType(); },
@@ -238,8 +239,11 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Creature *>() {
 	reg_method(ft, "setNoCallAssistance", [](Creature * c, std::optional<bool> const val) {
 		c->SetNoCallAssistance(val.value_or(true));
 	});
-	reg_method(ft, "despawnOrUnsummon", [](Creature * c, std::optional<uint32_t> const ms_time_to_despawn, std::optional<uint32_t> forced_respawn_timer) {
-		c->DespawnOrUnsummon(Milliseconds(ms_time_to_despawn.value_or(0)), Seconds(forced_respawn_timer.value_or(0)));
+	reg_method(ft, "despawnOrUnsummon", [](Creature * c, std::optional<DurationWrapper> const time_to_despawn, std::optional<DurationWrapper> forced_respawn_timer) {
+		c->DespawnOrUnsummon(
+			time_to_despawn ? time_to_despawn->to_chrono<Milliseconds>() : 0ms,
+			forced_respawn_timer ? forced_respawn_timer->to_chrono<Seconds>() : 0s
+		);
 	});
 	reg_method(ft, "respawn", [](Creature * c, std::optional<bool> force) {
 		c->Respawn(force.value_or(false));

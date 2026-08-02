@@ -6,7 +6,7 @@ declare global {
 		rooted: boolean;
 		chase: CreatureChaseMovementType;
 		random: CreatureRandomMovementType;
-		interactionPauseTimer: number;
+		interactionPauseTimer: Temporal.Instant;
 	}
 }
 export {};

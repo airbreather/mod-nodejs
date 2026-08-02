@@ -4,6 +4,7 @@
 #include "AuctionHouseMgr.h"
 #include "CtoJ.h"
 #include "DBCStructure.h"
+#include "DurationWrapper.h"
 #include "NodePropertySystem.h"
 
 JVAL_CVAL_TMPLS_RW(AuctionHouseObject)
@@ -19,9 +20,9 @@ v8::Local<v8::FunctionTemplate> jcreate_template<AuctionHouseObject *>() {
 	});
 	// TODO: only the ItemTemplate is used, and only its sell price at that.
 	// so we shouldn't need a fully realized Item object to call this.
-	reg_static_method(ft, "getAuctionDeposit", [](AuctionHouseId id, uint32_t time, Item * item, uint32_t count) {
+	reg_static_method(ft, "getAuctionDeposit", [](AuctionHouseId id, DurationWrapper time, Item * item, uint32_t count) {
 		auto ah = sAuctionMgr->GetAuctionHouseEntryFromHouse(id);
-		return sAuctionMgr->GetAuctionDeposit(ah, time, item, count);
+		return sAuctionMgr->GetAuctionDeposit(ah, time.count<Seconds>(), item, count);
 	});
 	reg_static_method(ft, "getAItem", [](ObjectGuid guid) {
 		return sAuctionMgr->GetAItem(guid);

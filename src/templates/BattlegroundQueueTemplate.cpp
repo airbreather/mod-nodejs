@@ -4,6 +4,7 @@
 
 #include "BattlegroundQueue.h"
 #include "CtoJ.h"
+#include "DurationWrapper.h"
 #include "NodePropertySystem.h"
 
 JVAL_CVAL_TMPLS_RW(BattlegroundQueue)
@@ -27,7 +28,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<BattlegroundQueue *>() {
 		GroupQueueInfo info{};
 		info.teamId = team_id;
 		info.BracketId = bracket_id;
-		return bg->GetAverageQueueWaitTime(&info);
+		return DurationWrapper::from_milliseconds(bg->GetAverageQueueWaitTime(&info));
 	});
 	reg_method(ft, "getAverageArenaQueueWaitTime", [](BattlegroundQueue * bg, uint8_t arena_type, bool is_rated, uint8_t bracket_id) {
 		// the method requires a full GroupQueueInfo, but it only observes at most three values.
@@ -38,7 +39,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<BattlegroundQueue *>() {
 		info.ArenaType = arena_type;
 		info.IsRated = is_rated;
 		info.BracketId = bracket_id;
-		return bg->GetAverageQueueWaitTime(&info);
+		return DurationWrapper::from_milliseconds(bg->GetAverageQueueWaitTime(&info));
 	});
 	reg_method(ft, "checkPremadeMatch", [](BattlegroundQueue * bg, BattlegroundBracketId const bracket_id, uint32_t const min_players_per_team, uint32_t const max_players_per_team) {
 		return bg->CheckPremadeMatch(bracket_id, min_players_per_team, max_players_per_team);

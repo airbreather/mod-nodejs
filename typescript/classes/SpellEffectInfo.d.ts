@@ -1,7 +1,7 @@
 declare global {
 	namespace Acore {
 		class SpellEffectInfo {
-			readonly effectIndex: boolean;
+			readonly effectIndex: SpellEffIndex;
 			readonly effect: SpellEffects;
 			readonly applyAuraName: AuraType;
 			readonly amplitude: number;

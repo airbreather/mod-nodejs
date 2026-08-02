@@ -35,9 +35,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Guild::Member *>() {
 		return m->GetAccountId();
 	});
 	reg_prop_ro(ft, "logoutTime", [](Guild::Member * m) {
-		return UnixTimestamp::from_chrono(
-			std::chrono::seconds{m->GetLogoutTime()}
-		);
+		return UnixTimestamp::from_chrono(Seconds{m->GetLogoutTime()});
 	});
 	reg_prop_ro(ft, "flags", [](Guild::Member * m) {
 		// is it called "flags" or "status"? both are used interchangeably...

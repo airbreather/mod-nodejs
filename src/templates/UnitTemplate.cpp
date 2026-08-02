@@ -10,6 +10,7 @@
 #include "Chat.h"
 #include "CtoJ.h"
 #include "DBCStores.h"
+#include "DurationWrapper.h"
 #include "GridNotifiers.h"
 #include "MotionMaster.h"
 #include "NodePropertySystem.h"
@@ -426,8 +427,12 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Unit *>() {
 	reg_method(ft, "removeArenaAuras", [](Unit * u) {
 		u->RemoveArenaAuras();
 	});
-	reg_method(ft, "setFacingToObject", [](Unit * u, WorldObject * target, std::optional<uint32_t> timed) {
-		u->SetFacingToObject(target, Milliseconds{timed.value_or(0)});
+	reg_method(ft, "setFacingToObject", [](Unit * u, WorldObject * target, std::optional<DurationWrapper> timed) {
+		if (timed) {
+			u->SetFacingToObject(target, timed->to_chrono<Milliseconds>());
+		} else {
+			u->SetFacingToObject(target);
+		}
 	});
 	reg_method(ft, "setInCombatWith", [](Unit * u, Unit * target, std::optional<bool> add_second_unit_suppressed) {
 		u->SetInCombatWith(target, add_second_unit_suppressed.value_or(false));

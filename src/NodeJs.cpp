@@ -315,13 +315,32 @@ inline void NodeJs::run_scoped(std::function<void()> const & f) const {
 	log_and_reset_if_signaled(try_catch);
 }
 
-std::optional<std::chrono::time_point<std::chrono::utc_clock, std::chrono::milliseconds>> NodeJs::convert_instant(v8::Local<v8::Object> v) const {
+std::optional<std::chrono::time_point<std::chrono::utc_clock, Milliseconds>> NodeJs::convert_instant(v8::Local<v8::Object> v) const {
 	auto lng_maybe = cval<int64_t>(v, "epochMilliseconds");
 	if (!lng_maybe) {
 		return {};
 	}
-	auto millis = std::chrono::milliseconds(*lng_maybe);
-	return std::chrono::time_point<std::chrono::utc_clock, std::chrono::milliseconds>(millis);
+	auto millis = Milliseconds(*lng_maybe);
+	return std::chrono::time_point<std::chrono::utc_clock, Milliseconds>(millis);
+}
+
+std::optional<Milliseconds> NodeJs::convert_duration(v8::Local<v8::Object> v) const {
+	auto total_fn = cval<v8::Local<v8::Function>>(v, "total");
+	if (!total_fn) {
+		return {};
+	}
+	auto isolate = v8::Isolate::GetCurrent();
+	auto ctx = isolate->GetCurrentContext();
+	v8::Local<v8::Value> millis_unit = jstr_intern("milliseconds");
+	v8::Local<v8::Value> millis_res;
+	if (!(*total_fn)->Call(ctx, v, 1, &millis_unit).ToLocal(&millis_res)) {
+		return {};
+	}
+	auto lng_maybe = cval<int64_t>(millis_res);
+	if (!lng_maybe) {
+		return {};
+	}
+	return Milliseconds(*lng_maybe);
 }
 
 v8::Local<v8::FunctionTemplate> NodeJs::hook_arg_template(std::string const & hook_name, const std::vector<Arg *> & args) {

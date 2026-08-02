@@ -3,13 +3,14 @@
 
 #include "CtoJ.h"
 #include "DBCStructure.h"
+#include "DurationWrapper.h"
 #include "NodeJPropHelpers.h"
 
 template<>
 [[nodiscard]] v8::Local<v8::Value> jval<SpellCastTimesEntry const &>(SpellCastTimesEntry const & p) {
 	return jobj(
 		jprop("id", p.ID),
-		jprop("castTime", p.CastTime)
+		jprop("castTime", DurationWrapper::from_milliseconds(p.CastTime))
 	);
 }
 

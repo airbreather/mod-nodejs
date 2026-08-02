@@ -4,9 +4,9 @@ declare global {
 		spellTrigger: ItemSpelltriggerType;
 		spellCharges: number;
 		spellPPMRate: number;
-		spellCooldown: number;
+		spellCooldown: Temporal.Duration;
 		spellCategory: number;
-		spellCategoryCooldown: number;
+		spellCategoryCooldown: Temporal.Duration;
 	}
 }
 export {};

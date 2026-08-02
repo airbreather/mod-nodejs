@@ -111,6 +111,7 @@ list(APPEND ${PRIVATE_SOURCES} (
         src/ChatCommandBuilderBuilder.cpp
         src/CtoJ.cpp
         src/Db.cpp
+        src/DurationWrapper.cpp
         src/JtoC.cpp
         src/NodeCommon.cpp
         src/NodeJPropHelpers.cpp

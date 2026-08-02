@@ -3,11 +3,13 @@
 #include <v8-template.h>
 
 #include "CtoJ.h"
+#include "DurationWrapper.h"
 #include "GameEventMgr.h"
 #include "Guild.h"
 #include "JtoC.h"
 #include "NodeJs.h"
 #include "NodePropertySystem.h"
+#include "UnixTimestamp.h"
 
 void add_global_functions(TypedTemplate<NodeJs *> const ft) {
 	// don't register these as static.
@@ -122,10 +124,12 @@ void add_global_functions(TypedTemplate<NodeJs *> const ft) {
 		v8::Isolate::GetCurrent()->ThrowError("unrecognized db");
 	});
 	reg_method(ft, "getCurrTime", [](NodeJs *) {
-		return getMSTime();
+		return UnixTimestamp::from_game_time_milliseconds(getMSTime());
 	});
-	reg_method(ft, "getTimeDiff", [](NodeJs *, uint32_t const ms) {
-		return GetMSTimeDiffToNow(ms);
+	reg_method(ft, "getTimeDiff", [](NodeJs *, UnixTimestamp const before) {
+		auto before_chrn = before.to_chrono<Milliseconds>();
+		auto after_chrn = GetTimeMS();
+		return DurationWrapper::from_chrono(after_chrn - before_chrn);
 	});
 	reg_method(ft, "isGameEventActive", [](NodeJs *, uint16_t const id) {
 		return sGameEventMgr->IsActiveEvent(id);

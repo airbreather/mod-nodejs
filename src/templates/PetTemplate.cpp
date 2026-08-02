@@ -6,6 +6,7 @@
 
 #include "CharmInfo.h"
 #include "CtoJ.h"
+#include "DurationWrapper.h"
 #include "NodePropertySystem.h"
 #include "ObjectGuid.h"
 #include "ObjectMgr.h"
@@ -87,9 +88,9 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Pet *>() {
 		[](Pet * pet) { return pet->isBeingLoaded(); },
 		[](Pet * pet, auto v) { pet->SetLoading(v); }
 	);
-	reg_prop(ft, "durationMilliseconds",
-		[](Pet * pet) { return pet->GetDuration().count(); },
-		[](Pet * pet, std::chrono::seconds::rep const ms) { pet->SetDuration(std::chrono::milliseconds(ms)); }
+	reg_prop(ft, "duration",
+		[](Pet * pet) { return DurationWrapper::from_chrono(pet->GetDuration()); },
+		[](Pet * pet, DurationWrapper const dur) { pet->SetDuration(dur.to_chrono<Milliseconds>()); }
 	);
 	reg_prop(ft, "freeTalentPoints",
 		[](Pet * pet) { return pet->GetFreeTalentPoints(); },

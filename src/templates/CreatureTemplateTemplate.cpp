@@ -5,6 +5,7 @@
 #include "CreatureAI.h"
 #include "CreatureData.h"
 #include "CtoJ.h"
+#include "DurationWrapper.h"
 #include "NodePropertySystem.h"
 
 JVAL_CVAL_TMPLS_RO(CreatureTemplate const)
@@ -79,10 +80,10 @@ v8::Local<v8::FunctionTemplate> jcreate_template<CreatureTemplate const *>() {
 		return ct->DamageModifier;
 	});
 	reg_prop_ro(ft, "baseAttackTime", [](CreatureTemplate const * ct) {
-		return ct->BaseAttackTime;
+		return DurationWrapper::from_milliseconds(ct->BaseAttackTime);
 	});
 	reg_prop_ro(ft, "rangeAttackTime", [](CreatureTemplate const * ct) {
-		return ct->RangeAttackTime;
+		return DurationWrapper::from_milliseconds(ct->RangeAttackTime);
 	});
 	reg_prop_ro(ft, "baseVariance", [](CreatureTemplate const * ct) {
 		return ct->BaseVariance;

@@ -3,6 +3,7 @@
 #include <v8-template.h>
 
 #include "CtoJ.h"
+#include "DurationWrapper.h"
 #include "ItemTemplate.h"
 #include "NodePropertySystem.h"
 
@@ -132,7 +133,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<ItemTemplate const *>() {
 		return it->ArcaneRes;
 	});
 	reg_prop_ro(ft, "delay", [](ItemTemplate const * it) {
-		return it->Delay;
+		return DurationWrapper::from_milliseconds(it->Delay);
 	});
 	reg_prop_ro(ft, "ammoType", [](ItemTemplate const * it) {
 		return it->AmmoType;
@@ -213,7 +214,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<ItemTemplate const *>() {
 		return it->ArmorDamageModifier;
 	});
 	reg_prop_ro(ft, "duration", [](ItemTemplate const * it) {
-		return it->Duration;
+		return DurationWrapper::from_chrono(Seconds{it->Duration});
 	});
 	reg_prop_ro(ft, "itemLimitCategory", [](ItemTemplate const * it) {
 		return it->ItemLimitCategory;

@@ -3,6 +3,7 @@
 #include <v8-template.h>
 
 #include "CtoJ.h"
+#include "DurationWrapper.h"
 #include "GameObject.h"
 #include "GameObjectData.h"
 #include "GameTime.h"
@@ -86,14 +87,18 @@ v8::Local<v8::FunctionTemplate> jcreate_template<GameObject *>() {
 	reg_method(ft, "setLootState", [](GameObject * go, LootState const state, std::optional<Unit *> const unit) {
 		go->SetLootState(state, unit ? *unit : nullptr);
 	});
-	reg_method(ft, "useDoorOrButton", [](GameObject * go, std::optional<uint32_t> const time_to_restore, std::optional<bool> alternative, std::optional<Unit *> user) {
-		go->UseDoorOrButton(time_to_restore.value_or(0), alternative.value_or(false), user.value_or(nullptr));
+	reg_method(ft, "useDoorOrButton", [](GameObject * go, std::optional<DurationWrapper> const time_to_restore, std::optional<bool> alternative, std::optional<Unit *> user) {
+		auto time_to_restore_ms = time_to_restore ? time_to_restore->milliseconds : 0;
+		go->UseDoorOrButton(static_cast<int32_t>(time_to_restore_ms), alternative.value_or(false), user.value_or(nullptr));
 	});
 	reg_method(ft, "despawn", [](GameObject * go) {
 		go->SetLootState(GO_JUST_DEACTIVATED);
 	});
-	reg_method(ft, "despawnOrUnsummon", [](GameObject * go, std::optional<uint32_t> const ms_time_to_despawn, std::optional<uint32_t> forced_respawn_timer) {
-		go->DespawnOrUnsummon(Milliseconds(ms_time_to_despawn.value_or(0)), Seconds(forced_respawn_timer.value_or(0)));
+	reg_method(ft, "despawnOrUnsummon", [](GameObject * go, std::optional<DurationWrapper> const time_to_despawn, std::optional<DurationWrapper> forced_respawn_timer) {
+		go->DespawnOrUnsummon(
+			time_to_despawn ? time_to_despawn->to_chrono<Milliseconds>() : 0ms,
+			forced_respawn_timer ? forced_respawn_timer->to_chrono<Seconds>() : 0s
+		);
 	});
 	reg_method(ft, "respawn", [](GameObject * go) {
 		go->Respawn();
@@ -101,14 +106,14 @@ v8::Local<v8::FunctionTemplate> jcreate_template<GameObject *>() {
 	reg_method(ft, "refresh", [](GameObject * go) {
 		go->Refresh();
 	});
-	reg_method(ft, "setSecondsUntilNextRespawn", [](GameObject * go, int32_t const delay) {
+	reg_method(ft, "setTimeUntilNextRespawn", [](GameObject * go, DurationWrapper const delay) {
 		// set ONLY the NEXT respawn time without modifying the delay between future respawns.
 		auto const old_delay = go->GetRespawnDelay();
-		go->SetRespawnTime(delay);
+		go->SetRespawnTime(static_cast<int32_t>(delay.count<Seconds>()));
 		go->SetRespawnDelay(static_cast<int32_t>(old_delay));
 	});
-	reg_method(ft, "setSecondsBetweenRespawns", [](GameObject * go, int32_t const delay) {
-		go->SetRespawnDelay(delay);
+	reg_method(ft, "setTimeBetweenRespawns", [](GameObject * go, DurationWrapper const delay) {
+		go->SetRespawnDelay(static_cast<int32_t>(delay.count<Seconds>()));
 	});
 	reg_method(ft, "saveToDB", [](GameObject * go, std::optional<bool> save_addon) {
 		go->SaveToDB(save_addon.value_or(false));

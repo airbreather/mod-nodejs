@@ -19,17 +19,17 @@ declare global {
 			isSpawnedByDefault: boolean;
 
 			setLootState(lootState: LootState, unit?: Unit): void;
-			useDoorOrButton(timeToRestore?: number, alternative?: boolean, user?: Unit): void;
+			useDoorOrButton(timeToRestore?: Temporal.Duration, alternative?: boolean, user?: Unit): void;
 			despawn(): void;
-			despawnOrUnsummon(msTimeToDespawn?: number, forcedRespawnTimer?: number): void;
+			despawnOrUnsummon(timeToDespawn?: Temporal.Duration, forcedRespawnTimer?: Temporal.Duration): void;
 			respawn(): void;
 			refresh(): void;
 			saveToDB(saveAddon?: boolean): void;
 			saveToDBExtra(mapId: number, spawnMask: number, phaseMask: number, saveAddon?: boolean): void;
 			// mod-nodejs inventions: SetRespawnTime and SetRespawnDelay names confuse me greatly. when I
 			// worked out what they were, I thought of better names and a nicer way to handle the former.
-			setSecondsUntilNextRespawn(delay: number): void;
-			setSecondsBetweenRespawns(delay: number): void;
+			setTimeUntilNextRespawn(delay: Temporal.Duration): void;
+			setTimeBetweenRespawns(delay: Temporal.Duration): void;
 		}
 	}
 }

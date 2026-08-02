@@ -39,10 +39,10 @@ declare global {
 			readonly excludeTargetAuraSpell: number;
 			readonly castTimeEntry: SpellCastTimesEntry | undefined;
 			// favor recoveryTime, which yields categoryRecoveryTime if that's longer
-			readonly recoveryTimeRaw: number;
-			readonly categoryRecoveryTime: number;
+			readonly recoveryTimeRaw: Temporal.Duration;
+			readonly categoryRecoveryTime: Temporal.Duration;
 			readonly startRecoveryCategory: number;
-			readonly startRecoveryTime: number;
+			readonly startRecoveryTime: Temporal.Duration;
 			readonly interruptFlags: SpellInterruptFlags;
 			readonly auraInterruptFlags: SpellAuraInterruptFlags;
 			readonly channelInterruptFlags: SpellAuraInterruptFlags;
@@ -128,10 +128,10 @@ declare global {
 			readonly dispelMask: DispelTypeMask;
 			readonly auraState: AuraStateType;
 			readonly spellSpecific: SpellSpecificType;
-			readonly duration: number;
-			readonly maxDuration: number;
+			readonly duration: Temporal.Duration;
+			readonly maxDuration: Temporal.Duration;
 			readonly maxTicks: number;
-			readonly recoveryTime: number;
+			readonly recoveryTime: Temporal.Duration;
 			readonly isRanked: boolean;
 			readonly rank: number;
 			readonly firsRankSpell: SpellInfo | undefined;
@@ -167,7 +167,7 @@ declare global {
 			getImmunityInfo(effectIndex: SpellEffIndex): ImmunityInfo;
 			getMinRange(positive?: boolean): number;
 			getMaxRange(positive?: boolean, caster?: Unit, spell?: Spell): number;
-			calcCastTime(caster?: Unit, spell?: Spell): number;
+			calcCastTime(caster?: Unit, spell?: Spell): Temporal.Duration;
 			calcPowerCost(caster: Unit, schoolMask: SpellSchoolMask, spell?: Spell): number;
 			getAuraRankForLevel(level: number): number;
 			isRankOf(other: SpellInfo): boolean;

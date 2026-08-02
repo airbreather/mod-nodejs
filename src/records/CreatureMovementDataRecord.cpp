@@ -3,6 +3,7 @@
 
 #include "CreatureData.h"
 #include "CtoJ.h"
+#include "DurationWrapper.h"
 #include "NodeJPropHelpers.h"
 
 template<>
@@ -14,7 +15,7 @@ template<>
 		jprop("rooted", m.Rooted),
 		jprop("chase", m.Chase),
 		jprop("random", m.Random),
-		jprop("interactionPauseTimer", m.InteractionPauseTimer)
+		jprop("interactionPauseTimer", DurationWrapper::from_milliseconds(m.InteractionPauseTimer))
 	);
 }
 

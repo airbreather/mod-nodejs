@@ -24,6 +24,7 @@
 #include "DBCStores.h"
 #include "DBCStructure.h"
 #include "Duration.h"
+#include "DurationWrapper.h"
 #include "EnumFlag.h"
 #include "GameObject.h"
 #include "GossipDef.h"
@@ -48,6 +49,7 @@
 #include "SharedDefines.h"
 #include "Unit.h"
 #include "UnitDefines.h"
+#include "UnixTimestamp.h"
 #include "UpdateFields.h"
 #include "WorldPacket.h"
 #include "WorldSession.h"
@@ -264,13 +266,16 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 		return player->GetSession()->GetSessionDbcLocale();
 	});
 	reg_prop_ro(ft, "latency", [](Player * player) {
-		return player->GetSession()->GetLatency();
+		return DurationWrapper::from_milliseconds(player->GetSession()->GetLatency());
 	});
 	reg_prop_ro(ft, "groupInvite", [](Player * player) {
 		return player->GetGroupInvite();
 	});
 	reg_prop_ro(ft, "inGameTime", [](Player * player) {
 		return player->GetInGameTime();
+	});
+	reg_prop_ro(ft, "loginTimestamp", [](Player * player) {
+		return UnixTimestamp::from_game_time_milliseconds(player->GetInGameTime());
 	});
 	reg_prop_ro(ft, "healthBonusFromStamina", [](Player * player) {
 		return player->GetHealthBonusFromStamina();
@@ -339,13 +344,13 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 		return freeSlots;
 	});
 	reg_prop_ro(ft, "levelPlayedTime", [](Player * player) {
-		return player->GetLevelPlayedTime();
+		return DurationWrapper::from_chrono(Seconds{player->GetLevelPlayedTime()});
 	});
 	reg_prop_ro(ft, "averageItemLevel", [](Player * player) {
 		return player->GetAverageItemLevel();
 	});
 	reg_prop_ro(ft, "totalPlayedTime", [](Player * player) {
-		return player->GetTotalPlayedTime();
+		return DurationWrapper::from_chrono(Seconds{player->GetTotalPlayedTime()});
 	});
 	reg_prop_ro(ft, "guildName", [](Player * player) {
 		return player->GetGuildId() ? player->GetGuildName() : "";
@@ -1006,8 +1011,10 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 	reg_method(ft, "advanceSkill", [](Player * player, SkillType const skillId, uint32_t const step) {
 		return player->HasSkill(skillId) && player->UpdateSkill(skillId, step);
 	});
-	reg_method(ft, "summonPet", [](Player * player, uint32_t const entry, float const x, float const y, float const z, float const angle, std::optional<PetType> const petType, std::optional<uint32_t> const duration, std::optional<uint32_t> const healthPct) {
-		auto const dur = duration ? Milliseconds(*duration) : 0ms;
+	reg_method(ft, "summonPet", [](Player * player, uint32_t const entry, float const x, float const y, float const z, float const angle, std::optional<PetType> const petType, std::optional<DurationWrapper> const duration, std::optional<uint32_t> const healthPct) {
+		auto const dur = duration
+			? duration->to_chrono<Milliseconds>()
+			: 0ms;
 		return player->SummonPet(entry, x, y, z, angle, petType.value_or(HUNTER_PET), dur, healthPct.value_or(0));
 	});
 	reg_method(ft, "createPet", [](Player * player, uint32_t const entry, std::optional<uint32_t> const spellId) {

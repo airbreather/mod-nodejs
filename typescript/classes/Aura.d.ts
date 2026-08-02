@@ -13,11 +13,11 @@ declare global {
 			readonly charges: number;
 			readonly isExpired: boolean;
 			readonly isPermanent: boolean;
-			duration: number;
-			maxDuration: number;
+			duration: Temporal.Duration;
+			maxDuration: Temporal.Duration;
 			stackAmount: number;
 
-			setDurationWithMods(duration: number): void;
+			setDurationWithMods(duration: Temporal.Duration): void;
 			remove(): void;
 		}
 	}

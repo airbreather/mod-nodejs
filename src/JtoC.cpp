@@ -2,6 +2,7 @@
 
 #include <v8-context.h>
 
+#include "DurationWrapper.h"
 #include "NodeJs.h"
 #include "UnixTimestamp.h"
 #include "Util.h"
@@ -192,5 +193,16 @@ std::optional<UnixTimestamp> cval<UnixTimestamp>(v8::Local<v8::Value> const v) {
 	auto const instant = NodeJs::instance()->convert_instant(v.As<v8::Object>());
 	return instant
 		? std::optional{UnixTimestamp::from_chrono(instant->time_since_epoch())}
+		: std::nullopt;
+}
+
+template<>
+std::optional<DurationWrapper> cval<DurationWrapper>(v8::Local<v8::Value> const v) {
+	if (!v->IsObject()) {
+		return {};
+	}
+	auto const duration = NodeJs::instance()->convert_duration(v.As<v8::Object>());
+	return duration
+		? std::optional{DurationWrapper::from_chrono(*duration)}
 		: std::nullopt;
 }

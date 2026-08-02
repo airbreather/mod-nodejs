@@ -10,5 +10,11 @@ declare global {
 		AFLAG_ANY_EFFECT_AMOUNT_SENT = 0x40, // used with AFLAG_EFF_INDEX_0/1/2
 		AFLAG_NEGATIVE               = 0x80,
 	}
+	// mod-nodejs invention
+	const enum AURA_FLAGS_ONLY_EFFECTS {
+		AFLAG_EFF_INDEX_0            = AURA_FLAGS.AFLAG_EFF_INDEX_0,
+		AFLAG_EFF_INDEX_1            = AURA_FLAGS.AFLAG_EFF_INDEX_1,
+		AFLAG_EFF_INDEX_2            = AURA_FLAGS.AFLAG_EFF_INDEX_2,
+	}
 }
 export {};

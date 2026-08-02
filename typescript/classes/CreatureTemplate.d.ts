@@ -22,8 +22,8 @@ declare global {
 			readonly rank: CreatureEliteType;
 			readonly dmgSchool: SpellSchools;
 			readonly damageModifier: number;
-			readonly baseAttackTime: number;
-			readonly rangeAttackTime: number;
+			readonly baseAttackTime: Temporal.Duration;
+			readonly rangeAttackTime: Temporal.Duration;
 			readonly baseVariance: number;
 			readonly rangeVariance: number;
 			readonly unitClass: CreatureClasses;

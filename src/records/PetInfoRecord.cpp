@@ -18,7 +18,7 @@ template<>
 		jprop("health", p.Health),
 		jprop("mana", p.Mana),
 		jprop("happiness", p.Happiness),
-		jprop("lastSaveTime", UnixTimestamp::from_chrono(std::chrono::seconds{p.LastSaveTime})),
+		jprop("lastSaveTime", UnixTimestamp::from_chrono(Seconds{p.LastSaveTime})),
 		jprop("createdBySpellId", p.CreatedBySpellId),
 		jprop("level", p.Level),
 		jprop("reactState", p.ReactState),

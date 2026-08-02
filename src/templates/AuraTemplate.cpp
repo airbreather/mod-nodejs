@@ -4,6 +4,7 @@
 
 #include "CtoJ.h"
 #include "DBCStructure.h"
+#include "DurationWrapper.h"
 #include "NodePropertySystem.h"
 #include "ObjectGuid.h"
 #include "SpellAuraDefines.h"
@@ -62,20 +63,20 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Aura *>() {
 	});
 
 	reg_prop(ft, "duration",
-		[](Aura * aura) { return aura->GetDuration(); },
-		[](Aura * aura, int32_t const duration) { aura->SetDuration(duration); }
+		[](Aura * aura) { return DurationWrapper::from_milliseconds(aura->GetDuration()); },
+		[](Aura * aura, DurationWrapper const duration) { aura->SetDuration(static_cast<int32_t>(duration.count<Milliseconds>())); }
 	);
 	reg_prop(ft, "maxDuration",
-		[](Aura * aura) { return aura->GetMaxDuration(); },
-		[](Aura * aura, int32_t const duration) { aura->SetMaxDuration(duration); }
+		[](Aura * aura) { return DurationWrapper::from_milliseconds(aura->GetMaxDuration()); },
+		[](Aura * aura, DurationWrapper const duration) { aura->SetMaxDuration(static_cast<int32_t>(duration.count<Milliseconds>())); }
 	);
 	reg_prop(ft, "stackAmount",
 		[](Aura * aura) { return aura->GetStackAmount(); },
 		[](Aura * aura, uint8_t const num) { aura->SetStackAmount(num); }
 	);
 
-	reg_method(ft, "setDurationWithMods", [](Aura * a, int32_t const duration) {
-		a->SetDuration(duration, true);
+	reg_method(ft, "setDurationWithMods", [](Aura * a, DurationWrapper const duration) {
+		a->SetDuration(static_cast<int32_t>(duration.count<Milliseconds>()), true);
 	});
 	reg_method(ft, "remove", [](Aura * a) {
 		a->Remove();

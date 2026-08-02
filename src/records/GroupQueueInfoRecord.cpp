@@ -4,6 +4,7 @@
 #include "BattlegroundQueue.h"
 #include "CtoJ.h"
 #include "NodeJPropHelpers.h"
+#include "UnixTimestamp.h"
 
 template<>
 [[nodiscard]] v8::Local<v8::Value> jval<GroupQueueInfo const &>(GroupQueueInfo const & p) {
@@ -15,8 +16,8 @@ template<>
 		jprop("isRated", p.IsRated),
 		jprop("arenaType", p.ArenaType),
 		jprop("arenaTeamId", p.ArenaTeamId),
-		jprop("joinTime", p.JoinTime),
-		jprop("removeInviteTime", p.RemoveInviteTime),
+		jprop("joinTime", UnixTimestamp::from_game_time_milliseconds(p.JoinTime)),
+		jprop("removeInviteTime", UnixTimestamp::from_game_time_milliseconds(p.RemoveInviteTime)),
 		jprop("isInvitedToBGInstanceGUID", p.IsInvitedToBGInstanceGUID),
 		jprop("arenaTeamRating", p.ArenaTeamRating),
 		jprop("arenaMatchmakerRating", p.ArenaMatchmakerRating),

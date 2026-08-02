@@ -4,6 +4,7 @@
 #include <v8-template.h>
 
 #include "CtoJ.h"
+#include "DurationWrapper.h"
 #include "NodePropertySystem.h"
 #include "Player.h"
 #include "SharedDefines.h"
@@ -108,16 +109,16 @@ v8::Local<v8::FunctionTemplate> jcreate_template<SpellInfo const *>() {
 		return si->CastTimeEntry;
 	});
 	reg_prop_ro(ft, "recoveryTime", [](SpellInfo const * si) {
-		return si->RecoveryTime;
+		return DurationWrapper::from_milliseconds(si->RecoveryTime);
 	});
 	reg_prop_ro(ft, "categoryRecoveryTime", [](SpellInfo const * si) {
-		return si->CategoryRecoveryTime;
+		return DurationWrapper::from_milliseconds(si->CategoryRecoveryTime);
 	});
 	reg_prop_ro(ft, "startRecoveryCategory", [](SpellInfo const * si) {
 		return si->StartRecoveryCategory;
 	});
 	reg_prop_ro(ft, "startRecoveryTime", [](SpellInfo const * si) {
-		return si->StartRecoveryTime;
+		return DurationWrapper::from_milliseconds(si->StartRecoveryTime);
 	});
 	reg_prop_ro(ft, "interruptFlags", [](SpellInfo const * si) {
 		return si->InterruptFlags;
@@ -377,16 +378,16 @@ v8::Local<v8::FunctionTemplate> jcreate_template<SpellInfo const *>() {
 		return si->GetSpellSpecific();
 	});
 	reg_prop_ro(ft, "duration", [](SpellInfo const * si) {
-		return si->GetDuration();
+		return DurationWrapper::from_milliseconds(si->GetDuration());
 	});
 	reg_prop_ro(ft, "maxDuration", [](SpellInfo const * si) {
-		return si->GetMaxDuration();
+		return DurationWrapper::from_milliseconds(si->GetMaxDuration());
 	});
 	reg_prop_ro(ft, "maxTicks", [](SpellInfo const * si) {
 		return si->GetMaxTicks();
 	});
 	reg_prop_ro(ft, "recoveryTime", [](SpellInfo const * si) {
-		return si->GetRecoveryTime();
+		return DurationWrapper::from_milliseconds(si->GetRecoveryTime());
 	});
 	reg_prop_ro(ft, "isRanked", [](SpellInfo const * si) {
 		return si->IsRanked();
@@ -492,7 +493,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<SpellInfo const *>() {
 		return si->GetMaxRange(positive.value_or(false), caster.value_or(nullptr), spell.value_or(nullptr));
 	});
 	reg_method(ft, "calcCastTime", [](SpellInfo const * si, std::optional<Unit *> const caster, std::optional<Spell *> const spell) {
-		return si->CalcCastTime(caster.value_or(nullptr), spell.value_or(nullptr));
+		return DurationWrapper::from_milliseconds(si->CalcCastTime(caster.value_or(nullptr), spell.value_or(nullptr)));
 	});
 	reg_method(ft, "calcPowerCost", [](SpellInfo const * si, Unit * caster, SpellSchoolMask const school_mask, std::optional<Spell *> const spell) {
 		return si->CalcPowerCost(caster, school_mask, spell.value_or(nullptr));

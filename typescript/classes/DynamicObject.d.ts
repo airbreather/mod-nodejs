@@ -7,10 +7,10 @@ declare global {
 			readonly radius: number;
 			readonly isViewpoint: boolean;
 			readonly oldFarsightGuid: ObjectGuidNative | undefined;
-			duration: number;
+			duration: Temporal.Duration;
 
 			remove(): void;
-			delay(delayTime: number): void;
+			delay(delayTime: Temporal.Duration): void;
 			setAura(aura: Aura): void;
 			removeAura(): void;
 			setCasterViewpoint(updateViewerVisibility: boolean): void;

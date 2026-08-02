@@ -122,7 +122,8 @@ public:
 
 	void run_scoped(std::function<void()> const & f) const;
 
-	std::optional<std::chrono::time_point<std::chrono::utc_clock, std::chrono::milliseconds>> convert_instant(v8::Local<v8::Object>) const;
+	std::optional<std::chrono::time_point<std::chrono::utc_clock, Milliseconds>> convert_instant(v8::Local<v8::Object>) const;
+	std::optional<Milliseconds> convert_duration(v8::Local<v8::Object>) const;
 
 	template <typename T, typename... Args>
 	static T invoke_hook_t(std::string const & hook_name, T dfault, Args && ... args) {

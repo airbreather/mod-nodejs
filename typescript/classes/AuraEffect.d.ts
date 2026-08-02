@@ -9,7 +9,7 @@ declare global {
 			readonly spellModifier: SpellModifier;
 			readonly spellInfo: SpellInfo;
 			readonly id: number;
-			readonly effIndex: number;
+			readonly effIndex: SpellEffIndex;
 			readonly baseAmount: number;
 			readonly dieSides: number;
 			readonly amplitude: number;

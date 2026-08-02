@@ -2,6 +2,7 @@
 #include <v8-template.h>
 
 #include "CtoJ.h"
+#include "DurationWrapper.h"
 #include "DynamicObject.h"
 #include "NodePropertySystem.h"
 #include "Object.h"
@@ -36,15 +37,15 @@ v8::Local<v8::FunctionTemplate> jcreate_template<DynamicObject *>() {
 	});
 
 	reg_prop(ft, "duration",
-		[](DynamicObject * dyno) { return dyno->GetDuration(); },
-		[](DynamicObject * dyno, int32_t const duration) { dyno->SetDuration(duration); }
+		[](DynamicObject * dyno) { return DurationWrapper::from_milliseconds(dyno->GetDuration()); },
+		[](DynamicObject * dyno, DurationWrapper const duration) { dyno->SetDuration(static_cast<int32_t>(duration.milliseconds)); }
 	);
 
 	reg_method(ft, "remove", [](DynamicObject * dyno) {
 		dyno->Remove();
 	});
-	reg_method(ft, "delay", [](DynamicObject * dyno, int32_t const delay_time) {
-		dyno->Delay(delay_time);
+	reg_method(ft, "delay", [](DynamicObject * dyno, DurationWrapper const delay_time) {
+		dyno->Delay(static_cast<int32_t>(delay_time.milliseconds));
 	});
 	reg_method(ft, "setAura", [](DynamicObject * dyno, Aura * aura) {
 		dyno->SetAura(aura);

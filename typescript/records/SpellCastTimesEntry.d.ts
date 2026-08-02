@@ -1,7 +1,7 @@
 declare global {
 	interface SpellCastTimesEntry {
 		id: number;
-		castTime: number;
+		castTime: Temporal.Duration;
 	}
 }
 export {};

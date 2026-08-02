@@ -3,6 +3,7 @@
 
 #include "Creature.h"
 #include "CtoJ.h"
+#include "DurationWrapper.h"
 #include "NodePropertySystem.h"
 #include "TemporarySummon.h"
 
@@ -27,16 +28,20 @@ v8::Local<v8::FunctionTemplate> jcreate_template<TempSummon *>() {
 		[](TempSummon * tempSummon, bool const visibleBySummonerOnly) { tempSummon->SetVisibleBySummonerOnly(visibleBySummonerOnly); }
 	);
 	reg_prop(ft, "timer",
-		[](TempSummon * tempSummon) { return tempSummon->GetTimer(); },
-		[](TempSummon * tempSummon, uint32_t const t) { tempSummon->SetTimer(t); }
+		[](TempSummon * tempSummon) { return DurationWrapper::from_milliseconds(tempSummon->GetTimer()); },
+		[](TempSummon * tempSummon, DurationWrapper const t) { tempSummon->SetTimer(t.count<Milliseconds>()); }
 	);
 	reg_prop(ft, "summonType",
 		[](TempSummon * tempSummon) { return tempSummon->GetSummonType(); },
 		[](TempSummon * tempSummon, auto v) { tempSummon->SetTempSummonType(v); }
 	);
 
-	reg_method(ft, "unsummon", [](TempSummon * s, std::optional<uint32_t> const ms) {
-		s->UnSummon(Milliseconds(ms.value_or(0)));
+	reg_method(ft, "unsummon", [](TempSummon * s, std::optional<DurationWrapper> delay) {
+		if (delay) {
+			s->UnSummon(delay->to_chrono<Milliseconds>());
+		} else {
+			s->UnSummon();
+		}
 	});
 
 	return ft;

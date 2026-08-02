@@ -2,7 +2,7 @@ declare global {
 	namespace Acore {
 		class AuctionHouse {
 			static forId(id: AuctionHouseId): AuctionHouse;
-			static getAuctionDeposit(id: AuctionHouseId, time: number, item: Item, count: number): number;
+			static getAuctionDeposit(id: AuctionHouseId, time: Temporal.Duration, item: Item, count: number): number;
 			static getAItem(guid: ObjectGuid): Item | undefined;
 
 			readonly auctionCount: number;
