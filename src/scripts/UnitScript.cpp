@@ -2,6 +2,7 @@
 
 #include <string>
 
+#include "DurationWrapper.h"
 #include "NodeJPropHelpers.h"
 #include "NodeJs.h"
 
@@ -39,7 +40,7 @@ public:
 		NodeJs::invoke_hook("unit:aura-apply", jarg("unit", unit), jarg("aura", aura));
 	}
 	void OnAuraRemove(Unit * unit, AuraApplication * aurApp, AuraRemoveMode const mode) override {
-		NodeJs::invoke_hook("unit:aura-remove", jarg("unit", unit)/*, jarg("aurApp", aurApp)*/, jarg("mode", mode));
+		NodeJs::invoke_hook("unit:aura-remove", jarg("unit", unit), jarg("aurApp", aurApp), jarg("mode", mode));
 	}
 	[[nodiscard]] bool IfNormalReaction(Unit const * unit, Unit const * target, ReputationRank & repRank) override {
 		return NodeJs::invoke_hook_t("unit:if-normal-reaction", UnitScript::IfNormalReaction(unit, target, repRank)
@@ -61,7 +62,7 @@ public:
 		NodeJs::invoke_hook("unit:patch-values-update", jarg("unit", unit)/*, jarg_inout("valuesUpdateBuf", valuesUpdateBuf)*//*, jarg_inout("posPointers", posPointers)*/, jarg("target", target));
 	}
 	void OnUnitUpdate(Unit * unit, uint32_t const diff) override {
-		NodeJs::invoke_hook("unit:update", jarg("unit", unit), jarg("diff", diff));
+		NodeJs::invoke_hook("unit:update", jarg("unit", unit), jarg("diff", DurationWrapper::from_milliseconds(diff)));
 	}
 	void OnDisplayIdChange(Unit * unit, uint32_t const displayId) override {
 		NodeJs::invoke_hook("unit:display-id-change", jarg("unit", unit), jarg("displayId", displayId));
