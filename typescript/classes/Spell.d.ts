@@ -1,12 +1,12 @@
 declare global {
 	namespace Acore {
 		class Spell {
-			readonly spellInfo: number;
+			readonly spellInfo: SpellInfo;
 			readonly castTime: Temporal.Duration;
 			readonly powerCost: number;
-			readonly caster: number;
-			readonly targetDest: number;
-			readonly target: number;
+			readonly caster: Unit;
+			readonly targetDest: Position;
+			readonly target: WorldObject | Item | undefined;
 			isAutoRepeat: boolean;
 
 			cast(skipCheck?: boolean): void;
