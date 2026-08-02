@@ -75,11 +75,6 @@ declare global {
 			readonly foodType: PetDiet;
 			readonly minMoneyLoot: number;
 			readonly maxMoneyLoot: number;
-			readonly flags3: ItemFlags3;
-			/**
-			 * @deprecated Use flags3 - the author of mod-nodejs is inserting their opinion that
-			 * this probably shouldn't have been given such an inconsistent name in C++.
-			 */
 			readonly flagsCu: ItemFlagsCustom;
 			readonly hasSignature: boolean;
 			readonly canChangeEquipStateInCombat: boolean;
@@ -98,11 +93,6 @@ declare global {
 			hasStat(stat: ItemModType): boolean;
 			hasFlag(flag: ItemFlags): boolean;
 			hasFlag2(flag: ItemFlags2): boolean;
-			hasFlag3(flag: ItemFlags3): boolean;
-			/**
-			 * @deprecated Use hasFlag3 - the author of mod-nodejs is inserting their opinion that
-			 * this probably shouldn't have been given such an inconsistent name in C++.
-			 */
 			hasFlagCu(flag: ItemFlagsCustom): boolean;
 		}
 

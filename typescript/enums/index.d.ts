@@ -46,7 +46,7 @@ export * from './ItemBondingType';
 export * from './ItemClass';
 export * from './ItemFlags';
 export * from './ItemFlags2';
-export * from './ItemFlags3';
+export * from './ItemFlagsCustom';
 export * from './ItemModType';
 export * from './ItemQualities';
 export * from './ItemSpelltriggerType';

@@ -236,11 +236,6 @@ v8::Local<v8::FunctionTemplate> jcreate_template<ItemTemplate const *>() {
 	reg_prop_ro(ft, "maxMoneyLoot", [](ItemTemplate const * it) {
 		return it->MaxMoneyLoot;
 	});
-	reg_prop_ro(ft, "flags3", [](ItemTemplate const * it) {
-		// TypeScript is calling it ItemFlags3 with ItemFlagsCustom as an alias, because it's very
-		// clearly (to me) just "we added a third bitfield because we ran out of room in the others"
-		return it->FlagsCu;
-	});
 	reg_prop_ro(ft, "flagsCu", [](ItemTemplate const * it) {
 		return it->FlagsCu;
 	});
@@ -292,10 +287,6 @@ v8::Local<v8::FunctionTemplate> jcreate_template<ItemTemplate const *>() {
 	});
 	reg_method(ft, "hasFlag2", [](ItemTemplate const * it, ItemFlags2 const flag) {
 		return it->HasFlag2(flag);
-	});
-	reg_method(ft, "hasFlag3", [](ItemTemplate const * it, ItemFlagsCustom const flag) {
-		// see comment on flags3 above
-		return it->HasFlagCu(flag);
 	});
 	reg_method(ft, "hasFlagCu", [](ItemTemplate const * it, ItemFlagsCustom const flag) {
 		return it->HasFlagCu(flag);
