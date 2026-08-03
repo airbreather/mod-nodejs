@@ -87,6 +87,7 @@ declare global {
 			readonly factionId: number;
 			standing: number;
 			readonly incremental: boolean;
+			__return: boolean;
 		};
 		['player:reputation-rank-change']: {
 			readonly player: Acore.Player;
@@ -183,6 +184,7 @@ declare global {
 			readonly o: number;
 			readonly options: TeleportToOptions;
 			readonly target: Acore.Unit | undefined;
+			__return: boolean;
 		};
 		['player:update-faction']: { readonly player: Acore.Player; };
 		['player:add-to-battleground']: {
@@ -195,7 +197,7 @@ declare global {
 		};
 		['player:remove-from-battleground']: {
 			readonly player: Acore.Player;
-			rDungeonId: number;
+			bg: Acore.Battleground;
 		};
 		['player:achievement-complete']: {
 			readonly player: Acore.Player;
@@ -245,6 +247,7 @@ declare global {
 			readonly player: Acore.Player;
 			readonly item: Acore.Item;
 			readonly bag: number;
+			readonly slot: number;
 			readonly update: boolean;
 		};
 		['player:equip']: {
@@ -423,7 +426,7 @@ declare global {
 		['player:before-load-pet-from-db']: {
 			readonly player: Acore.Player;
 			petEntry: number;
-			petnumber: number;
+			petNumber: number;
 			current: boolean;
 			forceLoadFromDB: boolean;
 		};
@@ -495,7 +498,7 @@ declare global {
 			readonly level: number;
 			__return: boolean;
 		};
-		// ['player:delete-from-db"']: unknown; // thinking about the transaction arg right now...
+		// ['player:delete-from-db']: unknown; // thinking about the transaction arg right now...
 		['player:can-repop-at-graveyard']: {
 			readonly player: Acore.Player;
 			__return: boolean;
@@ -570,6 +573,7 @@ declare global {
 			statType: Stats;
 			val: number;
 			readonly itemProtoStatNumber: number;
+			readonly scalingStatValue: number;
 			// readonly ssv: Acore.ScalingStatValuesEntry;
 		};
 		['player:apply-item-mods-before']: {
@@ -895,8 +899,8 @@ declare global {
 			readonly player: Acore.Player;
 			__return: boolean;
 		};
-		['player:player:after-creature-loot']: { readonly player: Acore.Player; };
-		['player:player:after-creature-loot-money']: { readonly player: Acore.Player; };
+		['player:after-creature-loot']: { readonly player: Acore.Player; };
+		['player:after-creature-loot-money']: { readonly player: Acore.Player; };
 		['player:can-update-skill']: {
 			readonly player: Acore.Player;
 			readonly skillId: SkillType;
@@ -914,6 +918,7 @@ declare global {
 			readonly skillId: SkillType;
 			readonly value: number;
 			readonly max: number;
+			readonly step: number;
 			readonly newValue: number;
 		};
 		['player:set-skill']: {
@@ -921,6 +926,7 @@ declare global {
 			readonly skillId: SkillType;
 			readonly value: number;
 			readonly max: number;
+			readonly step: number;
 			readonly newValue: number;
 		};
 		['player:can-resurrect']: {

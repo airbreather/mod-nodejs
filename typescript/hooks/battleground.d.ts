@@ -3,7 +3,7 @@ declare global {
 		['battleground:start']: { readonly bg: Acore.Battleground; };
 		['battleground:end']: {
 			readonly bg: Acore.Battleground;
-			readonly winnerTeamId: TeamId;
+			readonly winnerTeam: TeamId;
 		};
 		['battleground:create']: { readonly bg: Acore.Battleground; };
 		['battleground:destroy']: { readonly bg: Acore.Battleground; };

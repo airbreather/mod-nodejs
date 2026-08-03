@@ -58,8 +58,8 @@ declare global {
 		};
 		['guild:uninvite-player']: {
 			readonly guild: Acore.Guild;
-			readonly uninviterPlayerGuid: ObjectGuidNative;
-			readonly uninviteePlayerGuid: ObjectGuidNative;
+			readonly uninviterGuid: ObjectGuidNative;
+			readonly uninviteeGuid: ObjectGuidNative;
 		};
 		['guild:demote-player']: {
 			readonly guild: Acore.Guild;
@@ -95,6 +95,13 @@ declare global {
 			readonly count: number;
 			readonly destTabId: number;
 		};
+		['guild:deposit-bank-item']: {
+			readonly guild: Acore.Guild;
+			readonly destTabId: number;
+			readonly playerGuid: ObjectGuidNative;
+			readonly itemEntry: number;
+			readonly count: number;
+		};
 		['guild:deposit-bank-money']: {
 			readonly guild: Acore.Guild;
 			readonly playerGuid: ObjectGuidNative;
@@ -124,6 +131,7 @@ declare global {
 			readonly player: Acore.Player | undefined;
 			readonly tabId: number;
 			readonly sendAllSlots: boolean;
+			__return: boolean;
 		};
 	}
 }

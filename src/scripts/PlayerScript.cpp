@@ -302,7 +302,7 @@ public:
 		duration = durationWrapper.count<Milliseconds>();
 	}
 	void OnPlayerBeforeGuardianInitStatsForLevel(Player * player, Guardian * guardian, CreatureTemplate const * cinfo, PetType & petType) override {
-		NodeJs::invoke_hook("player:before-guardian-init-stats-for-level", jarg("player", player), jarg("guardian", guardian), jarg("cinfo", cinfo), jarg_inout("petType", petType));
+		NodeJs::invoke_hook("player:before-guardian-init-stats-for-level", jarg("player", player), jarg("guardian", guardian), jarg("cInfo", cinfo), jarg_inout("petType", petType));
 	}
 	void OnPlayerAfterGuardianInitStatsForLevel(Player * player, Guardian * guardian) override {
 		NodeJs::invoke_hook("player:after-guardian-init-stats-for-level", jarg("player", player), jarg("guardian", guardian));

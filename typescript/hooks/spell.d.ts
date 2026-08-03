@@ -33,7 +33,6 @@ declare global {
 		['spell:remove-aura-scale-targets']: {
 			readonly spell: Acore.Spell;
 			// targetInfo: TargetInfo;
-			readonly target: Acore.Unit;
 			readonly auraScaleMask: SpellEffIndexMask;
 			needErase: boolean;
 		};

@@ -15,10 +15,10 @@ public:
 		NodeJs::invoke_hook("creature:update", jarg("creature", creature), jarg("diff", DurationWrapper::from_milliseconds(diff)));
 	}
 	void OnBeforeCreatureSelectLevel(CreatureTemplate const * cinfo, Creature * creature, uint8 & level) override {
-		NodeJs::invoke_hook("creature:before-select-level", jarg("cinfo", cinfo), jarg("creature", creature), jarg_inout("level", level));
+		NodeJs::invoke_hook("creature:before-select-level", jarg("cInfo", cinfo), jarg("creature", creature), jarg_inout("level", level));
 	}
 	void OnCreatureSelectLevel(CreatureTemplate const * cinfo, Creature * creature) override {
-		NodeJs::invoke_hook("creature:select-level", jarg("cinfo", cinfo), jarg("creature", creature));
+		NodeJs::invoke_hook("creature:select-level", jarg("cInfo", cinfo), jarg("creature", creature));
 	}
 	void OnCreatureAddWorld(Creature * creature) override {
 		NodeJs::invoke_hook("creature:add-world", jarg("creature", creature));

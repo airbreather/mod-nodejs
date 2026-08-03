@@ -3,7 +3,7 @@ declare global {
 		['unit:heal']: {
 			readonly healer: Acore.Unit;
 			readonly receiver: Acore.Unit;
-			gain: number;
+			amount: number;
 		};
 		['unit:damage']: {
 			readonly attacker: Acore.Unit;
@@ -13,13 +13,13 @@ declare global {
 		['unit:modify-periodic-damage-auras-tick']: {
 			readonly target: Acore.Unit;
 			readonly attacker: Acore.Unit;
-			damage: number;
+			amount: number;
 			readonly spellInfo: Acore.SpellInfo;
 		};
 		['unit:modify-melee-damage']: {
 			readonly target: Acore.Unit;
 			readonly attacker: Acore.Unit;
-			damage: number;
+			amount: number;
 		};
 		['unit:modify-spell-damage-taken']: {
 			readonly target: Acore.Unit;
@@ -48,11 +48,11 @@ declare global {
 			victimMaxSkillValueForLevel: number;
 			attackerWeaponSkill: number;
 			victimDefenseSkill: number;
-			crit_chance: number;
-			miss_chance: number;
-			dodge_chance: number;
-			parry_chance: number;
-			block_chance: number;
+			critChance: number;
+			missChance: number;
+			dodgeChance: number;
+			parryChance: number;
+			blockChance: number;
 		};
 		['unit:aura-apply']: {
 			readonly unit: Acore.Unit;
@@ -60,7 +60,7 @@ declare global {
 		};
 		['unit:aura-remove']: {
 			readonly unit: Acore.Unit;
-			readonly aura: Acore.AuraApplication;
+			readonly aurApp: Acore.AuraApplication;
 			readonly mode: AuraRemoveMode;
 		};
 		['unit:if-normal-reaction']: {
