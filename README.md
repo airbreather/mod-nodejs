@@ -6,6 +6,27 @@ Basically just the same idea behind Eluna/ALE, but for JavaScript (Node.js, spec
 
 Requires core patch: azerothcore/azerothcore-wotlk#26648
 
+## Skeleton Project
+
+There are some specific configuration settings you'll need to have in order to run scripts with this, so I've made a "skeleton" project that you can copy from in order to get started:
+
+https://github.com/airbreather/mod-nodejs-skeleton
+
+That project has:
+
+- `package.json` / `package.lock.json` / `tsconfig.json` so you can get right into it.
+- an `index.ts` file with a (more) commented example showing some of what you can do.
+- some scripts (in `package.json`) to help make the single `index.js` you need for this module to work.
+- `UNLICENSE`. Do whatever with that one: the base module is all I wanted to AGPL-3.0 license.
+
+## TypeScript Declarations
+
+Declarations are built from the `./typescript` directory in this project. Install them with:
+
+`npm install -D @airbreather/mod-nodejs-types`
+
+Highly recommended: add `@airbreather/mod-nodejs-types` to your `tsconfig.json`'s `'types'` array.
+
 ## Demo
 
 I recorded my screen for a demo that includes building it all from scratch after checking out the code, then using the VSCode debugger to set breakpoints and step through the random ad-hoc script file from the `examples/` directory here:
