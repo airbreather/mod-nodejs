@@ -246,10 +246,15 @@ void NodeJs::reg_command(ChatCommandBuilderBuilderBox box) {
 }
 
 std::vector<ChatCommandBuilder> NodeJs::get_commands() {
-	auto const commands = m_top_level_commands
-		| std::ranges::views::transform([](auto & cmd) { return cmd->build(); })
-		;
-	return {commands.begin(), commands.end()};
+	std::vector<ChatCommandBuilder> res;
+	for (auto & cmd : m_top_level_commands) {
+		try {
+			res.push_back(cmd->build());
+		} catch (std::logic_error & e) {
+			LOG_ERROR("module", "{}", e.what());
+		}
+	}
+	return res;
 }
 
 bool NodeJs::exec_chat_command(size_t n, ChatHandler * ch, char const * argstr) const {
@@ -311,7 +316,11 @@ inline void NodeJs::run_scoped(std::function<void()> const & f) const {
 	v8::HandleScope handle_scope(setup_->isolate());
 	v8::Context::Scope context_scope(setup_->context());
 	v8::TryCatch try_catch(setup_->isolate());
-	f();
+	try {
+		f();
+	} catch (std::logic_error & err) {
+		LOG_ERROR("module.nodejs", std::string(err.what()));
+	}
 	log_and_reset_if_signaled(try_catch);
 }
 

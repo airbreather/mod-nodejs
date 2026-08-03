@@ -2,9 +2,9 @@
 	"compilerOptions": {
 		"target": "ESNext",
 		"lib": ["ESNext"],
+		"module": "nodenext",
 		"types": [
-			"@types/node",
-			"long"
+			"@types/node"
 		],
 		"strict": true,
 		"declaration": true

@@ -1,5 +1,5 @@
-export * from './acore';
-export * from './classes';
-export * from './enums';
-export * from './hooks';
-export * from './records';
+export type * from './acore.d.ts';
+export type * from './classes/index.d.ts';
+export type * from './enums/index.d.ts';
+export type * from './hooks/index.d.ts';
+export type * from './records/index.d.ts';

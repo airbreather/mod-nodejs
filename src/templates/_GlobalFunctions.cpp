@@ -192,7 +192,11 @@ void add_global_functions(TypedTemplate<NodeJs *> const ft) {
 		return jobj(jprop("boxed", val));
 	});
 	reg_method(ft, "registerCommand", [](NodeJs *, ChatCommandBuilderBuilderBox * b) {
-		NodeJs::instance()->reg_command(*b);
+		try {
+			NodeJs::instance()->reg_command(*b);
+		} catch (std::logic_error & err) {
+			v8::Isolate::GetCurrent()->ThrowError(jstrz(err.what()));
+		}
 	});
 	reg_method(ft, "shutdown", [](NodeJs *, uint32_t time, ShutdownMask options, uint8_t exit_code, std::optional<std::string> reason) {
 		sWorld->ShutdownServ(time, options, exit_code, reason.value_or({}));
