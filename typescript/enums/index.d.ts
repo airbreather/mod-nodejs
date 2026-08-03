@@ -118,6 +118,7 @@ export * from './ReputationRank';
 export * from './ReputationSource';
 export * from './RollMask';
 export * from './RollVote';
+export * from './ServerSideVisibilityType';
 export * from './ShapeshiftForm';
 export * from './SheathState';
 export * from './ShutdownMask';

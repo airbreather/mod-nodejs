@@ -781,14 +781,179 @@ declare global {
 		};
 		['player:set-server-side-visibility']: {
 			readonly player: Acore.Player;
-
-
-
-
-
-
-
-
+			type: ServerSideVisibilityType;
+			sec: AccountTypes;
+		};
+		['player:set-server-side-visibility-detect']: {
+			readonly player: Acore.Player;
+			type: ServerSideVisibilityType;
+			sec: AccountTypes;
+		};
+		['player:resurrect']: {
+			readonly player: Acore.Player;
+			restorePercent: number;
+			applySickness: boolean;
+		};
+		['player:before-choose-graveyard']: {
+			readonly player: Acore.Player;
+			readonly teamId: TeamId;
+			readonly nearCorpse: boolean;
+			graveyardOverride: number;
+		};
+		['player:can-use-chat']: {
+			readonly player: Acore.Player;
+			type: ChatMsg;
+			lang: Language;
+			msg: string;
+			__return: boolean;
+		};
+		['player:can-use-chat:player']: {
+			readonly player: Acore.Player;
+			type: ChatMsg;
+			lang: Language;
+			msg: string;
+			readonly receiver: Acore.Player;
+			__return: boolean;
+		};
+		['player:can-use-chat:group']: {
+			readonly player: Acore.Player;
+			type: ChatMsg;
+			lang: Language;
+			msg: string;
+			readonly group: Acore.Group;
+			__return: boolean;
+		};
+		['player:can-use-chat:guild']: {
+			readonly player: Acore.Player;
+			type: ChatMsg;
+			lang: Language;
+			msg: string;
+			readonly guild: Acore.Guild;
+			__return: boolean;
+		};
+		['player:can-use-chat:channel']: {
+			readonly player: Acore.Player;
+			type: ChatMsg;
+			lang: Language;
+			msg: string;
+			// readonly channel: Acore.Channel;
+			__return: boolean;
+		};
+		['player:learn-talents']: {
+			readonly player: Acore.Player;
+			readonly talentId: number;
+			readonly talentRank: number;
+			readonly spellId: number;
+		};
+		['player:enter-combat']: {
+			readonly player: Acore.Player;
+			readonly enemy: Acore.Unit;
+		};
+		['player:leave-combat']: { readonly player: Acore.Player; };
+		['player:quest-abandon']: {
+			readonly player: Acore.Player;
+			readonly questId: number;
+		};
+		['player:quest-accept']: {
+			readonly player: Acore.Player;
+			readonly quest: Acore.Quest;
+		};
+		['player:can-fly-in-zone']: {
+			readonly player: Acore.Player;
+			readonly mapId: number;
+			readonly zoneId: number;
+			readonly bySpell: Acore.SpellInfo;
+			__return: boolean;
+		};
+		['player:anticheat:set-can-flyby-server']: {
+			readonly player: Acore.Player;
+			readonly apply: boolean;
+		};
+		['player:anticheat:set-under-ack-mount']: { readonly player: Acore.Player; };
+		['player:anticheat:set-root-ack-upd']: { readonly player: Acore.Player; };
+		['player:anticheat:set-jumping-by-opcode']: {
+			readonly player: Acore.Player;
+			readonly jump: boolean;
+		};
+		['player:anticheat:update-movement-info']: {
+			readonly player: Acore.Player;
+			// readonly movementInfo: Acore.MovementInfo;
+		};
+		['player:anticheat-handle-double-jump']: {
+			readonly player: Acore.Player;
+			readonly mover: Acore.Unit;
+			__return: boolean;
+		};
+		['player:anticheat-check-movement-info']: {
+			readonly player: Acore.Player;
+			// readonly movementInfo: Acore.MovementInfo;
+			readonly mover: Acore.Unit;
+			readonly jump: boolean;
+			__return: boolean;
+		};
+		['player:can-send-error-already-looted']: {
+			readonly player: Acore.Player;
+			__return: boolean;
+		};
+		['player:player:after-creature-loot']: { readonly player: Acore.Player; };
+		['player:player:after-creature-loot-money']: { readonly player: Acore.Player; };
+		['player:can-update-skill']: {
+			readonly player: Acore.Player;
+			readonly skillId: SkillType;
+			__return: boolean;
+		};
+		['player:before-update-skill']: {
+			readonly player: Acore.Player;
+			readonly skillId: SkillType;
+			value: number;
+			readonly max: number;
+			readonly step: number;
+		};
+		['player:update-skill']: {
+			readonly player: Acore.Player;
+			readonly skillId: SkillType;
+			readonly value: number;
+			readonly max: number;
+			readonly newValue: number;
+		};
+		['player:set-skill']: {
+			readonly player: Acore.Player;
+			readonly skillId: SkillType;
+			readonly value: number;
+			readonly max: number;
+			readonly newValue: number;
+		};
+		['player:can-resurrect']: {
+			readonly player: Acore.Player;
+			__return: boolean;
+		};
+		['player:can-give-level']: {
+			readonly player: Acore.Player;
+			readonly newLevel: number;
+			__return: boolean;
+		};
+		['player:send-list-inventory']: {
+			readonly player: Acore.Player;
+			readonly vendorGuid: ObjectGuidNative;
+			vendorEntry: number;
+		};
+		['player:get-reputation-price-discount:by-creature']: {
+			readonly player: Acore.Player;
+			readonly creature: Acore.Creature;
+			discount: number;
+		};
+		['player:get-reputation-price-discount']: {
+			readonly player: Acore.Player;
+			// readonly factionTemplate: Acore.FactionTemplateEntry;
+			discount: number;
+		};
+		['player:learn-taxi-node']: {
+			readonly player: Acore.Player;
+			readonly nodeId: number;
+		};
+		['player:before-get-level-for-xp-gain']: {
+			readonly player: Acore.Player;
+			level: number;
 		};
 	}
 }

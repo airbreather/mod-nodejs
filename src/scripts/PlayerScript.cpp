@@ -521,23 +521,23 @@ public:
 	}
 	[[nodiscard]] bool OnPlayerCanUseChat(Player * player, uint32_t const type, uint32_t const language, std::string & msg) override {
 		return NodeJs::invoke_hook_t("player:can-use-chat", PlayerScript::OnPlayerCanUseChat(player, type, language, msg)
-			, jarg("player", player), jarg("type", type), jarg("language", language), jarg_inout("msg", msg));
+			, jarg("player", player), jarg("type", type), jarg("lang", language), jarg_inout("msg", msg));
 	}
 	[[nodiscard]] bool OnPlayerCanUseChat(Player * player, uint32_t const type, uint32_t const language, std::string & msg, Player * receiver) override {
 		return NodeJs::invoke_hook_t("player:can-use-chat:player", PlayerScript::OnPlayerCanUseChat(player, type, language, msg, receiver)
-			, jarg("player", player), jarg("type", type), jarg("language", language), jarg_inout("msg", msg), jarg("receiver", receiver));
+			, jarg("player", player), jarg("type", type), jarg("lang", language), jarg_inout("msg", msg), jarg("receiver", receiver));
 	}
 	[[nodiscard]] bool OnPlayerCanUseChat(Player * player, uint32_t const type, uint32_t const language, std::string & msg, Group * group) override {
 		return NodeJs::invoke_hook_t("player:can-use-chat:group", PlayerScript::OnPlayerCanUseChat(player, type, language, msg, group)
-			, jarg("player", player), jarg("type", type), jarg("language", language), jarg_inout("msg", msg), jarg("group", group));
+			, jarg("player", player), jarg("type", type), jarg("lang", language), jarg_inout("msg", msg), jarg("group", group));
 	}
 	[[nodiscard]] bool OnPlayerCanUseChat(Player * player, uint32_t const type, uint32_t const language, std::string & msg, Guild * guild) override {
 		return NodeJs::invoke_hook_t("player:can-use-chat:guild", PlayerScript::OnPlayerCanUseChat(player, type, language, msg, guild)
-			, jarg("player", player), jarg("type", type), jarg("language", language), jarg_inout("msg", msg), jarg("guild", guild));
+			, jarg("player", player), jarg("type", type), jarg("lang", language), jarg_inout("msg", msg), jarg("guild", guild));
 	}
 	[[nodiscard]] bool OnPlayerCanUseChat(Player * player, uint32_t const type, uint32_t const language, std::string & msg, Channel * channel) override {
 		return NodeJs::invoke_hook_t("player:can-use-chat:channel", PlayerScript::OnPlayerCanUseChat(player, type, language, msg, channel)
-			, jarg("player", player), jarg("type", type), jarg("language", language), jarg_inout("msg", msg)/*, jarg("channel", channel)*/);
+			, jarg("player", player), jarg("type", type), jarg("lang", language), jarg_inout("msg", msg)/*, jarg("channel", channel)*/);
 	}
 	void OnPlayerLearnTalents(Player * player, uint32_t const talentId, uint32_t const talentRank, uint32_t const spellid) override {
 		NodeJs::invoke_hook("player:learn-talents", jarg("player", player), jarg("talentId", talentId), jarg("talentRank", talentRank), jarg("spellId", spellid));
