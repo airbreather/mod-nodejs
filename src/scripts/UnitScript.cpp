@@ -50,10 +50,6 @@ public:
 		return NodeJs::invoke_hook_t("unit:can-set-phase-mask", UnitScript::CanSetPhaseMask(unit, newPhaseMask, update)
 			, jarg("unit", unit), jarg("newPhaseMask", newPhaseMask), jarg("update", update));
 	}
-	[[nodiscard]] bool IsCustomBuildValuesUpdate(Unit const * unit, uint8_t const updateType, ByteBuffer & fieldBuffer, Player const * target, uint16_t const index) override {
-		return NodeJs::invoke_hook_t("unit:is-custom-build-values-update", UnitScript::IsCustomBuildValuesUpdate(unit, updateType, fieldBuffer, target, index)
-			, jarg("unit", unit), jarg("updateType", updateType)/*, jarg_inout("fieldBuffer", fieldBuffer)*/, jarg("target", target), jarg("index", index));
-	}
 	[[nodiscard]] bool ShouldTrackValuesUpdatePosByIndex(Unit const * unit, uint8_t const updateType, uint16_t const index) override {
 		return NodeJs::invoke_hook_t("unit:should-track-values-update-pos-by-index", UnitScript::ShouldTrackValuesUpdatePosByIndex(unit, updateType, index)
 			, jarg("unit", unit), jarg("updateType", updateType), jarg("index", index));

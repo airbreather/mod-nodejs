@@ -75,7 +75,6 @@ declare global {
 			readonly update: boolean;
 			__return: boolean;
 		};
-		// ['unit:is-custom-build-values-update']: unknown; // I think this isn't actually ever used.
 		['unit:should-track-values-update-pos-by-index']: {
 			readonly unit: Acore.Unit;
 			readonly updateType: OBJECT_UPDATE_TYPE;

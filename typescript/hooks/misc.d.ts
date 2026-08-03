@@ -44,7 +44,6 @@ declare global {
 			readonly noEmptyError: boolean;
 			readonly lootMode: LootModes;
 		};
-		// ['misc:player-set-phase']: unknown; // I think this isn't actually ever used.
 		// ['misc:instance-save']: unknown; // the one arg has no translation right now.
 		['misc:get-dialog-status']: {
 			readonly player: Acore.Player;
