@@ -25,7 +25,7 @@ Declarations are built from the `./typescript` directory in this project. Instal
 
 `npm install -D @airbreather/mod-nodejs-types`
 
-Highly recommended: add `@airbreather/mod-nodejs-types` to your `tsconfig.json`'s `'types'` array.
+Highly recommended: add `@airbreather/mod-nodejs-types` to your `tsconfig.json`'s `"types"` array.
 
 ## Demo
 
