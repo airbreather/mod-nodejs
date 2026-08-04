@@ -23,6 +23,10 @@ target_include_directories(modules SYSTEM PUBLIC
         ${NODEJS_INCLUDE_DIR}
 )
 
+if (MSVC)
+    add_compile_options(/Zc:__cplusplus)
+endif()
+
 # Embed a JS file as a constexpr char[] in a generated header.
 # Included automatically by modules/CMakeLists.txt after the 'modules' target is created.
 

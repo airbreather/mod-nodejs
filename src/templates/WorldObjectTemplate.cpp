@@ -47,8 +47,8 @@ v8::Local<v8::FunctionTemplate> jcreate_template<WorldObject *>() {
 	reg_prop_ro(ft, "instanceId", [](WorldObject * wo) {
 		return wo->GetInstanceId();
 	});
-	reg_prop_ro(ft, "location", [](WorldObject * wo) {
-		return (Position const *){wo};
+	reg_prop_ro(ft, "location", [](WorldObject * wo) -> Position const * {
+		return wo;
 	});
 	reg_prop_ro(ft, "transport", [](WorldObject * wo) {
 		return wo->GetTransport();

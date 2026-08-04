@@ -31,9 +31,9 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Spell *>() {
 	reg_prop_ro(ft, "caster", [](Spell * spell) {
 		return spell->GetCaster();
 	});
-	reg_prop_ro(ft, "targetDest", [](Spell * spell) {
+	reg_prop_ro(ft, "targetDest", [](Spell * spell) -> Position const * {
 		return spell->m_targets.HasDst()
-			? (Position const *){spell->m_targets.GetDstPos()}
+			? spell->m_targets.GetDstPos()
 			: nullptr;
 	});
 	reg_prop_ro(ft, "target", [](Spell * spell) -> Object * {

@@ -38,8 +38,8 @@ v8::Local<v8::FunctionTemplate> jcreate_template<AuraEffect *>() {
 		eff->GetApplicationList(list);
 		return jarr(list);
 	});
-	reg_prop_ro(ft, "spellModifier", [](AuraEffect * eff) {
-		return (SpellModifier const *){eff->GetSpellModifier()};
+	reg_prop_ro(ft, "spellModifier", [](AuraEffect * eff) -> SpellModifier const * {
+		return eff->GetSpellModifier();
 	});
 	reg_prop_ro(ft, "spellInfo", [](AuraEffect * eff) {
 		return eff->GetSpellInfo();
