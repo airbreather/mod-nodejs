@@ -488,7 +488,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 	});
 	// TODO: verify correctness
 	reg_method(ft, "getBankItem", [](Player * player, uint8_t const slot) {
-		auto const pos = uint16_t{BANK_SLOT_ITEM_START + slot};
+		auto const pos = static_cast<uint16_t>(BANK_SLOT_ITEM_START + slot);
 		return player->GetItemByPos(pos << 8);
 	});
 	reg_method(ft, "hasTalent", [](Player * player, uint32_t const talent, std::optional<uint8_t> spec) {
@@ -972,11 +972,11 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 		auto const fullmsg = prefix + "\t" + msg;
 		WorldPacket data(SMSG_MESSAGECHAT, 1 + 4 + 8 + 4 + 8 + 4 + 1 + fullmsg.length() + 1);
 		data << uint8_t{CHAT_MSG_WHISPER};
-		data << uint32_t{LANG_ADDON};
+		data << static_cast<uint32_t>(LANG_ADDON);
 		data << uint64_t{0};
 		data << uint32_t{0};
 		data << uint64_t{0};
-		data << uint32_t{fullmsg.length() + 1};
+		data << static_cast<uint32_t>(fullmsg.length() + 1);
 		data << fullmsg;
 		data << uint8_t{0};
 		player->GetSession()->SendPacket(&data);

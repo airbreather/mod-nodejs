@@ -155,9 +155,9 @@ ChatCommandBuilder ChatCommandBuilderBuilder::build() {
 			throw IncompleteVariantError();
 		}
 		if (help) {
-			return {m_name.c_str(), *dispatch_handler(std::get<size_t>(*handler)), *help, *security_level, *allow_console};
+			return {m_name.c_str(), *dispatch_handler(std::get<size_t>(*handler)), *help, static_cast<uint32_t>(*security_level), *allow_console};
 		}
-		return {m_name.c_str(), *dispatch_handler(std::get<size_t>(*handler)), *security_level, *allow_console};
+		return {m_name.c_str(), *dispatch_handler(std::get<size_t>(*handler)), static_cast<uint32_t>(*security_level), *allow_console};
 	}
 	throw IncompleteVariantError();
 }

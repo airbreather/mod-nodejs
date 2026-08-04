@@ -194,7 +194,7 @@ template<>
 template<>
 [[nodiscard]] v8::Local<v8::Value> jval<uint64_t>(uint64_t const v) {
 	if (v < 1ULL<<53) {
-		return v8::Number::New(v8::Isolate::GetCurrent(), double{v});
+		return v8::Number::New(v8::Isolate::GetCurrent(), static_cast<double>(v));
 	}
 	return v8::BigInt::NewFromUnsigned(v8::Isolate::GetCurrent(), v);
 }
@@ -202,7 +202,7 @@ template<>
 template<>
 [[nodiscard]] v8::Local<v8::Value> jval<int64_t>(int64_t const v) {
 	if (v > -1LL<<53 && v < 1LL<<53) {
-		return v8::Number::New(v8::Isolate::GetCurrent(), double{v});
+		return v8::Number::New(v8::Isolate::GetCurrent(), static_cast<double>(v));
 	}
 	return v8::BigInt::New(v8::Isolate::GetCurrent(), v);
 }

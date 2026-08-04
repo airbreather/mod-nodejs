@@ -22,7 +22,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Loot *>() {
 	ft->SetClassName(jstr_intern("Loot"));
 
 	reg_prop_ro(ft, "itemCount", [](Loot * loot) {
-		return uint32_t{loot->items.size() + loot->quest_items.size()};
+		return static_cast<uint32_t>(loot->items.size() + loot->quest_items.size());
 	});
 	reg_prop_ro(ft, "isLooted", [](Loot * loot) {
 		return loot->isLooted();

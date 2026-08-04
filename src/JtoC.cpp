@@ -16,7 +16,7 @@ std::optional<std::string> cval<std::string>(v8::Local<v8::Value> const v) {
 	auto const str = v.As<v8::String>();
 	auto const len = str->Utf8LengthV2(isolate);
 	std::string s(len, '\0');
-	str->WriteUtf8V2(isolate, s.data(), int{len});
+	str->WriteUtf8V2(isolate, s.data(), static_cast<int>(len));
 	return s;
 }
 
@@ -35,7 +35,7 @@ std::optional<uint8_t> cval<uint8_t>(v8::Local<v8::Value> const v) {
 		&& v->ToUint32(ctx).ToLocal(&u32)
 		&& u32->Value() <= std::numeric_limits<uint8_t>::max()
 	) {
-		return uint8_t{u32->Value()};
+		return static_cast<uint8_t>(u32->Value());
 	}
 	return std::nullopt;
 }
@@ -50,7 +50,7 @@ std::optional<uint16_t> cval<uint16_t>(v8::Local<v8::Value> const v) {
 		&& v->ToUint32(ctx).ToLocal(&u32)
 		&& u32->Value() <= std::numeric_limits<uint16_t>::max()
 	) {
-		return uint16_t{u32->Value()};
+		return static_cast<uint16_t>(u32->Value());
 	}
 	return std::nullopt;
 }
@@ -91,7 +91,7 @@ std::optional<int8_t> cval<int8_t>(v8::Local<v8::Value> const v) {
 		&& s32->Value() >= std::numeric_limits<int8_t>::min()
 		&& s32->Value() <= std::numeric_limits<int8_t>::max()
 	) {
-		return int8_t{s32->Value()};
+		return static_cast<int8_t>(s32->Value());
 	}
 	return std::nullopt;
 }
@@ -107,7 +107,7 @@ std::optional<int16_t> cval<int16_t>(v8::Local<v8::Value> const v) {
 		&& s32->Value() >= std::numeric_limits<int16_t>::min()
 		&& s32->Value() <= std::numeric_limits<int16_t>::max()
 	) {
-		return int16_t{s32->Value()};
+		return static_cast<int16_t>(s32->Value());
 	}
 	return std::nullopt;
 }
@@ -140,7 +140,7 @@ std::optional<int64_t> cval<int64_t>(v8::Local<v8::Value> v) {
 template<>
 std::optional<float> cval<float>(v8::Local<v8::Value> const v) {
 	if (v->IsNumber()) {
-		return std::optional{float{v.As<v8::Number>()->Value()}};
+		return std::optional{static_cast<float>(v.As<v8::Number>()->Value())};
 	}
 	return std::nullopt;
 }

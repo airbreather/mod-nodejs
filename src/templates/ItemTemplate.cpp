@@ -163,7 +163,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Item *>() {
 			<< item->GetEnchantmentId(BONUS_ENCHANTMENT_SLOT) << ":"
 			<< item->GetItemRandomPropertyId() << ":"
 			<< item->GetItemSuffixFactor() << ":"
-			<< uint32_t{owner ? owner->GetLevel() : 0}
+			<< static_cast<uint32_t>(owner ? owner->GetLevel() : 0)
 			<< "|h[" << name << "]|h|r";
 
 		return oss.str();
