@@ -1,5 +1,6 @@
-set(ZLIB_PROVIDED_BY_MODULE ON CACHE BOOL "Skip vendored zlib - it's in our Node.js")
-set(ZLIB_INCLUDE_DIR "${NODEJS_INCLUDE_DIR}" CACHE PATH "Path to zlib headers provided by module")
+set(ZLIB_FOUND ON CACHE BOOL "zlib 'found' by defining it to be part of Node.js")
+set(ZLIB_INCLUDE_DIRS "${NODEJS_INCLUDE_DIR}" CACHE PATH "Path to zlib headers (Node.js).")
+set(ZLIB_LIBRARIES "${NODEJS_LIB}" CACHE PATH "Path to zlib library (Node.js).")
 
 list(APPEND ${PRIVATE_SOURCES} (
         src/records/AchievementEntryRecord.cpp
