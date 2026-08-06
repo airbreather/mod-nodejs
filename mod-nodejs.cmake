@@ -25,7 +25,7 @@ target_include_directories(modules SYSTEM PUBLIC
 )
 
 if (MSVC)
-    add_compile_options(/Zc:__cplusplus)
+    target_compile_options(modules PRIVATE "/Zc:__cplusplus")
 endif()
 
 # Embed a JS file as a constexpr char[] in a generated header.
