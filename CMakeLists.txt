@@ -35,12 +35,9 @@ if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB))
   )
 endif()
 
-message(STATUS "Node.js include path: ${NODEJS_INCLUDE_DIR}")
-message(STATUS "Node.js library: ${NODEJS_LIB}")
-
 if(WIN32)
   # Win32 Node.js builds statically link zlib, so that should take precedence.
-  set(ZLIB_EXTERNAL_INCLUDE_DIR "${NODEJS_INCLUDE_DIR}" CACHE PATH "Path to zlib headers.")
+  CU_SET_GLOBAL(ZLIB_EXTERNAL_INCLUDE_DIR "${NODEJS_INCLUDE_DIR}")
 endif()
 
 list(APPEND ${PRIVATE_SOURCES} (

@@ -2,6 +2,9 @@ if (CMAKE_SIZEOF_VOID_P LESS 8)
     message(FATAL_ERROR "Node.js support requires a 64-bit build")
 endif()
 
+message(STATUS "Node.js include path: ${NODEJS_INCLUDE_DIR}")
+message(STATUS "Node.js library: ${NODEJS_LIB}")
+
 if (LIBUV_LIB)
     message(STATUS "libuv library: ${LIBUV_LIB}")
 else()
