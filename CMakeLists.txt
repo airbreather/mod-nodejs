@@ -38,6 +38,7 @@ endif()
 if(WIN32)
   # Win32 Node.js builds statically link zlib, so that should take precedence.
   CU_SET_GLOBAL(ZLIB_EXTERNAL_INCLUDE_DIR "${NODEJS_INCLUDE_DIR}")
+  CU_SET_GLOBAL(ZLIB_EXTERNAL_IMPLIB "${NODEJS_LIB}")
 endif()
 
 list(APPEND ${PRIVATE_SOURCES} (
