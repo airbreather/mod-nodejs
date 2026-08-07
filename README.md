@@ -509,68 +509,19 @@ Acore.hooks.on('player:logout', (args) => {
 
 ## Building
 
-You need Node.js headers and library. Even if you have Node.js installed for other reasons, you probably don't have what's needed here, so read on.
+On Windows, there should be no extra steps required for this module. The normal process will download the required parts of Node.js automatically for you.
 
-### Windows-Specific Parts
-
-Untested, incomplete, YMMV. AFAICT you will need at least:
-- from https://nodejs.org/dist/v26.5.0, the `*-headers.tar.xz` file
-- from https://nodejs.org/dist/v26.5.0/win-x64, both `node.exe` and `node.lib`
-
-I think non-ancient versions of 7-zip support .tar.xz files now.
-
-Where they go:
-- after unzipping the headers, you should have a folder like `C:\something\blah\include\node`. That is what you will use for `NODEJS_INCLUDE_DIR` when the time comes.
-- `node.exe` and `node.lib` both go into the same folder right next to each other. The full path to `node.lib` is what you will use for `NODEJS_LIB` when the time comes.
-
-### Linux-Specific Parts: Easy mode variant (Nix)
-
-I've been developing this way, so I can be a bit more confident. Assumes you have Nix working (you don't need NixOS to run Nix).
-
-From the `build-helpers/` directory in this repo, replace `/path/to/where/you/want/these` with where you actually want it and run:
-
-```
-nix-build -I nixpkgs=https://github.com/NixOS/nixpkgs/archive/nixpkgs-unstable.tar.gz -o /path/to/where/you/want/these extradeps.nix
-```
-
-It'll take a while, but this needs to be done only rarely. Once that finishes:
-- `/path/to/where/you/want/these/include/node` is your `NODEJS_INCLUDE_DIR`
-- `/path/to/where/you/want/these/lib/libnode.so.147` is your `NODEJS_LIB` (you might need to bump up the version number)
-- `/path/to/where/you/want/these/lib/libuv.so` is your `LIBUV_LIB`
-
-### Linux-Specific Parts: Harder mode variant
-
-No worries if Nix isn't your thing. The Old Ways still work perfectly fine.
+On Linux, at least for now, you need to build it yourself:
 
 1. First, make sure you have everything you need to build AC without this module.
-2. Then, make sure you have all the system setup stuff mentioned on https://github.com/nodejs/node/blob/v26.5.0/BUILDING.md#building-nodejs-on-supported-platforms
+2. Then, make sure you have all the system setup stuff mentioned on https://github.com/nodejs/node/blob/v26.7.0/BUILDING.md#building-nodejs-on-supported-platforms
    - There's a part that refers to "if building Node.js with Temporal support".
    - Temporal *IS* required for this AC module, so follow that as well.
 3. Build shared Node.js with Temporal support (see sub-heading).
    - I'll use the placeholder `/path/to/where/you/want/these` to refer to where you install it to.
-
-- `/path/to/where/you/want/these/include/node` is your `NODEJS_INCLUDE_DIR`
-- `/path/to/where/you/want/these/lib/libnode.so.147` is your `NODEJS_LIB` (you might need to bump up the version number)
-
-#### Build Node.js
-
-The usual (replace `/path/to/where/you/want/these` with where you actually want it):
-
-```
-./configure --prefix=/path/to/where/you/want/these --v8-enable-temporal-support --shared
-make -j$(nproc)
-make install
-```
-
-If you want to use libnode for something else, check Node.js's BUILDING.md link (or `./configure --help`) for the other flags you can pass. *If you happen to use `--shared-libuv`, then you probably only need me to tell you the mod-nodejs specific detail that this is the trigger for when you need a `LIBUV_LIB` like in the Nix section.*
-
-https://github.com/nodejs/node/blob/v26.5.0/BUILDING.md#ccache is another notable section.
-
-### Common parts
-
-The previous section got you your `NODEJS_INCLUDE_DIR` and your `NODEJS_LIB`. You may also have a `LIBUV_LIB`.
-
-Add each one's `-DTHAT_VARIABLE=ITS_VALUE` to your cmake command. You may need to use quotes if you have spaces in your paths.
+4. Going forward, use the following flags in your `cmake` command:
+   - `-DNODEJS_INCLUDE_DIR=/path/to/where/you/want/these/include/node`
+   - `-DNODEJS_LIB=/path/to/where/you/want/these/lib/libnode.so.147`
 
 This concludes the parts that are specific to `mod-nodejs`. Once you pass correct values for those extra args on your cmake command line, everything goes the same as with any other AC module.
 
