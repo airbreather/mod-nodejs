@@ -5,8 +5,8 @@
 Basically just the same idea behind Eluna/ALE, but for JavaScript (Node.js, specifically) instead of Lua.
 
 Requires core patches:
-azerothcore/azerothcore-wotlk#26648 for API tweaks
-azerothcore/azerothcore-wotlk#27003 so Win32 can use the version of zlib already in libnode
+- azerothcore/azerothcore-wotlk#26648 for API tweaks
+- azerothcore/azerothcore-wotlk#27003 so Win32 can use the version of zlib already in libnode
 
 ## Skeleton Project
 
