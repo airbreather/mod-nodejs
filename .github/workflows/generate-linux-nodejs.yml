@@ -1,0 +1,46 @@
+name: Generate Linux Node.js
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: vars
+        id: variables
+        run: |
+          echo "nodejs_tag=v26.7.0" >> "$GITHUB_OUTPUT"
+
+      - name: fetch
+        id: nodejs
+        run: |
+          TAG="${{ steps.variables.outputs.nodejs_tag }}"
+          mkdir nodejs-src
+          curl -fSL "https://github.com/nodejs/node/archive/refs/tags/${TAG}.tar.gz" |
+            tar -xzf - -C nodejs-src --strip-components=1
+          echo "dir=$(pwd)/nodejs-src" >> "$GITHUB_OUTPUT"
+
+      - name: configure
+        working-directory: ${{ steps.nodejs.outputs.dir }}
+        run: |
+          ./configure \
+            --prefix="${{ github.workspace }}/out/nodejs-${{ steps.variables.outputs.nodejs_tag }}" \
+            --v8-enable-temporal-support \
+            --shared
+
+      - name: make (install)
+        working-directory: ${{ steps.nodejs.outputs.dir }}
+        run: |
+          make -j"$(nproc)" install
+
+      - name: archive
+        run: |
+          tar -cf - -C out "nodejs-${{ steps.variables.outputs.nodejs_tag }}" \
+            | zstd --ultra -22 -o "nodejs-${{ steps.variables.outputs.nodejs_tag }}.tar.zst"
+
+      - name: upload
+        uses: actions/upload-artifact@v7
+        with:
+          path: "nodejs-${{ steps.variables.outputs.nodejs_tag }}.tar.zst"
+          archive: false
