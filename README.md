@@ -509,7 +509,7 @@ Acore.hooks.on('player:logout', (args) => {
 
 ## Building
 
-On Windows and Linux, there should be no extra steps required for this module. The normal process will download the required parts of Node.js automatically for you.
+On Windows and Linux, there should be no extra steps required for this module. [The normal process](https://www.azerothcore.org/wiki/installing-a-module) should work.
 
 On everything else, I can't test it myself, so you're mostly on your own. There's a [Nix derivation file in this repo](./build-helpers/extradeps.nix) that might just be enough to get you through the hardest parts (set `-DNODEJS_INCLUDE_DIR`, `-DNODEJS_LIB`, and `-DLIBUV_LIB` to point to respectively the relevant directory, file, and file within the directory that this derivation produces), but "normal" users are probably not going to have a good time here. I'm making this mostly for me, and I'm already stretching myself to promise that I'll try to make Windows work, so someone else will need to pick this up if support is needed for MacOS or other platforms.
 
