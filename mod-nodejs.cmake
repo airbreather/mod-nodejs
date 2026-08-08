@@ -2,6 +2,12 @@ if (CMAKE_SIZEOF_VOID_P LESS 8)
     message(FATAL_ERROR "Node.js support requires a 64-bit build")
 endif()
 
+if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB))
+    # we set these before in CMakeLists.txt, just recover them here.
+    CU_GET_GLOBAL(NODEJS_INCLUDE_DIR)
+    CU_GET_GLOBAL(NODEJS_LIB)
+endif()
+
 message(STATUS "Node.js include path: ${NODEJS_INCLUDE_DIR}")
 message(STATUS "Node.js library: ${NODEJS_LIB}")
 

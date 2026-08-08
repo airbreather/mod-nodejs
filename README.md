@@ -509,21 +509,9 @@ Acore.hooks.on('player:logout', (args) => {
 
 ## Building
 
-On Windows, there should be no extra steps required for this module. The normal process will download the required parts of Node.js automatically for you.
+On Windows and Linux, there should be no extra steps required for this module. The normal process will download the required parts of Node.js automatically for you.
 
-On Linux, at least for now, you need to build it yourself:
-
-1. First, make sure you have everything you need to build AC without this module.
-2. Then, make sure you have all the system setup stuff mentioned on https://github.com/nodejs/node/blob/v26.7.0/BUILDING.md#building-nodejs-on-supported-platforms
-   - There's a part that refers to "if building Node.js with Temporal support".
-   - Temporal *IS* required for this AC module, so follow that as well.
-3. Build shared Node.js with Temporal support (see sub-heading).
-   - I'll use the placeholder `/path/to/where/you/want/these` to refer to where you install it to.
-4. Going forward, use the following flags in your `cmake` command:
-   - `-DNODEJS_INCLUDE_DIR=/path/to/where/you/want/these/include/node`
-   - `-DNODEJS_LIB=/path/to/where/you/want/these/lib/libnode.so.147`
-
-This concludes the parts that are specific to `mod-nodejs`. Once you pass correct values for those extra args on your cmake command line, everything goes the same as with any other AC module.
+On everything else, I can't test it myself, so you're mostly on your own. There's a [Nix derivation file in this repo](./build-helpers/extradeps.nix) that might just be enough to get you through the hardest parts (set `-DNODEJS_INCLUDE_DIR`, `-DNODEJS_LIB`, and `-DLIBUV_LIB` to point to respectively the relevant directory, file, and file within the directory that this derivation produces), but "normal" users are probably not going to have a good time here. I'm making this mostly for me, and I'm already stretching myself to promise that I'll try to make Windows work, so someone else will need to pick this up if support is needed for MacOS or other platforms.
 
 ## Compatibility
 

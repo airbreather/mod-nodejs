@@ -1,41 +1,56 @@
 if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB))
-  if (NOT WIN32)
-    # I don't know of anywhere to find this pre-built the way we need it to be.
-    message(FATAL_ERROR "Must pass -DNODEJS_INCLUDE_DIR and -DNODEJS_LIB flags when building with mod_nodejs.")
+  if (WIN32)
+    message(STATUS "Using Node.js v26.7.0 from nodejs.org")
+
+    include(FetchContent)
+    FetchContent_Declare(
+            nodejs_win32
+
+            URL                        https://nodejs.org/dist/v26.7.0/node-v26.7.0-win-x64.7z
+            URL_HASH                   SHA256=073be1a597ff9f0130b067fb35eb84225d3970fdd7a84ee898f4b6270aadec0f
+            DOWNLOAD_EXTRACT_TIMESTAMP true
+    )
+
+    FetchContent_Declare(
+            nodejs_headers
+
+            URL                        https://nodejs.org/dist/v26.7.0/node-v26.7.0-headers.tar.xz
+            URL_HASH                   SHA256=453153ebefe7999965211df9ad3029f99a3c57b89eded9862e17be7ee0aaf1ba
+            DOWNLOAD_EXTRACT_TIMESTAMP true
+    )
+
+    FetchContent_MakeAvailable(nodejs_win32 nodejs_headers)
+
+    CU_SET_GLOBAL(NODEJS_INCLUDE_DIR "${nodejs_headers_SOURCE_DIR}/include/node")
+    CU_SET_GLOBAL(NODEJS_LIB "${nodejs_win32_SOURCE_DIR}/nodejs.lib")
+    file(
+            DOWNLOAD
+            https://nodejs.org/dist/v26.7.0/win-x64/node.lib
+            "${NODEJS_LIB}"
+            EXPECTED_HASH SHA256=56f06350037085fce04930befd98327afc86ee46f52af6f6f8a68a03630e8380
+    )
+  elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    message(STATUS "Using Node.js v26.7.0 from this project's GitHub release")
+
+    include(FetchContent)
+    FetchContent_Declare(
+            nodejs_linux
+
+            URL                        https://github.com/airbreather/mod-nodejs/releases/download/libnode-linux-v26.7.0/nodejs-v26.7.0.tar.zst
+            URL_HASH                   SHA256=9ddb6a049a90a25983cd59a9efb26fde6dea717775764964182f8336d9309e8d
+            DOWNLOAD_EXTRACT_TIMESTAMP true
+    )
+
+    FetchContent_MakeAvailable(nodejs_linux)
+
+    CU_SET_GLOBAL(NODEJS_INCLUDE_DIR "${nodejs_linux_SOURCE_DIR}/include/node")
+    CU_SET_GLOBAL(NODEJS_LIB "${nodejs_linux_SOURCE_DIR}/lib/libnode.so.147")
+  else()
+    message(FATAL_ERROR("Windows and Linux have pre-built files available. Others (we are '${CMAKE_SYSTEM_NAME}') must figure out their own NODEJS_INCLUDE_DIR and NODEJS_LIB values. PRs to show what I should for other systems are welcome!"))
   endif()
-
-  message(STATUS "Using Node.js v26.7.0 from nodejs.org")
-
-  include(FetchContent)
-  FetchContent_Declare(
-          nodejs_win32
-
-          URL                        https://nodejs.org/dist/v26.7.0/node-v26.7.0-win-x64.7z
-          URL_HASH                   SHA256=073be1a597ff9f0130b067fb35eb84225d3970fdd7a84ee898f4b6270aadec0f
-          DOWNLOAD_EXTRACT_TIMESTAMP true
-  )
-
-  FetchContent_Declare(
-          nodejs_headers
-
-          URL                        https://nodejs.org/dist/v26.7.0/node-v26.7.0-headers.tar.xz
-          URL_HASH                   SHA256=453153ebefe7999965211df9ad3029f99a3c57b89eded9862e17be7ee0aaf1ba
-          DOWNLOAD_EXTRACT_TIMESTAMP true
-  )
-
-  FetchContent_MakeAvailable(nodejs_win32 nodejs_headers)
-
-  set(NODEJS_INCLUDE_DIR "${nodejs_headers_SOURCE_DIR}/include/node")
-  set(NODEJS_LIB "${nodejs_win32_SOURCE_DIR}/nodejs.lib")
-  file(
-          DOWNLOAD
-          https://nodejs.org/dist/v26.7.0/win-x64/node.lib
-          "${NODEJS_LIB}"
-          EXPECTED_HASH SHA256=56f06350037085fce04930befd98327afc86ee46f52af6f6f8a68a03630e8380
-  )
 endif()
 
-if(WIN32)
+if (WIN32)
   # Win32 Node.js builds statically link zlib, so that should take precedence.
   CU_SET_GLOBAL(ZLIB_EXTERNAL_INCLUDE_DIR "${NODEJS_INCLUDE_DIR}")
   CU_SET_GLOBAL(ZLIB_EXTERNAL_IMPLIB "${NODEJS_LIB}")
