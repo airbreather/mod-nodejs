@@ -22,12 +22,20 @@ if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB))
     FetchContent_MakeAvailable(nodejs_win32 nodejs_headers)
 
     CU_SET_GLOBAL(NODEJS_INCLUDE_DIR "${nodejs_headers_SOURCE_DIR}/include/node")
-    CU_SET_GLOBAL(NODEJS_LIB "${nodejs_win32_SOURCE_DIR}/nodejs.lib")
+    CU_SET_GLOBAL(NODEJS_LIB "${nodejs_win32_SOURCE_DIR}/node.lib")
+    CU_SET_GLOBAL(NODEJS_EXE "${nodejs_win32_SOURCE_DIR}/node.exe")
     file(
             DOWNLOAD
             https://nodejs.org/dist/v26.7.0/win-x64/node.lib
             "${NODEJS_LIB}"
             EXPECTED_HASH SHA256=56f06350037085fce04930befd98327afc86ee46f52af6f6f8a68a03630e8380
+    )
+
+    install(
+            FILES
+            "${NODEJS_EXE}"
+            "${NODEJS_LIB}"
+            DESTINATION "${CMAKE_INSTALL_PREFIX}"
     )
   elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     message(STATUS "Using Node.js v26.7.0 from this project's GitHub release")
@@ -45,6 +53,12 @@ if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB))
 
     CU_SET_GLOBAL(NODEJS_INCLUDE_DIR "${nodejs_linux_SOURCE_DIR}/include/node")
     CU_SET_GLOBAL(NODEJS_LIB "${nodejs_linux_SOURCE_DIR}/lib/libnode.so.147")
+
+    install(
+            FILES
+            "${NODEJS_LIB}"
+            DESTINATION "${CMAKE_INSTALL_PREFIX}/bin"
+    )
   else()
     message(FATAL_ERROR("Windows and Linux have pre-built files available. Others (we are '${CMAKE_SYSTEM_NAME}') must figure out their own NODEJS_INCLUDE_DIR and NODEJS_LIB values. PRs to show what I should for other systems are welcome!"))
   endif()

@@ -2,10 +2,11 @@ if (CMAKE_SIZEOF_VOID_P LESS 8)
     message(FATAL_ERROR "Node.js support requires a 64-bit build")
 endif()
 
-if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB))
+if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB) OR (NOT NODEJS_EXE))
     # we set these before in CMakeLists.txt, just recover them here.
     CU_GET_GLOBAL(NODEJS_INCLUDE_DIR)
     CU_GET_GLOBAL(NODEJS_LIB)
+    CU_GET_GLOBAL(NODEJS_EXE)
 endif()
 
 message(STATUS "Node.js include path: ${NODEJS_INCLUDE_DIR}")
@@ -28,6 +29,17 @@ target_include_directories(modules SYSTEM PUBLIC
 
 if (MSVC)
     target_compile_options(modules PRIVATE "/Zc:__cplusplus")
+endif()
+
+# Windows instructions seem to just say to run everything from the build dir instead of using the
+# usual CMake installation process for some reason. *shrug* copy them over here too, I suppose.
+if (WIN32)
+    add_custom_command(TARGET modules POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${NODEJS_EXE}"
+            "${NODEJS_LIB}"
+            "${CMAKE_BINARY_DIR}/bin/$<CONFIG>"
+    )
 endif()
 
 # Embed a JS file as a constexpr char[] in a generated header.
