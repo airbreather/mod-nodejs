@@ -33,23 +33,23 @@ jobs:
       - name: collect output
         run: |
           $tag = "${{ steps.variables.outputs.nodejs_tag }}"
-          $outDir  = "out/nodejs-${tag}-win"
+          $outDir  = "out/libnode-${tag}-win"
           $srcDir  = "${{ steps.nodejs.outputs.dir }}"
 
           New-Item -ItemType Directory -Force -Path "$outDir"
 
-          Copy-Item "$srcDir/out/Release/node.dll" "$outDir"
-          Copy-Item "$srcDir/out/Release/node.pdb"  "$outDir"
-          Copy-Item "$srcDir/out/Release/node.lib" "$outDir"
+          Copy-Item "$srcDir/out/Release/libnode.dll" "$outDir"
+          Copy-Item "$srcDir/out/Release/libnode.pdb"  "$outDir"
+          Copy-Item "$srcDir/out/Release/libnode.lib" "$outDir"
 
       - name: archive
         run: |
           $tag = "${{ steps.variables.outputs.nodejs_tag }}"
-          Compress-Archive -Path "out/nodejs-${tag}-win" `
-                           -DestinationPath "nodejs-${tag}-win.zip"
+          Compress-Archive -Path "out/libnode-${tag}-win" `
+                           -DestinationPath "libnode-${tag}-win.zip"
 
       - name: upload
         uses: actions/upload-artifact@v7
         with:
-          path: "nodejs-${{ steps.variables.outputs.nodejs_tag }}-win.zip"
+          path: "libnode-${{ steps.variables.outputs.nodejs_tag }}-win.zip"
           archive: false
