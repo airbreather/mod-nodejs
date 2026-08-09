@@ -7,7 +7,7 @@ Basically just the same idea behind Eluna/ALE, but for JavaScript (Node.js, spec
 Requires core patch:
 - azerothcore/azerothcore-wotlk#26648 for API tweaks
 
-## Running natively on Windows does not work right now.
+## Building natively on Windows does not work right now.
 
 I have sunk too many hours into trying to make this work on native Windows. Use containers or WSL instead.
 
