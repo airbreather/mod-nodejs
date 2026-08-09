@@ -33,23 +33,20 @@ jobs:
       - name: collect output
         run: |
           $tag = "${{ steps.variables.outputs.nodejs_tag }}"
-          $outDir  = "out/nodejs-${tag}-win-x64"
+          $outDir  = "out/nodejs-${tag}-win"
           $srcDir  = "${{ steps.nodejs.outputs.dir }}"
 
-          New-Item -ItemType Directory -Force -Path "$outDir/bin"
-          New-Item -ItemType Directory -Force -Path "$outDir/lib"
-          New-Item -ItemType Directory -Force -Path "$outDir/include/node"
+          New-Item -ItemType Directory -Force -Path "$outDir"
 
-          Copy-Item "$srcDir/out/Release/node.dll" "$outDir/bin/"
-          Copy-Item "$srcDir/out/Release/node.pdb"  "$outDir/bin/"
-          Copy-Item "$srcDir/out/Release/node.lib" "$outDir/lib/"
-          Copy-Item -Recurse "$srcDir/include/node/*" "$outDir/include/node/"
+          Copy-Item "$srcDir/out/Release/node.dll" "$outDir"
+          Copy-Item "$srcDir/out/Release/node.pdb"  "$outDir"
+          Copy-Item "$srcDir/out/Release/node.lib" "$outDir"
 
       - name: archive
         run: |
           $tag = "${{ steps.variables.outputs.nodejs_tag }}"
-          Compress-Archive -Path "out/nodejs-${tag}-win-x64" `
-                           -DestinationPath "nodejs-${tag}-win-x64.zip"
+          Compress-Archive -Path "out/nodejs-${tag}-win" `
+                           -DestinationPath "nodejs-${tag}-win.zip"
 
       - name: upload
         uses: actions/upload-artifact@v7
