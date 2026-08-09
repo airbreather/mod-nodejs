@@ -24,7 +24,7 @@ git -C $ACORE_BASE_DIR fetch --all
 touch $ACORE_BASE_DIR/.workaround
 git -C $ACORE_BASE_DIR stash --include-untracked
 git -C $ACORE_BASE_DIR checkout -b $REBUILD_TMP_BRANCH mod-playerbots/Playerbot
-git -C $ACORE_BASE_DIR merge for-mod-nodejs-on-merge-base Grimfeather/master fix-socket-file-connections allow-external-zlib -m "Merge branches 'for-mod-nodejs-on-merge-base', 'Grimfeather/master', 'fix-socket-file-connections', and 'allow-external-zlib'"
+git -C $ACORE_BASE_DIR merge for-mod-nodejs-on-merge-base Grimfeather/master fix-socket-file-connections -m "Merge branches 'for-mod-nodejs-on-merge-base', 'Grimfeather/master', and 'fix-socket-file-connections'"
 git -C $ACORE_BASE_DIR checkout $REBUILD_BRANCH
 git -C $ACORE_BASE_DIR reset --hard $REBUILD_TMP_BRANCH
 git -C $ACORE_BASE_DIR stash pop

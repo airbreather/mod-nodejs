@@ -2,45 +2,17 @@ if (CMAKE_SIZEOF_VOID_P LESS 8)
     message(FATAL_ERROR "Node.js support requires a 64-bit build")
 endif()
 
-if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB) OR (NOT NODEJS_EXE))
-    # we set these before in CMakeLists.txt, just recover them here.
-    CU_GET_GLOBAL(NODEJS_INCLUDE_DIR)
-    CU_GET_GLOBAL(NODEJS_LIB)
-    CU_GET_GLOBAL(NODEJS_EXE)
-endif()
+# we set these before in CMakeLists.txt, just recover them here.
+CU_GET_GLOBAL(NODEJS_INCLUDE_DIR)
+CU_GET_GLOBAL(NODEJS_LIB)
 
 message(STATUS "Node.js include path: ${NODEJS_INCLUDE_DIR}")
 message(STATUS "Node.js library: ${NODEJS_LIB}")
 
-if (LIBUV_LIB)
-    message(STATUS "libuv library: ${LIBUV_LIB}")
-else()
-    # this needs to be passed in externally when Node.js was configured with --shared-libuv. Nix can
-    # get away with this because it's Nix, but most builders will just link it statically, so just
-    # using NODEJS_LIB for it is a fine fallback.
-    set(LIBUV_LIB ${NODEJS_LIB})
-    message(STATUS "libuv library: (use Node.js library)")
-endif()
-
-target_link_libraries(modules PUBLIC ${NODEJS_LIB} ${LIBUV_LIB})
+target_link_libraries(modules PUBLIC ${NODEJS_LIB})
 target_include_directories(modules SYSTEM PUBLIC
         ${NODEJS_INCLUDE_DIR}
 )
-
-if (MSVC)
-    target_compile_options(modules PRIVATE "/Zc:__cplusplus")
-endif()
-
-# Windows instructions seem to just say to run everything from the build dir instead of using the
-# usual CMake installation process for some reason. *shrug* copy them over here too, I suppose.
-if (WIN32)
-    add_custom_command(TARGET modules POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            "${NODEJS_EXE}"
-            "${NODEJS_LIB}"
-            "${CMAKE_BINARY_DIR}/bin/$<CONFIG>"
-    )
-endif()
 
 # Embed a JS file as a constexpr char[] in a generated header.
 # Included automatically by modules/CMakeLists.txt after the 'modules' target is created.
