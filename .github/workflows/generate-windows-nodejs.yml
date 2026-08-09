@@ -1,0 +1,58 @@
+name: Generate Windows Node.js
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: pwsh
+
+    steps:
+      - name: vars
+        id: variables
+        run: |
+          echo "nodejs_tag=v26.7.0" >> $env:GITHUB_OUTPUT
+
+      - name: fetch
+        id: nodejs
+        run: |
+          $tag = "${{ steps.variables.outputs.nodejs_tag }}"
+          Invoke-WebRequest -Uri "https://github.com/nodejs/node/archive/refs/tags/${tag}.tar.gz" -OutFile nodejs.tar.gz
+          mkdir nodejs-src -Force
+          tar -xzf nodejs.tar.gz -C nodejs-src --strip-components=1
+          echo "dir=$(Convert-Path ./nodejs-src)" >> $env:GITHUB_OUTPUT
+
+      - name: build (shared DLL)
+        working-directory: ${{ steps.nodejs.outputs.dir }}
+        run: |
+          .\vcbuild.bat release dll clang-cl x64 vs2026 full-icu no-cctest nonpm
+
+      - name: collect output
+        run: |
+          $tag = "${{ steps.variables.outputs.nodejs_tag }}"
+          $outDir  = "out/nodejs-${tag}-win-x64"
+          $srcDir  = "${{ steps.nodejs.outputs.dir }}"
+
+          New-Item -ItemType Directory -Force -Path "$outDir/bin"
+          New-Item -ItemType Directory -Force -Path "$outDir/lib"
+          New-Item -ItemType Directory -Force -Path "$outDir/include/node"
+
+          Copy-Item "$srcDir/out/Release/node.dll" "$outDir/bin/"
+          Copy-Item "$srcDir/out/Release/node.pdb"  "$outDir/bin/"
+          Copy-Item "$srcDir/out/Release/node.lib" "$outDir/lib/"
+          Copy-Item -Recurse "$srcDir/include/node/*" "$outDir/include/node/"
+
+      - name: archive
+        run: |
+          $tag = "${{ steps.variables.outputs.nodejs_tag }}"
+          Compress-Archive -Path "out/nodejs-${tag}-win-x64" `
+                           -DestinationPath "nodejs-${tag}-win-x64.zip"
+
+      - name: upload
+        uses: actions/upload-artifact@v7
+        with:
+          path: "nodejs-${{ steps.variables.outputs.nodejs_tag }}-win.zip"
+          archive: false
