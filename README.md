@@ -512,9 +512,27 @@ Acore.hooks.on('player:logout', (args) => {
 
 ## Building
 
-On Windows and Linux, there should be no extra steps required for this module. [The normal process](https://www.azerothcore.org/wiki/installing-a-module) should work.
+The only thing I can promise to support is what I run with, which is Linux. Here, there should be no extra steps required for this module. [The normal process](https://www.azerothcore.org/wiki/installing-a-module) should work.
 
-On everything else, I can't test it myself, so you're mostly on your own. There's a [Nix derivation file in this repo](./build-helpers/extradeps.nix) that might just be enough to get you through the hardest parts (set `-DNODEJS_INCLUDE_DIR`, `-DNODEJS_LIB`, and `-DLIBUV_LIB` to point to respectively the relevant directory, file, and file within the directory that this derivation produces), but "normal" users are probably not going to have a good time here. I'm making this mostly for me, and I'm already stretching myself to promise that I'll try to make Windows work, so someone else will need to pick this up if support is needed for MacOS or other platforms.
+On Windows, I had a hard time trying to get it to work and gave up without any success.
+
+<details>
+<summary>Click to expand this section that goes over how far I got down the most promising path to making this work on Windows, but note that IT WILL NOT WORK AS-WRITTEN, so I've collapsed it by default in order to not confuse anybody.</summary>
+
+I had entertained the notion that the official builds of `node.exe`/`node.lib` might work, and I could get it to build, but it didn't get very far at runtime. Almost definitely, you need to build `libnode.dll`/`libnode.lib`, probably by running something like this in the directory where you've cloned Node.js:
+
+```
+.\vcbuild.bat release dll full-icu x64 vs2026 no-cctest nonpm
+```
+
+No matter whether you try the `node.exe` or the `libnode.dll` route, you have to do something to work around the fact that both it and AzerothCore export zlib symbols.
+
+I had started down the path of tweaking AzerothCore to let modules substitute in their own zlib implementations in azerothcore/azerothcore-wotlk#27003, and this has let me build, but something always fails.
+
+Notably, this does **NOT** seem to have anything to do with AzerothCore only supporting MSVC and Node.js 24+ only supporting Clang-CL. A minimal embedder repro on Windows also failed for me when building the repro and libnode with Clang-CL, which is the point where I threw in the towel.
+</details>
+
+On everything else, I can't test it myself, so you're mostly on your own.
 
 ## Compatibility
 
