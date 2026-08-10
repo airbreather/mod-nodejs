@@ -2,31 +2,33 @@ if (WIN32)
   message(FATAL_ERROR "Giving up for now trying to figure out how to get this to work natively on Windows. You might just have to use Docker or WSL. See the Git history for what I've tried.")
 endif()
 
-if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-  message(STATUS "Using Node.js v26.7.0 from this project's GitHub release")
+if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB))
+  if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    message(STATUS "Using Node.js v26.7.0 from this project's GitHub release")
 
-  include(FetchContent)
-  FetchContent_Declare(
-          nodejs_linux
+    include(FetchContent)
+    FetchContent_Declare(
+            nodejs_linux
 
-          URL                        https://github.com/airbreather/mod-nodejs/releases/download/libnode-linux-v26.7.0/nodejs-v26.7.0.tar.zst
-          URL_HASH                   SHA256=9ddb6a049a90a25983cd59a9efb26fde6dea717775764964182f8336d9309e8d
-          DOWNLOAD_EXTRACT_TIMESTAMP true
-  )
+            URL                        https://github.com/airbreather/mod-nodejs/releases/download/libnode-linux-v26.7.0/nodejs-v26.7.0.tar.zst
+            URL_HASH                   SHA256=9ddb6a049a90a25983cd59a9efb26fde6dea717775764964182f8336d9309e8d
+            DOWNLOAD_EXTRACT_TIMESTAMP true
+    )
 
-  FetchContent_MakeAvailable(nodejs_linux)
+    FetchContent_MakeAvailable(nodejs_linux)
 
-  CU_SET_GLOBAL(NODEJS_INCLUDE_DIR "${nodejs_linux_SOURCE_DIR}/include/node")
-  CU_SET_GLOBAL(NODEJS_LIB "${nodejs_linux_SOURCE_DIR}/lib/libnode.so.147")
-
-  install(
-          FILES
-          "${NODEJS_LIB}"
-          DESTINATION "${CMAKE_INSTALL_PREFIX}/bin"
-  )
-else()
-  message(FATAL_ERROR("Linux has pre-built files available. Others (we are '${CMAKE_SYSTEM_NAME}') must figure out their own NODEJS_INCLUDE_DIR and NODEJS_LIB values. PRs to show what I should for other systems are welcome!"))
+    CU_SET_GLOBAL(NODEJS_INCLUDE_DIR "${nodejs_linux_SOURCE_DIR}/include/node")
+    CU_SET_GLOBAL(NODEJS_LIB "${nodejs_linux_SOURCE_DIR}/lib/libnode.so.147")
+  else()
+    message(FATAL_ERROR("Linux has pre-built files available. Others (we are '${CMAKE_SYSTEM_NAME}') must figure out their own NODEJS_INCLUDE_DIR and NODEJS_LIB values. PRs to show what I should for other systems are welcome!"))
+  endif()
 endif()
+
+install(
+        FILES
+        "${NODEJS_LIB}"
+        DESTINATION "${CMAKE_INSTALL_PREFIX}/bin"
+)
 
 list(APPEND ${PRIVATE_SOURCES} (
         src/records/AchievementEntryRecord.cpp
