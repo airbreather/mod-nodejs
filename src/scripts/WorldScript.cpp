@@ -18,9 +18,9 @@ public:
 	}
 
 	void OnStartup() override {
-		LOG_ERROR("server.loading", "Starting Node.js...");
+		LOG_INFO("server.loading", "Starting Node.js...");
 		NodeJs::init_instance();
-		LOG_ERROR("server.loading", "Started Node.js!");
+		LOG_INFO("server.loading", "Started Node.js!");
 		NodeJs::invoke_hook("world:startup");
 	}
 
