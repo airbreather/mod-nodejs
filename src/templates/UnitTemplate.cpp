@@ -506,7 +506,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Unit *>() {
 	reg_method(ft, "buildCastSpell", [](Unit * unit, SpellInfo const * spell) {
 		return jmove(new CastSpellBuilder(unit, spell));
 	});
-	reg_method(ft, "addAura", [](Unit * u, Unit * target, uint32_t const spellId) {
+	reg_method(ft, "addAura", [](Unit * u, uint32_t const spellId, Unit * target) {
 		u->AddAura(spellId, target);
 	});
 	reg_method(ft, "removeAura", [](Unit * u, uint32_t spell_id, std::optional<ObjectGuid> caster, std::optional<uint8_t> required_effect_mask, std::optional<AuraRemoveMode> remove_mode) {
