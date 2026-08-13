@@ -420,7 +420,8 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 		return count;
 	});
 	reg_prop_ro(ft, "currentQuestIds", [](Player * player) {
-		std::vector<uint32_t> ids(MAX_QUEST_LOG_SIZE);
+		std::vector<uint32_t> ids;
+		ids.reserve(MAX_QUEST_LOG_SIZE);
 		for (uint16_t i = 0; i < MAX_QUEST_LOG_SIZE; ++i) {
 			if (uint32_t id = player->GetQuestSlotQuestId(i)) {
 				ids.push_back(id);
