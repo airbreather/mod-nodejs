@@ -1,6 +1,8 @@
 declare global {
 	namespace Acore {
 		class Item extends ACObject {
+			static create(entry: number, count: number, player?: Player, randomPropertyId?: number, temp?: boolean): Item;
+
 			readonly isBoundAccountWide: boolean;
 			readonly isBoundByEnchant: boolean;
 			readonly isLocked: boolean;
