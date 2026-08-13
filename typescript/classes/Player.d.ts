@@ -101,6 +101,7 @@ declare global {
 			readonly talentTreePoints: number[];
 			readonly completedAchievementsCount: number;
 			readonly completedAchievementsCountExcludingFeatsOfStrength: number;
+			readonly currentQuestIds: number[];
 
 			static byGuid(guid: ObjectGuid): Player | undefined;
 			static byName(name: string): Player | undefined;
