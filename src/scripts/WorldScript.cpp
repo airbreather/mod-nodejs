@@ -25,7 +25,9 @@ public:
 	}
 
 	void OnUpdate(uint32_t) override {
+		NodeJs::invoke_hook("world:update-early");
 		NodeJs::instance()->tick();
+		NodeJs::invoke_hook("world:update-late");
 	}
 
 	void OnShutdown() override {
