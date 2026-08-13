@@ -1485,6 +1485,9 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 	reg_method(ft, "removeBonusTalent", [](Player * player, uint32_t const count) {
 		player->RemoveBonusTalent(count);
 	});
+	reg_method(ft, "storeNewItemInBestSlots", [](Player * player, uint32_t item_id, uint32_t item_count) {
+		return player->StoreNewItemInBestSlots(item_id, item_count);
+	});
 
 	return ft;
 }

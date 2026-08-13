@@ -150,6 +150,7 @@ declare global {
 			hasWeaponProficiency(weapon: ItemSubclassWeapon): boolean;
 			getGlyph(slot: number): GlyphPropertiesEntry | undefined;
 			sendSystemMessage(msg: string): void;
+			storeNewItemInBestSlots(itemId: number, itemCount: number): boolean;
 		}
 	}
 }
