@@ -159,6 +159,30 @@ std::optional<bool> cval<bool>(v8::Local<v8::Value> const v) {
 }
 
 template<>
+std::optional<std::vector<uint32_t>> cval<std::vector<uint32_t>>(v8::Local<v8::Value> const v) {
+	if (!v->IsArray()) {
+		return {};
+	}
+	auto v_array = v.As<v8::Array>();
+	std::vector<uint32_t> vec;
+	vec.reserve(v_array->Length());
+	auto isolate = v8::Isolate::GetCurrent();
+	auto ctx = isolate->GetCurrentContext();
+	v_array->Iterate(ctx, [](uint32_t index, v8::Local<v8::Value> element, void * data) {
+		std::vector<uint32_t> & nodes_vec_recovered = *static_cast<std::vector<uint32_t> *>(data);
+		if (index < nodes_vec_recovered.size()) {
+			if (auto const n = cval<uint32_t>(element)) {
+				nodes_vec_recovered.at(index) = *n;
+				return v8::Array::CallbackResult::kContinue;
+			}
+			return v8::Array::CallbackResult::kException;
+		}
+		return v8::Array::CallbackResult::kBreak;
+	}, &vec);
+	return vec;
+}
+
+template<>
 std::optional<std::optional<bool>> cval<std::optional<bool>>(v8::Local<v8::Value> const v) {
 	if (v->IsNullOrUndefined()) {
 		return std::optional<std::optional<bool>>{ std::nullopt };

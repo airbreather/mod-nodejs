@@ -189,6 +189,12 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Unit *>() {
 	reg_prop_ro(ft, "unorderedThreadList", [](Unit * u) {
 		return jarr(u->GetThreatMgr().GetThreatenedByMeList() | std::ranges::views::values);
 	});
+	reg_prop_ro(ft, "hasIncreaseMountedFlightSpeedAura", [](Unit * u) {
+		return u->HasIncreaseMountedFlightSpeedAura();
+	});
+	reg_prop_ro(ft, "hasFlyAura", [](Unit * u) {
+		return u->HasFlyAura();
+	});
 
 	reg_method(ft, "getCurrentSpell", [](Unit * u, std::optional<CurrentSpellTypes> spell_type) {
 		return u->GetCurrentSpell(spell_type.value_or(CURRENT_MELEE_SPELL));
@@ -400,6 +406,10 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Unit *>() {
 		[](Unit * u) { return static_cast<Emote>(u->GetUInt32Value(UNIT_NPC_EMOTESTATE)); },
 		[](Unit * u, auto state) { u->SetUInt32Value(UNIT_NPC_EMOTESTATE, state); }
 	);
+	reg_prop(ft, "canFly",
+		[](Unit * u) { return u->CanFly(); },
+		[](Unit * u, bool const state) { u->SetCanFly(state); }
+	);
 
 	reg_method(ft, "demorph", [](Unit * u) {
 		u->RemoveAurasByType(SPELL_AURA_TRANSFORM);
@@ -602,17 +612,39 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Unit *>() {
 	reg_method(ft, "setSwim", [](Unit * unit, bool enable) {
 		unit->SetSwim(enable);
 	});
-	reg_method(ft, "setCanFly", [](Unit * unit, bool enable) {
-		unit->SetCanFly(enable);
-	});
 	reg_method(ft, "setWaterWalking", [](Unit * u, bool enable) {
 		u->SetWaterWalking(enable);
 	});
 	reg_method(ft, "setFeatherFall", [](Unit * u, bool enable) {
 		u->SetFeatherFall(enable);
 	});
-	reg_method(ft, "setHover", [](Unit * unit, bool enable) {
-		unit->SetHover(enable);
+	reg_method(ft, "setHover", [](Unit * u, bool enable) {
+		u->SetHover(enable);
+	});
+	reg_method(ft, "summonPlayer", [](Unit * u, Player * player) {
+		float x, y, z;
+		u->GetPosition(x, y, z);
+		player->SetSummonPoint(u->GetMapId(), x, y, z);
+
+		WorldPacket data(SMSG_SUMMON_REQUEST, 8 + 4 + 4);
+		data << u->GetGUID();
+		data << uint32_t { u->GetZoneId() };
+		data << uint32_t { MAX_PLAYER_SUMMON_DELAY * IN_MILLISECONDS };
+		player->GetSession()->SendPacket(&data);
+	});
+	reg_method(ft, "dealDamage", [](Unit * u, Unit * target, uint32_t const amount, std::optional<DamageEffectType> const type, std::optional<SpellSchoolMask> const spell_school_mask, std::optional<SpellInfo const *> const spell_proto, std::optional<bool> const durability_loss, std::optional<bool> const allow_gm, std::optional<Spell const *> const spell) {
+		return Unit::DealDamage(
+			u,
+			target,
+			amount,
+			nullptr,
+			type.value_or(DIRECT_DAMAGE),
+			spell_school_mask.value_or(SPELL_SCHOOL_MASK_NORMAL),
+			spell_proto.value_or(nullptr),
+			durability_loss.value_or(true),
+			allow_gm.value_or(false),
+			spell.value_or(nullptr)
+		);
 	});
 
 	return ft;

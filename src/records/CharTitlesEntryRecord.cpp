@@ -13,7 +13,7 @@ template<>
 	return jobj(
 		jprop("id", a.ID),
 		jprop("nameMale", jarr(a.nameMale)),
-		jprop("nameMale", jarr(a.nameFemale)),
+		jprop("nameFemale", jarr(a.nameFemale)),
 		jprop("bitIndex", a.bit_index)
 	);
 }

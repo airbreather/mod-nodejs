@@ -1,6 +1,6 @@
 {
 	"name": "@airbreather/mod-nodejs-types",
-	"version": "0.0.7",
+	"version": "0.0.8",
 	"description": "Type declarations (only) for the mod-nodejs AzerothCore module.",
 	"repository": {
 		"type": "git",

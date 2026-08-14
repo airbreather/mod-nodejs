@@ -79,6 +79,7 @@ declare global {
 			// sometimes aka feared
 			isFleeing: boolean;
 			emoteState: Emote;
+			canFly: boolean;
 
 			getCurrentSpell(spellType?: CurrentSpellTypes): Spell | undefined;
 			isNonMeleeSpellCast(withDelayed: boolean, skipChanneled?: boolean, skipAutorepeat?: boolean, isAutoshoot?: boolean, skipInstant?: boolean): boolean;
@@ -162,11 +163,12 @@ declare global {
 			setWalk(enable: boolean): void;
 			setDisableGravity(disable: boolean): void;
 			setSwim(enable: boolean): void;
-			setCanFly(enable: boolean): void;
 			setWaterWalking(enable: boolean): void;
 			setFeatherFall(enable: boolean): void;
 			setHover(enable: boolean): void;
 			buildCastSpell(spell: SpellInfo): CastSpellBuilder;
+			summonPlayer(player: Player): void
+			dealDamage(target: Unit, amount: number, type?: DamageEffectType, spellSchoolMask?: SpellSchoolMask, spellInfo?: SpellInfo, durabilityLoss?: boolean, allowGm?: boolean, spell?: Spell): number;
 		}
 	}
 }

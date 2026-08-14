@@ -69,6 +69,19 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 	ft->SetClassName(jstr_intern("Player"));
 	ft.safe_inherit<Unit *>();
 
+	reg_static_method(ft, "byGuid", [](ObjectGuid const guid) {
+		return ObjectAccessor::FindConnectedPlayer(guid);
+	});
+
+	reg_static_method(ft, "byName", [](std::string const name) {
+		return ObjectAccessor::FindPlayerByName(name);
+	});
+
+	reg_static_method(ft, "allInWorld", [] {
+		std::shared_lock lock(*HashMapHolder<Player>::GetLock());
+		return jmap(ObjectAccessor::GetPlayers());
+	});
+
 	reg_prop_ro(ft, "race", [](Player * player) {
 		return player->getRace();
 	});
@@ -429,6 +442,24 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 		}
 		return jarr(ids);
 	});
+	reg_prop_ro(ft, "spells", [](Player * player) {
+		return jarr(player->GetSpellMap() | std::views::keys);
+	});
+	reg_prop_ro(ft, "knownTaxiNodes", [](Player * player) {
+		ByteBuffer data;
+		player->m_taxi.AppendTaximaskTo(data, false);
+		std::vector<uint32_t> nodes(TaxiMaskSize);
+		for (uint8_t i = 0; i < TaxiMaskSize; i++) {
+			uint32_t mask;
+			data >> mask;
+			for (uint8_t bit = 0; bit < 32; bit++) {
+				if (mask & 1u << bit) {
+					nodes.push_back(i * 32 + bit + 1);
+				}
+			}
+		}
+		return jarr(nodes);
+	});
 
 	reg_method(ft, "hasAccountFlag", [](Player * player, AccountFlag flag) {
 		return player->GetSession()->HasAccountFlag(flag);
@@ -635,26 +666,8 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 	reg_method(ft, "getItemByPos", [](Player * player, uint8_t const bag, uint8_t const slot) {
 		return player->GetItemByPos(bag, slot);
 	});
-	reg_method(ft, "getSpells", [](Player * player) {
-		return jarr(player->GetSpellMap() | std::views::keys);
-	});
 	reg_method(ft, "calculateReputationGain", [](Player * player, ReputationSource const source, uint32_t const creatureOrQuestLevel, float const rep, int32_t const faction, std::optional<bool> const noQuestBonus) {
 		return player->CalculateReputationGain(source, creatureOrQuestLevel, rep, faction, noQuestBonus.value_or(false));
-	});
-	reg_method(ft, "getKnownTaxiNodes", [](Player * player) {
-		ByteBuffer data;
-		player->m_taxi.AppendTaximaskTo(data, false);
-		std::vector<uint32_t> nodes(TaxiMaskSize);
-		for (uint8_t i = 0; i < TaxiMaskSize; i++) {
-			uint32_t mask;
-			data >> mask;
-			for (uint8_t bit = 0; bit < 32; bit++) {
-				if (mask & 1u << bit) {
-					nodes.push_back(i * 32 + bit + 1);
-				}
-			}
-		}
-		return jarr(nodes);
 	});
 	reg_method(ft, "getNearbyGameObject", [](Player * player, uint32_t const entryId, float const range) {
 		return player->FindNearestGameObject(entryId, range);
@@ -759,8 +772,8 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 		[](Player * player, bool const on) { player->SetGMVisible(on); }
 	);
 	reg_prop(ft, "creationTime",
-		[](Player * player) { return player->GetCreationTime().count(); },
-		[](Player * player, std::chrono::seconds::rep const val) { player->SetCreationTime(Seconds(val)); }
+		[](Player * player) { return UnixTimestamp::from_chrono(player->GetCreationTime()); },
+		[](Player * player, UnixTimestamp const val) { player->SetCreationTime(val.to_chrono<Seconds>()); }
 	);
 	reg_prop(ft, "guildRank",
 		[](Player * player) {
@@ -801,10 +814,6 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 		[](Player * player) { return player->IsSpectator(); },
 		[](Player * player, bool const state) { player->SetIsSpectator(state); }
 	);
-	reg_prop(ft, "canFly",
-		[](Player * player) { return player->CanFly(); },
-		[](Player * player, bool const state) { player->SetCanFly(state); }
-	);
 	reg_prop(ft, "canBlock",
 		[](Player * player) { return player->CanBlock(); },
 		[](Player * player, bool const state) { player->SetCanBlock(state); }
@@ -831,58 +840,45 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 		[](Player * player) { return player->GetLevel(); },
 		[](Player * player, uint8_t const lvl) { player->GiveLevel(lvl); }
 	);
-
-	reg_static_method(ft, "byGuid", [](ObjectGuid const guid) {
-		return ObjectAccessor::FindConnectedPlayer(guid);
-	});
-
-	reg_static_method(ft, "byName", [](std::string const name) {
-		return ObjectAccessor::FindPlayerByName(name);
-	});
-
-	reg_static_method(ft, "allInWorld", [] {
-		std::shared_lock lock(*HashMapHolder<Player>::GetLock());
-		return jmap(ObjectAccessor::GetPlayers());
-	});
+	reg_prop(ft, "gossipMenuId",
+		[](Player * player) { return player->PlayerTalkClass->GetGossipMenu().GetMenuId(); },
+		[](Player * player, uint32_t id) { player->PlayerTalkClass->GetGossipMenu().SetMenuId(id); }
+	);
 
 	reg_method(ft, "sendSystemMessage", [](Player * player, std::string const msg) {
 		player->SendSystemMessage(msg);
 	});
-	reg_method(ft, "learnSpell", [](Player * player, uint32_t const spellId) {
-		player->learnSpell(spellId);
+	reg_method(ft, "learnSpell", [](Player * player, uint32_t const spellId, std::optional<bool> temporary, std::optional<bool> learn_from_skill) {
+		player->learnSpell(spellId, temporary.value_or(false), learn_from_skill.value_or(false));
 	});
-	reg_method(ft, "removeSpell", [](Player * player, uint32_t const spellId) {
-		player->removeSpell(spellId, SPEC_MASK_ALL, false);
+	reg_method(ft, "removeSpell", [](Player * player, uint32_t const spellId, std::optional<uint8_t> remove_spec_mask, std::optional<bool> only_temporary) {
+		player->removeSpell(spellId, remove_spec_mask.value_or(SPEC_MASK_ALL), only_temporary.value_or(false));
 	});
 	reg_method(ft, "modifyMoney", [](Player * player, int32_t const amount) {
-		player->ModifyMoney(amount, true);
+		return player->ModifyMoney(amount, true);
 	});
-	reg_method(ft, "teleport", [](Player * player, uint32_t const mapId, float const x, float const y, float const z, float const o) {
+	reg_method(ft, "teleport", [](Player * player, uint32_t const mapId, float const x, float const y, float const z, float const o, std::optional<uint32_t> options, std::optional<Unit *> target, std::optional<bool> new_instance) {
 		if (player->IsInFlight()) {
 			player->GetMotionMaster()->MovementExpired();
 			player->m_taxi.ClearTaxiDestinations();
 		}
-		player->TeleportTo(mapId, x, y, z, o);
+		return player->TeleportTo(mapId, x, y, z, o, options.value_or(0), target.value_or(nullptr), new_instance.value_or(false));
 	});
-	reg_method(ft, "resurrect", [](Player * player, std::optional<float> const restorePct) {
-		player->ResurrectPlayer(restorePct.value_or(1.0f));
+	reg_method(ft, "resurrect", [](Player * player, std::optional<float> const restore_pct, std::optional<bool> apply_sickness) {
+		player->ResurrectPlayer(restore_pct.value_or(1.0f), apply_sickness.value_or(false));
 	});
-	reg_method(ft, "equipItem", [](Player * player, uint32_t const itemId, uint8_t const slot) {
+	reg_method(ft, "equipItem", [](Player * player, uint32_t const itemId, uint8_t const slot) -> Item * {
 		if (auto const item = Item::CreateItem(itemId, 1, player)) {
 			if (uint16_t dest; player->CanEquipItem(slot, dest, item, false, false) == EQUIP_ERR_OK) {
-				player->EquipItem(slot, item, true);
+				return player->EquipItem(slot, item, true);
 			}
 		}
+		return nullptr;
 	});
-	reg_method(ft, "summonPlayer", [](Player * player, std::string const name) {
-		if (Player * target = ObjectAccessor::FindPlayerByName(name)) {
-			player->TeleportTo(target->GetMapId(), target->GetPositionX(), target->GetPositionY(), target->GetPositionZ(), target->GetOrientation());
-		}
+	reg_method(ft, "mute", [](Player * player, DurationWrapper time) {
+		player->GetSession()->m_muteTime = GameTime::GetGameTime().count() + time.count<Seconds>();
 	});
-	reg_method(ft, "mute", [](Player * player, uint32_t const muteSeconds) {
-		player->GetSession()->m_muteTime = GameTime::GetGameTime().count() + muteSeconds;
-	});
-	reg_method(ft, "giveXP", [](Player * player, Unit * target, uint32_t const amount, std::optional<float> const group_rate, std::optional<bool> const is_lfg_reward) {
+	reg_method(ft, "giveXP", [](Player * player, uint32_t const amount, Unit * target, std::optional<float> const group_rate, std::optional<bool> const is_lfg_reward) {
 		player->GiveXP(amount, target, group_rate.value_or(1), is_lfg_reward.value_or(false));
 	});
 	reg_method(ft, "toggleDND", [](Player * player) {
@@ -894,47 +890,16 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 	reg_method(ft, "resetTalents", [](Player * player, std::optional<bool> const no_reset_cost) {
 		player->resetTalents(no_reset_cost.value_or(false));
 	});
-	reg_method_raw(ft, "talkedToCreature", [](Player * player, v8::FunctionCallbackInfo<v8::Value> const & args) {
-		if (args.Length() < 1) {
-			args.GetIsolate()->ThrowError(jstr_intern("Too few arguments (need 1)."));
-			return;
-		}
-		uint32_t entry{0};
-		ObjectGuid guid;
-		auto failed = false;
-		if (auto const creature = carg<Creature const *, 1>(args, failed); !failed) {
-			guid = creature->GetGUID();
-			entry = guid.GetEntry();
-		} else {
-			failed = false;
-			if (auto const creature_guid = carg<ObjectGuid const, 1>(args, failed); !failed) {
-				if (creature_guid.IsCreature()) {
-					guid = creature_guid;
-					entry = guid.GetEntry();
-				} else {
-					args.GetIsolate()->ThrowError("Must be a creature guid.");
-				}
-			} else {
-				failed = false;
-				if (auto const creature_entry = carg<uint32_t, 1>(args, failed); !failed) {
-					entry = creature_entry;
-				}
-			}
-		}
-		if (failed) {
-			args.GetIsolate()->ThrowError("first arg must be a creature or a creature guid.");
-		} else {
-			player->TalkedToCreature(entry, guid);
-		}
+	reg_method(ft, "talkedToCreature", [](Player * player, uint32_t entry, ObjectGuid guid) {
+		player->TalkedToCreature(entry, guid);
 	});
-	reg_method(ft, "killedMonsterCredit", [](Player * player, Creature const * creature) {
-		player->KilledMonsterCredit(creature->GetEntry(), creature->GetGUID());
+	reg_method(ft, "killedMonsterCredit", [](Player * player, uint32_t entry, std::optional<ObjectGuid> guid) {
+		player->KilledMonsterCredit(entry, guid.value_or({}));
 	});
 	reg_method(ft, "addQuest", [](Player * player, Quest const * quest, std::optional<Object *> const quest_giver) {
 		player->AddQuest(quest, quest_giver.value_or(nullptr));
 	});
-	reg_method(ft, "removeQuest", [](Player * player, Quest const * quest) {
-		auto const quest_id = quest->GetQuestId();
+	reg_method(ft, "removeQuest", [](Player * player, uint32_t quest_id) {
 		for (uint8_t slot = 0; slot < MAX_QUEST_LOG_SIZE; ++slot) {
 			if (auto const log_quest = player->GetQuestSlotQuestId(slot); log_quest == quest_id) {
 				player->SetQuestSlot(slot, 0);
@@ -943,26 +908,26 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 			}
 		}
 	});
-	reg_method(ft, "completeQuest", [](Player * player, Quest const * quest) {
-		player->CompleteQuest(quest->GetQuestId());
+	reg_method(ft, "completeQuest", [](Player * player, uint32_t quest_id) {
+		player->CompleteQuest(quest_id);
 	});
-	reg_method(ft, "failQuest", [](Player * player, Quest const * quest) {
-		player->FailQuest(quest->GetQuestId());
+	reg_method(ft, "failQuest", [](Player * player, uint32_t quest_id) {
+		player->FailQuest(quest_id);
 	});
-	reg_method(ft, "incompleteQuest", [](Player * player, Quest const * quest) {
-		player->IncompleteQuest(quest->GetQuestId());
+	reg_method(ft, "incompleteQuest", [](Player * player, uint32_t quest_id) {
+		player->IncompleteQuest(quest_id);
 	});
-	reg_method(ft, "abandonQuest", [](Player * player, Quest const * quest) {
-		player->AbandonQuest(quest->GetQuestId());
+	reg_method(ft, "abandonQuest", [](Player * player, uint32_t quest_id) {
+		player->AbandonQuest(quest_id);
 	});
 	reg_method(ft, "addItem", [](Player * player, uint32_t const itemId, std::optional<uint32_t> const count) {
-		player->AddItem(itemId, count.value_or(1));
+		return player->AddItem(itemId, count.value_or(1));
 	});
 	reg_method(ft, "removeItem", [](Player * player, uint32_t const itemId, std::optional<uint32_t> const count) {
 		player->DestroyItemCount(itemId, count.value_or(1), true, true);
 	});
-	reg_method(ft, "resetSpellCooldown", [](Player * player, uint32_t const spellId) {
-		player->SendClearCooldown(spellId, nullptr);
+	reg_method(ft, "resetSpellCooldown", [](Player * player, uint32_t const spellId, Unit * target) {
+		player->SendClearCooldown(spellId, target);
 	});
 	reg_method(ft, "resetAllCooldowns", [](Player * player) {
 		for (
@@ -991,17 +956,17 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 		data << uint8_t{0};
 		player->GetSession()->SendPacket(&data);
 	});
-	reg_method(ft, "durabilityRepairAll", [](Player * player, std::optional<bool> const cost, std::optional<float> const discountMod) {
-		return player->DurabilityRepairAll(cost.value_or(false), discountMod.value_or(1.0f), false);
+	reg_method(ft, "durabilityRepairAll", [](Player * player, bool cost, float discount_mod, bool guild_bank) {
+		return player->DurabilityRepairAll(cost, discount_mod, guild_bank);
 	});
-	reg_method(ft, "durabilityRepair", [](Player * player, uint16_t const slot, std::optional<bool> const cost, std::optional<float> const discountMod) {
-		return player->DurabilityRepair(slot, cost.value_or(false), discountMod.value_or(1.0f), false);
+	reg_method(ft, "durabilityRepair", [](Player * player, uint16_t const slot, bool cost, float discount_mod, bool guild_bank) {
+		return player->DurabilityRepair(slot, cost, discount_mod, guild_bank);
 	});
-	reg_method(ft, "durabilityLossAll", [](Player * player, double const percent, std::optional<bool> const inventory) {
-		player->DurabilityLossAll(percent, inventory.value_or(false));
+	reg_method(ft, "durabilityLossAll", [](Player * player, double percent, bool inventory) {
+		player->DurabilityLossAll(percent, inventory);
 	});
-	reg_method(ft, "durabilityPointsLossAll", [](Player * player, int32_t const points, std::optional<bool> const inventory) {
-		player->DurabilityPointsLossAll(points, inventory.value_or(false));
+	reg_method(ft, "durabilityPointsLossAll", [](Player * player, int32_t points, bool inventory) {
+		player->DurabilityPointsLossAll(points, inventory);
 	});
 	reg_method(ft, "advanceSkillsToMax", [](Player * player) {
 		player->UpdateSkillsToMaxSkillsForLevel();
@@ -1030,41 +995,20 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 	reg_method(ft, "createPet", [](Player * player, uint32_t const entry, std::optional<uint32_t> const spellId) {
 		return player->CreatePet(entry, spellId.value_or(0));
 	});
-	reg_method(ft, "removePet", [](Player * player, std::optional<PetSaveMode> const mode) {
+	reg_method(ft, "removePet", [](Player * player, std::optional<PetSaveMode> const mode, std::optional<bool> return_reagent) {
 		if (auto const pet = player->GetPet()) {
-			auto const saveMode = mode.value_or(PET_SAVE_AS_DELETED);
-			player->RemovePet(pet, saveMode, false);
+			player->RemovePet(pet, mode.value_or(PET_SAVE_AS_DELETED), return_reagent.value_or(false));
 		}
 	});
-	reg_method(ft, "unsummonPetTemporarily", [](Player * player) {
+	reg_method(ft, "unsummonPetTemporarilyIfAny", [](Player * player) {
 		player->UnsummonPetTemporaryIfAny();
 	});
-	reg_method(ft, "resummonPet", [](Player * player) {
+	reg_method(ft, "resummonPetIfTemporarilyUnsummoned", [](Player * player) {
 		player->ResummonPetTemporaryUnSummonedIfAny();
 	});
-	reg_method_raw(ft, "inviteToGroup", [](Player * player, v8::FunctionCallbackInfo<v8::Value> const & args) {
-		if (args.Length() < 1) {
-			args.GetIsolate()->ThrowError(jstr_intern("Too few arguments (need 1)."));
-			return;
-		}
-		Player * target = nullptr;
-		auto failed = false;
-		if (auto const target_name = carg<std::string const, 0>(args, failed); !failed) {
-			target = ObjectAccessor::FindPlayerByName(target_name);
-		} else {
-			failed = false;
-			if (auto const target_player = carg<Player *, 0>(args, failed); !failed) {
-				target = target_player;
-			} else {
-				failed = false;
-				if (auto const target_guid = carg<ObjectGuid const, 0>(args, failed); !failed) {
-					target = ObjectAccessor::FindPlayer(target_guid);
-				}
-			}
-		}
-		if (!target || target->GetGroup() || target->GetGroupInvite()) {
-			args.GetReturnValue().SetFalse();
-			return;
+	reg_method(ft, "inviteToGroup", [](Player * player, Player * target) {
+		if (target->GetGroup() || target->GetGroupInvite()) {
+			return false;
 		}
 		auto group = player->GetGroup();
 		auto created_group_here = false;
@@ -1079,7 +1023,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 			if (created_group_here) {
 				delete group;
 			}
-			args.GetReturnValue().SetFalse();
+			return false;
 		}
 		WorldPacket data(SMSG_GROUP_INVITE, 10);
 		data << uint8_t{1};
@@ -1088,37 +1032,16 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 		data << uint8_t{0};
 		data << uint32_t{0};
 		target->GetSession()->SendPacket(&data);
-		args.GetReturnValue().Set(true);
+		return true;
 	});
-	reg_method_raw(ft, "createGroup", [](Player * player, v8::FunctionCallbackInfo<v8::Value> const & args) {
-		if (args.Length() < 1) {
-			args.GetIsolate()->ThrowError(jstr_intern("Too few arguments (need 1)."));
-			return;
-		}
-		Player * target = nullptr;
-		auto failed = false;
-		if (auto const target_name = carg<std::string const, 0>(args, failed); !failed) {
-			target = ObjectAccessor::FindPlayerByName(target_name);
-		} else {
-			failed = false;
-			if (auto const target_player = carg<Player *, 0>(args, failed); !failed) {
-				target = target_player;
-			} else {
-				failed = false;
-				if (auto const target_guid = carg<ObjectGuid const, 0>(args, failed); !failed) {
-					target = ObjectAccessor::FindPlayer(target_guid);
-				}
-			}
-		}
-		if (!target || target->GetGroup() || target->GetGroupInvite()) {
-			args.GetReturnValue().SetUndefined();
-			return;
+	reg_method(ft, "createGroupWith", [](Player * player, Player * target) -> Group * {
+		if (target->GetGroup() || target->GetGroupInvite()) {
+			return nullptr;
 		}
 		auto const group = new Group;
 		if (!group->AddLeaderInvite(player)) {
 			delete group;
-			args.GetReturnValue().SetUndefined();
-			return;
+			return nullptr;
 		}
 		if (!group->IsCreated()) {
 			group->RemoveInvite(player);
@@ -1127,14 +1050,13 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 		}
 		if (!group->AddMember(target)) {
 			delete group;
-			args.GetReturnValue().SetUndefined();
-			return;
+			return nullptr;
 		}
 		group->BroadcastGroupUpdate();
-		args.GetReturnValue().Set(jval(group));
+		return group;
 	});
-	reg_method(ft, "removeFromGroup", [](Player * player) {
-		player->RemoveFromGroup();
+	reg_method(ft, "removeFromGroup", [](Player * player, std::optional<RemoveMethod> method) {
+		player->RemoveFromGroup(method.value_or(GROUP_REMOVEMETHOD_DEFAULT));
 	});
 	reg_method(ft, "addLifetimeKills", [](Player * player, uint32_t const kills) {
 		auto const currentKills = player->GetUInt32Value(PLAYER_FIELD_LIFETIME_HONORABLE_KILLS);
@@ -1154,8 +1076,8 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 	reg_method(ft, "sendSpiritResurrect", [](Player * player) {
 		player->GetSession()->SendSpiritResurrect();
 	});
-	reg_method(ft, "sendShowBank", [](Player * player, WorldObject const * banker) {
-		player->GetSession()->SendShowBank(banker->GetGUID());
+	reg_method(ft, "sendShowBank", [](Player * player, ObjectGuid banker) {
+		player->GetSession()->SendShowBank(banker);
 	});
 	reg_method(ft, "sendAuctionMenu", [](Player * player, Unit * auctioneer) {
 		if (auto const ahEntry = AuctionHouseMgr::GetAuctionHouseEntryFromFactionTemplate(auctioneer->GetFaction())) {
@@ -1215,9 +1137,6 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 	reg_method(ft, "doRandomRoll", [](Player * player, uint32_t const min, uint32_t const max) {
 		return player->DoRandomRoll(min, max);
 	});
-	reg_method(ft, "teleportTo", [](Player * player, float const x, float const y, float const z, uint32_t const mapId, std::optional<float> const o) {
-		player->TeleportTo(mapId, x, y, z, o.value_or(0.0f));
-	});
 	reg_method(ft, "sendCinematicStart", [](Player * player, uint32_t const cinematicId) {
 		player->SendCinematicStart(cinematicId);
 	});
@@ -1252,25 +1171,11 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 	reg_method(ft, "areaExploredOrEventHappens", [](Player * player, uint32_t const eventId) {
 		player->AreaExploredOrEventHappens(eventId);
 	});
-	reg_method(ft, "groupEventHappens", [](Player * player, uint32_t const questId) {
-		player->GroupEventHappens(questId, nullptr);
+	reg_method(ft, "groupEventHappens", [](Player * player, uint32_t quest_id, std::optional<WorldObject *> event_object) {
+		player->GroupEventHappens(quest_id, event_object.value_or(nullptr));
 	});
 	reg_method(ft, "takeEnvironmentalDamage", [](Player * player, EnviromentalDamage const type, uint32_t const damage) {
-		player->EnvironmentalDamage(type, damage);
-	});
-	reg_method(ft, "dealDamage", [](Player * player, Unit * target, uint32_t const amount, std::optional<DamageEffectType> const type, std::optional<SpellSchoolMask> const spell_school_mask, std::optional<SpellInfo const *> const spell_proto, std::optional<bool> const durability_loss, std::optional<bool> const allow_gm, std::optional<Spell const *> const spell) {
-		Unit::DealDamage(
-			player,
-			target,
-			amount,
-			nullptr,
-			type.value_or(DIRECT_DAMAGE),
-			spell_school_mask.value_or(SPELL_SCHOOL_MASK_NORMAL),
-			spell_proto.value_or(nullptr),
-			durability_loss.value_or(true),
-			allow_gm.value_or(false),
-			spell.value_or(nullptr)
-		);
+		return player->EnvironmentalDamage(type, damage);
 	});
 	reg_method(ft, "canCompleteRepeatableQuest", [](Player * player, Quest const * quest) {
 		return player->CanCompleteRepeatableQuest(quest);
@@ -1278,8 +1183,8 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 	reg_method(ft, "canRewardQuest", [](Player * player, Quest const * quest, bool const msg) {
 		return player->CanRewardQuest(quest, msg);
 	});
-	reg_method(ft, "canCompleteQuest", [](Player * player, Quest const * quest) {
-		return player->CanCompleteQuest(quest->GetQuestId());
+	reg_method(ft, "canCompleteQuest", [](Player * player, uint32_t quest_id) {
+		return player->CanCompleteQuest(quest_id);
 	});
 	reg_method(ft, "canTakeQuest", [](Player * player, Quest const * quest, bool const msg) {
 		return player->CanTakeQuest(quest, msg);
@@ -1350,29 +1255,27 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 	reg_method(ft, "gossipComplete", [](Player * player) {
 		player->PlayerTalkClass->SendCloseGossip();
 	});
-	reg_method(ft, "gossipMenuAddItem", [](Player * player, uint8_t const iconType, std::string const text, std::optional<int> const gossipOptionId) {
-		player->PlayerTalkClass->GetGossipMenu().AddMenuItem(gossipOptionId.value_or(0), iconType, text, 0, gossipOptionId.value_or(0), "", 0);
+	reg_method(ft, "gossipMenuAddItem", [](Player * player, int32_t menu_item_id, uint8_t icon, std::string message, uint32_t sender, uint32_t action, std::string box_message, uint32_t box_money, std::optional<bool> coded) {
+		player->PlayerTalkClass->GetGossipMenu().AddMenuItem(menu_item_id, icon, message, sender, action, box_message, box_money, coded.value_or(false));
 	});
-	reg_method(ft, "gossipSendMenuToCreature", [](Player * player, Creature const * creature) {
-		player->PlayerTalkClass->SendGossipMenu(0, creature->GetGUID());
+	reg_method(ft, "gossipSendMenuToCreature", [](Player * player, uint32_t title_text_id, ObjectGuid creature) {
+		player->PlayerTalkClass->SendGossipMenu(title_text_id, creature);
 	});
 	reg_method(ft, "gossipSendPOI", [](Player * player, uint32_t const poiId) {
 		player->PlayerTalkClass->SendPointOfInterest(poiId);
-	});
-	reg_method(ft, "getGossipTextId", [](Player * player) {
-		return player->PlayerTalkClass->GetGossipMenu().GetMenuId();
 	});
 	reg_method(ft, "setSkill", [](Player * player, SkillType const skill, uint16_t const value) {
 		player->SetSkill(skill, value, value, player->GetMaxSkillValue(skill));
 	});
 	reg_method(ft, "applyRatingMod", [](Player * player, CombatRating const rating, int32_t const value) {
+		// don't propagate the bool... callers can type the `-` sign themselves.
 		player->ApplyRatingMod(rating, value, true);
 	});
-	reg_method(ft, "setQuestStatus", [](Player * player, Quest const * quest, QuestStatus const status) {
-		player->SetQuestStatus(quest->GetQuestId(), status);
+	reg_method(ft, "setQuestStatus", [](Player * player, uint32_t quest_id, QuestStatus status) {
+		player->SetQuestStatus(quest_id, status);
 	});
-	reg_method(ft, "removeRewardedQuest", [](Player * player, Quest const * quest) {
-		player->RemoveRewardedQuest(quest->GetQuestId());
+	reg_method(ft, "removeRewardedQuest", [](Player * player, uint32_t quest_id) {
+		player->RemoveRewardedQuest(quest_id);
 	});
 	reg_method(ft, "rewardQuest", [](Player * player, Quest const * quest, std::optional<uint32_t> const reward, std::optional<Object *> const quest_giver, std::optional<bool> const announce, std::optional<bool> const is_lfg_reward) {
 		player->RewardQuest(
@@ -1383,27 +1286,32 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 			is_lfg_reward.value_or(false)
 		);
 	});
-	reg_method(ft, "removeActiveQuest", [](Player * player, Quest const * quest) {
-		player->RemoveActiveQuest(quest->GetQuestId());
+	reg_method(ft, "removeActiveQuest", [](Player * player, uint32_t quest_id) {
+		player->RemoveActiveQuest(quest_id);
 	});
-	reg_method(ft, "setKnownTitle", [](Player * player, CharTitlesEntry const * title) {
-		player->SetTitle(title, false);
+	reg_method(ft, "setKnownTitle", [](Player * player, uint32_t bit_index) {
+		// only the bit index is read, so we can just ask for that
+		CharTitlesEntry entry{};
+		entry.bit_index = bit_index;
+		player->SetTitle(&entry, false);
 	});
-	reg_method(ft, "unsetKnownTitle", [](Player * player, CharTitlesEntry const * title) {
-		player->SetTitle(title, true);
+	reg_method(ft, "unsetKnownTitle", [](Player * player, uint32_t bit_index) {
+		// only the bit index is read, so we can just ask for that
+		CharTitlesEntry entry{};
+		entry.bit_index = bit_index;
+		player->SetTitle(&entry, true);
 	});
 	reg_method(ft, "initTaxiNodesForLevel", [](Player * player) {
 		player->InitTaxiNodesForLevel();
 	});
-	reg_method(ft, "startTaxi", [](Player * player, uint32_t node1, std::optional<uint32_t> node2) {
-		if (node2) {
-			player->ActivateTaxiPathTo({node1, *node2});
-		} else {
-			player->ActivateTaxiPathTo(node1);
-		}
+	reg_method(ft, "startTaxiByTaxiPathId", [](Player * player, uint32_t id, std::optional<uint32_t> spell_id) {
+		return player->ActivateTaxiPathTo(id, spell_id.value_or(1));
 	});
-	reg_method(ft, "toggleInstantFlight", [](Player * player, bool const enable) {
-		player->SetCanFly(enable);
+	reg_method(ft, "startTaxiByNodes", [](Player * player, std::vector<std::uint32_t> nodes_vec, std::optional<Creature *> npc, std::optional<uint32_t> spell_id) {
+		return player->ActivateTaxiPathTo(nodes_vec, npc.value_or(nullptr), spell_id.value_or(1));
+	});
+	reg_method(ft, "toggleInstantFlight", [](Player * player) {
+		player->ToggleInstantFlight();
 	});
 	reg_method(ft, "removeAmmo", [](Player * player) {
 		player->RemoveAmmo();
@@ -1417,7 +1325,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 	reg_method(ft, "gainSpellComboPoints", [](Player * player, int8_t const count) {
 		player->AddComboPoints(count);
 	});
-	reg_method(ft, "setSpellPower", [](Player * player, int32_t const value, std::optional<bool> const apply) {
+	reg_method(ft, "applySpellPowerBonus", [](Player * player, int32_t const value, std::optional<bool> const apply) {
 		player->ApplySpellPowerBonus(value, apply.value_or(false));
 	});
 	reg_method(ft, "resetTypeCooldowns", [](Player * player, uint32_t const type) {
@@ -1451,16 +1359,16 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 	reg_method(ft, "setFactionForRace", [](Player * player, uint8_t const race) {
 		player->SetFactionForRace(race);
 	});
-	reg_method(ft, "setKnownTaxiNodes", [](Player * player) {
-		for (uint32_t i = 1; i <= sTaxiNodesStore.GetNumRows(); ++i) {
+	reg_method(ft, "setKnownTaxiNodes", [](Player * player, std::vector<uint32_t> nodes) {
+		for (auto i : nodes) {
 			player->m_taxi.SetTaximaskNode(i);
 		}
 	});
 	reg_method(ft, "setReputation", [](Player * player, FactionEntry const * faction, float const value) {
 		player->GetReputationMgr().SetReputation(faction, value);
 	});
-	reg_method(ft, "setRestBonus", [](Player * player, uint32_t const restStatePoints) {
-		player->SetRestState(restStatePoints);
+	reg_method(ft, "setRestState", [](Player * player, uint32_t const restState) {
+		player->SetRestState(restState);
 	});
 	reg_method(ft, "updatePlayerSetting", [](Player * player, std::string const source, uint32_t const index, uint32_t const value) {
 		player->UpdatePlayerSetting(source, index, value);
@@ -1474,11 +1382,11 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 	reg_method(ft, "durabilityPointsLoss", [](Player * player, Item * item, int32_t const points) {
 		player->DurabilityPointsLoss(item, points);
 	});
-	reg_method(ft, "sendQuestTemplate", [](Player * player, Creature const * quest_giver, Quest const * quest, std::optional<bool> const activateAccept) {
-		player->PlayerTalkClass->SendQuestGiverQuestDetails(quest, quest_giver->GetGUID(), activateAccept.value_or(true));
+	reg_method(ft, "sendQuestTemplate", [](Player * player, ObjectGuid quest_giver, Quest const * quest, std::optional<bool> activate_accept) {
+		player->PlayerTalkClass->SendQuestGiverQuestDetails(quest, quest_giver, activate_accept.value_or(true));
 	});
-	reg_method(ft, "sendTabardVendorActivate", [](Player * player, Creature const * creature) {
-		player->GetSession()->SendTabardVendorActivate(creature->GetGUID());
+	reg_method(ft, "sendTabardVendorActivate", [](Player * player, ObjectGuid creature) {
+		player->GetSession()->SendTabardVendorActivate(creature);
 	});
 	reg_method(ft, "sendUpdateWorldState", [](Player * player, uint32_t const dataId, int32_t const value) {
 		player->SendUpdateWorldState(dataId, value);
