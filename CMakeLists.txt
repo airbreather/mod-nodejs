@@ -1,7 +1,3 @@
-if (WIN32)
-  message(FATAL_ERROR "Giving up for now trying to figure out how to get this to work natively on Windows. You might just have to use Docker or WSL. See the Git history for what I've tried.")
-endif()
-
 if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB))
   if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     message(STATUS "Using Node.js v26.7.0 from this project's GitHub release")
@@ -19,16 +15,58 @@ if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB))
 
     CU_SET_GLOBAL(NODEJS_INCLUDE_DIR "${nodejs_linux_SOURCE_DIR}/include/node")
     CU_SET_GLOBAL(NODEJS_LIB "${nodejs_linux_SOURCE_DIR}/lib/libnode.so.147")
+  elseif (WIN32)
+    # There is no prebuilt libnode for Windows yet (unlike Linux above).
+    # You must build it yourself first -- see doc/building-windows.md --
+    # then point CMake at the result, e.g.:
+    #
+    #   cmake -DNODEJS_INCLUDE_DIR="C:/nodejs-v26.7.0/include/node" ^
+    #         -DNODEJS_LIB="C:/nodejs-v26.7.0/lib/node.lib" ...
+    #
+    # NODEJS_LIB must be the *import library* for libnode.dll (node.lib),
+    # never a static/monolithic node.lib built without the `dll` vcbuild
+    # target -- linking the static variant is what drags in a second copy
+    # of every bundled dependency (zlib, openssl, icu, ...) and causes the
+    # symbol clashes described in doc/building-windows.md.
+    if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB))
+      message(FATAL_ERROR
+        "On Windows you must build libnode.dll yourself (see doc/building-windows.md) "
+        "and pass -DNODEJS_INCLUDE_DIR=... -DNODEJS_LIB=...\\node.lib to CMake. "
+        "NODEJS_LIB must point at the DLL's import library, not a static build.")
+    endif()
+    CU_SET_GLOBAL(NODEJS_INCLUDE_DIR "${NODEJS_INCLUDE_DIR}")
+    CU_SET_GLOBAL(NODEJS_LIB "${NODEJS_LIB}")
+
+    # Windows has no rpath: libnode.dll has to sit next to worldserver.exe
+    # (or somewhere on PATH) or the process will fail to start with a
+    # "missing DLL" error at launch, not a link error.
+    get_filename_component(_NODEJS_LIB_DIR "${NODEJS_LIB}" DIRECTORY)
+    find_file(_NODEJS_DLL
+        NAMES libnode.dll node.dll
+        PATHS "${_NODEJS_LIB_DIR}" "${_NODEJS_LIB_DIR}/../bin"
+        NO_DEFAULT_PATH
+    )
+    if (NOT _NODEJS_DLL)
+      message(FATAL_ERROR "Could not find libnode.dll near ${NODEJS_LIB} -- expected it alongside the import library.")
+    endif()
   else()
     message(FATAL_ERROR("Linux has pre-built files available. Others (we are '${CMAKE_SYSTEM_NAME}') must figure out their own NODEJS_INCLUDE_DIR and NODEJS_LIB values. PRs to show what I should for other systems are welcome!"))
   endif()
 endif()
 
-install(
-        FILES
-        "${NODEJS_LIB}"
-        DESTINATION "${CMAKE_INSTALL_PREFIX}/bin"
-)
+if (WIN32)
+  install(
+          FILES
+          "${_NODEJS_DLL}"
+          DESTINATION "${CMAKE_INSTALL_PREFIX}"
+  )
+else()
+  install(
+          FILES
+          "${NODEJS_LIB}"
+          DESTINATION "${CMAKE_INSTALL_PREFIX}/bin"
+  )
+endif()
 
 list(APPEND ${PRIVATE_SOURCES} (
         src/records/AchievementEntryRecord.cpp
