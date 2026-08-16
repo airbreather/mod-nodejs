@@ -36,7 +36,7 @@ class ChatCommandBuilderBuilder {
 	// some fields are only supported (and only make sense) on runnable ones.
 	std::optional<std::variant<subcommand_data, runnable_data>> m_data;
 
-	void assign_slots_rec(std::vector<std::string> &, std::function<size_t(std::vector<std::string> &, v8::Global<v8::Function>)>);
+	void assign_slots_rec(std::vector<std::string> &, std::function<size_t(std::vector<std::string> &, v8::Global<v8::Function>)> &);
 
 public:
 	explicit ChatCommandBuilderBuilder(std::string);

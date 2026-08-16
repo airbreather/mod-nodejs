@@ -30,7 +30,7 @@ namespace {
 	};
 }
 
-void ChatCommandBuilderBuilder::assign_slots_rec(std::vector<std::string> & path, std::function<size_t(std::vector<std::string> &, v8::Global<v8::Function>)> assign) {
+void ChatCommandBuilderBuilder::assign_slots_rec(std::vector<std::string> & path, std::function<size_t(std::vector<std::string> &, v8::Global<v8::Function>)> & assign) {
 	if (!m_data) {
 		return;
 	}
@@ -70,7 +70,7 @@ void ChatCommandBuilderBuilder::add_subcommand(ChatCommandBuilderBuilderBox sub)
 }
 
 void ChatCommandBuilderBuilder::assign_slots(std::function<size_t(std::vector<std::string> &, v8::Global<v8::Function>)> fn) {
-	std::vector<std::string> vec{};
+	std::vector vec{m_name};
 	assign_slots_rec(vec, fn);
 }
 
