@@ -1,9 +1,9 @@
 declare global {
 	namespace Acore {
 		class ACMap {
-			static nonInstancedById(id: number): ACMap;
-			static instancedById(id: number, instanceId: number): ACMap;
-			static entrancePosById(id: number): Position;
+			static nonInstancedById(id: number): ACMap | undefined;
+			static instancedById(id: number, instanceId: number): ACMap | undefined;
+			static entrancePosById(id: number): Position | undefined;
 
 			readonly mapId: number;
 			readonly instanceId: number;

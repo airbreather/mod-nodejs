@@ -5,7 +5,7 @@ declare global {
 			readonly selectedPlayer: Player | undefined;
 			readonly selectedPlayerOrSelf: Player | undefined;
 			readonly selectedCreature: Creature | undefined;
-			readonly selectedUnit: Unit | undefined
+			readonly selectedUnit: Unit | undefined;
 			readonly selectedObject: WorldObject | undefined;
 			readonly isConsole: boolean;
 			readonly hasSentErrorMessage: boolean;

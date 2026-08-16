@@ -12,15 +12,18 @@ declare global {
 			lootType: LootType;
 			unlootedCount: number;
 			gold: number;
-			// SOME of these `| undefined` MAY be incorrect. SOME of them are DEFINITELY correct.
-			roundRobinPlayer: ObjectGuidNative | undefined;
-			lootOwnerGuid: ObjectGuidNative | undefined;
-			containerGuid: ObjectGuidNative | undefined;
-			sourceWorldObjectGuid: ObjectGuidNative | undefined;
+			roundRobinPlayer: ObjectGuid | undefined;
+			lootOwnerGuid: ObjectGuid | undefined;
+			containerGuid: ObjectGuid | undefined;
+			sourceWorldObjectGuid: ObjectGuid | undefined;
 
+			getMaxSlotForPlayer(player: Player): number;
+			hasItem(itemId?: number, count?: number): boolean;
 			addItem(itemId: number, minCount: number, maxCount: number, chance: number, lootMode: LootModes, needsQuest?: boolean, allowStacking?: boolean, maxStackSize?: number): void;
+			removeItem(itemId: number, count?: number): void;
 			clear(): void;
 			generateMoney(min: number, max: number): void;
+			setItemLooted(itemId: number, count: number, looted: boolean): void;
 			addLooter(looter: ObjectGuid): void;
 			removeLooter(looter: ObjectGuid): void;
 		}

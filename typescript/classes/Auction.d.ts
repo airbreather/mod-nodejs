@@ -26,7 +26,6 @@ declare global {
 
 			deleteFromDB(): void;
 			saveToDB(): void;
-			saveToDB(): void;
 			sendAuctionWonMail(sendNotification?: boolean, updateAchievementCriteria?: boolean): void;
 			sendAuctionSalePendingMail(): void;
 			sendAuctionSuccessfulMail(sendNotification?: boolean, updateAchievementCriteria?: boolean): void;

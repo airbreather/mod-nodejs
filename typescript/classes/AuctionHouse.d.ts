@@ -10,7 +10,7 @@ declare global {
 
 			addAuction(auction: Auction, item: Item): void;
 			getAuction(id: number): Auction | undefined;
-			removeAuction(id: number): boolean;
+			removeAuction(auction: Auction): boolean;
 			update(): void;
 		}
 	}

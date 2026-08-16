@@ -4,10 +4,10 @@ declare global {
 			constructor(subject: string, text: string);
 
 			addMoney(money: number): MailDraft;
-			addCOD(money: number): MailDraft;
+			addCOD(cod: number): MailDraft;
 			addItem(item: Item): MailDraft;
 			createAndAddItem(entry: number, amount?: number): ObjectGuid;
-			send(receiver: ObjectGuid, sender: MailSender, checked?: MailCheckedMask, deliverDelay?: number, customExpiration?: number): void;
+			send(receiver: ObjectGuid, sender: MailSender, checked?: MailCheckMask, deliverDelay?: number, customExpiration?: number): void;
 			sendReturnToSender(senderAccount: number, sender: ObjectGuid, receiver: ObjectGuid): void;
 		}
 	}

@@ -33,7 +33,6 @@ declare global {
 			getGameObjectsInRange(range: number, entry?: number): GameObject[];
 			getUnitsInRange(range: number): Unit[];
 			getNearObjects(range: number, mask?: NearObjectsMask): WorldObject[];
-			getNearObjects(range: number, mask?: NearObjectsMask): WorldObject[];
 			sendMessageToSet(packet: WorldPacket, self: boolean): void;
 			sendMessageToSetInRange(packet: WorldPacket, range: number): void;
 			sendMessageToSetExceptPlayer(packet: WorldPacket, skippedReceiver: Player): void;

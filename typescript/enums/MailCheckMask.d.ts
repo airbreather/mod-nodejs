@@ -1,5 +1,5 @@
 declare global {
-	const enum MailCheckedMask {
+	const enum MailCheckMask {
 		MAIL_CHECK_MASK_NONE        = 0x00,
 		MAIL_CHECK_MASK_READ        = 0x01,
 		MAIL_CHECK_MASK_RETURNED    = 0x02,                     /// This mail was returned. Do not allow returning mail back again.

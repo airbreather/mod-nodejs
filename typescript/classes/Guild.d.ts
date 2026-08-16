@@ -7,8 +7,8 @@ declare global {
 
 			readonly id: number;
 			readonly leaderGuid: ObjectGuidNative;
-			readonly memberCount: GuildMember[];
-			readonly members: number;
+			readonly members: Map<number, GuildMember>;
+			readonly memberCount: number;
 			readonly totalBankMoney: number | bigint;
 			readonly createdDate: Temporal.Instant;
 			name: string;

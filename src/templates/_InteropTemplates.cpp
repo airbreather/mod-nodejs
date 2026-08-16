@@ -12,6 +12,7 @@
 class AuctionHouseObject;
 class Aura;
 class AuraApplication;
+class AuraEffect;
 class Battleground;
 class BattlegroundQueue;
 class ByteBuffer;
@@ -82,6 +83,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<NodeJs *>() {
 	REGISTER_CLASS_PROP_SPLIT_NAMES(AuctionHouseObject, AuctionHouse)
 	REGISTER_CLASS_PROP(Aura)
 	REGISTER_CLASS_PROP(AuraApplication)
+	REGISTER_CLASS_PROP(AuraEffect)
 	REGISTER_CLASS_PROP(Battleground)
 	REGISTER_CLASS_PROP(BattlegroundQueue)
 	REGISTER_CLASS_PROP(ByteBuffer)

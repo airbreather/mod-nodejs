@@ -29,7 +29,7 @@ declare global {
 			readonly unitClass: CreatureClasses;
 			readonly unitFlags: UnitFlags;
 			readonly unitFlags2: UnitFlags2;
-			readonly dynamicflags: UnitDynFlags;
+			readonly dynamicFlags: UnitDynFlags;
 			readonly family: CreatureFamily;
 			readonly creatureType: CreatureType;
 			readonly creatureTypeFlags: CreatureTypeFlags;
@@ -59,10 +59,10 @@ declare global {
 			readonly requiredLootSkill: SkillType;
 			readonly isExotic: boolean;
 
-			getModelByIdx(idx: number): CreatureModel;
-			getRandomValidModel(): CreatureModel;
-			getFirstValidModel(): CreatureModel;
-			getModelWithDisplayId(displayId: number): CreatureModel;
+			getModelByIdx(idx: number): CreatureModel | undefined;
+			getRandomValidModel(): CreatureModel | undefined;
+			getFirstValidModel(): CreatureModel | undefined;
+			getModelWithDisplayId(displayId: number): CreatureModel | undefined;
 			getFirstInvisibleModel(): CreatureModel;
 			getFirstVisibleModel(): CreatureModel;
 			isTameable(exotic: boolean): boolean;

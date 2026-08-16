@@ -17,6 +17,7 @@ export type * from './ItemStat.d.ts';
 export type * from './LootItem.d.ts';
 export type * from './ObjectGuid.d.ts';
 export type * from './PetInfo.d.ts';
+export type * from './PetSpell.d.ts';
 export type * from './Position.d.ts';
 export type * from './PvPDifficultyEntry.d.ts';
 export type * from './SpellCastTimesEntry.d.ts';

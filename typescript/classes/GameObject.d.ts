@@ -18,6 +18,7 @@ declare global {
 			spellId: number;
 			isSpawnedByDefault: boolean;
 
+			hasQuest(quest: Quest): boolean;
 			setLootState(lootState: LootState, unit?: Unit): void;
 			useDoorOrButton(timeToRestore?: Temporal.Duration, alternative?: boolean, user?: Unit): void;
 			despawn(): void;
@@ -26,6 +27,9 @@ declare global {
 			refresh(): void;
 			saveToDB(saveAddon?: boolean): void;
 			saveToDBExtra(mapId: number, spawnMask: number, phaseMask: number, saveAddon?: boolean): void;
+			delete(): void;
+			deleteFromDB(): void;
+			getFishLoot(lootOwner: Player, junk?: boolean): Loot;
 			// mod-nodejs inventions: SetRespawnTime and SetRespawnDelay names confuse me greatly. when I
 			// worked out what they were, I thought of better names and a nicer way to handle the former.
 			setTimeUntilNextRespawn(delay: Temporal.Duration): void;

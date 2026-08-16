@@ -9,8 +9,6 @@ declare global {
 			haveQuestLootFor(lootId: number, player?: Player): boolean;
 			getLootFor(lootId: number): LootTemplate;
 		}
-
-		type LootStoreArg = LootStore | LootStoreType;
 	}
 }
 export {};

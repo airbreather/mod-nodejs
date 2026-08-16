@@ -21,7 +21,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Corpse *>() {
 	reg_prop_ro(ft, "ghostTime", [](Corpse * corpse) {
 		return UnixTimestamp::from_time_t_seconds(corpse->GetGhostTime());
 	});
-	reg_prop_ro(ft, "type", [](Corpse * corpse) {
+	reg_prop_ro(ft, "corpseType", [](Corpse * corpse) {
 		return corpse->GetType();
 	});
 	reg_prop_ro(ft, "owner", [](Corpse * corpse) {
