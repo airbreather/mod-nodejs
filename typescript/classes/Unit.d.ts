@@ -174,6 +174,7 @@ declare global {
 			buildCastSpell(spell: SpellInfo): CastSpellBuilder;
 			summonPlayer(player: Player): void
 			dealDamage(target: Unit, amount: number, type?: DamageEffectType, spellSchoolMask?: SpellSchoolMask, spellInfo?: SpellInfo, durabilityLoss?: boolean, allowGm?: boolean, spell?: Spell): number;
+			hasUnitMovementFlag(flags: MovementFlags): boolean;
 		}
 	}
 }

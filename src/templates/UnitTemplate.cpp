@@ -646,6 +646,9 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Unit *>() {
 			spell.value_or(nullptr)
 		);
 	});
+	reg_method(ft, "hasUnitMovementFlag", [](Unit * u, uint32_t flag) {
+		return u->HasUnitMovementFlag(flag);
+	});
 
 	return ft;
 }

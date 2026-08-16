@@ -102,6 +102,7 @@ export type * from './MailCheckMask.d.ts';
 export type * from './MailMessageType.d.ts';
 export type * from './MailStationery.d.ts';
 export type * from './Mechanics.d.ts';
+export type * from './MovementFlags.d.ts';
 export type * from './MovementGeneratorType.d.ts';
 export type * from './MovementSlot.d.ts';
 export type * from './NearObjectsMask.d.ts';
