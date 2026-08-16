@@ -117,9 +117,6 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Pet *>() {
 	reg_method(ft, "synchronizeLevelWithOwner", [](Pet * pet) {
 		pet->SynchronizeLevelWithOwner();
 	});
-	reg_method(ft, "toggleAutocast", [](Pet * pet, SpellInfo const * spellInfo, bool const apply) {
-		pet->ToggleAutocast(spellInfo, apply);
-	});
 	reg_method(ft, "learnPetPassives", [](Pet * pet) {
 		pet->LearnPetPassives();
 	});
