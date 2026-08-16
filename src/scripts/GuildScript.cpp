@@ -38,63 +38,66 @@ public:
 		NodeJs::invoke_hook("guild:item-move", jarg("guild", guild), jarg("player", player), jarg("item", pItem), jarg("isSrcBank", isSrcBank), jarg("srcContainer", srcContainer), jarg("srcSlotId", srcSlotId), jarg("isDestBank", isDestBank), jarg("destContainer", destContainer), jarg("destSlotId", destSlotId));
 	}
 	void OnEvent(Guild * guild, uint8_t const eventType, ObjectGuid::LowType const playerGuid1, ObjectGuid::LowType const playerGuid2, uint8_t const newRank) override {
+		ObjectGuid fullPlayerGuid1(HighGuid::Player, playerGuid1);
+		ObjectGuid fullPlayerGuid2(HighGuid::Player, playerGuid2);
 		// some of these events have well-known IDs. let's be at least a little helpful if it's one of those.
 		switch (eventType) {
 			case GUILD_EVENT_LOG_INVITE_PLAYER:
-				NodeJs::invoke_hook("guild:invite-player", jarg("guild", guild), jarg("inviterGuid", playerGuid1), jarg("inviteeGuid", playerGuid2));
+				NodeJs::invoke_hook("guild:invite-player", jarg("guild", guild), jarg("inviterGuid", fullPlayerGuid1), jarg("inviteeGuid", fullPlayerGuid2));
 				break;
 
 			case GUILD_EVENT_LOG_LEAVE_GUILD:
-				NodeJs::invoke_hook("guild:player-leave", jarg("guild", guild), jarg("playerGuid", playerGuid1));
+				NodeJs::invoke_hook("guild:player-leave", jarg("guild", guild), jarg("playerGuid", fullPlayerGuid1));
 				break;
 
 			case GUILD_EVENT_LOG_UNINVITE_PLAYER:
-				NodeJs::invoke_hook("guild:uninvite-player", jarg("guild", guild), jarg("uninviterGuid", playerGuid1), jarg("uninviteeGuid", playerGuid2));
+				NodeJs::invoke_hook("guild:uninvite-player", jarg("guild", guild), jarg("uninviterGuid", fullPlayerGuid1), jarg("uninviteeGuid", fullPlayerGuid2));
 				break;
 
 			case GUILD_EVENT_LOG_DEMOTE_PLAYER:
-				NodeJs::invoke_hook("guild:demote-player", jarg("guild", guild), jarg("demoterGuid", playerGuid1), jarg("demoteeGuid", playerGuid2), jarg("newRank", newRank));
+				NodeJs::invoke_hook("guild:demote-player", jarg("guild", guild), jarg("demoterGuid", fullPlayerGuid1), jarg("demoteeGuid", fullPlayerGuid2), jarg("newRank", newRank));
 				break;
 
 			case GUILD_EVENT_LOG_PROMOTE_PLAYER:
-				NodeJs::invoke_hook("guild:promote-player", jarg("guild", guild), jarg("promoterGuid", playerGuid1), jarg("promoteeGuid", playerGuid2), jarg("newRank", newRank));
+				NodeJs::invoke_hook("guild:promote-player", jarg("guild", guild), jarg("promoterGuid", fullPlayerGuid1), jarg("promoteeGuid", fullPlayerGuid2), jarg("newRank", newRank));
 				break;
 		}
 		// regardless of if we logged something else or not, always invoke this generic one
 		// just in case there's a specific reason for it, or if someone's blindly porting their existing code.
-		NodeJs::invoke_hook("guild:generic-logged-event", jarg("guild", guild), jarg("eventType", eventType), jarg("playerGuid1", playerGuid1), jarg("playerGuid2", playerGuid2), jarg("newRank", newRank));
+		NodeJs::invoke_hook("guild:generic-logged-event", jarg("guild", guild), jarg("eventType", eventType), jarg("playerGuid1", fullPlayerGuid1), jarg("playerGuid2", fullPlayerGuid2), jarg("newRank", newRank));
 	}
 	void OnBankEvent(Guild * guild, uint8_t const eventType, uint8_t const tabId, ObjectGuid::LowType const playerGuid, uint32_t const itemOrMoney, uint16_t const itemStackCount, uint8_t const destTabId) override {
+		ObjectGuid fullPlayerGuid(HighGuid::Player, playerGuid);
 		// some of these events have well-known IDs. let's be at least a little helpful if it's one of those.
 		switch (eventType) {
 			case GUILD_BANK_LOG_WITHDRAW_ITEM:
-				NodeJs::invoke_hook("guild:withdraw-bank-item", jarg("guild", guild), jarg("srcTabId", tabId), jarg("playerGuid", playerGuid), jarg("itemEntry", itemOrMoney), jarg("count", itemStackCount));
+				NodeJs::invoke_hook("guild:withdraw-bank-item", jarg("guild", guild), jarg("srcTabId", tabId), jarg("playerGuid", fullPlayerGuid), jarg("itemEntry", itemOrMoney), jarg("count", itemStackCount));
 				break;
 
 			case GUILD_BANK_LOG_MOVE_ITEM:
-				NodeJs::invoke_hook("guild:move-bank-item", jarg("guild", guild), jarg("srcTabId", tabId), jarg("playerGuid", playerGuid), jarg("itemEntry", itemOrMoney), jarg("count", itemStackCount), jarg("destTabId", destTabId));
+				NodeJs::invoke_hook("guild:move-bank-item", jarg("guild", guild), jarg("srcTabId", tabId), jarg("playerGuid", fullPlayerGuid), jarg("itemEntry", itemOrMoney), jarg("count", itemStackCount), jarg("destTabId", destTabId));
 				break;
 
 			case GUILD_BANK_LOG_DEPOSIT_ITEM:
-				NodeJs::invoke_hook("guild:deposit-bank-item", jarg("guild", guild), jarg("destTabId", tabId), jarg("playerGuid", playerGuid), jarg("itemEntry", itemOrMoney), jarg("count", itemStackCount));
+				NodeJs::invoke_hook("guild:deposit-bank-item", jarg("guild", guild), jarg("destTabId", tabId), jarg("playerGuid", fullPlayerGuid), jarg("itemEntry", itemOrMoney), jarg("count", itemStackCount));
 				break;
 
 			case GUILD_BANK_LOG_DEPOSIT_MONEY:
-				NodeJs::invoke_hook("guild:deposit-bank-money", jarg("guild", guild), jarg("playerGuid", playerGuid), jarg("amount", itemOrMoney));
+				NodeJs::invoke_hook("guild:deposit-bank-money", jarg("guild", guild), jarg("playerGuid", fullPlayerGuid), jarg("amount", itemOrMoney));
 				break;
 
 			case GUILD_BANK_LOG_WITHDRAW_MONEY:
-				NodeJs::invoke_hook("guild:withdraw-bank-money", jarg("guild", guild), jarg("playerGuid", playerGuid), jarg("amount", itemOrMoney));
+				NodeJs::invoke_hook("guild:withdraw-bank-money", jarg("guild", guild), jarg("playerGuid", fullPlayerGuid), jarg("amount", itemOrMoney));
 				break;
 
 			case GUILD_BANK_LOG_REPAIR_MONEY:
-				NodeJs::invoke_hook("guild:repair-bank-money", jarg("guild", guild), jarg("playerGuid", playerGuid), jarg("amount", itemOrMoney));
+				NodeJs::invoke_hook("guild:repair-bank-money", jarg("guild", guild), jarg("playerGuid", fullPlayerGuid), jarg("amount", itemOrMoney));
 				break;
 		}
 
 		// regardless of if we logged something else or not, always invoke this generic one
 		// just in case there's a specific reason for it, or if someone's blindly porting their existing code.
-		NodeJs::invoke_hook("guild:generic-logged-bank-event", jarg("guild", guild), jarg("eventType", eventType), jarg("tabId", tabId), jarg("playerGuid", playerGuid), jarg("itemOrMoney", itemOrMoney), jarg("itemStackCount", itemStackCount), jarg("destTabId", destTabId));
+		NodeJs::invoke_hook("guild:generic-logged-bank-event", jarg("guild", guild), jarg("eventType", eventType), jarg("tabId", tabId), jarg("playerGuid", fullPlayerGuid), jarg("itemOrMoney", itemOrMoney), jarg("itemStackCount", itemStackCount), jarg("destTabId", destTabId));
 	}
 	[[nodiscard]] bool CanGuildSendBankList(Guild const * guild, WorldSession * session, uint8_t const tabId, bool const sendAllSlots) override {
 		// TODO: not sure what could cause GetPlayer() to return null for a session that's still working

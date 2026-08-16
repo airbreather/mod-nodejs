@@ -9,6 +9,8 @@ declare global {
 			readonly directionType: SpellTargetDirectionTypes;
 			readonly calcDirectionAngle: number;
 			readonly target: Targets;
+
+			getExplicitTargetMask(srcSet: boolean, dstSet: boolean): ExplicitTargetMask;
 		}
 	}
 }

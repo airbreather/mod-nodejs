@@ -197,7 +197,7 @@ declare global {
 		};
 		['player:remove-from-battleground']: {
 			readonly player: Acore.Player;
-			bg: Acore.Battleground;
+			readonly bg: Acore.Battleground;
 		};
 		['player:achievement-complete']: {
 			readonly player: Acore.Player;
@@ -354,7 +354,7 @@ declare global {
 		['player:after-store-or-equip-new-item']: {
 			readonly player: Acore.Player;
 			readonly vendorSlot: number;
-			item: number;
+			readonly item: Acore.Item;
 			readonly count: number;
 			readonly bag: number;
 			readonly slot: number;
@@ -398,7 +398,7 @@ declare global {
 		};
 		['player:can-join-in-battleground-queue']: {
 			readonly player: Acore.Player;
-			readonly battlemasterGuid: ObjectGuidNative;
+			readonly battlemasterGuid: ObjectGuidNative | undefined;
 			readonly bgTypeId: BattlegroundTypeId;
 			readonly joinAsGroup: boolean;
 			err: GroupJoinBattlegroundResult;
@@ -434,6 +434,7 @@ declare global {
 			readonly player: Acore.Player;
 			readonly battlemasterGuid: ObjectGuidNative;
 			readonly arenaSlot: number;
+			readonly bgTypeId: number; // BattlegroundTypeId enum in native, but clearly it's not one of those.
 			readonly joinAsGroup: boolean;
 			readonly isRated: boolean;
 			err: GroupJoinBattlegroundResult;
@@ -507,7 +508,7 @@ declare global {
 			readonly player: Acore.Player;
 			readonly playerClass: Classes;
 			readonly context: ClassContext;
-			__return: boolean;
+			__return: boolean | undefined;
 		};
 		['player:get-max-skill-value']: {
 			readonly player: Acore.Player;
@@ -761,7 +762,7 @@ declare global {
 			readonly player: Acore.Player;
 			readonly roles: LfgRoles;
 			// dungeons: ReadonlySet<number>;
-			comment: string;
+			readonly comment: string;
 			__return: boolean;
 		};
 		['player:can-enter-map']: {
@@ -795,7 +796,7 @@ declare global {
 		};
 		['player:resurrect']: {
 			readonly player: Acore.Player;
-			restorePercent: number;
+			readonly restorePercent: number;
 			applySickness: boolean;
 		};
 		['player:before-choose-graveyard']: {
@@ -806,39 +807,39 @@ declare global {
 		};
 		['player:can-use-chat']: {
 			readonly player: Acore.Player;
-			type: ChatMsg;
-			lang: Language;
+			readonly type: ChatMsg;
+			readonly lang: Language;
 			msg: string;
 			__return: boolean;
 		};
 		['player:can-use-chat:player']: {
 			readonly player: Acore.Player;
-			type: ChatMsg;
-			lang: Language;
+			readonly type: ChatMsg;
+			readonly lang: Language;
 			msg: string;
 			readonly receiver: Acore.Player;
 			__return: boolean;
 		};
 		['player:can-use-chat:group']: {
 			readonly player: Acore.Player;
-			type: ChatMsg;
-			lang: Language;
+			readonly type: ChatMsg;
+			readonly lang: Language;
 			msg: string;
 			readonly group: Acore.Group;
 			__return: boolean;
 		};
 		['player:can-use-chat:guild']: {
 			readonly player: Acore.Player;
-			type: ChatMsg;
-			lang: Language;
+			readonly type: ChatMsg;
+			readonly lang: Language;
 			msg: string;
 			readonly guild: Acore.Guild;
 			__return: boolean;
 		};
 		['player:can-use-chat:channel']: {
 			readonly player: Acore.Player;
-			type: ChatMsg;
-			lang: Language;
+			readonly type: ChatMsg;
+			readonly lang: Language;
 			msg: string;
 			// readonly channel: Acore.Channel;
 			__return: boolean;

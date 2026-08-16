@@ -17,7 +17,7 @@ declare global {
 		};
 		['pet:can-unlearn-spell-default']: {
 			readonly pet: Acore.Pet;
-			readonly spell: Acore.SpellInfo;
+			readonly spellInfo: Acore.SpellInfo;
 			__return: boolean;
 		};
 		['pet:can-reset-talents']: {

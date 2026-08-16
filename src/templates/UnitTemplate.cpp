@@ -186,7 +186,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Unit *>() {
 	reg_prop_ro(ft, "attackers", [](Unit * u) {
 		return jarr(u->getAttackers());
 	});
-	reg_prop_ro(ft, "unorderedThreadList", [](Unit * u) {
+	reg_prop_ro(ft, "unorderedThreatList", [](Unit * u) {
 		return jarr(u->GetThreatMgr().GetThreatenedByMeList() | std::ranges::views::values);
 	});
 	reg_prop_ro(ft, "hasIncreaseMountedFlightSpeedAura", [](Unit * u) {
@@ -423,6 +423,9 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Unit *>() {
 	reg_method(ft, "mount", [](Unit * u, uint32_t const mount_id, std::optional<uint32_t> vehicle_id, std::optional<uint32_t> creature_entry) {
 		u->Mount(mount_id, vehicle_id.value_or(0), creature_entry.value_or(0));
 	});
+	reg_method(ft, "stopSpellCast", [](Unit * u, std::optional<uint32_t> except_spell_id, std::optional<bool> with_instant) {
+		u->CastStop(except_spell_id.value_or(0), with_instant.value_or(true));
+	});
 	reg_method(ft, "interruptNonMeleeSpells", [](Unit * u, bool with_delayed, std::optional<uint32> spell_id, std::optional<bool> with_instant, std::optional<bool> by_self) {
 		u->InterruptNonMeleeSpells(
 			with_delayed,
@@ -520,10 +523,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Unit *>() {
 		u->AddAura(spellId, target);
 	});
 	reg_method(ft, "removeAura", [](Unit * u, uint32_t spell_id, std::optional<ObjectGuid> caster, std::optional<uint8_t> required_effect_mask, std::optional<AuraRemoveMode> remove_mode) {
-		return u->RemoveAura(spell_id, caster.value_or(ObjectGuid::Empty), required_effect_mask.value_or(0), remove_mode.value_or(AURA_REMOVE_BY_DEFAULT));
-	});
-	reg_method(ft, "removeAura", [](Unit * u, uint32_t const spellId) {
-		u->RemoveAura(spellId);
+		u->RemoveAura(spell_id, caster.value_or(ObjectGuid::Empty), required_effect_mask.value_or(0), remove_mode.value_or(AURA_REMOVE_BY_DEFAULT));
 	});
 	reg_method(ft, "kill", [](Unit * u, Unit * target, std::optional<bool> const durability_loss, std::optional<WeaponAttackType> const attack_type, std::optional<SpellInfo const *> const spell_proto, std::optional<Spell const *> const spell) {
 		Unit::Kill(
@@ -538,7 +538,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Unit *>() {
 	reg_method(ft, "clearInCombat", [](Unit * u) {
 		u->ClearInCombat();
 	});
-	reg_method(ft, "applySpellImmune", [](Unit * u, SpellImmunity spell_id, uint32_t op, uint32_t type, bool apply, std::optional<SpellImmuneBlockType> blockType) {
+	reg_method(ft, "applySpellImmune", [](Unit * u, uint32_t spell_id, SpellImmunity op, uint32_t type, bool apply, std::optional<SpellImmuneBlockType> blockType) {
 		u->ApplySpellImmune(spell_id, op, type, apply, blockType.value_or(SPELL_BLOCK_TYPE_ALL));
 	});
 	reg_method(ft, "setMaxPower", [](Unit * u, uint32_t const amt, std::optional<Powers> const type) {

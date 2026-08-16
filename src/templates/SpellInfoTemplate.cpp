@@ -108,7 +108,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<SpellInfo const *>() {
 	reg_prop_ro(ft, "castTimeEntry", [](SpellInfo const * si) {
 		return si->CastTimeEntry;
 	});
-	reg_prop_ro(ft, "recoveryTime", [](SpellInfo const * si) {
+	reg_prop_ro(ft, "recoveryTimeRaw", [](SpellInfo const * si) {
 		return DurationWrapper::from_milliseconds(si->RecoveryTime);
 	});
 	reg_prop_ro(ft, "categoryRecoveryTime", [](SpellInfo const * si) {

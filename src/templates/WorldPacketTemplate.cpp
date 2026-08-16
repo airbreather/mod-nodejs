@@ -22,10 +22,6 @@ v8::Local<v8::FunctionTemplate> jcreate_template<WorldPacket *>() {
 	ft->SetClassName(jstr_intern("WorldPacket"));
 	ft.safe_inherit<ByteBuffer *>();
 
-	reg_prop_ro(ft, "opcode", [](WorldPacket * pkt) {
-		return pkt->GetOpcode();
-	});
-
 	reg_prop(ft, "opcode",
 		[](WorldPacket * pkt) { return pkt->GetOpcode(); },
 		[](WorldPacket * pkt, uint16_t const val) { pkt->SetOpcode(val); }

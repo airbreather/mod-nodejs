@@ -79,7 +79,8 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 
 	reg_static_method(ft, "allInWorld", [] {
 		std::shared_lock lock(*HashMapHolder<Player>::GetLock());
-		return jmap(ObjectAccessor::GetPlayers());
+		auto & player_map = ObjectAccessor::GetPlayers();
+		return jarr(player_map | std::ranges::views::values);
 	});
 
 	reg_prop_ro(ft, "race", [](Player * player) {
@@ -496,7 +497,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 	reg_method(ft, "getReputationWith", [](Player * player, uint32_t const faction) {
 		return player->GetReputation(faction);
 	});
-	reg_method(ft, "getReputationRank", [](Player * player, uint32_t const faction) {
+	reg_method(ft, "getReputationRankWith", [](Player * player, uint32_t const faction) {
 		return player->GetReputationRank(faction);
 	});
 	reg_method(ft, "getQuestStatus", [](Player * player, uint32_t const questId) {
@@ -1079,7 +1080,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 	reg_method(ft, "sendShowBank", [](Player * player, ObjectGuid banker) {
 		player->GetSession()->SendShowBank(banker);
 	});
-	reg_method(ft, "sendAuctionMenu", [](Player * player, Unit * auctioneer) {
+	reg_method(ft, "sendAuctionMenu", [](Player * player, Creature * auctioneer) {
 		if (auto const ahEntry = AuctionHouseMgr::GetAuctionHouseEntryFromFactionTemplate(auctioneer->GetFaction())) {
 			WorldPacket data(MSG_AUCTION_HELLO, 12);
 			data << auctioneer->GetGUID();

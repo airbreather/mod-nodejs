@@ -51,6 +51,8 @@ declare global {
 			readonly comboPoints: number;
 			readonly attackers: Unit[];
 			readonly unorderedThreatList: ThreatReference[];
+			readonly hasIncreaseMountedFlightSpeedAura: boolean;
+			readonly hasFlyAura: boolean;
 			// FactionTemplates in the C++ template has a bunch, but there's also things like
 			// KarazhanChessGameFactions, which are different numbers from what you'd expect, and
 			// magic number 2082 which seems to show up only in a Zul'Drak encounter with Drakuru.
@@ -107,13 +109,13 @@ declare global {
 			dismount(): void;
 			performEmote(emote: Emote): void;
 			mount(mountDisplayId: number, vehicleId?: number, creatureEntry?: number): void;
-			stopSpellCast(spellId?: number): void;
+			stopSpellCast(exceptSpellId?: number, withInstant?: boolean): void;
 			// set withDelayed to true to interrupt delayed spells too<br>
 			// delayed+channeled spells are always interrupted
 			interruptNonMeleeSpells(withDelayed: boolean, spellId?: number, withInstant?: boolean, bySelf?: boolean): void;
 			removeAllAuras(): void;
 			removeArenaAuras(): void;
-			setFacingToObject(target: WorldObject, timed?: number): void;
+			setFacingToObject(target: WorldObject, timed?: Temporal.Duration): void;
 			setInCombatWith(target: Unit, addSecondUnitSuppressed?: boolean): void;
 			clearThreatList(): void;
 			addUnitState(state: UnitState): void;
@@ -132,6 +134,9 @@ declare global {
 			moveFleeing(enemy: Unit, time?: number): void;
 			moveJump(x: number, y: number, z: number, velXY: number, velZ: number, id?: number, target?: Unit): void;
 			moveConfused(): void;
+			moveTargetedHome(walk?: boolean): void;
+			moveIdle(): void;
+			moveRandom(wanderDistance?: number): void;
 			clearComboPoints(): void;
 			addComboPoints(count: number): void;
 			addAura(spellId: number, target: Unit): void;
@@ -147,8 +152,8 @@ declare global {
 			setSpeedRate(type: UnitMoveType, speed: number): void;
 			attack(target: Unit, meleeAttack: boolean): boolean;
 			attackStop(): boolean;
-			getFlatModifierValue(stat: UnitMods, type: UnitModifierFlatType): void;
-			getPctModifierValue(stat: UnitMods, type: UnitModifierPctType): void;
+			getFlatModifierValue(stat: UnitMods, type: UnitModifierFlatType): number;
+			getPctModifierValue(stat: UnitMods, type: UnitModifierPctType): number;
 			setStatFlatModifier(stat: UnitMods, type: UnitModifierFlatType, value: number): void;
 			setStatPctModifier(stat: UnitMods, type: UnitModifierPctType, value: number): void;
 			handleStatFlatModifier(stat: UnitMods, type: UnitModifierFlatType, value: number, apply: boolean): boolean;

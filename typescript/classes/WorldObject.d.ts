@@ -26,7 +26,7 @@ declare global {
 			isInRangeTo(target: WorldObject, max: number, min?: number, only2d?: boolean): boolean;
 			isInFrontOf(target: WorldObject): boolean;
 			isInBackOf(target: WorldObject): boolean;
-			getRelativePoint(range: number, deg: number): number;
+			getRelativePoint(dist: number, rad: number): { x: number; y: number; z: number; };
 			getNearObject(range: number): WorldObject | undefined;
 			getPlayersInRange(range: number): Player[];
 			getCreaturesInRange(range: number, entry?: number): Creature[];

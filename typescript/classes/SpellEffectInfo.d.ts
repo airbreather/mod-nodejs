@@ -17,7 +17,7 @@ declare global {
 			readonly mechanic: Mechanics;
 			readonly targetA: SpellImplicitTargetInfo;
 			readonly targetB: SpellImplicitTargetInfo;
-			readonly radiusEntry: SpellRadiusEntry;
+			readonly radiusEntry: SpellRadiusEntry | undefined;
 			readonly chainTarget: number;
 			readonly itemType: number; // item id
 			readonly triggerSpell: number; // spell id
@@ -34,7 +34,7 @@ declare global {
 			readonly providedTargetMask: SpellCastTargetFlags;
 			readonly implicitTargetType: SpellEffectImplicitTargetTypes;
 			readonly usedTargetObjectType: SpellTargetObjectTypes;
-			readonly immunityInfo: ImmunityInfo;
+			readonly immunityInfo: ImmunityInfo | undefined;
 
 			hasEffectOf(effect: SpellEffects): boolean;
 			appliesAura(aura: AuraType): boolean;
@@ -42,7 +42,7 @@ declare global {
 			calcBaseValue(value: number): number;
 			calcValueMultiplier(caster: Unit, spell?: Spell): number;
 			calcDamageMultiplier(caster: Unit, spell?: Spell): number;
-			calcRadius(caster: Unit, spell?: Spell): number;
+			calcRadius(caster?: Unit, spell?: Spell): number;
 			getMissingTargetMask(srcSet?: boolean, destSet?: boolean, mask?: SpellCastTargetFlags): SpellCastTargetFlags;
 		}
 	}

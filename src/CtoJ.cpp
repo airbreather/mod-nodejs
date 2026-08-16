@@ -209,7 +209,7 @@ template<>
 
 template<>
 [[nodiscard]] v8::Local<v8::Value> jval<flag96>(flag96 const data) {
-	uint64_t const words[] = { uint64_t{data[1]} << 32 & data[0], data[2] };
+	uint64_t const words[] = { uint64_t{data[1]} << 32 | data[0], data[2] };
 	return v8::BigInt::NewFromWords(
 		v8::Isolate::GetCurrent()->GetCurrentContext(),
 		0,

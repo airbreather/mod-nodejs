@@ -36,7 +36,7 @@ declare global {
 		['unit:deal-damage']: {
 			readonly attacker: Acore.Unit;
 			readonly victim: Acore.Unit;
-			readonly damage: number;
+			readonly amount: number;
 			readonly damageType: DamageEffectType;
 			__return: number;
 		};

@@ -118,10 +118,10 @@ v8::Local<v8::FunctionTemplate> jcreate_template<SpellEffectInfo const *>() {
 		return eff->GetImmunityInfo();
 	});
 
-	reg_method(ft, "isEffect", [](SpellEffectInfo const * eff, SpellEffects const effect_name) {
+	reg_method(ft, "hasEffectOf", [](SpellEffectInfo const * eff, SpellEffects const effect_name) {
 		return eff->IsEffect(effect_name);
 	});
-	reg_method(ft, "isAura", [](SpellEffectInfo const * eff, AuraType const aura) {
+	reg_method(ft, "appliesAura", [](SpellEffectInfo const * eff, AuraType const aura) {
 		return eff->IsAura(aura);
 	});
 	reg_method(ft, "calcValue", [](SpellEffectInfo const * eff, std::optional<Unit *> const caster, std::optional<int32_t> const base_points, std::optional<Unit *> const target) {

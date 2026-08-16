@@ -1,6 +1,6 @@
 declare global {
 	interface Hooks {
-		['world-object:install']: { readonly obj: Acore.WorldObject; };
+		['world-object:destroy']: { readonly obj: Acore.WorldObject; };
 		['world-object:create']: { readonly obj: Acore.WorldObject; };
 		['world-object:set-map']: {
 			readonly obj: Acore.WorldObject;

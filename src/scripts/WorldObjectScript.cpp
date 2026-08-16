@@ -12,7 +12,7 @@ public:
 	}
 
 	void OnWorldObjectDestroy(WorldObject * object) override {
-		NodeJs::invoke_hook("world-object:install", jarg("obj", object));
+		NodeJs::invoke_hook("world-object:destroy", jarg("obj", object));
 	}
 	void OnWorldObjectCreate(WorldObject * object) override {
 		NodeJs::invoke_hook("world-object:create", jarg("obj", object));

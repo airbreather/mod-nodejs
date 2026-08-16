@@ -1,7 +1,7 @@
 declare global {
 	namespace Acore {
 		class Vehicle {
-			readonly entry: number;
+			readonly vehicleInfo: VehicleEntry;
 			readonly availableSeatCount: number;
 			readonly owner: Unit;
 

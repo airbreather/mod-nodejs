@@ -174,7 +174,7 @@ declare global {
 			hasKnownTaxiNode(nodeId: number): boolean;
 			isAtGroupRewardDistanceFor(target: Unit): boolean;
 			isAtLootRewardDistanceFor(target: Unit): boolean;
-			canEquipNewItem(itemId: number, slot: number, swap: boolean): boolean;
+			canEquipItemByEntry(itemId: number, slot: number, swap: boolean): boolean;
 			isDailyQuestDone(quest: Quest): boolean;
 			canSeeStartQuest(quest: Quest): boolean;
 			canInteractWithQuestGiver(target: WorldObject): boolean;
@@ -209,7 +209,7 @@ declare global {
 
 			sendSystemMessage(msg: string): void;
 			learnSpell(spellId: number, temporary?: boolean, learnFromSkill?: boolean): void;
-			removeSpell(spellId: number, temporary?: boolean, learnFromSkill?: boolean): void;
+			removeSpell(spellId: number, removeSpecMask?: number, onlyTemporary?: boolean): void;
 			modifyMoney(amount: number): boolean;
 			teleport(mapId: number, x: number, y: number, z: number, o: number, options?: TeleportToOptions, target?: Unit, newInstance?: boolean): boolean;
 			resurrect(restorePct?: number, applySickness?: boolean): void;
@@ -221,7 +221,7 @@ declare global {
 			resetTalents(noResetCost?: boolean): void;
 			talkedToCreature(entry: number, guid: ObjectGuid): void;
 			killedMonsterCredit(entry: number, guid?: ObjectGuid): void;
-			addQuest(quest: Quest, questGiver?: Object): void;
+			addQuest(quest: Quest, questGiver?: ACObject): void;
 			removeQuest(questId: number): void;
 			completeQuest(questId: number): void;
 			failQuest(questId: number): void;
@@ -243,7 +243,7 @@ declare global {
 			advanceSkill(skill: SkillType, step: number): boolean;
 			summonPet(entry: number, x: number, y: number, z: number, o: number, petType?: PetType, duration?: Temporal.Duration, healthPct?: number): Pet | undefined;
 			createPet(entry: number, spellId?: number): Pet | undefined;
-			returnPet(entry: number, mode?: PetSaveMode, returnReagent?: boolean): void;
+			removePet(mode?: PetSaveMode, returnReagent?: boolean): void;
 			unsummonPetTemporarilyIfAny(): void;
 			resummonPetIfTemporarilyUnsummoned(): void;
 			inviteToGroup(target: Player): boolean;
@@ -287,7 +287,7 @@ declare global {
 			learnPetTalent(talentId: number, talentRank: number): void;
 			resetPetTalents(): void;
 			setGlyph(glyphId: number, slot: number): void;
-			completedAchievement(achievement: AchievementEntry): void;
+			completedAchievement(achievementId: number): void;
 			resetAchievements(): void;
 			bindToInstance(): void;
 			kickPlayer(): void;
@@ -327,12 +327,13 @@ declare global {
 			getPlayerSettingValue(source: string, index: number): number;
 			// this actually consumes it from the rest bonus pool
 			getXPRestBonus(xp: number): number;
-			setBindPoint(x: number, y: number, z: number, mapId: number, areaId: number): number;
+			setBindPoint(x: number, y: number, z: number, mapId: number, areaId: number): void;
 			setFactionForRace(race: Races): void;
 			setKnownTaxiNodes(nodes: readonly number[]): void;
 			// setReputation(faction: FactionEntry, value: number): void;
 			setRestState(triggerId: number): void;
 			updatePlayerSetting(source: string, index: number, value: number): void;
+			durabilityLoss(item: Item, amount: number): void;
 			durabilityPointLossForEquipSlot(slot: EquipmentSlots): void;
 			durabilityPointsLoss(item: Item, points: number): void;
 			sendQuestTemplate(questGiver: ObjectGuid, quest: Quest, activateAccept?: boolean): void;

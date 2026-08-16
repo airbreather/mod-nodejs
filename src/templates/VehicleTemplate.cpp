@@ -15,7 +15,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Vehicle *>() {
 
 	ft->SetClassName(jstr_intern("Vehicle"));
 
-	reg_prop_ro(ft, "entry", [](Vehicle * v) {
+	reg_prop_ro(ft, "vehicleInfo", [](Vehicle * v) {
 		return v->GetVehicleInfo();
 	});
 	reg_prop_ro(ft, "availableSeatCount", [](Vehicle * v) {

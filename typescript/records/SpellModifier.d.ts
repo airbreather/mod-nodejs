@@ -5,7 +5,7 @@ declare global {
 		value: number;
 		mask: bigint;
 		spellId: number;
-		ownerAura: Acore.Aura;
+		ownerAura: Acore.Aura | undefined;
 	}
 }
 export {};

@@ -184,4 +184,5 @@ export type * from './UnitMods.d.ts';
 export type * from './UnitMoveType.d.ts';
 export type * from './UnitStandStateType.d.ts';
 export type * from './UnitState.d.ts';
+export type * from './VehicleFlags.d.ts';
 export type * from './WeaponAttackType.d.ts';

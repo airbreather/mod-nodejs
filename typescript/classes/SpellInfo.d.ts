@@ -8,7 +8,7 @@ type SpellFamilyFlagsMask = bigint;
 declare global {
 	namespace Acore {
 		class SpellInfo {
-			static bySpellId(id: number): SpellInfo;
+			static bySpellId(id: number): SpellInfo | undefined;
 
 			readonly spellId: number;
 			readonly categoryEntry: SpellCategoryEntry | undefined;

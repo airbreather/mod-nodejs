@@ -110,12 +110,13 @@ v8::Local<v8::FunctionTemplate> jcreate_template<WorldObject *>() {
 	reg_method(ft, "isInBackOf", [](WorldObject * wo, WorldObject * target) {
 		return wo->isInBack(target);
 	});
-	reg_method(ft, "getRelativePoint", [](WorldObject * wo, float const range, float const deg) {
-		float const rad = M_PI * deg / 180.0f;
+	reg_method(ft, "getRelativePoint", [](WorldObject * wo, float dist, float rad) {
+		float x, y, z;
+		wo->GetClosePoint(x, y, z, 0.0f, dist, rad);
 		return jobj(
-			jprop("x", wo->GetPositionX() + range * cosf(rad)),
-			jprop("y", wo->GetPositionY() + range * sinf(rad)),
-			jprop("z", wo->GetPositionZ())
+			jprop("x", x),
+			jprop("y", y),
+			jprop("z", z)
 		);
 	});
 	reg_method(ft, "getNearObject", [](WorldObject * wo, float const range) {
