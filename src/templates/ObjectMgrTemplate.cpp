@@ -21,9 +21,11 @@ v8::Local<v8::FunctionTemplate> jcreate_template<ObjectMgr *>() {
 	});
 	reg_static_method(ft, "setNpcVendorItemList", [](uint32_t vendor, VendorItemData * data, std::optional<bool> persist) {
 		// mod-nodejs invention
-		std::vector old_items(ObjectMgr::instance()->GetNpcVendorItemList(vendor)->m_items);
-		for (auto item : old_items) {
-			ObjectMgr::instance()->RemoveVendorItem(vendor, item->item, persist.value_or(true));
+		if (auto old_data = ObjectMgr::instance()->GetNpcVendorItemList(vendor)) {
+			std::vector old_items(old_data->m_items);
+			for (auto item : old_items) {
+				ObjectMgr::instance()->RemoveVendorItem(vendor, item->item, persist.value_or(true));
+			}
 		}
 		for (auto item : data->m_items) {
 			ObjectMgr::instance()->AddVendorItem(vendor, item->item, item->maxcount, item->incrtime, item->ExtendedCost, persist.value_or(true));
