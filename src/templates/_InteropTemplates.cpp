@@ -34,6 +34,7 @@ class MailSender;
 class Map;
 class Minion;
 class Object;
+class ObjectMgr;
 class Pet;
 class Player;
 class Quest;
@@ -58,6 +59,8 @@ struct CreatureTemplate;
 struct ItemTemplate;
 struct Loot;
 struct SpellChainNode;
+struct VendorItem;
+struct VendorItemData;
 
 using ChatCommandBuilderBuilderBox = std::shared_ptr<ChatCommandBuilderBuilder>;
 using QueryResult = std::shared_ptr<ResultSet>;
@@ -106,6 +109,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<NodeJs *>() {
 	REGISTER_CLASS_PROP(MailDraft)
 	REGISTER_CLASS_PROP(MailSender)
 	REGISTER_CLASS_PROP_SPLIT_NAMES(Map, ACMap)
+	REGISTER_CLASS_PROP(ObjectMgr)
 	REGISTER_CLASS_PROP(QueryResult)
 	REGISTER_CLASS_PROP_RO(Quest)
 	REGISTER_CLASS_PROP(Roll)
@@ -116,6 +120,8 @@ v8::Local<v8::FunctionTemplate> jcreate_template<NodeJs *>() {
 	REGISTER_CLASS_PROP(Spell)
 	REGISTER_CLASS_PROP(ThreatReference)
 	REGISTER_CLASS_PROP(Vehicle)
+	REGISTER_CLASS_PROP(VendorItem)
+	REGISTER_CLASS_PROP(VendorItemData)
 
 	REGISTER_CLASS_PROP(Item) // ACObject
 	REGISTER_CLASS_PROP(WorldObject) // ACObject

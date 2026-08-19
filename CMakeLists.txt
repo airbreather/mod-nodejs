@@ -119,6 +119,7 @@ list(APPEND ${PRIVATE_SOURCES} (
         src/templates/MailSenderTemplate.cpp
         src/templates/MapTemplate.cpp
         src/templates/MinionTemplate.cpp
+        src/templates/ObjectMgrTemplate.cpp
         src/templates/PetTemplate.cpp
         src/templates/PlayerTemplate.cpp
         src/templates/QueryResultFieldTemplate.cpp
@@ -135,6 +136,8 @@ list(APPEND ${PRIVATE_SOURCES} (
         src/templates/TransportTemplate.cpp
         src/templates/UnitTemplate.cpp
         src/templates/VehicleTemplate.cpp
+        src/templates/VendorItemDataTemplate.cpp
+        src/templates/VendorItemTemplate.cpp
         src/templates/WorldObjectTemplate.cpp
         src/templates/WorldPacketTemplate.cpp
 
