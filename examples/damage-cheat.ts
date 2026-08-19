@@ -13,7 +13,7 @@ export function installDamageCheat() {
 			return;
 		}
 		const player = (attacker.isPlayer ? attacker : attacker.owner) as Acore.Player;
-		if (!player.isBot) {
+		if (!player.isBot && !(Acore.guidsEqual(attacker.guid, args.victim.guid))) {
 			args.amount *= 10;
 		}
 	});
