@@ -21,7 +21,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Channel *>() {
 
 	ft->SetClassName(jstr_intern("Channel"));
 
-	reg_static_method(ft, "byName", [](std::string name, TeamId team_id) {
+	reg_static_method(ft, "byName", [](TeamId team_id, std::string name) {
 		return ChannelMgr::forTeam(team_id)->GetChannel(name, nullptr, false);
 	});
 
