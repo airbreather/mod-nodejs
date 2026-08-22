@@ -15,6 +15,10 @@ fi
 REBUILD_BRANCH="for-mod-nodejs-sprinkles"
 REBUILD_TMP_BRANCH="${REBUILD_BRANCH}-rebuild"
 MERGE_BRANCHES=("for-mod-nodejs-on-merge-base" "Grimfeather/master" "fix-socket-file-connections")
+MERGE_BRANCHES_JOINED="$(node -e "
+const parts = new Intl.ListFormat('en', { type: 'conjunction', style: 'long' }).formatToParts(process.argv.slice(1));
+process.stdout.write(parts.map(p => p.type === 'literal' ? p.value : \"'\" + p.value + \"'\").join(''));
+" ${MERGE_BRANCHES[@]})"
 
 if git -C $ACORE_BASE_DIR show-branch $REBUILD_TMP_BRANCH 2>/dev/null; then
 	echo rebuild temporary branch already exists >&2
@@ -40,12 +44,13 @@ for target in ${MERGE_BRANCHES[@]}; do
 		git -C $ACORE_BASE_DIR commit -m "Merge branch '$target' into $REBUILD_TMP_BRANCH"
 	fi
 done
-SYNTH_COMMIT="$(git -C $ACORE_BASE_DIR commit-tree $REBUILD_TMP_BRANCH^{tree} \
+MERGED_TREE="$(git -C $ACORE_BASE_DIR rev-parse $REBUILD_TMP_BRANCH^{tree})"
+SYNTH_COMMIT="$(git -C $ACORE_BASE_DIR commit-tree $MERGED_TREE \
 	-p mod-playerbots/Playerbot \
-	-p for-mod-nodejs-on-merge-base \
-	-p Grimfeather/master \
-	-p fix-socket-file-connections \
-	-m "Merge branches 'for-mod-nodejs-on-merge-base', 'Grimfeather/master', and 'fix-socket-file-connections'")"
+	-p ${MERGE_BRANCHES[1]} \
+	-p ${MERGE_BRANCHES[2]} \
+	-p ${MERGE_BRANCHES[3]} \
+	-m "Merge branches ${MERGE_BRANCHES_JOINED}")"
 
 git -C $ACORE_BASE_DIR checkout $REBUILD_BRANCH
 git -C $ACORE_BASE_DIR reset --hard $SYNTH_COMMIT
