@@ -23,6 +23,9 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Object *>() {
 	reg_prop_ro(ft, "guid", [](Object * obj) {
 		return obj->GetGUID();
 	});
+	reg_prop_ro(ft, "guidCounter", [](Object * obj) {
+		return obj->GetGUID().GetCounter();
+	});
 	reg_prop_ro(ft, "isPlayer", [](Object * obj) {
 		return obj->GetTypeId() == TYPEID_PLAYER;
 	});

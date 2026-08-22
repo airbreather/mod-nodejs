@@ -4,6 +4,7 @@ declare global {
 			readonly typeID: TypeId;
 			readonly entry: number;
 			readonly guid: ObjectGuidNative;
+			readonly guidCounter: number;
 			readonly isPlayer: boolean;
 			readonly isInWorld: boolean;
 			scale: number;

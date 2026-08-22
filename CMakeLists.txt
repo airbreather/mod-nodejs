@@ -31,7 +31,6 @@ install(
 )
 
 list(APPEND ${PRIVATE_SOURCES} (
-        src/records/AchievementEntryRecord.cpp
         src/records/BattlegroundScoreRecord.cpp
         src/records/CharTitlesEntryRecord.cpp
         src/records/ChaseAngleRecord.cpp
@@ -86,6 +85,7 @@ list(APPEND ${PRIVATE_SOURCES} (
 
         src/templates/_GlobalFunctions.cpp
         src/templates/_InteropTemplates.cpp
+        src/templates/AchievementEntryTemplate.cpp
         src/templates/ACObjectTemplate.cpp
         src/templates/AuctionHouseTemplate.cpp
         src/templates/AuctionTemplate.cpp
