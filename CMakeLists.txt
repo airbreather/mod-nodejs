@@ -95,6 +95,7 @@ list(APPEND ${PRIVATE_SOURCES} (
         src/templates/BattlegroundTemplate.cpp
         src/templates/ByteBufferTemplate.cpp
         src/templates/CastSpellBuilderTemplate.cpp
+        src/templates/ChannelTemplate.cpp
         src/templates/ChatCommandBuilderBuilderBoxTemplate.cpp
         src/templates/ChatHandlerTemplate.cpp
         src/templates/ConfigTemplate.cpp

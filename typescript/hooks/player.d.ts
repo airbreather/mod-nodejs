@@ -841,7 +841,7 @@ declare global {
 			readonly type: ChatMsg;
 			readonly lang: Language;
 			msg: string;
-			// readonly channel: Acore.Channel;
+			readonly channel: Acore.Channel;
 			__return: boolean;
 		};
 		['player:learn-talents']: {

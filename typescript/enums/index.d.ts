@@ -15,6 +15,7 @@ export type * from './BAG_FAMILY_MASK.d.ts';
 export type * from './BattlegroundDesertionType.d.ts';
 export type * from './BattlegroundQueueGroupTypes.d.ts';
 export type * from './BattlegroundTypeId.d.ts';
+export type * from './ChannelFlags.d.ts';
 export type * from './CharterTypes.d.ts';
 export type * from './ChatMsg.d.ts';
 export type * from './ClassContext.d.ts';

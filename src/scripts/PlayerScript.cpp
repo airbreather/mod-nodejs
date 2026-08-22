@@ -537,7 +537,7 @@ public:
 	}
 	[[nodiscard]] bool OnPlayerCanUseChat(Player * player, uint32_t const type, uint32_t const language, std::string & msg, Channel * channel) override {
 		return NodeJs::invoke_hook_t("player:can-use-chat:channel", PlayerScript::OnPlayerCanUseChat(player, type, language, msg, channel)
-			, jarg("player", player), jarg("type", type), jarg("lang", language), jarg_inout("msg", msg)/*, jarg("channel", channel)*/);
+			, jarg("player", player), jarg("type", type), jarg("lang", language), jarg_inout("msg", msg), jarg("channel", channel));
 	}
 	void OnPlayerLearnTalents(Player * player, uint32_t const talentId, uint32_t const talentRank, uint32_t const spellid) override {
 		NodeJs::invoke_hook("player:learn-talents", jarg("player", player), jarg("talentId", talentId), jarg("talentRank", talentRank), jarg("spellId", spellid));

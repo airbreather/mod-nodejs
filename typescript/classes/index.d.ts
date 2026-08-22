@@ -9,6 +9,7 @@ export type * from './BattlegroundQueue.d.ts';
 export type * from './Battleground.d.ts';
 export type * from './ByteBuffer.d.ts';
 export type * from './CastSpellBuilder.d.ts';
+export type * from './Channel.d.ts';
 export type * from './ChatCommandBuilder.d.ts';
 export type * from './ChatHandler.d.ts';
 export type * from './Condition.d.ts';
