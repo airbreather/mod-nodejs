@@ -4,6 +4,7 @@ declare global {
 			static byGuid(guid: ObjectGuid): Player | undefined;
 			static byName(name: string): Player | undefined;
 			static allInWorld(): Player[];
+			static xpForLevel(level: number): number;
 
 			readonly race: Races;
 			readonly raceMask: number;
@@ -215,7 +216,7 @@ declare global {
 			resurrect(restorePct?: number, applySickness?: boolean): void;
 			equipItem(itemId: number, slot: number): Item | undefined;
 			mute(duration: Temporal.Duration): void;
-			giveXP(amount: number, target: Unit, groupRate?: number, isLfgReward?: boolean): void;
+			giveXP(amount: number, target?: Unit, groupRate?: number, isLfgReward?: boolean): void;
 			toggleDND(): void;
 			toggleAFK(): void;
 			resetTalents(noResetCost?: boolean): void;
@@ -344,6 +345,9 @@ declare global {
 			textEmote(text: string): void;
 			removeBonusTalent(count: number): void;
 			storeNewItemInBestSlots(itemId: number, itemCount: number): boolean;
+			sendDirectMessage(packet: WorldPacket): void;
+			// returns how much was left on the table because the player's rest bonus is at max.
+			addRestXP(bonus: number): number;
 		}
 	}
 }

@@ -72,15 +72,16 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 	reg_static_method(ft, "byGuid", [](ObjectGuid const guid) {
 		return ObjectAccessor::FindConnectedPlayer(guid);
 	});
-
 	reg_static_method(ft, "byName", [](std::string const name) {
 		return ObjectAccessor::FindPlayerByName(name);
 	});
-
 	reg_static_method(ft, "allInWorld", [] {
 		std::shared_lock lock(*HashMapHolder<Player>::GetLock());
 		auto & player_map = ObjectAccessor::GetPlayers();
 		return jarr(player_map | std::ranges::views::values);
+	});
+	reg_static_method(ft, "xpForLevel", [](uint8_t level) {
+		return sObjectMgr->GetXPForLevel(level);
 	});
 
 	reg_prop_ro(ft, "race", [](Player * player) {
@@ -879,8 +880,8 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 	reg_method(ft, "mute", [](Player * player, DurationWrapper time) {
 		player->GetSession()->m_muteTime = GameTime::GetGameTime().count() + time.count<Seconds>();
 	});
-	reg_method(ft, "giveXP", [](Player * player, uint32_t const amount, Unit * target, std::optional<float> const group_rate, std::optional<bool> const is_lfg_reward) {
-		player->GiveXP(amount, target, group_rate.value_or(1), is_lfg_reward.value_or(false));
+	reg_method(ft, "giveXP", [](Player * player, uint32_t const amount, std::optional<Unit *> target, std::optional<float> const group_rate, std::optional<bool> const is_lfg_reward) {
+		player->GiveXP(amount, target.value_or(nullptr), group_rate.value_or(1), is_lfg_reward.value_or(false));
 	});
 	reg_method(ft, "toggleDND", [](Player * player) {
 		player->ToggleDND();
@@ -1406,6 +1407,14 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 	});
 	reg_method(ft, "storeNewItemInBestSlots", [](Player * player, uint32_t item_id, uint32_t item_count) {
 		return player->StoreNewItemInBestSlots(item_id, item_count);
+	});
+	reg_method(ft, "sendDirectMessage", [](Player * player, WorldPacket * packet) {
+		player->SendDirectMessage(packet);
+	});
+	reg_method(ft, "addRestXP", [](Player * player, float xp) {
+		auto new_bonus = player->GetRestBonus() + xp;
+		player->SetRestBonus(new_bonus);
+		return new_bonus - player->GetRestBonus();
 	});
 
 	return ft;
