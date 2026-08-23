@@ -33,6 +33,7 @@ template<> std::optional<v8::Local<v8::Value>> cval<v8::Local<v8::Value>>(v8::Lo
 	template<> v8::Local<v8::Value> jval<v8::Local<v8::v8_typ>>(v8::Local<v8::v8_typ> const v) { return v; } \
 	template<> std::optional<v8::Local<v8::v8_typ>> cval<v8::Local<v8::v8_typ>>(v8::Local<v8::Value> v) { return v->Is##v8_typ() ? std::optional(v.As<v8::v8_typ>()) : std::nullopt; }
 
+JVAL_CVAL_PASSTHROUGH(Array)
 JVAL_CVAL_PASSTHROUGH(BigInt)
 JVAL_CVAL_PASSTHROUGH(External)
 JVAL_CVAL_PASSTHROUGH(Map)

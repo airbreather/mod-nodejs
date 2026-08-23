@@ -61,7 +61,9 @@ v8::Local<v8::FunctionTemplate> jcreate_template<TrainerSpellList *>() {
 		l->erase(l->begin() + i);
 	});
 	reg_method(ft, "toArray", [](TrainerSpellList * l) {
-		return jarr(*l);
+		return jarr(*l | std::ranges::views::transform([](TrainerSpell & spell) {
+			return &spell;
+		}));
 	});
 
 	return ft;

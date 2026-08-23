@@ -67,6 +67,11 @@ struct VendorItemData;
 using ChatCommandBuilderBuilderBox = std::shared_ptr<ChatCommandBuilderBuilder>;
 using QueryResult = std::shared_ptr<ResultSet>;
 
+namespace WorldPackets::NPC {
+	struct TrainerListSpell;
+	class TrainerList;
+}
+
 void add_global_functions(TypedTemplate<NodeJs *> ft);
 
 template <>
@@ -123,6 +128,9 @@ v8::Local<v8::FunctionTemplate> jcreate_template<NodeJs *>() {
 	REGISTER_CLASS_PROP_RO(SpellInfo)
 	REGISTER_CLASS_PROP(Spell)
 	REGISTER_CLASS_PROP(ThreatReference)
+	REGISTER_CLASS_PROP_SPLIT_NAMES(WorldPackets::NPC::TrainerList, TrainerSpellListMessage)
+	REGISTER_CLASS_PROP_SPLIT_NAMES(std::vector<WorldPackets::NPC::TrainerListSpell>, TrainerSpellList)
+	REGISTER_CLASS_PROP_SPLIT_NAMES(WorldPackets::NPC::TrainerListSpell, TrainerSpell)
 	REGISTER_CLASS_PROP(Vehicle)
 	REGISTER_CLASS_PROP(VendorItem)
 	REGISTER_CLASS_PROP(VendorItemData)
