@@ -627,6 +627,26 @@ public:
 	void OnPlayerBeforeGetLevelForXPGain(Player const * player, uint8_t & level) override {
 		NodeJs::invoke_hook("player:before-get-level-for-xp-gain", jarg("player", player), jarg_inout("level", level));
 	}
+	// BEGIN: new for my Archipelago
+	bool OnBeforePlayerLearnSpell(Player* player, uint32 spell_id) override {
+		return NodeJs::invoke_hook_t("player:before-learn-spell", PlayerScript::OnBeforePlayerLearnSpell(player, spell_id)
+			, jarg("player", player), jarg("spellId", spell_id));
+	}
+	void OnBeforePlayerSendSpellListToTrainer(Player * player, Creature * creature, WorldPackets::NPC::TrainerList & trainer_list) override {
+		NodeJs::invoke_hook("player:before-send-spell-list-to-trainer", jarg("player", player), jarg("creature", creature), jarg("trainerList", &trainer_list));
+	}
+	bool OnBeforeCanTakeQuest(Player * player, Quest const * quest) override {
+		return NodeJs::invoke_hook_t("player:before-can-take-quest", PlayerScript::OnBeforeCanTakeQuest(player, quest)
+			, jarg("player", player), jarg("quest", quest));
+	}
+	bool OnBeforeCanRewardQuest(Player * player, Quest const * quest) override {
+		return NodeJs::invoke_hook_t("player:before-can-reward-quest", PlayerScript::OnBeforeCanRewardQuest(player, quest)
+			, jarg("player", player), jarg("quest", quest));
+	}
+	void OnBeforeCheckQuestMenuItem(Player * player, WorldObject * quest_giver, uint32_t & quest_id) override {
+		NodeJs::invoke_hook("player:before-check-quest-menu-item", jarg("player", player), jarg("questGiver", quest_giver), jarg_inout("questId", quest_id));
+	}
+	// END: new for my Archipelago
 };
 
 void AddSC_Player() {

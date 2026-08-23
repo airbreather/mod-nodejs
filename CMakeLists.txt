@@ -134,6 +134,9 @@ list(APPEND ${PRIVATE_SOURCES} (
         src/templates/SpellTemplate.cpp
         src/templates/TempSummonTemplate.cpp
         src/templates/ThreatReferenceTemplate.cpp
+        src/templates/TrainerSpellListMessageTemplate.cpp
+        src/templates/TrainerSpellListTemplate.cpp
+        src/templates/TrainerSpellTemplate.cpp
         src/templates/TransportTemplate.cpp
         src/templates/UnitTemplate.cpp
         src/templates/VehicleTemplate.cpp

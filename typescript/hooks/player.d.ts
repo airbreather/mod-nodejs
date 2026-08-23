@@ -962,6 +962,33 @@ declare global {
 			readonly player: Acore.Player;
 			level: number;
 		};
+		// BEGIN: new for my Archipelago
+		['player:before-learn-spell']: {
+			readonly player: Acore.Player;
+			readonly spellId: number;
+			__return: boolean;
+		};
+		['player:before-send-spell-list-to-trainer']: {
+			readonly player: Acore.Player;
+			readonly creature: Acore.Creature;
+			readonly trainerList: Acore.TrainerSpellListMessage;
+		};
+		['player:before-can-take-quest']: {
+			readonly player: Acore.Player;
+			readonly quest: Acore.Quest;
+			__return: boolean;
+		};
+		['player:before-can-reward-quest']: {
+			readonly player: Acore.Player;
+			readonly quest: Acore.Quest;
+			__return: boolean;
+		};
+		['player:before-check-quest-menu-item']: {
+			readonly player: Acore.Player;
+			readonly questGiver: Acore.Creature | Acore.GameObject;
+			questId: number;
+		};
+		// END: new for my Archipelago
 	}
 }
 export {};

@@ -175,6 +175,8 @@ export type * from './TeamId.d.ts';
 export type * from './TeleportToOptions.d.ts';
 export type * from './TempSummonType.d.ts';
 export type * from './TextEmote.d.ts';
+export type * from './TrainerSpellState.d.ts';
+export type * from './TrainerType.d.ts';
 export type * from './TriggerCastFlags.d.ts';
 export type * from './TypeId.d.ts';
 export type * from './UnitDynFlags.d.ts';

@@ -93,4 +93,28 @@ P carg(v8::FunctionCallbackInfo<v8::Value> const & info, bool & failed) {
 	return {};
 }
 
+template <typename T>
+std::optional<std::vector<T>> cval_arr(v8::Local<v8::Value> v) {
+	if (!v->IsArray()) {
+		return {};
+	}
+	auto v_array = v.As<v8::Array>();
+	std::vector<T> vec;
+	vec.reserve(v_array->Length());
+	auto isolate = v8::Isolate::GetCurrent();
+	auto ctx = isolate->GetCurrentContext();
+	v_array->Iterate(ctx, [](uint32_t index, v8::Local<v8::Value> element, void * data) {
+		std::vector<T> & nodes_vec_recovered = *static_cast<std::vector<T> *>(data);
+		if (index < nodes_vec_recovered.size()) {
+			if (auto const n = cval<T>(element)) {
+				nodes_vec_recovered.at(index) = *n;
+				return v8::Array::CallbackResult::kContinue;
+			}
+			return v8::Array::CallbackResult::kException;
+		}
+		return v8::Array::CallbackResult::kBreak;
+	}, &vec);
+	return vec;
+}
+
 #endif //MOD_NODEJS_JTOC_H

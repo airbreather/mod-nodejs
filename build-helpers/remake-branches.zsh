@@ -13,14 +13,14 @@ fi
 
 # "sprinkles" = includes changes from the two downstream forks that are required for other modules.
 # eventually, I feel like I'm well on my way to have yet another one of my own forks, but we'll see.
-SPRINKLES_SLUG="sprinkles"
+SPRINKLES_SLUG="my-archipelago-sprinkles"
 SPRINKLES_BASE_BRANCH="mod-playerbots/Playerbot"
-SPRINKLES_MERGE_BRANCHES=("for-mod-nodejs-on-merge-base" "Grimfeather/master" "fix-socket-file-connections")
+SPRINKLES_MERGE_BRANCHES=("for-mod-nodejs-on-merge-base" "for-my-archipelago" "Grimfeather/master" "fix-socket-file-connections")
 
 # it also needs to build on master, though, so don't leave that behind
-MASTER_SLUG="master"
+MASTER_SLUG="my-archipelago-master"
 MASTER_BASE_BRANCH="upstream/master"
-MASTER_MERGE_BRANCHES=("for-mod-nodejs-on-merge-base" "fix-socket-file-connections")
+MASTER_MERGE_BRANCHES=("for-mod-nodejs-on-merge-base" "for-my-archipelago" "fix-socket-file-connections")
 
 # short-circuit if either rebuild would clobber an existing temporary branch
 check-branch() {
