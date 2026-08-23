@@ -543,3 +543,7 @@ I expect there to be a time in the future when all APIs available to scripts are
 To rephrase: there should only be two reasons why you would intentionally want to NOT update to a newer version of mod-nodejs:
 1. You don't have time to fix scripts to accommodate breaking changes yet, OR
 2. The latest version has a regression bug that you can expect to be fixed soon.
+
+## Examples
+
+- `examples/basic-usage.js` — minimal starter script
