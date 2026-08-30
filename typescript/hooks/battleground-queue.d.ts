@@ -78,7 +78,7 @@ declare global {
 			__return: boolean;
 		};
 		['battleground-queue:get-player-matchmaking-rating']: {
-			readonly playerGuid: ObjectGuidNative;
+			readonly playerGuid: bigint;
 			readonly bgTypeId: BattlegroundTypeId;
 			outRating: number;
 			__return: boolean;

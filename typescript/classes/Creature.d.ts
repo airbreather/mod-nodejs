@@ -25,7 +25,7 @@ declare global {
 			readonly scriptName: string;
 			readonly aiName: string;
 			readonly scriptId: number;
-			readonly lootRecipientGuid: ObjectGuidNative | undefined;
+			readonly lootRecipientGuid: bigint | undefined;
 			readonly lootRecipient: Player | undefined;
 			readonly lootRecipientGroupId: number;
 			readonly lootRecipientGroup: Group | undefined;

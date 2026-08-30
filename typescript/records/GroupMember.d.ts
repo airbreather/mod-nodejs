@@ -1,6 +1,6 @@
 declare global {
 	interface GroupMember {
-		guid: ObjectGuidNative;
+		guid: bigint;
 		name: string;
 		roles: LfgRoles;
 		flags: GroupMemberFlags;

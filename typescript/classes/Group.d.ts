@@ -6,7 +6,7 @@ declare global {
 			readonly isBG: boolean;
 			readonly isFull: boolean;
 			readonly leaderName: string;
-			readonly guid: ObjectGuidNative;
+			readonly guid: bigint;
 			readonly memberCount: number;
 			readonly groupType: GroupType;
 			readonly members: GroupMember[];

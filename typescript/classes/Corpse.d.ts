@@ -3,7 +3,7 @@ declare global {
 		class Corpse extends WorldObject {
 			ghostTime: Temporal.Instant;
 			corpseType: CorpseType;
-			ownerGuid: ObjectGuidNative;
+			ownerGuid: bigint;
 			owner: Player | undefined;
 
 			resetGhostTime(): void;

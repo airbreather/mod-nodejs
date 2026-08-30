@@ -137,7 +137,7 @@ declare global {
 			readonly player: Acore.Player;
 			readonly textEmote: TextEmotes;
 			readonly emoteNum: number; // ?
-			readonly guid: ObjectGuidNative | undefined;
+			readonly guid: bigint | undefined;
 		};
 		['player:spell-cast']: {
 			readonly player: Acore.Player;
@@ -150,11 +150,11 @@ declare global {
 		['player:logout']: { readonly player: Acore.Player; };
 		['player:create']: { readonly player: Acore.Player; };
 		['player:delete']: {
-			readonly guid: ObjectGuidNative;
+			readonly guid: bigint;
 			readonly accountId: number;
 		};
 		['player:failed-delete']: {
-			readonly guid: ObjectGuidNative;
+			readonly guid: bigint;
 			readonly accountId: number;
 		};
 		['player:save']: { readonly player: Acore.Player; };
@@ -272,7 +272,7 @@ declare global {
 			readonly player: Acore.Player;
 			readonly item: Acore.Item;
 			readonly count: number;
-			readonly lootGuid: ObjectGuidNative | undefined;
+			readonly lootGuid: bigint | undefined;
 		};
 		['player:before-fill-quest-loot-item']: {
 			readonly player: Acore.Player;
@@ -325,14 +325,14 @@ declare global {
 		};
 		['player:before-durability-repair']: {
 			readonly player: Acore.Player;
-			readonly npcGuid: ObjectGuidNative;
-			readonly itemGuid: ObjectGuidNative;
+			readonly npcGuid: bigint;
+			readonly itemGuid: bigint;
 			discountMod: number;
 			readonly guildBank: boolean;
 		};
 		['player:before-buy-item-from-vendor']: {
 			readonly player: Acore.Player;
-			readonly vendorGuid: ObjectGuidNative;
+			readonly vendorGuid: bigint;
 			readonly vendorSlot: number;
 			item: number;
 			readonly count: number;
@@ -398,7 +398,7 @@ declare global {
 		};
 		['player:can-join-in-battleground-queue']: {
 			readonly player: Acore.Player;
-			readonly battlemasterGuid: ObjectGuidNative | undefined;
+			readonly battlemasterGuid: bigint | undefined;
 			readonly bgTypeId: BattlegroundTypeId;
 			readonly joinAsGroup: boolean;
 			err: GroupJoinBattlegroundResult;
@@ -432,7 +432,7 @@ declare global {
 		};
 		['player:can-join-in-arena-queue']: {
 			readonly player: Acore.Player;
-			readonly battlemasterGuid: ObjectGuidNative;
+			readonly battlemasterGuid: bigint;
 			readonly arenaSlot: number;
 			readonly bgTypeId: number; // BattlegroundTypeId enum in native, but clearly it's not one of those.
 			readonly joinAsGroup: boolean;
@@ -465,8 +465,8 @@ declare global {
 		};
 		['player:can-send-mail']: {
 			readonly player: Acore.Player;
-			readonly receiverGuid: ObjectGuidNative;
-			readonly mailbox: ObjectGuidNative;
+			readonly receiverGuid: bigint;
+			readonly mailbox: bigint;
 			subject: string;
 			body: string;
 			readonly money: number;
@@ -702,7 +702,7 @@ declare global {
 			readonly qInfo: Acore.Quest;
 			readonly entry: number;
 			readonly realEntry: number;
-			readonly guid: ObjectGuidNative | undefined;
+			readonly guid: bigint | undefined;
 			__return: boolean;
 		};
 		['player:check-item-in-slot-at-load-inventory']: {
@@ -941,7 +941,7 @@ declare global {
 		};
 		['player:send-list-inventory']: {
 			readonly player: Acore.Player;
-			readonly vendorGuid: ObjectGuidNative;
+			readonly vendorGuid: bigint;
 			vendorEntry: number;
 		};
 		['player:get-reputation-price-discount:by-creature']: {

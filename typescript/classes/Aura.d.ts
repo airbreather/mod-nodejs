@@ -2,8 +2,8 @@ declare global {
 	namespace Acore {
 		class Aura {
 			readonly caster: Unit;
-			readonly casterGuid: ObjectGuidNative;
-			readonly castItemGuid: ObjectGuidNative | undefined;
+			readonly casterGuid: bigint;
+			readonly castItemGuid: bigint | undefined;
 			readonly castItemEntry: number;
 			readonly owner: WorldObject;
 			readonly casterLevel: number;

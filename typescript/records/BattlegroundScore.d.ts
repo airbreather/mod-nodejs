@@ -1,6 +1,6 @@
 declare global {
 	interface BattlegroundScoreBase {
-		playerGuid: ObjectGuidNative;
+		playerGuid: bigint;
 		killingBlows: number;
 		damageDone: number;
 		healingDone: number;
