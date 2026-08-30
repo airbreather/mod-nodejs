@@ -348,6 +348,7 @@ declare global {
 			sendDirectMessage(packet: WorldPacket): void;
 			// returns how much was left on the table because the player's rest bonus is at max.
 			addRestXP(bonus: number): number;
+			sendQuestGiverStatusMultiple(): void;
 		}
 	}
 }

@@ -1416,6 +1416,9 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 		player->SetRestBonus(new_bonus);
 		return new_bonus - player->GetRestBonus();
 	});
+	reg_method(ft, "sendQuestGiverStatusMultiple", [](Player * player) {
+		player->SendQuestGiverStatusMultiple();
+	});
 
 	return ft;
 }

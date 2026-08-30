@@ -279,10 +279,7 @@ void NodeJs::tick() {
 	run_scoped([this] {
 		query_processor_.ProcessReadyCallbacks();
 		uv_run(setup_->event_loop(), UV_RUN_NOWAIT);
-		if (run_microtasks_this_tick_) {
-			setup_->isolate()->PerformMicrotaskCheckpoint();
-			run_microtasks_this_tick_ = false;
-		}
+		setup_->isolate()->PerformMicrotaskCheckpoint();
 		platform_->DrainTasks(setup_->isolate());
 	});
 }

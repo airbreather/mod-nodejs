@@ -18,8 +18,8 @@ declare global {
 		function getCurrTime(): Temporal.Instant;
 		function getTimeDiff(before: Temporal.Instant): Temporal.Duration;
 		function isGameEventActive(id: number): boolean;
-		function dbQuery(db: Db, q: string): QueryResult;
-		function dbQueryAsync(db: Db, q: string): Promise<QueryResult>;
+		function dbQuery(db: Db, q: string): MaybeQueryResult;
+		function dbQueryAsync(db: Db, q: string): Promise<MaybeQueryResult>;
 		function dbNonQuery(db: Db, q: string): void;
 		function inTransaction(db: Db, f: () => void): void;
 		function log(level: LogLevel, filter: string, msg: string): void;

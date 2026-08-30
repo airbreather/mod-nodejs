@@ -1,6 +1,7 @@
 declare global {
 	namespace Acore {
 		class QueryResult {
+			readonly isEmpty: boolean;
 			readonly rowCount: number;
 			readonly fieldCount: number;
 			readonly allFields: Field[];
@@ -10,5 +11,8 @@ declare global {
 			nextRow(): boolean;
 		}
 	}
+
+	type EmptyQueryResult = { isEmpty: true };
+	type MaybeQueryResult = EmptyQueryResult | (Acore.QueryResult & { isEmpty: false });
 }
 export {};

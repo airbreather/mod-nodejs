@@ -120,6 +120,7 @@ list(APPEND ${PRIVATE_SOURCES} (
         src/templates/MailSenderTemplate.cpp
         src/templates/MapTemplate.cpp
         src/templates/MinionTemplate.cpp
+        src/templates/MySQLConnectionInfoTemplate.cpp
         src/templates/ObjectMgrTemplate.cpp
         src/templates/PetTemplate.cpp
         src/templates/PlayerTemplate.cpp
