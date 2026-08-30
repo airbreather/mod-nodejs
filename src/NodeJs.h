@@ -36,7 +36,6 @@ class NodeJs {
 	v8::Global<v8::Object> acore_;
 	v8::Global<v8::Object> acore_hooks_;
 	v8::Global<v8::Function> acore_hooks_emit_;
-	bool run_microtasks_this_tick_ = false;
 
 	std::unordered_multimap<std::type_index, DerivedTemplateRTTIFunc> m_ac_derived_template_types;
 	std::unordered_map<std::type_index, v8::Global<v8::FunctionTemplate>> m_ac_templates;
@@ -110,8 +109,6 @@ public:
 				auto const resolver = resolver_ref->Get(setup_->isolate());
 				delete resolver_ref;
 				resolver->Resolve(setup_->context(), jval(result)).Check();
-				// TODO: figure out why DrainTasks isn't enough to make this respond in a timely fashion
-				run_microtasks_this_tick_ = true;
 			});
 		}));
 		return prom->GetPromise();

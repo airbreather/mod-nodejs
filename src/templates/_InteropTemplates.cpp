@@ -60,6 +60,7 @@ struct ConditionSourceInfo;
 struct CreatureTemplate;
 struct ItemTemplate;
 struct Loot;
+struct MySQLConnectionInfo;
 struct SpellChainNode;
 struct VendorItem;
 struct VendorItemData;
@@ -113,6 +114,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<NodeJs *>() {
 	REGISTER_CLASS_PROP(MailDraft)
 	REGISTER_CLASS_PROP(MailSender)
 	REGISTER_CLASS_PROP_SPLIT_NAMES(Map, ACMap)
+	REGISTER_CLASS_PROP_RO(MySQLConnectionInfo)
 	REGISTER_CLASS_PROP(ObjectMgr)
 	REGISTER_CLASS_PROP(QueryResult)
 	REGISTER_CLASS_PROP_RO(Quest)

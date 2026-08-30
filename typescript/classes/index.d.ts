@@ -34,6 +34,7 @@ export type * from './LootTemplate.d.ts';
 export type * from './MailDraft.d.ts';
 export type * from './MailSender.d.ts';
 export type * from './Minion.d.ts';
+export type * from './MySQLConnectionInfo.d.ts';
 export type * from './ObjectMgr.d.ts';
 export type * from './Pet.d.ts';
 export type * from './Player.d.ts';

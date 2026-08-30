@@ -21,6 +21,9 @@ v8::Local<v8::FunctionTemplate> jcreate_template<QueryResult *>() {
 
 	ft->SetClassName(jstr_intern("QueryResult"));
 
+	reg_prop_ro(ft, "isEmpty", [](QueryResult * r) {
+		return r->get() == nullptr;
+	});
 	reg_prop_ro(ft, "rowCount", [](QueryResult * r) {
 		return r->get()->GetRowCount();
 	});
