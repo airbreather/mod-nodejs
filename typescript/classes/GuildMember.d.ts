@@ -1,7 +1,7 @@
 declare global {
 	namespace Acore {
 		class GuildMember {
-			readonly playerGuid: ObjectGuidNative;
+			readonly playerGuid: bigint;
 			readonly playerName: string;
 			readonly clazz: Classes;
 			readonly level: number;

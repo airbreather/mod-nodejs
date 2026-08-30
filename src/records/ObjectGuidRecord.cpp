@@ -10,12 +10,8 @@
 
 template<>
 [[nodiscard]] v8::Local<v8::Value> jval<ObjectGuid const>(ObjectGuid const p) {
-	// because of how common it is that someone might need to store a GUID, we pack them into an
-	// opaque value stored as a pointer. this should roughly minimize the overhead of these values,
-	// both reading and writing, at the expense of JavaScript code not being able to work with them
-	// directly (so we provide helpers).
 	return p
-		? v8::External::New(v8::Isolate::GetCurrent(), reinterpret_cast<void *>(p.GetRawValue()), v8::kExternalPointerTypeTagDefault)
+		? v8::BigInt::NewFromUnsigned(v8::Isolate::GetCurrent(), p.GetRawValue())
 		: jnull();
 }
 
@@ -39,7 +35,7 @@ template<>
 		return ObjectGuid::Empty;
 	}
 
-	// by default, the fast-path will unpack from the same v8::External that we gave out, because
+	// by default, the fast-path will unpack from the same v8::BigInt that we gave out, because
 	// that's expected to be *by far* the most common way to get a GUID. however, there are still
 	// plenty of use cases for scripts to examine a GUID's individual parts themselves and to create
 	// them anew. for those cases, we let them decode the opaque token to a 3-element array. this
@@ -70,8 +66,8 @@ template<>
 
 template<>
 [[nodiscard]] std::optional<ObjectGuid> cval<ObjectGuid>(v8::Local<v8::Value> const v) {
-	if (v->IsExternal()) {
-		auto const raw = reinterpret_cast<uint64_t>(v.As<v8::External>()->Value(v8::kExternalPointerTypeTagDefault));
+	if (v->IsBigInt()) {
+		auto raw = v.As<v8::BigInt>()->Uint64Value();
 		return std::optional{ObjectGuid(raw)};
 	}
 	return cval_guid_slow(v);

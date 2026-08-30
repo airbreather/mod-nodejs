@@ -17,7 +17,7 @@ declare global {
 		};
 		['misc:can-send-auction-hello']: {
 			readonly player: Acore.Player;
-			readonly guid: ObjectGuidNative;
+			readonly guid: bigint;
 			readonly creature: Acore.Creature;
 			__return: boolean;
 		};

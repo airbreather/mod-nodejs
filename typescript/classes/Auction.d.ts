@@ -11,15 +11,15 @@ declare global {
 			readonly outBid: number;
 
 			houseId: AuctionHouseId;
-			itemGuid: ObjectGuidNative;
+			itemGuid: bigint;
 			itemTemplate: number;
 			itemCount: number;
-			ownerGuid: ObjectGuidNative;
+			ownerGuid: bigint;
 			startBid: number;
 			currentBid: number;
 			buyout: number;
 			expireTime: Temporal.Instant;
-			bidder: ObjectGuidNative | undefined;
+			bidder: bigint | undefined;
 			deposit: number;
 
 			static calculateAuctionOutBid(bid: number): number;

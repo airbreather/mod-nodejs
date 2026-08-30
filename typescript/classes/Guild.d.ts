@@ -6,7 +6,7 @@ declare global {
 			static byId(id: number): Guild | undefined;
 
 			readonly id: number;
-			readonly leaderGuid: ObjectGuidNative;
+			readonly leaderGuid: bigint;
 			readonly members: Map<number, GuildMember>;
 			readonly memberCount: number;
 			readonly totalBankMoney: number | bigint;

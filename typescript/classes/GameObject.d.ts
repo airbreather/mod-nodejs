@@ -8,7 +8,7 @@ declare global {
 			readonly displayId: number;
 			readonly lootState: LootState;
 			readonly spawnId: number;
-			// readonly lootRecipientGuid: ObjectGuidNative; // not in the core PR yet.
+			// readonly lootRecipientGuid: bigint; // not in the core PR yet.
 			readonly lootRecipient: Player | undefined;
 			// readonly lootRecipientGroupId: number; // not in the core PR yet.
 			readonly lootRecipientGroup: Group | undefined;

@@ -2,23 +2,23 @@ declare global {
 	interface Hooks {
 		['group:add-member']: {
 			readonly group: Acore.Group;
-			readonly guid: ObjectGuidNative;
+			readonly guid: bigint;
 		};
 		['group:invite-member']: {
 			readonly group: Acore.Group;
-			readonly guid: ObjectGuidNative;
+			readonly guid: bigint;
 		};
 		['group:remove-member']: {
 			readonly group: Acore.Group;
-			readonly guid: ObjectGuidNative;
+			readonly guid: bigint;
 			readonly method: RemoveMethod;
-			readonly kicker: ObjectGuidNative | undefined;
+			readonly kicker: bigint | undefined;
 			readonly reason: string;
 		};
 		['group:change-leader']: {
 			readonly group: Acore.Group;
-			readonly newLeaderGuid: ObjectGuidNative;
-			readonly oldLeaderGuid: ObjectGuidNative;
+			readonly newLeaderGuid: bigint;
+			readonly oldLeaderGuid: bigint;
 		};
 		['group:disband']: { readonly group: Acore.Group; };
 		['group:can-join-battleground-queue']: {

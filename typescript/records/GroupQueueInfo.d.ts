@@ -1,6 +1,6 @@
 declare global {
 	interface GroupQueueInfo {
-		players: ObjectGuidNative[];
+		players: bigint[];
 		teamId: TeamId;
 		realTeamID: TeamId; // TODO: consistent casing plz
 		bgTypeId: BattlegroundTypeId;

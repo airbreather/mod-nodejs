@@ -2,7 +2,7 @@ declare global {
 	namespace Acore {
 		class AuraEffect {
 			readonly caster: Unit | undefined;
-			readonly casterGuid: ObjectGuidNative;
+			readonly casterGuid: bigint;
 			readonly base: Aura;
 			readonly targetList: Unit[];
 			readonly applicationList: AuraApplication[];

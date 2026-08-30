@@ -12,8 +12,8 @@ declare global {
 			readFloat(): number;
 			readDouble(): number;
 			readString(): string;
-			readGuid(): ObjectGuidNative | undefined;
-			readPackedGuid(): ObjectGuidNative | undefined;
+			readGuid(): bigint | undefined;
+			readPackedGuid(): bigint | undefined;
 
 			writeByte(v: number): this;
 			writeUByte(v: number): this;

@@ -10,7 +10,7 @@ jobs:
       - name: vars
         id: variables
         run: |
-          echo "nodejs_tag=v26.7.0" >> "$GITHUB_OUTPUT"
+          echo "nodejs_tag=v26.8.1" >> "$GITHUB_OUTPUT"
 
       - name: fetch
         id: nodejs

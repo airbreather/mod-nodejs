@@ -3,7 +3,7 @@ declare global {
 		class ACObject {
 			readonly typeID: TypeId;
 			readonly entry: number;
-			readonly guid: ObjectGuidNative;
+			readonly guid: bigint;
 			readonly guidCounter: number;
 			readonly isPlayer: boolean;
 			readonly isInWorld: boolean;
