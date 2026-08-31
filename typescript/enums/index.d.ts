@@ -43,6 +43,7 @@ export type * from './Difficulty.d.ts';
 export type * from './DispelType.d.ts';
 export type * from './DuelCompleteType.d.ts';
 export type * from './Emote.d.ts';
+export type * from './EnchantmentSlot.d.ts';
 export type * from './EnvironmentalDamage.d.ts';
 export type * from './EquipmentSlots.d.ts';
 export type * from './EvadeReason.d.ts';

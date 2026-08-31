@@ -1,6 +1,6 @@
 {
 	"name": "@airbreather/mod-nodejs-types",
-	"version": "0.0.17",
+	"version": "0.0.18",
 	"description": "Type declarations (only) for the mod-nodejs AzerothCore module.",
 	"repository": {
 		"type": "git",
@@ -30,6 +30,9 @@
 		"./hooks",
 		"./records"
 	],
+	"dependencies": {
+		"@types/node": "^26.4.0"
+	},
 	"devDependencies": {
 		"eslint": "^10.8.0",
 		"eslint-plugin-package-json": "^1.6.2",
