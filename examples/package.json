@@ -1,0 +1,15 @@
+{
+	"description": "DON'T USE THIS! use https://github.com/airbreather/mod-nodejs-skeleton instead!",
+	"descriptionLine2": "this fake package is so your editor has type info while you browse around!",
+	"descriptionLine3": "it won't burn your computer to the ground or anything if you do,",
+	"descriptionLine4": "you'll just have a worse time of it than you could have had by",
+	"descriptionLine5": "starting with the project that's designed for you to start from.",
+	"name": "mod-nodejs-examples",
+	"private": true,
+	"type": "module",
+	"devDependencies": {
+		"@airbreather/mod-nodejs-types": "file:../typescript",
+		"@types/node": "^26.4.0",
+		"mysql2": "^3.24.2"
+	}
+}
