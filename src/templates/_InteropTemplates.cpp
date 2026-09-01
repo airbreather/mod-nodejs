@@ -55,9 +55,11 @@ class WorldPacket;
 struct AchievementEntry;
 struct AuctionEntry;
 struct CastSpellBuilder;
+struct CharTitlesEntry;
 struct Condition;
 struct ConditionSourceInfo;
 struct CreatureTemplate;
+struct GlyphPropertiesEntry;
 struct ItemTemplate;
 struct Loot;
 struct MySQLConnectionInfo;
@@ -95,6 +97,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<NodeJs *>() {
 	REGISTER_CLASS_PROP(BattlegroundQueue)
 	REGISTER_CLASS_PROP(ByteBuffer)
 	REGISTER_CLASS_PROP(CastSpellBuilder)
+	REGISTER_CLASS_PROP_RO(CharTitlesEntry)
 	REGISTER_CLASS_PROP(Channel)
 	REGISTER_CLASS_PROP_SPLIT_NAMES(ChatCommandBuilderBuilderBox, ChatCommandBuilder)
 	REGISTER_CLASS_PROP(ChatHandler)
@@ -103,6 +106,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<NodeJs *>() {
 	REGISTER_CLASS_PROP_SPLIT_NAMES(ConfigMgr const, Config)
 	REGISTER_CLASS_PROP_RO(CreatureTemplate)
 	REGISTER_CLASS_PROP(Field)
+	REGISTER_CLASS_PROP_RO(GlyphPropertiesEntry)
 	REGISTER_CLASS_PROP(GmTicket)
 	REGISTER_CLASS_PROP(Group)
 	REGISTER_CLASS_PROP(Guild)

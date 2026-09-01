@@ -1,12 +1,10 @@
 export type * from './BattlegroundScore.d.ts';
 export type * from './Box.d.ts';
-export type * from './CharTitlesEntry.d.ts';
 export type * from './ChaseAngle.d.ts';
 export type * from './ChaseRange.d.ts';
 export type * from './CreatureModel.d.ts';
 export type * from './CreatureMovementData.d.ts';
 export type * from './ExplicitTargetMask.d.ts';
-export type * from './GlyphPropertiesEntry.d.ts';
 export type * from './GroupMember.d.ts';
 export type * from './GroupQueueInfo.d.ts';
 export type * from './Homebind.d.ts';

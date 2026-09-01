@@ -32,14 +32,12 @@ install(
 
 list(APPEND ${PRIVATE_SOURCES} (
         src/records/BattlegroundScoreRecord.cpp
-        src/records/CharTitlesEntryRecord.cpp
         src/records/ChaseAngleRecord.cpp
         src/records/ChaseRangeRecord.cpp
         src/records/CreatureModelRecord.cpp
         src/records/CreatureMovementDataRecord.cpp
         src/records/FactionEntryRecord.cpp
         src/records/GemPropertiesEntryRecord.cpp
-        src/records/GlyphPropertiesEntryRecord.cpp
         src/records/GroupMemberRecord.cpp
         src/records/GroupQueueInfoRecord.cpp
         src/records/ImmunityInfoRecord.cpp
@@ -96,6 +94,7 @@ list(APPEND ${PRIVATE_SOURCES} (
         src/templates/ByteBufferTemplate.cpp
         src/templates/CastSpellBuilderTemplate.cpp
         src/templates/ChannelTemplate.cpp
+        src/templates/CharTitlesEntryTemplate.cpp
         src/templates/ChatCommandBuilderBuilderBoxTemplate.cpp
         src/templates/ChatHandlerTemplate.cpp
         src/templates/ConfigTemplate.cpp
@@ -106,6 +105,7 @@ list(APPEND ${PRIVATE_SOURCES} (
         src/templates/CreatureTemplateTemplate.cpp
         src/templates/DynamicObjectTemplate.cpp
         src/templates/GameObjectTemplate.cpp
+        src/templates/GlyphPropertiesEntryTemplate.cpp
         src/templates/GmTicketTemplate.cpp
         src/templates/GroupTemplate.cpp
         src/templates/GuardianTemplate.cpp
