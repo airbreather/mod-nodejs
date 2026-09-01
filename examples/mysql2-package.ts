@@ -46,7 +46,7 @@ export async function inTransaction<T>(db: Db, cb: (conn: mysql.PoolConnection) 
 	if (!pool) {
 		throw new Error('Db not present');
 	}
-	const conn = await pool.getConnection();
+	await using conn = await pool.getConnection();
 	await conn.beginTransaction();
 	try {
 		const ret = await cb(conn);
