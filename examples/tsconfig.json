@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"target": "ESNext",
+		"lib": ["ESNext"],
+		"module": "nodenext",
+		"types": [
+			"@airbreather/mod-nodejs-types",
+			"@types/node"
+		],
+		"strict": true,
+		"noEmit": true
+	}
+}

@@ -4,14 +4,14 @@ endif()
 
 if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB))
   if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    message(STATUS "Using Node.js v26.7.0 from this project's GitHub release")
+    message(STATUS "Using Node.js v26.8.1 from this project's GitHub release")
 
     include(FetchContent)
     FetchContent_Declare(
             nodejs_linux
 
-            URL                        https://github.com/airbreather/mod-nodejs/releases/download/libnode-linux-v26.7.0/nodejs-v26.7.0.tar.zst
-            URL_HASH                   SHA256=9ddb6a049a90a25983cd59a9efb26fde6dea717775764964182f8336d9309e8d
+            URL                        https://github.com/airbreather/mod-nodejs/releases/download/libnode-linux-v26.8.1/nodejs-v26.8.1.tar.zst
+            URL_HASH                   SHA256=7fac51e9d04916f7599f48bbb83c28785ad1095519f363c05256f32ca202c780
             DOWNLOAD_EXTRACT_TIMESTAMP true
     )
 

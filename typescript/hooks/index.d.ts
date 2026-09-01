@@ -3,6 +3,7 @@ export type * from './auction.d.ts';
 export type * from './battleground.d.ts';
 export type * from './battleground-queue.d.ts';
 export type * from './creature.d.ts';
+export type * from './game-object.d.ts';
 export type * from './group.d.ts';
 export type * from './guild.d.ts';
 export type * from './item.d.ts';

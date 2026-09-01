@@ -1,7 +1,3 @@
-/// <reference path="../typescript/index.d.ts" />
-// ^ you probably ought to remove that line when copying to your own project. the intended way to
-// get the types into your context is to install the @airbreather/mod-nodejs-types package. this is
-// just so you can get type checking while browsing these example files in the source.
 const isNormalPlayer = (obj: Acore.ACObject): obj is (Acore.Player & { isBot: false }) => {
 	return obj.isPlayer && !(obj as Acore.Player).isBot;
 };
@@ -25,7 +21,7 @@ export interface MountCustomizations {
 
 export function installMountCheat(options: MountCustomizations) {
 	Acore.hooks.on('unit:aura-apply', checkForCustomizedMount(options));
-	Acore.registerCommand(new Acore.ChatCommandBuilder('grant-custom-mounts')
+	Acore.registerCommand(new Acore.ChatCommandBuilder('mounts')
 		.withSecurityLevel(AccountTypes.SEC_GAMEMASTER)
 		.withAllowConsole(false)
 		.withHandler((h) => {
@@ -51,7 +47,15 @@ function checkForCustomizedMount(options: MountCustomizations): ((args: Hooks['u
 			default:
 				return;
 		}
+		// some of what we're about to do would get overwritten by the rest of what core does, so
+		// save it for the end of this tick.
+		const playerGuid = unit.guid;
 		Acore.hooks.once('world:update-early', () => {
+			const player = Acore.Player.byGuid(playerGuid);
+			if (!player) {
+				// somehow, within the same tick, the player logged out. how unlucky!
+				return;
+			}
 			switch (spellId) {
 				case flyingMountId:
 					// ordinarily, dismounting would set you back to normal speeds. for ground mounts
@@ -59,13 +63,14 @@ function checkForCustomizedMount(options: MountCustomizations): ((args: Hooks['u
 					// majority of expected cases where someone uses this to fly elsewhere, those flags
 					// stay at whatever they otherwise would have been, and the "can fly?" flags don't
 					// change at all in either direction. so we need a bit more babysitting.
-					const oldFlightSpeed = unit.getSpeed(UnitMoveType.MOVE_FLIGHT);
-					unit.setSpeed(UnitMoveType.MOVE_FLIGHT, flyingMountSpeedup, true);
-					unit.canFly = true;
-					const playerGuid = unit.guid;
+					const oldFlightSpeed = player.getSpeed(UnitMoveType.MOVE_FLIGHT);
+					player.setSpeed(UnitMoveType.MOVE_FLIGHT, flyingMountSpeedup, true);
+					player.canFly = true;
+					// since we just set canFly out-of-band when they mounted, we'll also need to clear
+					// the flag when they dismount.
 					const clearSpeedFunc = (args: Hooks['unit:aura-remove']) => {
-						const unit = args.unit;
-						if (!(isNormalPlayer(unit) && Acore.guidsEqual(unit.guid, playerGuid))) {
+						const { unit } = args;
+						if (unit.guid != playerGuid) {
 							return;
 						}
 						const { aurApp } = args;
@@ -76,9 +81,9 @@ function checkForCustomizedMount(options: MountCustomizations): ((args: Hooks['u
 						}
 					};
 					Acore.hooks.on('unit:aura-remove', clearSpeedFunc);
-				// noinspection FallThroughInSwitchStatementJS
+				// noinspection FallThroughInSwitchStatementJS -- flying mounts are ground mounts too
 				case groundMountId:
-					unit.setSpeed(UnitMoveType.MOVE_RUN, groundMountSpeedup, true);
+					player.setSpeed(UnitMoveType.MOVE_RUN, groundMountSpeedup, true);
 					// no need for an explicit clear here
 					break;
 			}

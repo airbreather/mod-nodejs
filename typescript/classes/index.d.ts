@@ -1,3 +1,4 @@
+export type * from './AchievementEntry.d.ts';
 export type * from './ACMap.d.ts';
 export type * from './ACObject.d.ts';
 export type * from './Auction.d.ts';
@@ -5,8 +6,8 @@ export type * from './AuctionHouse.d.ts';
 export type * from './Aura.d.ts';
 export type * from './AuraApplication.d.ts';
 export type * from './AuraEffect.d.ts';
-export type * from './BattlegroundQueue.d.ts';
 export type * from './Battleground.d.ts';
+export type * from './BattlegroundQueue.d.ts';
 export type * from './ByteBuffer.d.ts';
 export type * from './CastSpellBuilder.d.ts';
 export type * from './Channel.d.ts';
