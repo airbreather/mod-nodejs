@@ -1,0 +1,8 @@
+fix: Better / more / more useful example scripts
+
+- examples/basic-usage.js
+- README.md
+
+Fixes #9
+
+Signed-off-by: Vedant Madane <6527493+VedantMadane@users.noreply.github.com>
