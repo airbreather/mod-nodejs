@@ -2,6 +2,7 @@ declare global {
 	namespace Acore {
 		class Quest {
 			static byId(id: number): Quest | undefined;
+			static getAll(): Quest[];
 
 			readonly questId: number;
 			readonly questType: QuestTypes;

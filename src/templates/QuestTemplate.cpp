@@ -17,6 +17,12 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Quest const *>() {
 	reg_static_method(ft, "byId", [](uint32_t const id) {
 		return sObjectMgr->GetQuestTemplate(id);
 	});
+	reg_static_method(ft, "getAll", [] {
+		return jarr(sObjectMgr->GetQuestTemplates()
+			| std::ranges::views::values
+			| std::ranges::views::transform ([](Quest const * q) { return q; })
+		);
+	});
 
 	reg_prop_ro(ft, "questId", [](Quest const * q) {
 		return q->GetQuestId();
