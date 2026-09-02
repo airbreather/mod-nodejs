@@ -22,9 +22,7 @@ public:
 		NodeJs::invoke_hook("player:released-ghost", jarg("player", player));
 	}
 	void OnPlayerSendInitialPacketsBeforeAddToMap(Player * player, WorldPacket & data) override {
-		// TODO: undefined symbol: v8::Local<v8::Value> jval<WorldPacket>(WorldPacket)
-		// TODO: undefined symbol: std::optional<WorldPacket> cval<WorldPacket>(v8::Local<v8::Value>)
-		NodeJs::invoke_hook("player:send-initial-packets-before-add-to-map", jarg("player", player)/*, jarg_inout("data", data)*/);
+		NodeJs::invoke_hook("player:send-initial-packets-before-add-to-map", jarg("player", player), jarg("data", &data));
 	}
 	void OnPlayerBattlegroundDesertion(Player * player, BattlegroundDesertionType const desertionType) override {
 		NodeJs::invoke_hook("player:battleground-desertion", jarg("player", player), jarg("desertionType", desertionType));
@@ -182,11 +180,34 @@ public:
 			, jarg("player", player)/*, jarg("criteria", criteria)*/);
 	}
 	void OnPlayerAchievementSave(CharacterDatabaseTransaction trans, Player * player, uint16_t const achId, CompletedAchievementData achiData) override {
-		// TODO: should "trans" become the current transaction thingy? hmm...
-		NodeJs::invoke_hook("player:achievement-save"/*, jarg("trans", trans)*/, jarg("player", player), jarg("achId", achId)/*, jarg("achiData", achiData)*/);
+		if (!NodeJs::hook_has_listeners("player:achievement-save")) {
+			return;
+		}
+		auto & transaction_ref = current_transaction<Db::Character>();
+		auto prev_trans = transaction_ref;
+		transaction_ref = trans;
+		try {
+			NodeJs::invoke_hook("player:achievement-save", jarg("player", player), jarg("achId", achId)/*, jarg("achiData", achiData)*/);
+		} catch (std::logic_error const &) {
+			transaction_ref = prev_trans;
+			throw;
+		}
+		transaction_ref = prev_trans;
 	}
 	void OnPlayerCriteriaSave(CharacterDatabaseTransaction trans, Player * player, uint16_t const achId, CriteriaProgress criteriaData) override {
-		NodeJs::invoke_hook("player:criteria-save"/*, jarg("trans", trans)*/, jarg("player", player), jarg("achId", achId)/*, jarg("criteriaData", criteriaData)*/);
+		if (!NodeJs::hook_has_listeners("player:criteria-save")) {
+			return;
+		}
+		auto & transaction_ref = current_transaction<Db::Character>();
+		auto prev_trans = transaction_ref;
+		transaction_ref = trans;
+		try {
+			NodeJs::invoke_hook("player:criteria-save", jarg("player", player), jarg("achId", achId)/*, jarg("criteriaData", criteriaData)*/);
+		} catch (std::logic_error const &) {
+			transaction_ref = prev_trans;
+			throw;
+		}
+		transaction_ref = prev_trans;
 	}
 	void OnPlayerGossipSelect(Player * player, uint32_t const menu_id, uint32_t const sender, uint32_t const action) override {
 		NodeJs::invoke_hook("player:gossip-select", jarg("player", player), jarg("menuId", menu_id), jarg("sender", sender), jarg("action", action));
@@ -348,7 +369,19 @@ public:
 			, jarg("player", player), jarg("level", level));
 	}
 	void OnPlayerDeleteFromDB(CharacterDatabaseTransaction trans, uint32_t const guid) override {
-		NodeJs::invoke_hook("player:delete-from-db"/*, jarg("trans", trans)*/, jarg("guid", guid));
+		if (!NodeJs::hook_has_listeners("player:delete-from-db")) {
+			return;
+		}
+		auto & transaction_ref = current_transaction<Db::Character>();
+		auto prev_trans = transaction_ref;
+		transaction_ref = trans;
+		try {
+			NodeJs::invoke_hook("player:delete-from-db", jarg("guid", guid));
+		} catch (std::logic_error const &) {
+			transaction_ref = prev_trans;
+			throw;
+		}
+		transaction_ref = prev_trans;
 	}
 	[[nodiscard]] bool OnPlayerCanRepopAtGraveyard(Player * player) override {
 		return NodeJs::invoke_hook_t("player:can-repop-at-graveyard", PlayerScript::OnPlayerCanRepopAtGraveyard(player)

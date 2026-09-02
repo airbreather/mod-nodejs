@@ -8,7 +8,7 @@ declare global {
 		['player:released-ghost']: { readonly player: Acore.Player; };
 		['player:send-initial-packets-before-add-to-map']: {
 			readonly player: Acore.Player;
-			// data: Acore.WorldPacket;
+			readonly data: Acore.WorldPacket;
 		};
 		['player:battleground-desertion']: {
 			readonly player: Acore.Player;
@@ -217,8 +217,16 @@ declare global {
 			// readonly criteria: Acore.AchievementCriteriaEntry;
 			__return: boolean;
 		};
-		// ['player:achievement-save']: unknown; // thinking about the transaction arg right now...
-		// ['player:criteria-save']: unknown; // thinking about the transaction arg right now...
+		['player:achievement-save']: {
+			readonly player: Acore.Player;
+			readonly achId: number;
+			// readonly achiData: Acore.CompletedAchievementData;
+		};
+		['player:criteria-save']: {
+			readonly player: Acore.Player;
+			readonly achId: number;
+			// readonly criteriaData: Acore.CriteriaProgress;
+		};
 		['player:gossip-select']: {
 			readonly player: Acore.Player;
 			readonly menuId: number;
@@ -499,7 +507,9 @@ declare global {
 			readonly level: number;
 			__return: boolean;
 		};
-		// ['player:delete-from-db']: unknown; // thinking about the transaction arg right now...
+		['player:delete-from-db']: {
+			readonly guid: bigint;
+		};
 		['player:can-repop-at-graveyard']: {
 			readonly player: Acore.Player;
 			__return: boolean;
