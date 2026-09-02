@@ -9,10 +9,6 @@ declare global {
 		const hooks: EventEmitter<HooksConforming>;
 
 		function gc(): void;
-		//function getFactionEntry(entry: number): FactionEntry | undefined;
-		function getItemTemplate(entry: number): ItemTemplate | undefined;
-		//function getVehicleEntry(entry: number): VehicleEntry | undefined;
-		function getCharTitlesEntry(entry: number): CharTitlesEntry | undefined;
 		function guidsEqual(a: ObjectGuid | undefined, b: ObjectGuid | undefined): boolean;
 		function decodeGuid(g: ObjectGuid | undefined): ObjectGuidDecoded;
 		function getCurrTime(): Temporal.Instant;

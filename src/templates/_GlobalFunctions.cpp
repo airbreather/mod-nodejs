@@ -16,18 +16,6 @@ void add_global_functions(TypedTemplate<NodeJs *> const ft) {
 	reg_method(ft, "gc", [](NodeJs *) {
 		NodeJs::instance()->run_garbage_collection_once();
 	});
-	reg_method(ft, "getFactionEntry", [](NodeJs *, uint32_t const entry) {
-		return sFactionStore.LookupEntry(entry);
-	});
-	reg_method(ft, "getItemTemplate", [](NodeJs *, uint32_t const entry) {
-		return sObjectMgr->GetItemTemplate(entry);
-	});
-	reg_method(ft, "getVehicleEntry", [](NodeJs *, uint32_t const entry) {
-		return sVehicleStore.LookupEntry(entry);
-	});
-	reg_method(ft, "getCharTitlesEntry", [](NodeJs *, uint32_t const entry) {
-		return sCharTitlesStore.LookupEntry(entry);
-	});
 	reg_method(ft, "guidsEqual", [](NodeJs *, ObjectGuid const g1, ObjectGuid const g2) {
 		return g1 == g2;
 	});

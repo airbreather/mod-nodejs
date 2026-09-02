@@ -1,11 +1,8 @@
-#include <optional>
-#include <v8-local-handle.h>
-#include <v8-template.h>
-
 #include "CtoJ.h"
 #include "DurationWrapper.h"
 #include "ItemTemplate.h"
 #include "NodePropertySystem.h"
+#include "ObjectMgr.h"
 
 JVAL_CVAL_TMPLS_RO(ItemTemplate const)
 
@@ -14,6 +11,10 @@ v8::Local<v8::FunctionTemplate> jcreate_template<ItemTemplate const *>() {
 	TypedTemplate<ItemTemplate const *> const ft = jctor();
 
 	ft->SetClassName(jstr_intern("ItemTemplate"));
+
+	reg_static_method(ft, "byId", [](uint32_t id) {
+		return sObjectMgr->GetItemTemplate(id);
+	});
 
 	reg_prop_ro(ft, "itemId", [](ItemTemplate const * it) {
 		return it->ItemId;
@@ -99,8 +100,65 @@ v8::Local<v8::FunctionTemplate> jcreate_template<ItemTemplate const *>() {
 	reg_prop_ro(ft, "statsCount", [](ItemTemplate const * it) {
 		return it->StatsCount;
 	});
-	reg_prop_ro(ft, "itemStat", [](ItemTemplate const * it) {
-		return jarr(it->ItemStat);
+	reg_prop_ro(ft, "itemStat0Type", [](ItemTemplate const * it) {
+		return it->ItemStat[0].ItemStatType;
+	});
+	reg_prop_ro(ft, "itemStat0Value", [](ItemTemplate const * it) {
+		return it->ItemStat[0].ItemStatValue;
+	});
+	reg_prop_ro(ft, "itemStat1Type", [](ItemTemplate const * it) {
+		return it->ItemStat[1].ItemStatType;
+	});
+	reg_prop_ro(ft, "itemStat1Value", [](ItemTemplate const * it) {
+		return it->ItemStat[1].ItemStatValue;
+	});
+	reg_prop_ro(ft, "itemStat2Type", [](ItemTemplate const * it) {
+		return it->ItemStat[2].ItemStatType;
+	});
+	reg_prop_ro(ft, "itemStat2Value", [](ItemTemplate const * it) {
+		return it->ItemStat[2].ItemStatValue;
+	});
+	reg_prop_ro(ft, "itemStat3Type", [](ItemTemplate const * it) {
+		return it->ItemStat[3].ItemStatType;
+	});
+	reg_prop_ro(ft, "itemStat3Value", [](ItemTemplate const * it) {
+		return it->ItemStat[3].ItemStatValue;
+	});
+	reg_prop_ro(ft, "itemStat4Type", [](ItemTemplate const * it) {
+		return it->ItemStat[4].ItemStatType;
+	});
+	reg_prop_ro(ft, "itemStat4Value", [](ItemTemplate const * it) {
+		return it->ItemStat[4].ItemStatValue;
+	});
+	reg_prop_ro(ft, "itemStat5Type", [](ItemTemplate const * it) {
+		return it->ItemStat[5].ItemStatType;
+	});
+	reg_prop_ro(ft, "itemStat5Value", [](ItemTemplate const * it) {
+		return it->ItemStat[5].ItemStatValue;
+	});
+	reg_prop_ro(ft, "itemStat6Type", [](ItemTemplate const * it) {
+		return it->ItemStat[6].ItemStatType;
+	});
+	reg_prop_ro(ft, "itemStat6Value", [](ItemTemplate const * it) {
+		return it->ItemStat[6].ItemStatValue;
+	});
+	reg_prop_ro(ft, "itemStat7Type", [](ItemTemplate const * it) {
+		return it->ItemStat[7].ItemStatType;
+	});
+	reg_prop_ro(ft, "itemStat7Value", [](ItemTemplate const * it) {
+		return it->ItemStat[7].ItemStatValue;
+	});
+	reg_prop_ro(ft, "itemStat8Type", [](ItemTemplate const * it) {
+		return it->ItemStat[8].ItemStatType;
+	});
+	reg_prop_ro(ft, "itemStat8Value", [](ItemTemplate const * it) {
+		return it->ItemStat[8].ItemStatValue;
+	});
+	reg_prop_ro(ft, "itemStat9Type", [](ItemTemplate const * it) {
+		return it->ItemStat[9].ItemStatType;
+	});
+	reg_prop_ro(ft, "itemStat9Value", [](ItemTemplate const * it) {
+		return it->ItemStat[9].ItemStatValue;
 	});
 	reg_prop_ro(ft, "scalingStatDistribution", [](ItemTemplate const * it) {
 		return it->ScalingStatDistribution;
@@ -108,8 +166,23 @@ v8::Local<v8::FunctionTemplate> jcreate_template<ItemTemplate const *>() {
 	reg_prop_ro(ft, "scalingStatValue", [](ItemTemplate const * it) {
 		return it->ScalingStatValue;
 	});
-	reg_prop_ro(ft, "damage", [](ItemTemplate const * it) {
-		return jarr(it->Damage);
+	reg_prop_ro(ft, "damage0Min", [](ItemTemplate const * it) {
+		return it->Damage[0].DamageMin;
+	});
+	reg_prop_ro(ft, "damage0Max", [](ItemTemplate const * it) {
+		return it->Damage[0].DamageMax;
+	});
+	reg_prop_ro(ft, "damage0Type", [](ItemTemplate const * it) {
+		return it->Damage[0].DamageType;
+	});
+	reg_prop_ro(ft, "damage1Min", [](ItemTemplate const * it) {
+		return it->Damage[1].DamageMin;
+	});
+	reg_prop_ro(ft, "damage1Max", [](ItemTemplate const * it) {
+		return it->Damage[1].DamageMax;
+	});
+	reg_prop_ro(ft, "damage1Type", [](ItemTemplate const * it) {
+		return it->Damage[1].DamageType;
 	});
 	reg_prop_ro(ft, "armor", [](ItemTemplate const * it) {
 		return it->Armor;
@@ -141,8 +214,110 @@ v8::Local<v8::FunctionTemplate> jcreate_template<ItemTemplate const *>() {
 	reg_prop_ro(ft, "rangedModRange", [](ItemTemplate const * it) {
 		return it->RangedModRange;
 	});
-	reg_prop_ro(ft, "spells", [](ItemTemplate const * it) {
-		return jarr(it->Spells);
+	reg_prop_ro(ft, "spells0Id", [](ItemTemplate const * it) {
+		return it->Spells[0].SpellId;
+	});
+	reg_prop_ro(ft, "spells0Trigger", [](ItemTemplate const * it) {
+		return it->Spells[0].SpellTrigger;
+	});
+	reg_prop_ro(ft, "spells0Charges", [](ItemTemplate const * it) {
+		return it->Spells[0].SpellCharges;
+	});
+	reg_prop_ro(ft, "spells0PPMRate", [](ItemTemplate const * it) {
+		return it->Spells[0].SpellPPMRate;
+	});
+	reg_prop_ro(ft, "spells0Cooldown", [](ItemTemplate const * it) {
+		return DurationWrapper::from_milliseconds(it->Spells[0].SpellCooldown);
+	});
+	reg_prop_ro(ft, "spells0Category", [](ItemTemplate const * it) {
+		return it->Spells[0].SpellCategory;
+	});
+	reg_prop_ro(ft, "spells0CategoryCooldown", [](ItemTemplate const * it) {
+		return DurationWrapper::from_milliseconds(it->Spells[0].SpellCategoryCooldown);
+	});
+	reg_prop_ro(ft, "spells1Id", [](ItemTemplate const * it) {
+		return it->Spells[1].SpellId;
+	});
+	reg_prop_ro(ft, "spells1Trigger", [](ItemTemplate const * it) {
+		return it->Spells[1].SpellTrigger;
+	});
+	reg_prop_ro(ft, "spells1Charges", [](ItemTemplate const * it) {
+		return it->Spells[1].SpellCharges;
+	});
+	reg_prop_ro(ft, "spells1PPMRate", [](ItemTemplate const * it) {
+		return it->Spells[1].SpellPPMRate;
+	});
+	reg_prop_ro(ft, "spells1Cooldown", [](ItemTemplate const * it) {
+		return DurationWrapper::from_milliseconds(it->Spells[1].SpellCooldown);
+	});
+	reg_prop_ro(ft, "spells1Category", [](ItemTemplate const * it) {
+		return it->Spells[1].SpellCategory;
+	});
+	reg_prop_ro(ft, "spells1CategoryCooldown", [](ItemTemplate const * it) {
+		return DurationWrapper::from_milliseconds(it->Spells[1].SpellCategoryCooldown);
+	});
+	reg_prop_ro(ft, "spells2Id", [](ItemTemplate const * it) {
+		return it->Spells[2].SpellId;
+	});
+	reg_prop_ro(ft, "spells2Trigger", [](ItemTemplate const * it) {
+		return it->Spells[2].SpellTrigger;
+	});
+	reg_prop_ro(ft, "spells2Charges", [](ItemTemplate const * it) {
+		return it->Spells[2].SpellCharges;
+	});
+	reg_prop_ro(ft, "spells2PPMRate", [](ItemTemplate const * it) {
+		return it->Spells[2].SpellPPMRate;
+	});
+	reg_prop_ro(ft, "spells2Cooldown", [](ItemTemplate const * it) {
+		return DurationWrapper::from_milliseconds(it->Spells[2].SpellCooldown);
+	});
+	reg_prop_ro(ft, "spells2Category", [](ItemTemplate const * it) {
+		return it->Spells[2].SpellCategory;
+	});
+	reg_prop_ro(ft, "spells2CategoryCooldown", [](ItemTemplate const * it) {
+		return DurationWrapper::from_milliseconds(it->Spells[2].SpellCategoryCooldown);
+	});
+	reg_prop_ro(ft, "spells3Id", [](ItemTemplate const * it) {
+		return it->Spells[3].SpellId;
+	});
+	reg_prop_ro(ft, "spells3Trigger", [](ItemTemplate const * it) {
+		return it->Spells[3].SpellTrigger;
+	});
+	reg_prop_ro(ft, "spells3Charges", [](ItemTemplate const * it) {
+		return it->Spells[3].SpellCharges;
+	});
+	reg_prop_ro(ft, "spells3PPMRate", [](ItemTemplate const * it) {
+		return it->Spells[3].SpellPPMRate;
+	});
+	reg_prop_ro(ft, "spells3Cooldown", [](ItemTemplate const * it) {
+		return DurationWrapper::from_milliseconds(it->Spells[3].SpellCooldown);
+	});
+	reg_prop_ro(ft, "spells3Category", [](ItemTemplate const * it) {
+		return it->Spells[3].SpellCategory;
+	});
+	reg_prop_ro(ft, "spells3CategoryCooldown", [](ItemTemplate const * it) {
+		return DurationWrapper::from_milliseconds(it->Spells[3].SpellCategoryCooldown);
+	});
+	reg_prop_ro(ft, "spells4Id", [](ItemTemplate const * it) {
+		return it->Spells[4].SpellId;
+	});
+	reg_prop_ro(ft, "spells4Trigger", [](ItemTemplate const * it) {
+		return it->Spells[4].SpellTrigger;
+	});
+	reg_prop_ro(ft, "spells4Charges", [](ItemTemplate const * it) {
+		return it->Spells[4].SpellCharges;
+	});
+	reg_prop_ro(ft, "spells4PPMRate", [](ItemTemplate const * it) {
+		return it->Spells[4].SpellPPMRate;
+	});
+	reg_prop_ro(ft, "spells4Cooldown", [](ItemTemplate const * it) {
+		return DurationWrapper::from_milliseconds(it->Spells[4].SpellCooldown);
+	});
+	reg_prop_ro(ft, "spells4Category", [](ItemTemplate const * it) {
+		return it->Spells[4].SpellCategory;
+	});
+	reg_prop_ro(ft, "spells4CategoryCooldown", [](ItemTemplate const * it) {
+		return DurationWrapper::from_milliseconds(it->Spells[4].SpellCategoryCooldown);
 	});
 	reg_prop_ro(ft, "bonding", [](ItemTemplate const * it) {
 		return it->Bonding;
@@ -198,8 +373,23 @@ v8::Local<v8::FunctionTemplate> jcreate_template<ItemTemplate const *>() {
 	reg_prop_ro(ft, "totemCategory", [](ItemTemplate const * it) {
 		return it->TotemCategory;
 	});
-	reg_prop_ro(ft, "socket", [](ItemTemplate const * it) {
-		return jarr(it->Socket);
+	reg_prop_ro(ft, "socket0Color", [](ItemTemplate const * it) {
+		return it->Socket[0].Color;
+	});
+	reg_prop_ro(ft, "socket0Content", [](ItemTemplate const * it) {
+		return it->Socket[0].Content;
+	});
+	reg_prop_ro(ft, "socket1Color", [](ItemTemplate const * it) {
+		return it->Socket[1].Color;
+	});
+	reg_prop_ro(ft, "socket1Content", [](ItemTemplate const * it) {
+		return it->Socket[1].Content;
+	});
+	reg_prop_ro(ft, "socket2Color", [](ItemTemplate const * it) {
+		return it->Socket[2].Color;
+	});
+	reg_prop_ro(ft, "socket2Content", [](ItemTemplate const * it) {
+		return it->Socket[2].Content;
 	});
 	reg_prop_ro(ft, "socketBonus", [](ItemTemplate const * it) {
 		return it->socketBonus;

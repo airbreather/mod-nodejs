@@ -26,7 +26,7 @@ declare global {
 			readonly leader: Acore.Player;
 			readonly group: Acore.Group;
 			readonly bgTypeId: BattlegroundTypeId;
-			readonly bracketEntry: PvPDifficultyEntry;
+			readonly bracketEntry: Acore.PvPDifficultyEntry;
 			readonly arenaType: ArenaType;
 			readonly isRated: boolean;
 			readonly isPremade: boolean;
@@ -53,14 +53,14 @@ declare global {
 			readonly queue: Acore.BattlegroundQueue;
 			readonly leader: Acore.Player;
 			readonly bg: Acore.Battleground;
-			readonly bracketEntry: PvPDifficultyEntry;
+			readonly bracketEntry: Acore.PvPDifficultyEntry;
 			__return: boolean;
 		};
 		['battleground-queue:before-send-join-message-arena']: {
 			readonly queue: Acore.BattlegroundQueue;
 			readonly leader: Acore.Player;
 			readonly gInfo: GroupQueueInfo;
-			readonly bracketEntry: PvPDifficultyEntry;
+			readonly bracketEntry: Acore.PvPDifficultyEntry;
 			readonly isRated: boolean;
 			__return: boolean;
 		};
