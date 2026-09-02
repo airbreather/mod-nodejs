@@ -201,11 +201,11 @@ declare global {
 		};
 		['player:achievement-complete']: {
 			readonly player: Acore.Player;
-			readonly achievement: AchievementEntry;
+			readonly achievement: Acore.AchievementEntry;
 		};
 		['player:before-achievement-complete']: {
 			readonly player: Acore.Player;
-			readonly achievement: AchievementEntry;
+			readonly achievement: Acore.AchievementEntry;
 			__return: boolean;
 		};
 		['player:criteria-progress']: {

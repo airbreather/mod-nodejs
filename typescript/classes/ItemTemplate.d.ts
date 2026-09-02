@@ -1,6 +1,10 @@
 declare global {
 	namespace Acore {
 		class ItemTemplate {
+			private constructor();
+
+			static byId(id: number): ItemTemplate | undefined;
+
 			readonly itemId: number;
 			readonly clazz: ItemClass;
 			readonly subClass: ItemSubclass;
@@ -29,10 +33,34 @@ declare global {
 			readonly stackable: number; // 0: not allowed, -1: put in player coin info tab and don't limit stacking (so 1 slot)
 			readonly containerSlots: number;
 			readonly statsCount: number;
-			readonly itemStat: ItemStat[];
+			readonly itemStat0Type: ItemModType;
+			readonly itemStat0Value: number;
+			readonly itemStat1Type: ItemModType;
+			readonly itemStat1Value: number;
+			readonly itemStat2Type: ItemModType;
+			readonly itemStat2Value: number;
+			readonly itemStat3Type: ItemModType;
+			readonly itemStat3Value: number;
+			readonly itemStat4Type: ItemModType;
+			readonly itemStat4Value: number;
+			readonly itemStat5Type: ItemModType;
+			readonly itemStat5Value: number;
+			readonly itemStat6Type: ItemModType;
+			readonly itemStat6Value: number;
+			readonly itemStat7Type: ItemModType;
+			readonly itemStat7Value: number;
+			readonly itemStat8Type: ItemModType;
+			readonly itemStat8Value: number;
+			readonly itemStat9Type: ItemModType;
+			readonly itemStat9Value: number;
 			readonly scalingStatDistribution: number; // id from ScalingStatDistribution.dbc
 			readonly scalingStatValue: number; // mask for selecting column in ScalingStatValues.dbc
-			readonly damage: ItemDamage[];
+			readonly damage0Min: number;
+			readonly damage0Max: number;
+			readonly damage0Type: SpellSchools;
+			readonly damage1Min: number;
+			readonly damage1Max: number;
+			readonly damage1Type: SpellSchools;
 			readonly armor: number;
 			readonly holyRes: number;
 			readonly fireRes: number;
@@ -43,7 +71,41 @@ declare global {
 			readonly delay: Temporal.Duration;
 			readonly ammoType: ItemSubclassProjectile;
 			readonly rangedModRange: number;
-			readonly spells: ItemSpell[];
+			readonly spells0Id: number;
+			readonly spells0Trigger: ItemSpelltriggerType;
+			readonly spells0Charges: number;
+			readonly spells0PPMRate: number;
+			readonly spells0Cooldown: Temporal.Duration;
+			readonly spells0Category: number;
+			readonly spells0CategoryCooldown: Temporal.Duration;
+			readonly spells1Id: number;
+			readonly spells1Trigger: ItemSpelltriggerType;
+			readonly spells1Charges: number;
+			readonly spells1PPMRate: number;
+			readonly spells1Cooldown: Temporal.Duration;
+			readonly spells1Category: number;
+			readonly spells1CategoryCooldown: Temporal.Duration;
+			readonly spells2Id: number;
+			readonly spells2Trigger: ItemSpelltriggerType;
+			readonly spells2Charges: number;
+			readonly spells2PPMRate: number;
+			readonly spells2Cooldown: Temporal.Duration;
+			readonly spells2Category: number;
+			readonly spells2CategoryCooldown: Temporal.Duration;
+			readonly spells3Id: number;
+			readonly spells3Trigger: ItemSpelltriggerType;
+			readonly spells3Charges: number;
+			readonly spells3PPMRate: number;
+			readonly spells3Cooldown: Temporal.Duration;
+			readonly spells3Category: number;
+			readonly spells3CategoryCooldown: Temporal.Duration;
+			readonly spells4Id: number;
+			readonly spells4Trigger: ItemSpelltriggerType;
+			readonly spells4Charges: number;
+			readonly spells4PPMRate: number;
+			readonly spells4Cooldown: Temporal.Duration;
+			readonly spells4Category: number;
+			readonly spells4CategoryCooldown: Temporal.Duration;
 			readonly bonding: ItemBondingType;
 			readonly description: string;
 			readonly pageText: number;
@@ -62,7 +124,12 @@ declare global {
 			readonly map: number; // id from Map.dbc
 			readonly bagFamily: BAG_FAMILY_MASK; // bit mask (1 << id from ItemBagFamily.dbc)
 			readonly totemCategory: number; // id from TotemCategory.dbc
-			readonly socket: ItemSocket[];
+			readonly socket0Color: SocketColor | 0;
+			readonly socket0Content: number;
+			readonly socket1Color: SocketColor | 0;
+			readonly socket1Content: number;
+			readonly socket2Color: SocketColor | 0;
+			readonly socket2Content: number;
 			readonly socketBonus: number; // id from SpellItemEnchantment.dbc
 			readonly gemProperties: number; // id from GemProperties.dbc
 			readonly requiredDisenchantSkill: number;

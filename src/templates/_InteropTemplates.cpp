@@ -55,13 +55,25 @@ class WorldPacket;
 struct AchievementEntry;
 struct AuctionEntry;
 struct CastSpellBuilder;
+struct CharTitlesEntry;
 struct Condition;
 struct ConditionSourceInfo;
 struct CreatureTemplate;
+struct FactionEntry;
+struct GemPropertiesEntry;
+struct GlyphPropertiesEntry;
 struct ItemTemplate;
 struct Loot;
 struct MySQLConnectionInfo;
+struct PvPDifficultyEntry;
+struct SpellCastTimesEntry;
+struct SpellCategoryEntry;
 struct SpellChainNode;
+struct SpellDurationEntry;
+struct SpellRadiusEntry;
+struct SpellRangeEntry;
+struct SummonPropertiesEntry;
+struct VehicleEntry;
 struct VendorItem;
 struct VendorItemData;
 
@@ -100,6 +112,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<NodeJs *>() {
 	REGISTER_CLASS_PROP(BattlegroundQueue)
 	REGISTER_CLASS_PROP(ByteBuffer)
 	REGISTER_CLASS_PROP(CastSpellBuilder)
+	REGISTER_CLASS_PROP_RO(CharTitlesEntry)
 	REGISTER_CLASS_PROP(Channel)
 	REGISTER_CLASS_PROP_SPLIT_NAMES(ChatCommandBuilderBuilderBox, ChatCommandBuilder)
 	REGISTER_CLASS_PROP(ChatHandler)
@@ -107,7 +120,10 @@ v8::Local<v8::FunctionTemplate> jcreate_template<NodeJs *>() {
 	REGISTER_CLASS_PROP(ConditionSourceInfo)
 	REGISTER_CLASS_PROP_SPLIT_NAMES(ConfigMgr const, Config)
 	REGISTER_CLASS_PROP_RO(CreatureTemplate)
+	REGISTER_CLASS_PROP_RO(FactionEntry)
 	REGISTER_CLASS_PROP(Field)
+	REGISTER_CLASS_PROP_RO(GemPropertiesEntry)
+	REGISTER_CLASS_PROP_RO(GlyphPropertiesEntry)
 	REGISTER_CLASS_PROP(GmTicket)
 	REGISTER_CLASS_PROP(Group)
 	REGISTER_CLASS_PROP(Guild)
@@ -121,19 +137,27 @@ v8::Local<v8::FunctionTemplate> jcreate_template<NodeJs *>() {
 	REGISTER_CLASS_PROP_SPLIT_NAMES(Map, ACMap)
 	REGISTER_CLASS_PROP_RO(MySQLConnectionInfo)
 	REGISTER_CLASS_PROP(ObjectMgr)
+	REGISTER_CLASS_PROP_RO(PvPDifficultyEntry)
 	REGISTER_CLASS_PROP(QueryResult)
 	REGISTER_CLASS_PROP_RO(Quest)
 	REGISTER_CLASS_PROP(Roll)
+	REGISTER_CLASS_PROP_RO(SpellCastTimesEntry)
+	REGISTER_CLASS_PROP_RO(SpellCategoryEntry)
 	REGISTER_CLASS_PROP(SpellChainNode)
+	REGISTER_CLASS_PROP_RO(SpellDurationEntry)
 	REGISTER_CLASS_PROP_RO(SpellEffectInfo)
 	REGISTER_CLASS_PROP_RO(SpellImplicitTargetInfo)
 	REGISTER_CLASS_PROP_RO(SpellInfo)
+	REGISTER_CLASS_PROP_RO(SpellRadiusEntry)
+	REGISTER_CLASS_PROP_RO(SpellRangeEntry)
 	REGISTER_CLASS_PROP(Spell)
+	REGISTER_CLASS_PROP_RO(SummonPropertiesEntry)
 	REGISTER_CLASS_PROP(ThreatReference)
 	REGISTER_CLASS_PROP_SPLIT_NAMES(WorldPackets::NPC::TrainerList, TrainerSpellListMessage)
 	REGISTER_CLASS_PROP_SPLIT_NAMES(std::vector<WorldPackets::NPC::TrainerListSpell>, TrainerSpellList)
 	REGISTER_CLASS_PROP_SPLIT_NAMES(WorldPackets::NPC::TrainerListSpell, TrainerSpell)
 	REGISTER_CLASS_PROP(Vehicle)
+	REGISTER_CLASS_PROP_RO(VehicleEntry)
 	REGISTER_CLASS_PROP(VendorItem)
 	REGISTER_CLASS_PROP(VendorItemData)
 

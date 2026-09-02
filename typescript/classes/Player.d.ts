@@ -331,7 +331,7 @@ declare global {
 			setBindPoint(x: number, y: number, z: number, mapId: number, areaId: number): void;
 			setFactionForRace(race: Races): void;
 			setKnownTaxiNodes(nodes: readonly number[]): void;
-			// setReputation(faction: FactionEntry, value: number): void;
+			setReputation(faction: FactionEntry, value: number): void;
 			setRestState(triggerId: number): void;
 			updatePlayerSetting(source: string, index: number, value: number): void;
 			durabilityLoss(item: Item, amount: number): void;

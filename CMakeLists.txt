@@ -32,35 +32,19 @@ install(
 
 list(APPEND ${PRIVATE_SOURCES} (
         src/records/BattlegroundScoreRecord.cpp
-        src/records/CharTitlesEntryRecord.cpp
         src/records/ChaseAngleRecord.cpp
         src/records/ChaseRangeRecord.cpp
         src/records/CreatureModelRecord.cpp
         src/records/CreatureMovementDataRecord.cpp
-        src/records/FactionEntryRecord.cpp
-        src/records/GemPropertiesEntryRecord.cpp
-        src/records/GlyphPropertiesEntryRecord.cpp
         src/records/GroupMemberRecord.cpp
         src/records/GroupQueueInfoRecord.cpp
         src/records/ImmunityInfoRecord.cpp
-        src/records/ItemDamageRecord.cpp
-        src/records/ItemSocketRecord.cpp
-        src/records/ItemSpellRecord.cpp
-        src/records/ItemStatRecord.cpp
         src/records/LootItemRecord.cpp
         src/records/ObjectGuidRecord.cpp
         src/records/PetInfoRecord.cpp
         src/records/PetSpellRecord.cpp
         src/records/PositionRecord.cpp
-        src/records/PvPDifficultyEntryRecord.cpp
-        src/records/SpellCastTimesEntryRecord.cpp
-        src/records/SpellCategoryEntryRecord.cpp
-        src/records/SpellDurationEntryRecord.cpp
         src/records/SpellModifierRecord.cpp
-        src/records/SpellRadiusEntryRecord.cpp
-        src/records/SpellRangeEntryRecord.cpp
-        src/records/SummonPropertiesEntryRecord.cpp
-        src/records/VehicleEntryRecord.cpp
 
         src/scripts/AccountScript.cpp
         src/scripts/AllBattlegroundScript.cpp
@@ -96,6 +80,7 @@ list(APPEND ${PRIVATE_SOURCES} (
         src/templates/ByteBufferTemplate.cpp
         src/templates/CastSpellBuilderTemplate.cpp
         src/templates/ChannelTemplate.cpp
+        src/templates/CharTitlesEntryTemplate.cpp
         src/templates/ChatCommandBuilderBuilderBoxTemplate.cpp
         src/templates/ChatHandlerTemplate.cpp
         src/templates/ConfigTemplate.cpp
@@ -105,7 +90,10 @@ list(APPEND ${PRIVATE_SOURCES} (
         src/templates/CreatureTemplate.cpp
         src/templates/CreatureTemplateTemplate.cpp
         src/templates/DynamicObjectTemplate.cpp
+        src/templates/FactionEntryTemplate.cpp
         src/templates/GameObjectTemplate.cpp
+        src/templates/GemPropertiesEntryTemplate.cpp
+        src/templates/GlyphPropertiesEntryTemplate.cpp
         src/templates/GmTicketTemplate.cpp
         src/templates/GroupTemplate.cpp
         src/templates/GuardianTemplate.cpp
@@ -124,15 +112,22 @@ list(APPEND ${PRIVATE_SOURCES} (
         src/templates/ObjectMgrTemplate.cpp
         src/templates/PetTemplate.cpp
         src/templates/PlayerTemplate.cpp
+        src/templates/PvPDifficultyEntryTemplate.cpp
         src/templates/QueryResultFieldTemplate.cpp
         src/templates/QueryResultSetTemplate.cpp
         src/templates/QuestTemplate.cpp
         src/templates/RollTemplate.cpp
+        src/templates/SpellCastTimesEntryTemplate.cpp
+        src/templates/SpellCategoryEntryTemplate.cpp
         src/templates/SpellChainNodeTemplate.cpp
+        src/templates/SpellDurationEntryTemplate.cpp
         src/templates/SpellEffectInfoTemplate.cpp
         src/templates/SpellImplicitTargetInfoTemplate.cpp
         src/templates/SpellInfoTemplate.cpp
+        src/templates/SpellRadiusEntryTemplate.cpp
+        src/templates/SpellRangeEntryTemplate.cpp
         src/templates/SpellTemplate.cpp
+        src/templates/SummonPropertiesEntryTemplate.cpp
         src/templates/TempSummonTemplate.cpp
         src/templates/ThreatReferenceTemplate.cpp
         src/templates/TrainerSpellListMessageTemplate.cpp
@@ -140,6 +135,7 @@ list(APPEND ${PRIVATE_SOURCES} (
         src/templates/TrainerSpellTemplate.cpp
         src/templates/TransportTemplate.cpp
         src/templates/UnitTemplate.cpp
+        src/templates/VehicleEntryTemplate.cpp
         src/templates/VehicleTemplate.cpp
         src/templates/VendorItemDataTemplate.cpp
         src/templates/VendorItemTemplate.cpp
