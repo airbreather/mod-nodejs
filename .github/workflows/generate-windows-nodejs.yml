@@ -21,33 +21,34 @@ jobs:
             tar -xzf - -C nodejs-src --strip-components=1
           "dir=$(Resolve-Path nodejs-src)" >> "$env:GITHUB_OUTPUT"
 
-      - name: vcbuild
-        working-directory: ${{ steps.nodejs.outputs.dir }}
-        run: |
-          .\vcbuild.bat release x64 clang-cl dll v8temporal
+      # - name: vcbuild
+      #   working-directory: ${{ steps.nodejs.outputs.dir }}
+      #   run: |
+      #     .\vcbuild.bat release x64 clang-cl dll v8temporal
 
       - name: install headers
         working-directory: ${{ steps.nodejs.outputs.dir }}
         run: |
-          $dest = "${{ github.workspace }}/out/nodejs-${{ steps.variables.outputs.nodejs_tag }}"
-          python tools\install.py install --dest-dir $dest --prefix '' --headers-only
+          $dest = Join-Path "${{ github.workspace }}" "out" "nodejs-${{ steps.variables.outputs.nodejs_tag }}"
+          python (Join-Path "tools" "install.py") install --dest-dir $dest --prefix '' --headers-only
 
       - name: collect
+        working-directory: ${{ steps.nodejs.outputs.dir }}
         run: |
-          $dest = "${{ github.workspace }}/out/nodejs-${{ steps.variables.outputs.nodejs_tag }}"
-          $src = "${{ steps.nodejs.outputs.dir }}"
-          New-Item -ItemType Directory -Force "$dest/bin"
-          Copy-Item "$src/out/Release/libnode.dll" "$dest/bin/"
-          Copy-Item "$src/out/Release/node.lib" "$dest/bin/"
+          $src = Join-Path "${{ steps.nodejs.outputs.dir }}" "out" "Release"
+          $dest = Join-Path "${{ github.workspace }}" "out" "nodejs-${{ steps.variables.outputs.nodejs_tag }}"
+          $bin = Join-Path "$dest" "bin"
+          New-Item -ItemType Directory -Force $bin
+          Copy-Item (Join-Path $src "libnode.dll") $bin
+          Copy-Item (Join-Path $src "node.lib") $bin
 
       - name: archive
         run: |
           Push-Location out
-          7z a -mx=9 -m=LZMA2 -md=3840m -mf=273 -ms -mmt=3 "nodejs-${{ steps.variables.outputs.nodejs_tag }}.7z" "nodejs-${{ steps.variables.outputs.nodejs_tag }}"
-          Pop-Location
+          7z a -r -mx9 -m0=BCJ2 -m1=LZMA2:d=3840m:fb=273 -ms=on -mmt=3 "nodejs-${{ steps.variables.outputs.nodejs_tag }}.7z" "nodejs-${{ steps.variables.outputs.nodejs_tag }}"
 
       - name: upload
         uses: actions/upload-artifact@v7
         with:
-          path: "nodejs-${{ steps.variables.outputs.nodejs_tag }}.7z"
+          path: "out/nodejs-${{ steps.variables.outputs.nodejs_tag }}.7z"
           archive: false
