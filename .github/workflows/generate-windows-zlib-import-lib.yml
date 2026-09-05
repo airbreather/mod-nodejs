@@ -25,7 +25,6 @@ jobs:
           $libExe = (Get-ChildItem (Join-Path $vsPath 'VC\Tools\MSVC') -Recurse -Filter lib.exe |
             Where-Object { $_.FullName -match 'Hostx64' } | Select-Object -First 1).FullName
           & $libExe /nologo /MACHINE:X64 /OUT:zlib.lib /DEF:zlib.def
-          del zlib.def zlib.exp
 
       - name: upload
         uses: actions/upload-artifact@v7
