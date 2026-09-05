@@ -28,15 +28,6 @@ if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB))
 
     FetchContent_MakeAvailable(nodejs_win)
 
-    if (NOT ZLIB_IMPORT)
-        set(ZLIB_IMPORT "${nodejs_win_SOURCE_DIR}/zlib.lib")
-        file(
-                DOWNLOAD               https://github.com/airbreather/mod-nodejs/releases/download/libnode-windows-v26.8.1/zlib.lib
-                ${ZLIB_IMPORT}
-                EXPECTED_HASH          SHA256=6784de83aa9020df38748712b1548c612ee8a046288910afb43e433febc9961b
-        )
-    endif()
-
     CU_SET_GLOBAL(NODEJS_INCLUDE_DIR "${nodejs_win_SOURCE_DIR}/include/node")
     CU_SET_GLOBAL(NODEJS_LIB "${nodejs_win_SOURCE_DIR}/bin/libnode.lib")
 
@@ -52,6 +43,15 @@ if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB))
   else()
     message(FATAL_ERROR("Linux and Windows have pre-built files available. Others (we are '${CMAKE_SYSTEM_NAME}') must figure out their own NODEJS_INCLUDE_DIR and NODEJS_LIB values. PRs to show what I should for other systems are welcome!"))
   endif()
+endif()
+
+if (WIN32 AND NOT ZLIB_IMPORT)
+    CU_SET_GLOBAL(ZLIB_IMPORT ${CMAKE_BINARY_DIR}/mod-nodejs/zlib.lib)
+    file(
+            DOWNLOAD               https://github.com/airbreather/mod-nodejs/releases/download/libnode-windows-v26.8.1/zlib.lib
+            ${ZLIB_IMPORT}
+            EXPECTED_HASH          SHA256=6784de83aa9020df38748712b1548c612ee8a046288910afb43e433febc9961b
+    )
 endif()
 
 install(
