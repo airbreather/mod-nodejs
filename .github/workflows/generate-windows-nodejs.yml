@@ -27,6 +27,7 @@ jobs:
           .\vcbuild.bat nobuild release x64 clang-cl dll v8temporal
           $dest = Join-Path "${{ github.workspace }}" "out" "nodejs-${{ steps.variables.outputs.nodejs_tag }}"
           # BEGIN TEMP
+          New-Item -ItemType Directory -Force (Join-Path "out" "Release")
           Set-Content (Join-Path "out" "Release" "libnode.dll") "This is a libnode.dll file"
           Set-Content (Join-Path "out" "Release" "node.lib") "This is a node.lib file"
           # END TEMP
