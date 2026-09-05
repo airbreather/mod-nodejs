@@ -22,17 +22,23 @@ if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB))
             nodejs_win
 
             URL                        https://github.com/airbreather/mod-nodejs/releases/download/libnode-windows-v26.8.1/nodejs-v26.8.1.7z
-            URL_HASH                   SHA256=TODO_SET_AFTER_FIRST_ARTIFACT_BUILD
+            URL_HASH                   SHA256=bb2146445abfd5746d8b7a3009583d84faabda8925ecd2828cdf5c7d8ccb91c9
             DOWNLOAD_EXTRACT_TIMESTAMP true
     )
 
     FetchContent_MakeAvailable(nodejs_win)
 
+    if (NOT ZLIB_IMPORT)
+        set(ZLIB_IMPORT "${nodejs_win_SOURCE_DIR}/zlib.lib")
+        file(
+                DOWNLOAD               https://github.com/airbreather/mod-nodejs/releases/download/libnode-windows-v26.8.1/zlib.lib
+                ${ZLIB_IMPORT}
+                EXPECTED_HASH          SHA256=6784de83aa9020df38748712b1548c612ee8a046288910afb43e433febc9961b
+        )
+    endif()
+
     CU_SET_GLOBAL(NODEJS_INCLUDE_DIR "${nodejs_win_SOURCE_DIR}/include/node")
     CU_SET_GLOBAL(NODEJS_LIB "${nodejs_win_SOURCE_DIR}/bin/libnode.lib")
-    if (NOT ZLIB_IMPORT)
-        set(ZLIB_IMPORT "${nodejs_win_SOURCE_DIR}/zlib/zlib.lib")
-    endif()
 
     # Copy libnode.dll next to the built executables (Windows convention:
     # DLLs live in the same directory as the .exe). The core's non-vendored
