@@ -1,4 +1,4 @@
-if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB))
+if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB) OR (WIN32 AND NOT NODEJS_DLL))
   include(FetchContent)
   if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     message(STATUS "Using Node.js v26.8.1 from this project's GitHub release (Linux)")
@@ -29,6 +29,7 @@ if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB))
     FetchContent_MakeAvailable(nodejs_win)
 
     CU_SET_GLOBAL(NODEJS_INCLUDE_DIR "${nodejs_win_SOURCE_DIR}/include/node")
+    CU_SET_GLOBAL(NODEJS_DLL "${nodejs_win_SOURCE_DIR}/bin/libnode.dll")
     CU_SET_GLOBAL(NODEJS_LIB "${nodejs_win_SOURCE_DIR}/bin/libnode.lib")
 
     # Copy libnode.dll next to the built executables (Windows convention:
@@ -54,9 +55,14 @@ if (WIN32 AND NOT ZLIB_IMPORT)
     )
 endif()
 
+set(NODEJS_LIB_INSTALL ${NODEJS_LIB})
+if (WIN32)
+    set(NODEJS_LIB_INSTALL ${NODEJS_DLL})
+endif()
+
 install(
         FILES
-        "${NODEJS_LIB}"
+        ${NODEJS_LIB_INSTALL}
         DESTINATION "${CMAKE_INSTALL_PREFIX}/bin"
 )
 
