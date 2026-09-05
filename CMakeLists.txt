@@ -29,7 +29,7 @@ if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB))
     FetchContent_MakeAvailable(nodejs_win)
 
     CU_SET_GLOBAL(NODEJS_INCLUDE_DIR "${nodejs_win_SOURCE_DIR}/include/node")
-    CU_SET_GLOBAL(NODEJS_LIB "${nodejs_win_SOURCE_DIR}/bin/node.lib")
+    CU_SET_GLOBAL(NODEJS_LIB "${nodejs_win_SOURCE_DIR}/bin/libnode.lib")
     if (NOT ZLIB_IMPORT)
         set(ZLIB_IMPORT "${nodejs_win_SOURCE_DIR}/zlib/zlib.lib")
     endif()
