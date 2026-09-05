@@ -1,12 +1,8 @@
-if (WIN32)
-  message(FATAL_ERROR "Giving up for now trying to figure out how to get this to work natively on Windows. You might just have to use Docker or WSL. See the Git history for what I've tried.")
-endif()
-
 if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB))
+  include(FetchContent)
   if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    message(STATUS "Using Node.js v26.8.1 from this project's GitHub release")
+    message(STATUS "Using Node.js v26.8.1 from this project's GitHub release (Linux)")
 
-    include(FetchContent)
     FetchContent_Declare(
             nodejs_linux
 
@@ -19,8 +15,36 @@ if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB))
 
     CU_SET_GLOBAL(NODEJS_INCLUDE_DIR "${nodejs_linux_SOURCE_DIR}/include/node")
     CU_SET_GLOBAL(NODEJS_LIB "${nodejs_linux_SOURCE_DIR}/lib/libnode.so.147")
+  elseif(WIN32)
+    message(STATUS "Using Node.js v26.8.1 from this project's GitHub release (Windows)")
+
+    FetchContent_Declare(
+            nodejs_win
+
+            URL                        https://github.com/airbreather/mod-nodejs/releases/download/libnode-windows-v26.8.1/nodejs-v26.8.1.zip
+            URL_HASH                   SHA256=TODO_SET_AFTER_FIRST_ARTIFACT_BUILD
+            DOWNLOAD_EXTRACT_TIMESTAMP true
+    )
+
+    FetchContent_MakeAvailable(nodejs_win)
+
+    CU_SET_GLOBAL(NODEJS_INCLUDE_DIR "${nodejs_win_SOURCE_DIR}/include/node")
+    CU_SET_GLOBAL(NODEJS_LIB "${nodejs_win_SOURCE_DIR}/bin/node.lib")
+    if (NOT ZLIB_IMPORT)
+        set(ZLIB_IMPORT "${nodejs_win_SOURCE_DIR}/zlib/zlib.lib")
+    endif()
+
+    # Copy libnode.dll next to the built executables (Windows convention:
+    # DLLs live in the same directory as the .exe). The core's non-vendored
+    # deps don't do this, but Node.js is vendored and easy to forget about.
+    add_custom_command(TARGET worldserver POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${nodejs_win_SOURCE_DIR}/bin/libnode.dll"
+        "$<TARGET_FILE_DIR:worldserver>"
+      COMMENT "Copying libnode.dll to bin/"
+    )
   else()
-    message(FATAL_ERROR("Linux has pre-built files available. Others (we are '${CMAKE_SYSTEM_NAME}') must figure out their own NODEJS_INCLUDE_DIR and NODEJS_LIB values. PRs to show what I should for other systems are welcome!"))
+    message(FATAL_ERROR("Linux and Windows have pre-built files available. Others (we are '${CMAKE_SYSTEM_NAME}') must figure out their own NODEJS_INCLUDE_DIR and NODEJS_LIB values. PRs to show what I should for other systems are welcome!"))
   endif()
 endif()
 

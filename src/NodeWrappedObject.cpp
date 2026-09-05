@@ -12,13 +12,6 @@ public:
 	}
 };
 
-class AlreadyWrappedError : public std::logic_error {
-public:
-	explicit AlreadyWrappedError()
-		: std::logic_error("The v8 object is already wrapping a native object. It cannot be modified to wrap a different one.") {
-	}
-};
-
 // node::ObjectWrap is deprecated in vNext, but it's EXACTLY what we need.
 // https://github.com/nodejs/node/pull/63756#issuecomment-4883149032
 class WrappedObject : public node::ObjectWrap {
@@ -51,9 +44,6 @@ void manage_void_pointer_with(v8::Local<v8::Object> const obj, void * wrapped, v
 	if (obj->InternalFieldCount() < 2) {
 		throw NotOurTemplatedObjectError();
 	}
-	if (*static_cast<bool *>(obj->GetAlignedPointerFromInternalField(1, v8::kEmbedderDataTypeTagDefault))) {
-		throw AlreadyWrappedError();
-	}
 	WrappedObject::wrap_in(obj, wrapped, destroy);
 	obj->SetAlignedPointerInInternalField(1, WRAPPED_OBJECT_SENTINEL, v8::kEmbedderDataTypeTagDefault);
 }
@@ -61,9 +51,6 @@ void manage_void_pointer_with(v8::Local<v8::Object> const obj, void * wrapped, v
 void reference_pointer_from(v8::Local<v8::Object> const obj, void * wrapped) {
 	if (obj->InternalFieldCount() < 2) {
 		throw NotOurTemplatedObjectError();
-	}
-	if (*static_cast<bool *>(obj->GetAlignedPointerFromInternalField(1, v8::kEmbedderDataTypeTagDefault))) {
-		throw AlreadyWrappedError();
 	}
 	obj->SetAlignedPointerInInternalField(0, wrapped, v8::kEmbedderDataTypeTagDefault);
 	obj->SetAlignedPointerInInternalField(1, REFERENCED_OBJECT_SENTINEL, v8::kEmbedderDataTypeTagDefault);
