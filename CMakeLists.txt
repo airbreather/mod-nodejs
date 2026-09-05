@@ -30,8 +30,8 @@ if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB))
 
     CU_SET_GLOBAL(NODEJS_INCLUDE_DIR "${nodejs_win_SOURCE_DIR}/include/node")
     CU_SET_GLOBAL(NODEJS_LIB "${nodejs_win_SOURCE_DIR}/bin/node.lib")
-    if (NOT AC_WINDOWS_NODEJS_ZLIB_IMPORT)
-      set(AC_WINDOWS_NODEJS_ZLIB_IMPORT "${nodejs_win_SOURCE_DIR}/zlib/zlib.lib")
+    if (NOT ZLIB_IMPORT)
+        set(ZLIB_IMPORT "${nodejs_win_SOURCE_DIR}/zlib/zlib.lib")
     endif()
 
     # Copy libnode.dll next to the built executables (Windows convention:

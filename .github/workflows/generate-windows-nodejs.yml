@@ -30,7 +30,7 @@ jobs:
         working-directory: ${{ steps.nodejs.outputs.dir }}
         run: |
           $dest = "${{ github.workspace }}/out/nodejs-${{ steps.variables.outputs.nodejs_tag }}"
-          python tools\install.py install --dest-dir $dest --prefix \ --headers-only
+          python tools\install.py install --dest-dir $dest --prefix '' --headers-only
 
       - name: collect
         run: |
@@ -41,9 +41,10 @@ jobs:
           Copy-Item "$src/out/Release/libnode.dll" "$dest/bin/"
           Copy-Item "$src/out/Release/node.lib" "$dest/bin/"
           # Generate zlib.lib: a thin import lib that binds zlib symbols to libnode.dll
-          Copy-Item "${{ github.workspace }}/modules/mod-nodejs/zlib.def" "$dest/zlib/"
-          $libExe = (Get-ChildItem "C:\Program Files (x86)\Microsoft Visual Studio" -Recurse -Filter "lib.exe" |
-            Where-Object { $_.FullName -match "Hostx64\\x64" } | Select-Object -First 1).FullName
+          Copy-Item "${{ github.workspace }}/zlib.def" "$dest/zlib/"
+          $vsPath = (vswhere -latest -products * -property installationPath).Trim()
+          $libExe = (Get-ChildItem (Join-Path $vsPath 'VC\Tools\MSVC') -Recurse -Filter lib.exe |
+            Where-Object { $_.FullName -match 'Hostx64' } | Select-Object -First 1).FullName
           Push-Location "$dest/zlib"
           & $libExe /nologo /MACHINE:X64 /OUT:zlib.lib /DEF:zlib.def
           del zlib.def zlib.exp
@@ -51,9 +52,8 @@ jobs:
 
       - name: archive
         run: |
-          $7z = "C:\Program Files\7-Zip\7z.exe"
           Push-Location out
-          & $7z a -tzip -mx=9 "nodejs-${{ steps.variables.outputs.nodejs_tag }}.zip" "nodejs-${{ steps.variables.outputs.nodejs_tag }}"
+          7z a -tzip -mx=9 "nodejs-${{ steps.variables.outputs.nodejs_tag }}.zip" "nodejs-${{ steps.variables.outputs.nodejs_tag }}"
           Pop-Location
 
       - name: upload
