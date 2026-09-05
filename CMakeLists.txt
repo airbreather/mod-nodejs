@@ -21,7 +21,7 @@ if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB))
     FetchContent_Declare(
             nodejs_win
 
-            URL                        https://github.com/airbreather/mod-nodejs/releases/download/libnode-windows-v26.8.1/nodejs-v26.8.1.zip
+            URL                        https://github.com/airbreather/mod-nodejs/releases/download/libnode-windows-v26.8.1/nodejs-v26.8.1.7z
             URL_HASH                   SHA256=TODO_SET_AFTER_FIRST_ARTIFACT_BUILD
             DOWNLOAD_EXTRACT_TIMESTAMP true
     )
@@ -36,7 +36,7 @@ if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB))
 
     # Copy libnode.dll next to the built executables (Windows convention:
     # DLLs live in the same directory as the .exe). The core's non-vendored
-    # deps don't do this, but Node.js is vendored and easy to forget about.
+    # deps don't, but this is a solvable problem given we need the DLL anyway.
     add_custom_command(TARGET worldserver POST_BUILD
       COMMAND ${CMAKE_COMMAND} -E copy_if_different
         "${nodejs_win_SOURCE_DIR}/bin/libnode.dll"
