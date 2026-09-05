@@ -41,7 +41,18 @@ jobs:
           Copy-Item "$src/out/Release/libnode.dll" "$dest/bin/"
           Copy-Item "$src/out/Release/node.lib" "$dest/bin/"
           # Generate zlib.lib: a thin import lib that binds zlib symbols to libnode.dll
-          Copy-Item "${{ github.workspace }}/zlib.def" "$dest/zlib/"
+          $syms = @(
+            'adler32','compress','compress2','compressBound','crc32','crc32_combine',
+            'crc32_combine64','crc32_z','deflate','deflateBound','deflateCopy','deflateEnd',
+            'deflateInit2_','deflateInit_','deflateParams','deflatePrime','deflateReset',
+            'deflateResetKeep','deflateSetDictionary','deflateStream','deflateSync','gzclose',
+            'gzclearerr','gzerror','gzflush','gzoopen','gzopen','gzread','gzseek','gztell',
+            'gzuncompress','gzwrite','inflate','inflateCopy','inflateEnd','inflateGetHeader',
+            'inflateInit2_','inflateInit_','inflateMark','inflateReset','inflateReset2',
+            'inflateSetDictionary','inflateSync','inflateSyncMatch','inflateBack','inflateBackEnd',
+            'uncompress','zError','zlibBuildInfo','zlibCompileFlags','zlibVersion')
+          $def = "LIBRARY libnode`nEXPORTS`n" + (($syms | ForEach-Object { "  $_" }) -join "`n")
+          Set-Content -Path "$dest/zlib/zlib.def" -Value $def
           $vsPath = (vswhere -latest -products * -property installationPath).Trim()
           $libExe = (Get-ChildItem (Join-Path $vsPath 'VC\Tools\MSVC') -Recurse -Filter lib.exe |
             Where-Object { $_.FullName -match 'Hostx64' } | Select-Object -First 1).FullName
