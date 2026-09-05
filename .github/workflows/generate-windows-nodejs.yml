@@ -1,0 +1,50 @@
+name: Generate Windows Node.js
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: vars
+        id: variables
+        run: |
+          echo "nodejs_tag=v26.8.1" >> "$env:GITHUB_OUTPUT"
+
+      - name: fetch
+        id: nodejs
+        run: |
+          $tag = "${{ steps.variables.outputs.nodejs_tag }}"
+          New-Item -ItemType Directory -Force nodejs-src
+          curl -fSL "https://github.com/nodejs/node/archive/refs/tags/${tag}.tar.gz" |
+            tar -xzf - -C nodejs-src --strip-components=1
+          "dir=$(Resolve-Path nodejs-src)" >> "$env:GITHUB_OUTPUT"
+
+      - name: build
+        working-directory: ${{ steps.nodejs.outputs.dir }}
+        run: |
+          .\vcbuild.bat release x64 clang-cl dll v8temporal
+          $dest = Join-Path "${{ github.workspace }}" "out" "nodejs-${{ steps.variables.outputs.nodejs_tag }}"
+          python (Join-Path "tools" "install.py") install --dest-dir $dest --prefix '' --headers-only
+
+      - name: collect
+        working-directory: ${{ steps.nodejs.outputs.dir }}
+        run: |
+          $src = Join-Path "${{ steps.nodejs.outputs.dir }}" "out" "Release"
+          $dest = Join-Path "${{ github.workspace }}" "out" "nodejs-${{ steps.variables.outputs.nodejs_tag }}"
+          $bin = Join-Path "$dest" "bin"
+          New-Item -ItemType Directory -Force $bin
+          Copy-Item (Join-Path $src "libnode.dll") $bin
+          Copy-Item (Join-Path $src "libnode.lib") $bin
+
+      - name: archive
+        run: |
+          Push-Location out
+          7z a -r -mx9 -m0=BCJ2 -m1=LZMA2:d=3840m:fb=273 -ms=on -mmt=3 "nodejs-${{ steps.variables.outputs.nodejs_tag }}.7z" "nodejs-${{ steps.variables.outputs.nodejs_tag }}"
+
+      - name: upload
+        uses: actions/upload-artifact@v7
+        with:
+          path: "out/nodejs-${{ steps.variables.outputs.nodejs_tag }}.7z"
+          archive: false
