@@ -26,6 +26,10 @@ jobs:
         run: |
           .\vcbuild.bat nobuild release x64 clang-cl dll v8temporal
           $dest = Join-Path "${{ github.workspace }}" "out" "nodejs-${{ steps.variables.outputs.nodejs_tag }}"
+          # BEGIN TEMP
+          Set-Content (Join-Path "out" "Release" "libnode.dll") "This is a libnode.dll file"
+          Set-Content (Join-Path "out" "Release" "node.lib") "This is a node.lib file"
+          # END TEMP
           python (Join-Path "tools" "install.py") install --dest-dir $dest --prefix '' --headers-only
 
       - name: collect
