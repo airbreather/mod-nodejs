@@ -1,4 +1,4 @@
-if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB))
+if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB) OR (WIN32 AND NOT NODEJS_DLL))
   include(FetchContent)
   if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     message(STATUS "Using Node.js v26.8.1 from this project's GitHub release (Linux)")
@@ -29,17 +29,8 @@ if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB))
     FetchContent_MakeAvailable(nodejs_win)
 
     CU_SET_GLOBAL(NODEJS_INCLUDE_DIR "${nodejs_win_SOURCE_DIR}/include/node")
+    CU_SET_GLOBAL(NODEJS_DLL "${nodejs_win_SOURCE_DIR}/bin/libnode.dll")
     CU_SET_GLOBAL(NODEJS_LIB "${nodejs_win_SOURCE_DIR}/bin/libnode.lib")
-
-    # Copy libnode.dll next to the built executables (Windows convention:
-    # DLLs live in the same directory as the .exe). The core's non-vendored
-    # deps don't, but this is a solvable problem given we need the DLL anyway.
-    add_custom_command(TARGET worldserver POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${nodejs_win_SOURCE_DIR}/bin/libnode.dll"
-        "$<TARGET_FILE_DIR:worldserver>"
-      COMMENT "Copying libnode.dll to bin/"
-    )
   else()
     message(FATAL_ERROR("Linux and Windows have pre-built files available. Others (we are '${CMAKE_SYSTEM_NAME}') must figure out their own NODEJS_INCLUDE_DIR and NODEJS_LIB values. PRs to show what I should for other systems are welcome!"))
   endif()
@@ -54,9 +45,14 @@ if (WIN32 AND NOT ZLIB_IMPORT)
     )
 endif()
 
+set(NODEJS_LIB_INSTALL ${NODEJS_LIB})
+if (WIN32)
+    set(NODEJS_LIB_INSTALL ${NODEJS_DLL})
+endif()
+
 install(
         FILES
-        "${NODEJS_LIB}"
+        ${NODEJS_LIB_INSTALL}
         DESTINATION "${CMAKE_INSTALL_PREFIX}/bin"
 )
 
