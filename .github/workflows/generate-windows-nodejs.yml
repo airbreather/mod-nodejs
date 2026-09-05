@@ -36,7 +36,7 @@ jobs:
           $bin = Join-Path "$dest" "bin"
           New-Item -ItemType Directory -Force $bin
           Copy-Item (Join-Path $src "libnode.dll") $bin
-          Copy-Item (Join-Path $src "node.lib") $bin
+          Copy-Item (Join-Path $src "libnode.lib") $bin
 
       - name: archive
         run: |
