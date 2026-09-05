@@ -21,14 +21,10 @@ jobs:
             tar -xzf - -C nodejs-src --strip-components=1
           "dir=$(Resolve-Path nodejs-src)" >> "$env:GITHUB_OUTPUT"
 
-      # - name: vcbuild
-      #   working-directory: ${{ steps.nodejs.outputs.dir }}
-      #   run: |
-      #     .\vcbuild.bat release x64 clang-cl dll v8temporal
-
-      - name: install headers
+      - name: build
         working-directory: ${{ steps.nodejs.outputs.dir }}
         run: |
+          .\vcbuild.bat nobuild release x64 clang-cl dll v8temporal
           $dest = Join-Path "${{ github.workspace }}" "out" "nodejs-${{ steps.variables.outputs.nodejs_tag }}"
           python (Join-Path "tools" "install.py") install --dest-dir $dest --prefix '' --headers-only
 
