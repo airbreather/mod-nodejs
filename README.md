@@ -4,13 +4,6 @@
 
 Basically just the same idea behind Eluna/ALE, but for JavaScript (Node.js, specifically) instead of Lua.
 
-Requires core patch:
-- azerothcore/azerothcore-wotlk#26648 for API tweaks
-
-## Building natively on Windows does not work right now.
-
-I have sunk too many hours into trying to make this work on native Windows. Use containers or WSL instead.
-
 ## Skeleton Project
 
 There are some specific configuration settings you'll need to have in order to run scripts with this, so I've made a "skeleton" project that you can copy from in order to get started:
@@ -52,25 +45,29 @@ See also the files under `/examples`.
 
 The only thing I can promise to support is what I run with, which is Linux. Here, there should be no extra steps required for this module. [The normal process](https://www.azerothcore.org/wiki/installing-a-module) should work.
 
-On Windows, I had a hard time trying to get it to work and gave up without any success.
+Windows has its own section below. On everything else, I can't test it myself, so you're mostly on your own.
 
-<details>
-<summary>Click to expand this section that goes over how far I got down the most promising path to making this work on Windows, but note that IT WILL NOT WORK AS-WRITTEN, so I've collapsed it by default in order to not confuse anybody.</summary>
+### Required Core Patches
+Requires core patches:
+- azerothcore/azerothcore-wotlk#26648 for API tweaks
+- azerothcore/azerothcore-wotlk#27003 to fix issues with doubly linked zlib
+   - This is only NEEDED on Windows, but it's harmless elsewhere.
 
-I had entertained the notion that the official builds of `node.exe`/`node.lib` might work, and I could get it to build, but it didn't get very far at runtime. Almost definitely, you need to build `libnode.dll`/`libnode.lib`, probably by running something like this in the directory where you've cloned Node.js:
+If it's easier for you to just start from one branch, and you don't mind [some Git-related turmoil](https://xkcd.com/1597) due to my regular force-pushes to recreate these, [my azerothcore-wotlk fork](https://github.com/airbreather/azerothcore-wotlk) should have ready-made branches named `for-mod-nodejs-*` that I occasionally rebuild using [the `build-helpers` script in this repo](./build-helpers). There are two main "flavors" (plus some variations based on whatever other project(s) I'm working on in secret):
+1. ("master") Starts from the latest version of the upstream `master` branch and adds the above patches plus a fix for azerothcore/azerothcore-wotlk#23528
+2. ("sprinkles") Starts from the latest version of [the `mod-playerbots` fork's `Playerbot` branch](https://github.com/mod-playerbots/mod-playerbots), adds the same patches as the previous line, and also adds [patches from Grimfeather's fork's `master` branch](https://github.com/Grimfeather/azerothcore-wotlk) on top of it so it can run alongside both `mod-playerbots` and `mod-individual-progression`, both of which I happen to be interested in using myself.
+   - Most of the time, Grimfeather's `master` branch is strictly ahead of `mod-playerbots`'s `Playerbot` branch (or very nearly so), but that's not always the case, so I do this in a way that will get everything from either one of them.
 
-```
-.\vcbuild.bat release dll full-icu x64 vs2026 no-cctest nonpm
-```
+### Windows
 
-No matter whether you try the `node.exe` or the `libnode.dll` route, you have to do something to work around the fact that both it and AzerothCore export zlib symbols.
+It took months, but it is now (at the time of writing) finally possible to build and run this on Windows:
 
-I had started down the path of tweaking AzerothCore to let modules substitute in their own zlib implementations in azerothcore/azerothcore-wotlk#27003, and this has let me build, but something always fails.
+1. After building, assuming everything was done following [the official guide](https://www.azerothcore.org/wiki/windows-core-installation), you need to copy the corresponding version of `libnode.dll` to your `C:\Build\bin\RelWithDebInfo` or `C:\Build\bin\Debug` folder, just like you did with the other DLLs.
+   - You should be able to find the correct DLL at `C:\Build\_deps\nodejs_win-src\bin\Debug\libnode.dll` for Debug builds or `C:\Build\_deps\nodejs_win-src\bin\Release\libnode.dll` for RelWithDebInfo and everything else.
+   - If you have a hard time finding this file, you can always re-download the zip from [whichever release](https://github.com/airbreather/mod-nodejs/releases) it came from. It'll be in there.
+2. (Optional) Looking for `libnode.pdb` files to put next to your `libnode.dll` files? There are `-pdbs.7z` archives right next to the main archives from [the main release](https://github.com/airbreather/mod-nodejs/releases) that the CMake process downloads automatically.
 
-Notably, this does **NOT** seem to have anything to do with AzerothCore only supporting MSVC and Node.js 24+ only supporting Clang-CL. A minimal embedder repro on Windows also failed for me when building the repro and libnode with Clang-CL, which is the point where I threw in the towel.
-</details>
-
-On everything else, I can't test it myself, so you're mostly on your own.
+Support for Windows is provided on a best-effort basis. It's intended to work there. At the time of writing, I've confirmed that a simple script can run correctly. I even found some bugs during the process of testing it on that platform because some different compiler behavior forced me to look harder at my code! However, I expect this to break on Windows more often than on Linux, simply because I do not test over there very frequently at all. [Open an issue](https://github.com/airbreather/mod-nodejs/issues) if something's broken, and I'll try to get to it at some point.
 
 ## Compatibility
 

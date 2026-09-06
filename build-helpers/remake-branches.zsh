@@ -15,7 +15,7 @@ fi
 # eventually, I feel like I'm well on my way to have yet another one of my own forks, but we'll see.
 SPRINKLES_SLUG="sprinkles"
 SPRINKLES_BASE_BRANCH="mod-playerbots/Playerbot"
-SPRINKLES_MERGE_BRANCHES=("for-mod-nodejs-on-merge-base" "allow-external-zlib-on-merge-base" "Grimfeather/master" "fix-socket-file-connections")
+SPRINKLES_MERGE_BRANCHES=("Grimfeather/master" "for-mod-nodejs-on-merge-base" "allow-external-zlib-on-merge-base" "fix-socket-file-connections")
 
 # it also needs to build on master, though, so don't leave that behind
 MASTER_SLUG="master"
