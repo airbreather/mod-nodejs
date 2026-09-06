@@ -1,4 +1,4 @@
-if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB) OR (WIN32 AND NOT NODEJS_DLL))
+if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB))
   include(FetchContent)
   if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     message(STATUS "Using Node.js v26.8.1 from this project's GitHub release (Linux)")
@@ -29,8 +29,8 @@ if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB) OR (WIN32 AND NOT NODEJS_DLL))
     FetchContent_MakeAvailable(nodejs_win)
 
     CU_SET_GLOBAL(NODEJS_INCLUDE_DIR "${nodejs_win_SOURCE_DIR}/include/node")
-    CU_SET_GLOBAL(NODEJS_DLL "${nodejs_win_SOURCE_DIR}/bin/libnode.dll")
-    CU_SET_GLOBAL(NODEJS_LIB "${nodejs_win_SOURCE_DIR}/bin/libnode.lib")
+    # Debug and Release builds link to different versions of the CRT.
+    CU_SET_GLOBAL(NODEJS_LIB "$<$<CONFIG:Debug>:${nodejs_win_SOURCE_DIR}/bin/Debug/libnode.lib>$<$<CONFIG:Release,RelWithDebInfo,MinSizeRel>:${nodejs_win_SOURCE_DIR}/bin/Release/libnode.lib>")
   else()
     message(FATAL_ERROR("Linux and Windows have pre-built files available. Others (we are '${CMAKE_SYSTEM_NAME}') must figure out their own NODEJS_INCLUDE_DIR and NODEJS_LIB values. PRs to show what I should for other systems are welcome!"))
   endif()
@@ -45,16 +45,15 @@ if (WIN32 AND NOT ZLIB_IMPORT)
     )
 endif()
 
-set(NODEJS_LIB_INSTALL ${NODEJS_LIB})
-if (WIN32)
-    set(NODEJS_LIB_INSTALL ${NODEJS_DLL})
+# Windows: the matching .dll must be copied into bin/<Config> by hand like the
+# others that the setup instructions tell users to deal with.
+if (NOT WIN32)
+    install(
+            FILES
+            ${NODEJS_LIB}
+            DESTINATION "${CMAKE_INSTALL_PREFIX}/bin"
+    )
 endif()
-
-install(
-        FILES
-        ${NODEJS_LIB_INSTALL}
-        DESTINATION "${CMAKE_INSTALL_PREFIX}/bin"
-)
 
 list(APPEND ${PRIVATE_SOURCES} (
         src/records/BattlegroundScoreRecord.cpp

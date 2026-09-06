@@ -14,22 +14,14 @@ target_include_directories(modules SYSTEM PUBLIC
         ${NODEJS_INCLUDE_DIR}
 )
 
-# V8 headers require the compiler to report a real __cplusplus value.
-# MSVC needs /Zc:__cplusplus for that, but the core compiles without it,
-# so add it only on the modules target where mod-nodejs sources are built.
 if (MSVC)
+    # Node.js headers check __cplusplus to know if they can use C++20-isms, but
+    # MSVC decided to only set it correctly if we specifically ask it to.
     target_compile_options(modules PRIVATE /Zc:__cplusplus)
-endif()
-
-# A Debug-config build of worldserver links a Debug-config libnode, whose V8 is
-# compiled with V8_ENABLE_CHECKS enabled (node ties this to is_debug). The
-# embedder computes the matching build_config at compile time from
-# `#ifdef V8_ENABLE_CHECKS` inside v8::V8::Initialize(), so we must define it
-# here too -- or v8::V8::Initialize() aborts at startup with an
-# "Embedder-vs-V8 build configuration mismatch ... V8_ENABLE_CHECKS" fatal.
-# Scope it to Debug only: a Release/RelWithDebInfo build links the release
-# libnode (checks off), so defining it there would itself mismatch.
-if (MSVC)
+    # the value of V8_ENABLE_CHECKS seen by the headers needs to match what it
+    # had when libnode.dll was built. Node.js turns it on in debug builds and
+    # off in release builds, so we need to follow suit. the Linux workflow only
+    # builds one version of libnode, so only do this for Windows.
     target_compile_definitions(modules PRIVATE $<$<CONFIG:Debug>:V8_ENABLE_CHECKS>)
 endif()
 
