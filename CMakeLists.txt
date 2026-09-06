@@ -21,8 +21,8 @@ if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB))
     FetchContent_Declare(
             nodejs_win
 
-            URL                        https://github.com/airbreather/mod-nodejs/releases/download/libnode-windows-v26.8.1/nodejs-v26.8.1.7z
-            URL_HASH                   SHA256=bb2146445abfd5746d8b7a3009583d84faabda8925ecd2828cdf5c7d8ccb91c9
+            URL                        https://github.com/airbreather/mod-nodejs/releases/download/libnode-windows-v26.8.1-take2/nodejs-v26.8.1.7z
+            URL_HASH                   SHA256=bd95715096ac0b21dda4c2fb8448b844827bcff0a3a79fdfe9b0e87d4725315c
             DOWNLOAD_EXTRACT_TIMESTAMP true
     )
 
@@ -39,7 +39,7 @@ endif()
 if (WIN32 AND NOT ZLIB_IMPORT)
     CU_SET_GLOBAL(ZLIB_IMPORT ${CMAKE_BINARY_DIR}/mod-nodejs/zlib.lib)
     file(
-            DOWNLOAD               https://github.com/airbreather/mod-nodejs/releases/download/libnode-windows-v26.8.1/zlib.lib
+            DOWNLOAD               https://github.com/airbreather/mod-nodejs/releases/download/libnode-windows-v26.8.1-take2/zlib.lib
             ${ZLIB_IMPORT}
             EXPECTED_HASH          SHA256=6784de83aa9020df38748712b1548c612ee8a046288910afb43e433febc9961b
     )
