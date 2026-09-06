@@ -42,7 +42,7 @@ jobs:
           New-Item -ItemType Directory -Force $main
           New-Item -ItemType Directory -Force $pdb
           foreach ($config in "Release", "Debug") {
-            $src = Join-Path "${{ steps.nodejs.outputs.dir }}" "bin" $config
+            $src = Join-Path "${{ steps.nodejs.outputs.dir }}" "out" $config
             $bin = Join-Path $main "bin" $config
             New-Item -ItemType Directory -Force $bin
             New-Item -ItemType Directory -Force (Join-Path $pdb $config)
