@@ -21,6 +21,18 @@ if (MSVC)
     target_compile_options(modules PRIVATE /Zc:__cplusplus)
 endif()
 
+# A Debug-config build of worldserver links a Debug-config libnode, whose V8 is
+# compiled with V8_ENABLE_CHECKS enabled (node ties this to is_debug). The
+# embedder computes the matching build_config at compile time from
+# `#ifdef V8_ENABLE_CHECKS` inside v8::V8::Initialize(), so we must define it
+# here too -- or v8::V8::Initialize() aborts at startup with an
+# "Embedder-vs-V8 build configuration mismatch ... V8_ENABLE_CHECKS" fatal.
+# Scope it to Debug only: a Release/RelWithDebInfo build links the release
+# libnode (checks off), so defining it there would itself mismatch.
+if (MSVC)
+    target_compile_definitions(modules PRIVATE $<$<CONFIG:Debug>:V8_ENABLE_CHECKS>)
+endif()
+
 # Embed a JS file as a constexpr char[] in a generated header.
 # Included automatically by modules/CMakeLists.txt after the 'modules' target is created.
 

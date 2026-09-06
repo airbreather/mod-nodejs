@@ -74,8 +74,8 @@ public:
 
 // we can only initialize Node.js once per process.
 std::mutex ONCE_INIT_LOCK;
-std::optional<OnceInitResult> ONCE_INIT_RESULT{};
-OnceInitResult init_node_and_v8_once() {
+std::shared_ptr<node::InitializationResult> ONCE_INIT_RESULT{};
+std::shared_ptr<node::InitializationResult> init_node_and_v8_once() {
 	auto args = std::vector<std::string>{
 		"node", "--expose-gc", "--enable-source-maps"
 	};
@@ -85,39 +85,26 @@ OnceInitResult init_node_and_v8_once() {
 		args.emplace_back(sConfigMgr->GetOption<std::string>(key, ""));
 	}
 	v8::V8::InitializeICU();
-	auto init = node::InitializeOncePerProcess(args,
-		{
-			node::ProcessInitializationFlags::kNoInitializeV8,
-			node::ProcessInitializationFlags::kNoInitializeNodeV8Platform,
-		});
-
-	auto plat(node::MultiIsolatePlatform::Create(4));
-	v8::V8::InitializeICU();
-	v8::V8::InitializePlatform(plat.get());
-	v8::V8::Initialize();
-	return {
-		.plat = std::move(plat),
-		.init = init
-	};
+	return node::InitializeOncePerProcess(args);
 }
-OnceInitResult & get_once_init_result() {
+std::shared_ptr<node::InitializationResult> get_once_init_result() {
 	if (!ONCE_INIT_RESULT) {
 		std::lock_guard lck(ONCE_INIT_LOCK);
 		if (!ONCE_INIT_RESULT) {
 			ONCE_INIT_RESULT = init_node_and_v8_once();
 		}
 	}
-	return *ONCE_INIT_RESULT;
+	return ONCE_INIT_RESULT;
 }
 
 std::unique_ptr<NodeJs> RUNTIME_INSTANCE { nullptr };
 auto RUNTIME_IS_INITIALIZED = false;
 }
 
-NodeJs::NodeJs(OnceInitResult & once_init_result)
-	: init_result_(once_init_result.init), platform_(once_init_result.plat.get()), m_command_map(1024) {
+NodeJs::NodeJs(std::shared_ptr<node::InitializationResult> init_result)
+	: init_result_(std::move(init_result)), m_command_map(1024) {
 	setup_ = node::CommonEnvironmentSetup::Create(
-		platform_, &errors_, init_result_->args(), init_result_->exec_args());
+		init_result_->platform(), &errors_, init_result_->args(), init_result_->exec_args());
 }
 
 NodeJs::~NodeJs() {
@@ -280,7 +267,7 @@ void NodeJs::tick() {
 		query_processor_.ProcessReadyCallbacks();
 		uv_run(setup_->event_loop(), UV_RUN_NOWAIT);
 		setup_->isolate()->PerformMicrotaskCheckpoint();
-		platform_->DrainTasks(setup_->isolate());
+		init_result_->platform()->DrainTasks(setup_->isolate());
 	});
 }
 

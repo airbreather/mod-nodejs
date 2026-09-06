@@ -20,15 +20,9 @@ class ChatCommandBuilderBuilder;
 using ChatCommandBuilderBuilderBox = std::shared_ptr<ChatCommandBuilderBuilder>;
 using ChatCommandBuilder = Acore::ChatCommands::ChatCommandBuilder;
 
-struct OnceInitResult {
-	std::unique_ptr<node::MultiIsolatePlatform> plat;
-	std::shared_ptr<node::InitializationResult> init;
-};
-
 using DerivedTemplateRTTIFunc = std::function<std::optional<std::type_index>(void *)>;
 class NodeJs {
 	std::shared_ptr<node::InitializationResult> init_result_;
-	node::MultiIsolatePlatform * platform_;
 	std::unique_ptr<node::CommonEnvironmentSetup> setup_;
 	QueryCallbackProcessor query_processor_;
 	NodePostToEventLoopMaster * post_to_event_loop_master_ = nullptr;
@@ -46,7 +40,7 @@ class NodeJs {
 	std::vector<v8::Global<v8::Function>> m_command_callbacks;
 
 public:
-	NodeJs(OnceInitResult &);
+	NodeJs(std::shared_ptr<node::InitializationResult>);
 	~NodeJs();
 
 	static NodeJs * instance();
