@@ -25,7 +25,7 @@ jobs:
         working-directory: ${{ steps.nodejs.outputs.dir }}
         run: |
           .\vcbuild.bat nobuild release x64 clang-cl dll v8temporal
-          $out = Join-Path "${{ github.workspace }}" "out" "Release"
+          $out = Join-Path "bin" "Release"
           New-Item -ItemType Directory -Force $out
           Set-Content (Join-Path $out "libnode.dll") "This is the .dll"
           Set-Content (Join-Path $out "libnode.lib") "This is the .lib"
@@ -37,7 +37,7 @@ jobs:
         working-directory: ${{ steps.nodejs.outputs.dir }}
         run: |
           .\vcbuild.bat nobuild debug x64 clang-cl dll v8temporal
-          $out = Join-Path "${{ github.workspace }}" "out" "Debug"
+          $out = Join-Path "bin" "Debug"
           New-Item -ItemType Directory -Force $out
           Set-Content (Join-Path $out "libnode.dll") "This is the .dll"
           Set-Content (Join-Path $out "libnode.lib") "This is the .lib"
