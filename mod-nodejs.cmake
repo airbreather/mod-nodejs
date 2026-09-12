@@ -7,7 +7,7 @@ CU_GET_GLOBAL(NODEJS_INCLUDE_DIR)
 CU_GET_GLOBAL(NODEJS_LIB)
 
 message(STATUS "Node.js include path: ${NODEJS_INCLUDE_DIR}")
-message(STATUS "Node.js library: ${NODEJS_LIB}")
+message(STATUS "libnode: ${NODEJS_LIB}")
 
 target_link_libraries(modules PUBLIC ${NODEJS_LIB})
 target_include_directories(modules SYSTEM PUBLIC

@@ -1,13 +1,12 @@
 if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB))
   include(FetchContent)
+  message(STATUS "mod-nodejs: using libnode v26.8.2 from the GitHub release")
   if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    message(STATUS "Using Node.js v26.8.1 from this project's GitHub release (Linux)")
-
     FetchContent_Declare(
             nodejs_linux
 
-            URL                        https://github.com/airbreather/mod-nodejs/releases/download/libnode-linux-v26.8.1/nodejs-v26.8.1.tar.zst
-            URL_HASH                   SHA256=7fac51e9d04916f7599f48bbb83c28785ad1095519f363c05256f32ca202c780
+            URL                        https://github.com/airbreather/mod-nodejs/releases/download/libnode-v26.8.2/libnode-linux-v26.8.2.tar.zst
+            URL_HASH                   SHA256=2c0f0fa66df2f0fffa4d3a5f5e93123ac64715250c8c3ce169f4e52ba9b255e9
             DOWNLOAD_EXTRACT_TIMESTAMP true
     )
 
@@ -16,13 +15,11 @@ if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB))
     CU_SET_GLOBAL(NODEJS_INCLUDE_DIR "${nodejs_linux_SOURCE_DIR}/include/node")
     CU_SET_GLOBAL(NODEJS_LIB "${nodejs_linux_SOURCE_DIR}/lib/libnode.so.147")
   elseif(WIN32)
-    message(STATUS "Using Node.js v26.8.1 from this project's GitHub release (Windows)")
-
     FetchContent_Declare(
             nodejs_win
 
-            URL                        https://github.com/airbreather/mod-nodejs/releases/download/libnode-windows-v26.8.1-take2/nodejs-v26.8.1.7z
-            URL_HASH                   SHA256=bd95715096ac0b21dda4c2fb8448b844827bcff0a3a79fdfe9b0e87d4725315c
+            URL                        https://github.com/airbreather/mod-nodejs/releases/download/libnode-v26.8.2/libnode-windows-v26.8.2.7z
+            URL_HASH                   SHA256=2e76fca36d837130d0dd77af2df2966bfeaa2afcced32fca82fb1964bf78278d
             DOWNLOAD_EXTRACT_TIMESTAMP true
     )
 
@@ -34,16 +31,6 @@ if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB))
   else()
     message(FATAL_ERROR("Linux and Windows have pre-built files available. Others (we are '${CMAKE_SYSTEM_NAME}') must figure out their own NODEJS_INCLUDE_DIR and NODEJS_LIB values. PRs to show what I should for other systems are welcome!"))
   endif()
-endif()
-
-# TODO: once the generate-windows-nodejs.yml workflow runs and we have the new archives, delete.
-if (WIN32 AND NOT ZLIB_IMPORT)
-    CU_SET_GLOBAL(ZLIB_IMPORT ${CMAKE_BINARY_DIR}/mod-nodejs/zlib.lib)
-    file(
-            DOWNLOAD               https://github.com/airbreather/mod-nodejs/releases/download/libnode-windows-v26.8.1-take2/zlib.lib
-            ${ZLIB_IMPORT}
-            EXPECTED_HASH          SHA256=6784de83aa9020df38748712b1548c612ee8a046288910afb43e433febc9961b
-    )
 endif()
 
 # Windows: the matching .dll must be copied into bin/<Config> by hand like the
