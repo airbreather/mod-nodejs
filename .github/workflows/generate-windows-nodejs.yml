@@ -21,6 +21,13 @@ jobs:
             tar -xzf - -C nodejs-src --strip-components=1
           "dir=$(Resolve-Path nodejs-src)" >> "$env:GITHUB_OUTPUT"
 
+      - name: prefix zlib symbols
+        working-directory: ${{ steps.nodejs.outputs.dir }}
+        shell: bash
+        run: |
+          sed -i 's/^#ifdef Z_PREFIX/#define Z_PREFIX\n&/' deps/zlib/zconf.h
+          sed -i -E 's/^    ([A-Za-z0-9_]+)$/    z_\1/' deps/zlib/win32/zlib.def
+
       - name: build (Release config)
         working-directory: ${{ steps.nodejs.outputs.dir }}
         run: |

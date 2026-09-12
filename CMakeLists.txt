@@ -36,6 +36,7 @@ if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB))
   endif()
 endif()
 
+# TODO: once the generate-windows-nodejs.yml workflow runs and we have the new archives, delete.
 if (WIN32 AND NOT ZLIB_IMPORT)
     CU_SET_GLOBAL(ZLIB_IMPORT ${CMAKE_BINARY_DIR}/mod-nodejs/zlib.lib)
     file(

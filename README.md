@@ -15,6 +15,7 @@ Requires core patches:
 - azerothcore/azerothcore-wotlk#26648 for API tweaks
 - azerothcore/azerothcore-wotlk#27003 to fix issues with doubly linked zlib
 	- This is only NEEDED on Windows, but it's harmless elsewhere.
+	- Coming soon (once a GitHub Actions workflow finishes running and I update things accordingly): this patch will no longer be needed.
 
 If it's easier for you to just start from one branch, and you don't mind [some Git-related turmoil](https://xkcd.com/1597) due to my regular force-pushes to recreate these, [my azerothcore-wotlk fork](https://github.com/airbreather/azerothcore-wotlk) should have ready-made branches named `for-mod-nodejs-*` that I occasionally rebuild using [the `build-helpers` script in this repo](./build-helpers). There are two main "flavors" (plus some variations based on whatever other project(s) I'm working on in secret):
 1. ("master") Starts from the latest version of the upstream `master` branch and adds the above patches plus a fix for azerothcore/azerothcore-wotlk#23528
