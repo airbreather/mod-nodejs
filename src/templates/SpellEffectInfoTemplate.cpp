@@ -124,20 +124,20 @@ v8::Local<v8::FunctionTemplate> jcreate_template<SpellEffectInfo const *>() {
 	reg_method(ft, "appliesAura", [](SpellEffectInfo const * eff, AuraType const aura) {
 		return eff->IsAura(aura);
 	});
-	reg_method(ft, "calcValue", [](SpellEffectInfo const * eff, std::optional<Unit *> const caster, std::optional<int32_t> const base_points, std::optional<Unit *> const target) {
+	reg_method(ft, "calcValue", [](SpellEffectInfo const * eff, std::optional<WorldObject *> const caster, std::optional<int32_t> const base_points, std::optional<Unit *> const target) {
 		auto const base_points_l = base_points.value_or(0);
 		return eff->CalcValue(caster.value_or(nullptr), base_points ? &base_points_l : nullptr, target.value_or(nullptr));
 	});
 	reg_method(ft, "calcBaseValue", [](SpellEffectInfo const * eff, int32_t const value) {
 		return eff->CalcBaseValue(value);
 	});
-	reg_method(ft, "calcValueMultiplier", [](SpellEffectInfo const * eff, Unit * caster, std::optional<Spell *> const spell) {
+	reg_method(ft, "calcValueMultiplier", [](SpellEffectInfo const * eff, WorldObject * caster, std::optional<Spell *> const spell) {
 		return eff->CalcValueMultiplier(caster, spell.value_or(nullptr));
 	});
-	reg_method(ft, "calcDamageMultiplier", [](SpellEffectInfo const * eff, Unit * caster, std::optional<Spell *> const spell) {
+	reg_method(ft, "calcDamageMultiplier", [](SpellEffectInfo const * eff, WorldObject * caster, std::optional<Spell *> const spell) {
 		return eff->CalcDamageMultiplier(caster, spell.value_or(nullptr));
 	});
-	reg_method(ft, "calcRadius", [](SpellEffectInfo const * eff, std::optional<Unit *> const caster, std::optional<Spell *> const spell) {
+	reg_method(ft, "calcRadius", [](SpellEffectInfo const * eff, std::optional<WorldObject *> const caster, std::optional<Spell *> const spell) {
 		return eff->CalcRadius(caster.value_or(nullptr), spell.value_or(nullptr));
 	});
 	reg_method(ft, "getMissingTargetMask", [](SpellEffectInfo const * eff, std::optional<bool> const src_set, std::optional<bool> const dest_set, std::optional<uint32_t> const mask) {
