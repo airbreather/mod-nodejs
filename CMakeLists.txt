@@ -130,6 +130,7 @@ list(APPEND ${PRIVATE_SOURCES} (
         src/templates/QueryResultSetTemplate.cpp
         src/templates/QuestTemplate.cpp
         src/templates/RollTemplate.cpp
+        src/templates/SpawnCreatureBuilderTemplate.cpp
         src/templates/SpellCastTimesEntryTemplate.cpp
         src/templates/SpellCategoryEntryTemplate.cpp
         src/templates/SpellChainNodeTemplate.cpp
@@ -165,5 +166,6 @@ list(APPEND ${PRIVATE_SOURCES} (
         src/NodePropertySystem.cpp
         src/NodeWrappedObject.cpp
         src/PropertyImplementations.cpp
+        src/SpawnCreatureBuilder.cpp
         src/UnixTimestamp.cpp
 ))

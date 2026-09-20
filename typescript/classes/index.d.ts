@@ -47,6 +47,7 @@ export type * from './PvPDifficultyEntry.d.ts';
 export type * from './QueryResult.d.ts';
 export type * from './Quest.d.ts';
 export type * from './Roll.d.ts';
+export type * from './SpawnCreatureBuilder.d.ts';
 export type * from './Spell.d.ts';
 export type * from './SpellCastTimesEntry.d.ts';
 export type * from './SpellCategoryEntry.d.ts';

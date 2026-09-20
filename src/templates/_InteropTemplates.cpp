@@ -66,6 +66,7 @@ struct ItemTemplate;
 struct Loot;
 struct MySQLConnectionInfo;
 struct PvPDifficultyEntry;
+struct SpawnCreatureBuilder;
 struct SpellCastTimesEntry;
 struct SpellCategoryEntry;
 struct SpellChainNode;
@@ -136,6 +137,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<NodeJs *>() {
 	REGISTER_CLASS_PROP(QueryResult)
 	REGISTER_CLASS_PROP_RO(Quest)
 	REGISTER_CLASS_PROP(Roll)
+	REGISTER_CLASS_PROP(SpawnCreatureBuilder)
 	REGISTER_CLASS_PROP_RO(SpellCastTimesEntry)
 	REGISTER_CLASS_PROP_RO(SpellCategoryEntry)
 	REGISTER_CLASS_PROP(SpellChainNode)
