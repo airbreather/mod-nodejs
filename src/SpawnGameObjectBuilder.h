@@ -20,7 +20,7 @@ struct SpawnGameObjectBuilder {
 	uint32_t animation_progress = 0;
 	GOState state = GO_STATE_READY;
 
-	GameObject * spawn() const;
+	[[nodiscard]] GameObject * spawn() const;
 };
 
 #endif //MOD_NODEJS_SPAWNGAMEOBJECTBUILDER_H

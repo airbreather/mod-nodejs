@@ -9,6 +9,7 @@
 #include "GameTime.h"
 #include "NodePropertySystem.h"
 #include "Object.h"
+#include "ObjectMgr.h"
 #include "QuestDef.h"
 #include "UnixTimestamp.h"
 
@@ -52,6 +53,9 @@ v8::Local<v8::FunctionTemplate> jcreate_template<GameObject *>() {
 	// });
 	reg_prop_ro(ft, "lootRecipientGroup", [](GameObject * go) {
 		return go->GetLootRecipientGroup();
+	});
+	reg_prop_ro(ft, "template", [](GameObject * go) {
+		return sObjectMgr->GetGameObjectTemplate(go->GetEntry());
 	});
 
 	reg_method(ft, "hasQuest", [](GameObject * go, Quest const * quest) {

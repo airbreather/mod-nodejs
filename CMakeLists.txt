@@ -152,6 +152,7 @@ list(APPEND ${PRIVATE_SOURCES} (
         src/templates/QuestTemplate.cpp
         src/templates/RollTemplate.cpp
         src/templates/SpawnCreatureBuilderTemplate.cpp
+        src/templates/SpawnGameObjectBuilderTemplate.cpp
         src/templates/SpellcasterDataTemplate.cpp
         src/templates/SpellCastTimesEntryTemplate.cpp
         src/templates/SpellCategoryEntryTemplate.cpp

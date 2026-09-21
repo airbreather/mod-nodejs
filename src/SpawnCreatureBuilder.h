@@ -22,7 +22,7 @@ struct SpawnCreatureBuilder {
 	// MotionTransport * transport = nullptr;
 
 	CreatureData & ensure_data();
-	Creature * spawn() const;
+	[[nodiscard]] Creature * spawn() const;
 };
 
 #endif //MOD_NODEJS_SPAWNCREATUREBUILDER_H
