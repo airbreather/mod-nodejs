@@ -9,17 +9,10 @@ SpawnCreatureBuilder::SpawnCreatureBuilder(uint32_t entry, Map * map, Position p
 }
 
 CreatureData & SpawnCreatureBuilder::ensure_data() {
-	if (!data) {
-		if (creature_template) {
-			data.emplace(*sObjectMgr->GetCreatureData(creature_template->Entry));
-		} else {
-			data.emplace();
-		}
-	}
-	return *data;
+	return data ? *data : data.emplace();
 }
 
-Creature * SpawnCreatureBuilder::spawn() {
+Creature * SpawnCreatureBuilder::spawn() const {
 	if (!creature_template) {
 		return nullptr;
 	}
@@ -28,8 +21,7 @@ Creature * SpawnCreatureBuilder::spawn() {
 	if (!creature->Create(
 		map->GenerateLowGuid<HighGuid::Unit>(), map, phase_mask, creature_template->Entry, 0,
 		pos.GetPositionX(), pos.GetPositionY(), pos.GetPositionZ(), pos.GetOrientation(),
-		data ? &data.value() : nullptr))
-	{
+		data ? &data.value() : nullptr)) {
 		delete creature;
 		return nullptr;
 	}
@@ -41,8 +33,7 @@ Creature * SpawnCreatureBuilder::spawn() {
 	creature->CleanupsBeforeDelete();
 	delete creature;
 	creature = new Creature();
-	if (!creature->LoadCreatureFromDB(spawnId, map, true, true))
-	{
+	if (!creature->LoadCreatureFromDB(spawnId, map, true, true)) {
 		delete creature;
 		return nullptr;
 	}
