@@ -2,20 +2,21 @@ name: Generate Windows Node.js
 
 on:
   workflow_dispatch:
+    inputs:
+      nodejs_tag:
+        description: 'Node.js version (git tag)'
+        required: true
+        default: 'v26.9.0'
+        type: string
 
 jobs:
   build:
     runs-on: windows-latest
     steps:
-      - name: vars
-        id: variables
-        run: |
-          echo "nodejs_tag=v26.9.0" >> "$env:GITHUB_OUTPUT"
-
       - name: fetch
         id: nodejs
         run: |
-          $tag = "${{ steps.variables.outputs.nodejs_tag }}"
+          $tag = "${{ inputs.nodejs_tag }}"
           New-Item -ItemType Directory -Force nodejs-src
           curl -fSL "https://github.com/nodejs/node/archive/refs/tags/${tag}.tar.gz" |
             tar -xzf - -C nodejs-src --strip-components=1
@@ -32,7 +33,7 @@ jobs:
         working-directory: ${{ steps.nodejs.outputs.dir }}
         run: |
           .\vcbuild.bat release x64 clang-cl dll v8temporal
-          $dest = Join-Path "${{ github.workspace }}" "out" "nodejs-${{ steps.variables.outputs.nodejs_tag }}"
+          $dest = Join-Path "${{ github.workspace }}" "out" "nodejs-${{ inputs.nodejs_tag }}"
           python (Join-Path "tools" "install.py") install --dest-dir $dest --prefix '' --headers-only
 
       - name: build (Debug config)
@@ -43,7 +44,7 @@ jobs:
       - name: collect
         working-directory: ${{ steps.nodejs.outputs.dir }}
         run: |
-          $tag  = "${{ steps.variables.outputs.nodejs_tag }}"
+          $tag  = "${{ inputs.nodejs_tag }}"
           $main = Join-Path "${{ github.workspace }}" "out" "nodejs-$tag"
           $pdb  = Join-Path "${{ github.workspace }}" "out" "nodejs-$tag-pdb"
           New-Item -ItemType Directory -Force $main
@@ -60,7 +61,7 @@ jobs:
 
       - name: archive
         run: |
-          $tag = "${{ steps.variables.outputs.nodejs_tag }}"
+          $tag = "${{ inputs.nodejs_tag }}"
           Push-Location (Join-Path "${{ github.workspace }}" "out")
           7z a -r -mx9 -m0=BCJ2 -m1=LZMA2:d=3840m:fb=273 -ms=on -mmt=3 "nodejs-$tag.7z" "nodejs-$tag"
           7z a -r -mx9 -m0=BCJ2 -m1=LZMA2:d=3840m:fb=273 -ms=on -mmt=3 "nodejs-$tag-pdb.7z" "nodejs-$tag-pdb"
@@ -68,11 +69,11 @@ jobs:
       - name: upload (DLLs)
         uses: actions/upload-artifact@v7
         with:
-          path: "out/nodejs-${{ steps.variables.outputs.nodejs_tag }}.7z"
+          path: "out/nodejs-${{ inputs.nodejs_tag }}.7z"
           archive: false
 
       - name: upload (PDBs)
         uses: actions/upload-artifact@v7
         with:
-          path: "out/nodejs-${{ steps.variables.outputs.nodejs_tag }}-pdb.7z"
+          path: "out/nodejs-${{ inputs.nodejs_tag }}-pdb.7z"
           archive: false
