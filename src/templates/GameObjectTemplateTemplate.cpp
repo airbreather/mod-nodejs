@@ -39,92 +39,49 @@ v8::Local<v8::FunctionTemplate> jcreate_template<GameObjectTemplate const *>() {
 	reg_prop_ro(ft, "size", [](GameObjectTemplate const * t) {
 		return t->size;
 	});
-	reg_prop_ro(ft, "doorData", [](GameObjectTemplate const * t) {
-		return &t->door;
-	});
-	reg_prop_ro(ft, "buttonData", [](GameObjectTemplate const * t) {
-		return &t->button;
-	});
-	reg_prop_ro(ft, "questgiverData", [](GameObjectTemplate const * t) {
-		return &t->questgiver;
-	});
-	reg_prop_ro(ft, "chestData", [](GameObjectTemplate const * t) {
-		return &t->chest;
-	});
-	reg_prop_ro(ft, "genericData", [](GameObjectTemplate const * t) {
-		return &t->_generic;
-	});
-	reg_prop_ro(ft, "trapData", [](GameObjectTemplate const * t) {
-		return &t->trap;
-	});
-	reg_prop_ro(ft, "chairData", [](GameObjectTemplate const * t) {
-		return &t->chair;
-	});
-	reg_prop_ro(ft, "spellFocusData", [](GameObjectTemplate const * t) {
-		return &t->spellFocus;
-	});
-	reg_prop_ro(ft, "textData", [](GameObjectTemplate const * t) {
-		return &t->text;
-	});
-	reg_prop_ro(ft, "gooberData", [](GameObjectTemplate const * t) {
-		return &t->goober;
-	});
-	reg_prop_ro(ft, "transportData", [](GameObjectTemplate const * t) {
-		return &t->transport;
-	});
-	reg_prop_ro(ft, "areadamageData", [](GameObjectTemplate const * t) {
-		return &t->areadamage;
-	});
-	reg_prop_ro(ft, "cameraData", [](GameObjectTemplate const * t) {
-		return &t->camera;
-	});
-	reg_prop_ro(ft, "moTransportData", [](GameObjectTemplate const * t) {
-		return &t->moTransport;
-	});
-	reg_prop_ro(ft, "summoningRitualData", [](GameObjectTemplate const * t) {
-		return &t->summoningRitual;
-	});
-	reg_prop_ro(ft, "guardpostData", [](GameObjectTemplate const * t) {
-		return &t->guardpost;
-	});
-	reg_prop_ro(ft, "spellcasterData", [](GameObjectTemplate const * t) {
-		return &t->spellcaster;
-	});
-	reg_prop_ro(ft, "meetingstoneData", [](GameObjectTemplate const * t) {
-		return &t->meetingstone;
-	});
-	reg_prop_ro(ft, "flagstandData", [](GameObjectTemplate const * t) {
-		return &t->flagstand;
-	});
-	reg_prop_ro(ft, "fishingholeData", [](GameObjectTemplate const * t) {
-		return &t->fishinghole;
-	});
-	reg_prop_ro(ft, "flagdropData", [](GameObjectTemplate const * t) {
-		return &t->flagdrop;
-	});
-	reg_prop_ro(ft, "miniGameData", [](GameObjectTemplate const * t) {
-		return &t->miniGame;
-	});
-	reg_prop_ro(ft, "capturePointData", [](GameObjectTemplate const * t) {
-		return &t->capturePoint;
-	});
-	reg_prop_ro(ft, "auraGeneratorData", [](GameObjectTemplate const * t) {
-		return &t->auraGenerator;
-	});
-	reg_prop_ro(ft, "dungeonDifficultyData", [](GameObjectTemplate const * t) {
-		return &t->dungeonDifficulty;
-	});
-	reg_prop_ro(ft, "barberChairData", [](GameObjectTemplate const * t) {
-		return &t->barberChair;
-	});
-	reg_prop_ro(ft, "buildingData", [](GameObjectTemplate const * t) {
-		return &t->building;
-	});
-	reg_prop_ro(ft, "trapDoorData", [](GameObjectTemplate const * t) {
-		return &t->trapDoor;
-	});
 	reg_prop_ro(ft, "rawData", [](GameObjectTemplate const * t) {
 		return jarr(t->raw.data);
+	});
+	reg_prop_ro(ft, "data", [](GameObjectTemplate const * t) {
+		switch (t->type) {
+			case GAMEOBJECT_TYPE_DOOR: return jval(&t->door);
+			case GAMEOBJECT_TYPE_BUTTON: return jval(&t->button);
+			case GAMEOBJECT_TYPE_QUESTGIVER: return jval(&t->questgiver);
+			case GAMEOBJECT_TYPE_CHEST: return jval(&t->chest);
+			// case GAMEOBJECT_TYPE_BINDER: return jnull();
+			case GAMEOBJECT_TYPE_GENERIC: return jval(&t->_generic);
+			case GAMEOBJECT_TYPE_TRAP: return jval(&t->trap);
+			case GAMEOBJECT_TYPE_CHAIR: return jval(&t->chair);
+			case GAMEOBJECT_TYPE_SPELL_FOCUS: return jval(&t->spellFocus);
+			case GAMEOBJECT_TYPE_TEXT: return jval(&t->text);
+			case GAMEOBJECT_TYPE_GOOBER: return jval(&t->goober);
+			case GAMEOBJECT_TYPE_TRANSPORT: return jval(&t->transport);
+			case GAMEOBJECT_TYPE_AREADAMAGE: return jval(&t->areadamage);
+			case GAMEOBJECT_TYPE_CAMERA: return jval(&t->camera);
+			// case GAMEOBJECT_TYPE_MAP_OBJECT: return jnull();
+			case GAMEOBJECT_TYPE_MO_TRANSPORT: return jval(&t->moTransport);
+			// case GAMEOBJECT_TYPE_DUEL_ARBITER: return jnull();
+			// case GAMEOBJECT_TYPE_FISHINGNODE: return jnull();
+			case GAMEOBJECT_TYPE_SUMMONING_RITUAL: return jval(&t->summoningRitual);
+			// case GAMEOBJECT_TYPE_MAILBOX: return jnull();
+			// case GAMEOBJECT_TYPE_DO_NOT_USE: return jnull();
+			case GAMEOBJECT_TYPE_GUARDPOST: return jval(&t->guardpost);
+			case GAMEOBJECT_TYPE_SPELLCASTER: return jval(&t->spellcaster);
+			case GAMEOBJECT_TYPE_MEETINGSTONE: return jval(&t->meetingstone);
+			case GAMEOBJECT_TYPE_FLAGSTAND: return jval(&t->flagstand);
+			case GAMEOBJECT_TYPE_FISHINGHOLE: return jval(&t->fishinghole);
+			case GAMEOBJECT_TYPE_FLAGDROP: return jval(&t->flagdrop);
+			case GAMEOBJECT_TYPE_MINI_GAME: return jval(&t->miniGame);
+			// case GAMEOBJECT_TYPE_DO_NOT_USE_2: return jnull();
+			case GAMEOBJECT_TYPE_CAPTURE_POINT: return jval(&t->capturePoint);
+			case GAMEOBJECT_TYPE_AURA_GENERATOR: return jval(&t->auraGenerator);
+			case GAMEOBJECT_TYPE_DUNGEON_DIFFICULTY: return jval(&t->dungeonDifficulty);
+			case GAMEOBJECT_TYPE_BARBER_CHAIR: return jval(&t->barberChair);
+			case GAMEOBJECT_TYPE_DESTRUCTIBLE_BUILDING: return jval(&t->building);
+			// case GAMEOBJECT_TYPE_GUILD_BANK: return jnull();
+			case GAMEOBJECT_TYPE_TRAPDOOR: return jval(&t->trapDoor);
+			default: return jnull();
+		}
 	});
 
 	return ft;

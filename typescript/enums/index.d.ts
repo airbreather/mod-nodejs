@@ -48,6 +48,7 @@ export type * from './EnvironmentalDamage.d.ts';
 export type * from './EquipmentSlots.d.ts';
 export type * from './EvadeReason.d.ts';
 export type * from './Expansions.d.ts';
+export type * from './GameobjectTypes.d.ts';
 export type * from './Gender.d.ts';
 export type * from './GMTicketEscalationStatus.d.ts';
 export type * from './GossipAction.d.ts';

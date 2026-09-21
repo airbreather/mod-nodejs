@@ -33,7 +33,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<QuestGiverData const *>() {
 		return q->openTextID;
 	});
 	reg_prop_ro(ft, "losOk", [](QuestGiverData const * q) {
-		return q->losOK;
+		return q->losOK != 0;
 	});
 	reg_prop_ro(ft, "allowMounted", [](QuestGiverData const * q) {
 		return q->allowMounted != 0;

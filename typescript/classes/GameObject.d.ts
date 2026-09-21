@@ -12,6 +12,7 @@ declare global {
 			readonly lootRecipient: Player | undefined;
 			// readonly lootRecipientGroupId: number; // not in the core PR yet.
 			readonly lootRecipientGroup: Group | undefined;
+			readonly template: GameObjectTemplateNarrowable;
 			goState: GOState;
 			nextAbsoluteRespawnTime: Temporal.Instant;
 			ownerGuid: ObjectGuid | undefined;
