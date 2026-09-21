@@ -11,6 +11,7 @@
 #include "Object.h"
 #include "ObjectMgr.h"
 #include "QuestDef.h"
+#include "SpawnGameObjectBuilder.h"
 #include "UnixTimestamp.h"
 
 class Unit;
@@ -23,6 +24,15 @@ v8::Local<v8::FunctionTemplate> jcreate_template<GameObject *>() {
 
 	ft->SetClassName(jstr_intern("GameObject"));
 	ft.safe_inherit<WorldObject *>();
+
+	reg_static_method(ft, "buildSpawner", [](uint32_t entry, Map * map, float x, float y, float z, float o) -> v8::Local<v8::Value> {
+		auto builder = new SpawnGameObjectBuilder(entry, map, { x, y, z, o });
+		if (!builder->game_object_template) {
+			v8::Isolate::GetCurrent()->ThrowError("Entry does not represent a valid game object.");
+			return jnull();
+		}
+		return jmove(builder);
+	});
 
 	reg_prop_ro(ft, "isSpawned", [](GameObject * go) {
 		return go->isSpawned();

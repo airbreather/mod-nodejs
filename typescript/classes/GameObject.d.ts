@@ -1,6 +1,8 @@
 declare global {
 	namespace Acore {
 		class GameObject extends WorldObject {
+			static buildSpawner(entry: number, map: ACMap, x: number, y: number, z: number, o: number): SpawnGameObjectBuilder;
+
 			readonly mapId: number;
 			readonly isSpawned: boolean;
 			readonly isTransport: boolean;

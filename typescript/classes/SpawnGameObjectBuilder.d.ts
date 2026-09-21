@@ -3,7 +3,7 @@ declare global {
 		class SpawnGameObjectBuilder {
 			private constructor();
 
-			spawn(): GameObject;
+			spawn(): GameObject | undefined;
 
 			setPhaseMask(phaseMask: number): this;
 			setRotationQuat(x: number, y: number, z: number, w: number): this;

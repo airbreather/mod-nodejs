@@ -3,7 +3,7 @@ declare global {
 		class SpawnCreatureBuilder {
 			private constructor();
 
-			spawn(): Creature;
+			spawn(): Creature | undefined;
 
 			setPhaseMask(phaseMask: number): this;
 			setDisplayId(displayId: number): this;

@@ -60,6 +60,7 @@ struct Condition;
 struct ConditionSourceInfo;
 struct CreatureTemplate;
 struct FactionEntry;
+struct GameObjectTemplate;
 struct GemPropertiesEntry;
 struct GlyphPropertiesEntry;
 struct ItemTemplate;
@@ -67,6 +68,7 @@ struct Loot;
 struct MySQLConnectionInfo;
 struct PvPDifficultyEntry;
 struct SpawnCreatureBuilder;
+struct SpawnGameObjectBuilder;
 struct SpellCastTimesEntry;
 struct SpellCategoryEntry;
 struct SpellChainNode;
@@ -161,6 +163,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<NodeJs *>() {
 	REGISTER_CLASS_PROP_RO(FishingHoleData)
 	REGISTER_CLASS_PROP_RO(FlagDropData)
 	REGISTER_CLASS_PROP_RO(FlagStandData)
+	REGISTER_CLASS_PROP_RO(GameObjectTemplate)
 	REGISTER_CLASS_PROP_RO(GemPropertiesEntry)
 	REGISTER_CLASS_PROP_RO(GenericData)
 	REGISTER_CLASS_PROP_RO(GlyphPropertiesEntry)
@@ -188,6 +191,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<NodeJs *>() {
 	REGISTER_CLASS_PROP_RO(QuestGiverData)
 	REGISTER_CLASS_PROP(Roll)
 	REGISTER_CLASS_PROP(SpawnCreatureBuilder)
+	REGISTER_CLASS_PROP(SpawnGameObjectBuilder)
 	REGISTER_CLASS_PROP_RO(SpellcasterData)
 	REGISTER_CLASS_PROP_RO(SpellCastTimesEntry)
 	REGISTER_CLASS_PROP_RO(SpellCategoryEntry)
