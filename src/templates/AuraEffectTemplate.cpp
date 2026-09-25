@@ -116,7 +116,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<AuraEffect *>() {
 		[](AuraEffect * eff, int32_t const old_amount) { eff->SetOldAmount(old_amount); }
 	);
 	reg_prop(ft, "isEnabled",
-		[](AuraEffect * eff) { return eff->GetEnabled(); },
+		[](AuraEffect * eff) { return eff->IsEnabled(); },
 		[](AuraEffect * eff, bool const enabled) { eff->SetEnabled(enabled); }
 	);
 
