@@ -1,5 +1,5 @@
 declare global {
-	interface Hooks {
+	interface GlobalHooks {
 		['pet:init-stats-for-level']: {
 			readonly pet: Acore.Guardian;
 			readonly petLevel: number;

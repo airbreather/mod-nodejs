@@ -1,5 +1,5 @@
 declare global {
-	interface Hooks {
+	interface GlobalHooks {
 		['game-object:add-world']: { readonly gameObject: Acore.GameObject; };
 		['game-object:remove-world']: { readonly gameObject: Acore.GameObject; };
 		['game-object:save-to-db']: { readonly gameObject: Acore.GameObject; };

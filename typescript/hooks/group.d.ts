@@ -1,5 +1,5 @@
 declare global {
-	interface Hooks {
+	interface GlobalHooks {
 		['group:add-member']: {
 			readonly group: Acore.Group;
 			readonly guid: bigint;

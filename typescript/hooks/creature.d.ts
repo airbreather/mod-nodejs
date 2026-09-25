@@ -1,5 +1,5 @@
 declare global {
-	interface Hooks {
+	interface GlobalHooks {
 		['creature:update']: {
 			readonly creature: Acore.Creature;
 			readonly diff: Temporal.Duration;

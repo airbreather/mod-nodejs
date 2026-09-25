@@ -1,5 +1,5 @@
 declare global {
-	interface Hooks {
+	interface GlobalHooks {
 		['misc:item-create']: {
 			readonly item: Acore.Item;
 			readonly proto: Acore.ItemTemplateNarrowable;

@@ -419,19 +419,36 @@ v8::Local<v8::Value> NodeJs::load_environment_callback(node::StartExecutionCallb
 		return {};
 	}
 
+	v8::Local<v8::Function> create_hooks;
+	if (!init_result->Get(context, jstr_intern("createHooks")).As<v8::Function>().ToLocal(&create_hooks)) {
+		return {};
+	}
+
+	instance()->create_hooks_ = v8::Global<v8::Function>(isolate, create_hooks);
+
+	// export function createHooks(addListenerCallback, removeListenerCallback)
+	args[0] = jfn([](std::string hook_name) { instance()->add_listener(hook_name); });
+	args[1] = jfn([](std::string hook_name) { instance()->remove_listener(hook_name); });
+	v8::Local<v8::Object> hooks;
+	if (!create_hooks->Call(context, context->Global(), 2, args).As<v8::Object>().ToLocal(&hooks)) {
+		return {};
+	}
+
+	auto const acore = jtemplated_object(instance());
+	if (acore->Set(context, jstr_intern("hooks"), hooks).IsNothing()) {
+		return {};
+	}
+
 	v8::Local<v8::Function> finish_init;
 	if (!init_result->Get(context, jstr_intern("finishInit")).As<v8::Function>().ToLocal(&finish_init)) {
 		return {};
 	}
 
-	// export function finishInit(acore, addListenerCallback, removeListenerCallback)
-	auto const acore = jtemplated_object(instance());
+	// export function finishInit(acore)
 	args[0] = acore;
-	args[1] = jfn([](std::string hook_name) { instance()->add_listener(hook_name); });
-	args[2] = jfn([](std::string hook_name) { instance()->remove_listener(hook_name); });
 
 	v8::Local<v8::Function> run_user_script;
-	if (!finish_init->Call(context, context->Global(), 3, args).As<v8::Function>().ToLocal(&run_user_script)) {
+	if (!finish_init->Call(context, context->Global(), 1, args).As<v8::Function>().ToLocal(&run_user_script)) {
 		return {};
 	}
 

@@ -1,5 +1,5 @@
 declare global {
-	interface Hooks {
+	interface GlobalHooks {
 		['item:can-quest-accept']: {
 			readonly player: Acore.Player;
 			readonly item: Acore.Item;

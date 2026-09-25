@@ -1,5 +1,5 @@
 declare global {
-	interface Hooks {
+	interface GlobalHooks {
 		['guild:add-member']: {
 			readonly guild: Acore.Guild;
 			readonly player: Acore.Player;
