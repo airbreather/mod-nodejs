@@ -1,5 +1,5 @@
 declare global {
-	interface Hooks {
+	interface GlobalHooks {
 		['map:player-enter']: {
 			readonly map: Acore.ACMap;
 			readonly player: Acore.Player;

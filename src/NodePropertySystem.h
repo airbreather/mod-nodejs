@@ -138,18 +138,6 @@ v8::Local<v8::Value> jnew(Args... args) {
 	return jtemplate<Obj>()->GetFunction(ctx).ToLocalChecked()->NewInstance(ctx, sizeof...(Args), vals).ToLocalChecked();
 }
 
-template <typename Obj>
-requires std::is_pointer_v<Obj>
-v8::Local<v8::Object> jmove(Obj o) {
-	auto const isolate = v8::Isolate::GetCurrent();
-	auto const ctx = isolate->GetCurrentContext();
-	v8::Local<v8::Value> vals[2] = {
-		v8::External::New(isolate, o, v8::kExternalPointerTypeTagDefault),
-		v8::Number::New(isolate, OWNERSHIP_TRANSFER_MAGIC),
-	};
-	return jtemplate<Obj>()->GetFunction(ctx).ToLocalChecked()->NewInstance(ctx, 2, vals).ToLocalChecked();
-}
-
 template <size_t T>
 bool exec_chat_command_in_slot(ChatHandler * ch, char const * args) {
 	if (auto r = NodeJs::instance()) {

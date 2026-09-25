@@ -1,5 +1,5 @@
 declare global {
-	interface Hooks {
+	interface GlobalHooks {
 		['group:add-member']: {
 			readonly group: Acore.Group;
 			readonly guid: bigint;
@@ -28,7 +28,7 @@ declare global {
 			readonly minPlayerCount: number;
 			readonly isRated: boolean;
 			readonly arenaSlot: number; // TODO: is this actually ArenaType?
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['group:create']: {
 			readonly group: Acore.Group;

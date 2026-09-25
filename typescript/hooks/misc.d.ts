@@ -1,5 +1,5 @@
 declare global {
-	interface Hooks {
+	interface GlobalHooks {
 		['misc:item-create']: {
 			readonly item: Acore.Item;
 			readonly proto: Acore.ItemTemplateNarrowable;
@@ -8,25 +8,25 @@ declare global {
 		['misc:can-apply-soulbound-flag']: {
 			readonly item: Acore.Item;
 			readonly proto: Acore.ItemTemplateNarrowable;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['misc:can-item-apply-equip-spell']: {
 			readonly player: Acore.Player;
 			readonly item: Acore.Item;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['misc:can-send-auction-hello']: {
 			readonly player: Acore.Player;
 			readonly guid: bigint;
 			readonly creature: Acore.Creature;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['misc:validate-spell-at-cast-spell']: {
 			readonly player: Acore.Player;
-			oldSpellId: number;
-			spellId: number;
-			castCount: number;
-			castFlags: number; // shrug. not clearly documented in a way I can tell
+			readonly oldSpellId: Acore.Box<number>;
+			readonly spellId: Acore.Box<number>;
+			readonly castCount: Acore.Box<number>;
+			readonly castFlags: Acore.Box<number>; // shrug. not clearly documented in a way I can tell
 		};
 		['misc:validate-spell-at-cast-spell-result']: {
 			readonly player: Acore.Player;

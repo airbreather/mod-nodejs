@@ -143,13 +143,13 @@ void NodeJs::init_instance() {
 
 void NodeJs::reload_instance() {
 	std::string persist_data{};
-	invoke_hook("nodejs:before-shutdown", jarg("reloading", true), jarg_inout("persistData", persist_data));
+	invoke_hook("nodejs:before-shutdown", jprop("reloading", true), jprop_box("persistData", persist_data));
 	RUNTIME_INSTANCE.reset(nullptr);
 	RUNTIME_IS_INITIALIZED = false;
 	RUNTIME_INSTANCE = std::make_unique<NodeJs>(get_once_init_result());
 	RUNTIME_INSTANCE->actual_init();
 	RUNTIME_IS_INITIALIZED = true;
-	invoke_hook("nodejs:startup", jarg("persistData", persist_data));
+	invoke_hook("nodejs:startup", jprop("persistData", persist_data));
 	Acore::ChatCommands::InvalidateCommandMap();
 }
 
@@ -336,60 +336,15 @@ std::optional<Milliseconds> NodeJs::convert_duration(v8::Local<v8::Object> v) co
 	return Milliseconds(*lng_maybe);
 }
 
-v8::Local<v8::FunctionTemplate> NodeJs::hook_arg_template(std::string const & hook_name, const std::vector<Arg *> & args) {
-	auto it = m_hook_arg_templates.find(hook_name);
-	if (it == m_hook_arg_templates.end()) {
-		[[unlikely]] it = hook_arg_template_rare(hook_name, args);
-	}
-	return it->second.Get(setup_->isolate());
-}
-
-std::unordered_map<std::string, v8::Global<v8::FunctionTemplate>>::iterator NodeJs::hook_arg_template_rare(std::string const & hook_name, const std::vector<Arg *> & args) {
-	auto const ft = v8::FunctionTemplate::New(setup_->isolate());
-	ft->InstanceTemplate()->SetInternalFieldCount(2);
-	auto i = 0;
-	for (auto arg_name : args | std::views::transform([](Arg const * a) { return a->name; })) {
-		ft->InstanceTemplate()->SetNativeDataProperty(
-			jstr_intern(arg_name),
-			[](v8::Local<v8::Name>, v8::PropertyCallbackInfo<v8::Value> const & info) {
-				auto const dynamic_args = extract_native_pointer_from<std::vector<Arg *> *>(info.HolderV2());
-				auto const arg_index = info.Data()
-					.As<v8::Number>()
-					->Int32Value(info.GetIsolate()->GetCurrentContext())
-					.ToChecked();
-				auto const dynamic_arg = dynamic_args->at(arg_index);
-				info.GetReturnValue().Set(dynamic_arg->val());
-			},
-			[](v8::Local<v8::Name>, v8::Local<v8::Value> const val, v8::PropertyCallbackInfo<void> const & info) {
-				auto const dynamic_args = extract_native_pointer_from<std::vector<Arg *> *>(info.HolderV2());
-				auto const arg_index = info.Data()
-					.As<v8::Number>()
-					->Int32Value(info.GetIsolate()->GetCurrentContext())
-					.ToChecked();
-				if (auto const dynamic_arg = dynamic_args->at(arg_index); !dynamic_arg->try_set_val(val)) {
-					info.GetIsolate()->ThrowError(
-						jstr(Acore::StringFormat("The '{}' property wraps a native argument - it MUST be a compatible type.", dynamic_arg->name))
-					);
-				}
-			},
-			v8::Number::New(setup_->isolate(), i++),
-			v8::PropertyAttribute::None,
-			v8::SideEffectType::kHasNoSideEffect,
-			v8::SideEffectType::kHasSideEffect
-		);
-	}
-	return m_hook_arg_templates.insert(
-		{hook_name, v8::Global<v8::FunctionTemplate>(setup_->isolate(), ft)}
-	).first;
-}
-
-void NodeJs::invoke_hook_(std::string const & hook_name, std::vector<Arg *> & args) {
+void NodeJs::invoke_hook_(std::string const & hook_name, std::vector<Prop *> & args) {
 	run_scoped([this, & hook_name, & args] {
-		auto const obj_creator = hook_arg_template(hook_name, args)
-			->GetFunction(setup_->context())
-			.ToLocalChecked();
-		auto const obj = obj_creator->NewInstance(setup_->context()).ToLocalChecked();
-		reference_pointer_from(obj, &args);
+		auto const obj = jobj();
+		for (auto arg : args) {
+			if (obj->Set(setup_->context(), jstr_intern(arg->name), arg->val()).IsNothing()) {
+				// this means that it threw an exception, which will already get logged by run_scoped.
+				return;
+			}
+		}
 		v8::Local<v8::Value> args_v8[] = {jstr_intern(hook_name), obj};
 		auto const ignored = acore_hooks_emit_.Get(setup_->isolate())->Call(
 			setup_->context(),
@@ -398,7 +353,7 @@ void NodeJs::invoke_hook_(std::string const & hook_name, std::vector<Arg *> & ar
 			args_v8
 		);
 		if (ignored.IsEmpty()) {
-			// this means that it threw an exception, which will already get logged by InScope.
+			// this means that it threw an exception, which will already get logged by run_scoped.
 		}
 	});
 }
@@ -419,19 +374,36 @@ v8::Local<v8::Value> NodeJs::load_environment_callback(node::StartExecutionCallb
 		return {};
 	}
 
+	v8::Local<v8::Function> create_hooks;
+	if (!init_result->Get(context, jstr_intern("createHooks")).As<v8::Function>().ToLocal(&create_hooks)) {
+		return {};
+	}
+
+	instance()->create_hooks_ = v8::Global<v8::Function>(isolate, create_hooks);
+
+	// export function createHooks(addListenerCallback, removeListenerCallback)
+	args[0] = jfn([](std::string hook_name) { instance()->add_listener(hook_name); });
+	args[1] = jfn([](std::string hook_name) { instance()->remove_listener(hook_name); });
+	v8::Local<v8::Object> hooks;
+	if (!create_hooks->Call(context, context->Global(), 2, args).As<v8::Object>().ToLocal(&hooks)) {
+		return {};
+	}
+
+	auto const acore = jtemplated_object(instance());
+	if (acore->Set(context, jstr_intern("hooks"), hooks).IsNothing()) {
+		return {};
+	}
+
 	v8::Local<v8::Function> finish_init;
 	if (!init_result->Get(context, jstr_intern("finishInit")).As<v8::Function>().ToLocal(&finish_init)) {
 		return {};
 	}
 
-	// export function finishInit(acore, addListenerCallback, removeListenerCallback)
-	auto const acore = jtemplated_object(instance());
+	// export function finishInit(acore)
 	args[0] = acore;
-	args[1] = jfn([](std::string hook_name) { instance()->add_listener(hook_name); });
-	args[2] = jfn([](std::string hook_name) { instance()->remove_listener(hook_name); });
 
 	v8::Local<v8::Function> run_user_script;
-	if (!finish_init->Call(context, context->Global(), 3, args).As<v8::Function>().ToLocal(&run_user_script)) {
+	if (!finish_init->Call(context, context->Global(), 1, args).As<v8::Function>().ToLocal(&run_user_script)) {
 		return {};
 	}
 

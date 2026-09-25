@@ -31,6 +31,7 @@
 #include "Guild.h"
 #include "InstanceSaveMgr.h"
 #include "Item.h"
+#include "JBox.h"
 #include "MotionMaster.h"
 #include "NodeJPropHelpers.h"
 #include "NodePropertySystem.h"
@@ -540,26 +541,20 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 	reg_method(ft, "hasAchieved", [](Player * player, uint32_t const id) {
 		return player->HasAchieved(id);
 	});
-	reg_method(ft, "hasQuestForItem", [](Player * player, uint32_t const item_id, std::optional<uint32_t> exclude_quest_id, std::optional<bool> turn_in, std::optional<v8::Local<v8::Value>> show_in_loot) {
-		// TODO: should Box<T> be easier to use on the C++ side? if so, should that simplification
-		// also apply to hook args that are passed by reference so there's just one pattern?
-		auto show_in_loot_val = false;
-		auto has_show_in_loot_val = false;
-		if (show_in_loot && (*show_in_loot)->IsObject()) {
-			if (auto boxed = cval<bool>(show_in_loot->As<v8::Object>(), "boxed")) {
-				show_in_loot_val = *boxed;
-				has_show_in_loot_val = true;
+	reg_method(ft, "hasQuestForItem", [](Player * player, uint32_t const item_id, std::optional<uint32_t> exclude_quest_id, std::optional<bool> turn_in, std::optional<JBox *> show_in_loot) {
+		auto show_in_loot_local = false;
+		bool * show_in_loot_ptr = nullptr;
+		if (show_in_loot) {
+			if (auto boxed = cval<bool>((*show_in_loot)->getter())) {
+				show_in_loot_local = *boxed;
+				show_in_loot_ptr = &show_in_loot_local;
 			}
-		}
-		if (show_in_loot && !has_show_in_loot_val) {
-			v8::Isolate::GetCurrent()->ThrowError("showInLoot must be an object with a bool 'boxed' property");
+			v8::Isolate::GetCurrent()->ThrowError("showInLoot must be a Box with a boolean value in it");
 			return false;
 		}
-		auto res = player->HasQuestForItem(item_id, exclude_quest_id.value_or(0), turn_in.value_or(false), has_show_in_loot_val ? &show_in_loot_val : nullptr);
-		if (has_show_in_loot_val) {
-			auto const isolate = v8::Isolate::GetCurrent();
-			auto const ctx = isolate->GetCurrentContext();
-			show_in_loot->As<v8::Object>()->Set(ctx, jstr_intern("boxed"), jval(show_in_loot_val)).Check();
+		auto res = player->HasQuestForItem(item_id, exclude_quest_id.value_or(0), turn_in.value_or(false), show_in_loot_ptr);
+		if (show_in_loot) {
+			(*show_in_loot)->setter(jval(show_in_loot_local));
 		}
 		return res;
 	});

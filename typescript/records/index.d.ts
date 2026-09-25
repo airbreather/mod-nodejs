@@ -1,5 +1,4 @@
 export type * from './BattlegroundScore.d.ts';
-export type * from './Box.d.ts';
 export type * from './ChaseAngle.d.ts';
 export type * from './ChaseRange.d.ts';
 export type * from './CreatureModel.d.ts';

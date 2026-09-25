@@ -1,5 +1,5 @@
 declare global {
-	interface Hooks {
+	interface GlobalHooks {
 		['auction:add-auction']: {
 			readonly ah: Acore.AuctionHouse;
 			readonly auction: Acore.Auction;
@@ -19,47 +19,47 @@ declare global {
 		['auction:before-send-auction-won-mail']: {
 			readonly auction: Acore.Auction;
 			readonly bidder: Acore.Player | undefined;
-			bidderAccId: number;
-			sendNotification: boolean;
-			updateAchievementCriteria: boolean;
-			sendMail: boolean;
+			readonly bidderAccId: Acore.Box<number>;
+			readonly sendNotification: Acore.Box<boolean>;
+			readonly updateAchievementCriteria: Acore.Box<boolean>;
+			readonly sendMail: Acore.Box<boolean>;
 		};
 		['auction:before-send-auction-sale-pending-mail']: {
 			readonly auction: Acore.Auction;
 			readonly owner: Acore.Player | undefined;
-			ownerAccId: number;
-			sendMail: boolean;
+			readonly ownerAccId: Acore.Box<number>;
+			readonly sendMail: Acore.Box<boolean>;
 		};
 		['auction:before-send-auction-successful-mail']: {
 			readonly auction: Acore.Auction;
 			readonly owner: Acore.Player | undefined;
-			ownerAccId: number;
-			profit: number;
-			sendNotification: boolean;
-			updateAchievementCriteria: boolean;
-			sendMail: boolean;
+			readonly ownerAccId: Acore.Box<number>;
+			readonly profit: Acore.Box<number>;
+			readonly sendNotification: Acore.Box<boolean>;
+			readonly updateAchievementCriteria: Acore.Box<boolean>;
+			readonly sendMail: Acore.Box<boolean>;
 		};
 		['auction:before-send-auction-expired-mail']: {
 			readonly auction: Acore.Auction;
 			readonly owner: Acore.Player | undefined;
-			ownerAccId: number;
-			sendNotification: boolean;
-			sendMail: boolean;
+			readonly ownerAccId: Acore.Box<number>;
+			readonly sendNotification: Acore.Box<boolean>;
+			readonly sendMail: Acore.Box<boolean>;
 		};
 		['auction:before-send-auction-outbidded-mail']: {
 			readonly auction: Acore.Auction;
 			readonly oldBidder: Acore.Player | undefined;
-			oldBidderAccId: number;
+			readonly oldBidderAccId: Acore.Box<number>;
 			readonly newBidder: Acore.Player; // can't be offline, they just placed the bid!
-			newPrice: number;
-			sendNotification: boolean;
-			sendMail: boolean;
+			readonly newPrice: Acore.Box<number>;
+			readonly sendNotification: Acore.Box<boolean>;
+			readonly sendMail: Acore.Box<boolean>;
 		};
 		['auction:before-send-auction-cancelled-to-bidder-mail']: {
 			readonly auction: Acore.Auction;
 			readonly bidder: Acore.Player | undefined;
-			bidderAccId: number;
-			sendMail: boolean;
+			readonly bidderAccId: Acore.Box<number>;
+			readonly sendMail: Acore.Box<boolean>;
 		};
 		['auction:before-update']: object;
 	}

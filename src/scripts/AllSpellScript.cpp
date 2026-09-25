@@ -2,7 +2,6 @@
 
 #include <string>
 
-#include "NodeJPropHelpers.h"
 #include "NodeJs.h"
 
 class NODEJS_AllSpell : public AllSpellScript {
@@ -11,49 +10,60 @@ public:
 	}
 
 	void OnCalcMaxDuration(Aura const * aura, int32_t & maxDuration) override {
-		NodeJs::invoke_hook("spell:calc-max-duration", jarg("aura", aura), jarg_inout("maxDuration", maxDuration));
+		NodeJs::invoke_hook("spell:calc-max-duration"
+			, jprop("aura", aura), jprop_box("maxDuration", maxDuration));
 	}
 	void OnSpellCheckCast(Spell * spell, bool const strict, SpellCastResult & res) override {
-		NodeJs::invoke_hook("spell:check-cast", jarg("spell", spell), jarg("strict", strict), jarg_inout("result", res));
+		NodeJs::invoke_hook("spell:check-cast"
+			, jprop("spell", spell), jprop("strict", strict), jprop_box("result", res));
 	}
 	[[nodiscard]] bool CanPrepare(Spell * spell, SpellCastTargets const * targets, AuraEffect const * triggeredByAura) override {
 		return NodeJs::invoke_hook_t("spell:can-prepare", AllSpellScript::CanPrepare(spell, targets, triggeredByAura)
-			, jarg("spell", spell)/*, jarg("target", targets)*//*, jarg("triggeredByAura", triggeredByAura)*/);
+			, jprop("spell", spell)/*, jprop("target", targets)*//*, jprop("triggeredByAura", triggeredByAura)*/);
 	}
 	[[nodiscard]] bool CanScalingEverything(Spell * spell) override {
 		return NodeJs::invoke_hook_t("spell:can-scaling-everything", AllSpellScript::CanScalingEverything(spell)
-			, jarg("spell", spell));
+			, jprop("spell", spell));
 	}
 	[[nodiscard]] bool CanSelectSpecTalent(Spell * spell) override {
 		return NodeJs::invoke_hook_t("spell:can-select-spec-talent", AllSpellScript::CanSelectSpecTalent(spell)
-			, jarg("spell", spell));
+			, jprop("spell", spell));
 	}
 	void OnScaleAuraUnitAdd(Spell * spell, Unit * target, uint32_t const effectMask, bool const checkIfValid, bool const implicit, uint8_t const auraScaleMask, TargetInfo & targetInfo) override {
-		NodeJs::invoke_hook("spell:scale-aura-unit-add", jarg("spell", spell), jarg("target", target), jarg("effectMask", effectMask), jarg("checkIfValid", checkIfValid), jarg("implicit", implicit), jarg("auraScaleMask", auraScaleMask)/*, jarg_inout("targetInfo", targetInfo)*/);
+		NodeJs::invoke_hook("spell:scale-aura-unit-add"
+			, jprop("spell", spell), jprop("target", target), jprop("effectMask", effectMask), jprop("checkIfValid", checkIfValid), jprop("implicit", implicit), jprop("auraScaleMask", auraScaleMask)/*, jprop_box("targetInfo", targetInfo)*/);
 	}
 	void OnRemoveAuraScaleTargets(Spell * spell, TargetInfo & targetInfo, uint8_t const auraScaleMask, bool & needErase) override {
-		NodeJs::invoke_hook("spell:remove-aura-scale-targets", jarg("spell", spell)/*, jarg_inout("targetInfo", targetInfo)*/, jarg("auraScaleMask", auraScaleMask), jarg_inout("needErase", needErase));
+		NodeJs::invoke_hook("spell:remove-aura-scale-targets"
+			, jprop("spell", spell)/*, jprop_box("targetInfo", targetInfo)*/, jprop("auraScaleMask", auraScaleMask), jprop_box("needErase", needErase));
 	}
 	void OnBeforeAuraRankForLevel(SpellInfo const * spellInfo, SpellInfo const * latestSpellInfo, uint8_t const level) override {
-		NodeJs::invoke_hook("spell:before-aura-rank-for-level", jarg("spellInfo", spellInfo), jarg("latestSpellInfo", latestSpellInfo), jarg("level", level));
+		NodeJs::invoke_hook("spell:before-aura-rank-for-level"
+			, jprop("spellInfo", spellInfo), jprop("latestSpellInfo", latestSpellInfo), jprop("level", level));
 	}
 	void OnDummyEffect(WorldObject * caster, uint32_t const spellID, SpellEffIndex const effIndex, GameObject * gameObjTarget) override {
-		NodeJs::invoke_hook("spell:dummy-effect:game-object-target", jarg("caster", caster), jarg("spellId", spellID), jarg("effIndex", effIndex), jarg("target", gameObjTarget));
+		NodeJs::invoke_hook("spell:dummy-effect:game-object-target"
+			, jprop("caster", caster), jprop("spellId", spellID), jprop("effIndex", effIndex), jprop("target", gameObjTarget));
 	}
 	void OnDummyEffect(WorldObject * caster, uint32_t const spellID, SpellEffIndex const effIndex, Creature * creatureTarget) override {
-		NodeJs::invoke_hook("spell:dummy-effect:creature-target", jarg("caster", caster), jarg("spellId", spellID), jarg("effIndex", effIndex), jarg("target", creatureTarget));
+		NodeJs::invoke_hook("spell:dummy-effect:creature-target"
+			, jprop("caster", caster), jprop("spellId", spellID), jprop("effIndex", effIndex), jprop("target", creatureTarget));
 	}
 	void OnDummyEffect(WorldObject * caster, uint32_t const spellID, SpellEffIndex const effIndex, Item * itemTarget) override {
-		NodeJs::invoke_hook("spell:dummy-effect:item-target", jarg("caster", caster), jarg("spellId", spellID), jarg("effIndex", effIndex), jarg("target", itemTarget));
+		NodeJs::invoke_hook("spell:dummy-effect:item-target"
+			, jprop("caster", caster), jprop("spellId", spellID), jprop("effIndex", effIndex), jprop("target", itemTarget));
 	}
 	void OnSpellCastCancel(Spell * spell, Unit * caster, SpellInfo const * spellInfo, bool const bySelf) override {
-		NodeJs::invoke_hook("spell:cast-cancel", jarg("spell", spell), jarg("caster", caster), jarg("spellInfo", spellInfo), jarg("bySelf", bySelf));
+		NodeJs::invoke_hook("spell:cast-cancel"
+			, jprop("spell", spell), jprop("caster", caster), jprop("spellInfo", spellInfo), jprop("bySelf", bySelf));
 	}
 	void OnSpellCast(Spell * spell, Unit * caster, SpellInfo const * spellInfo, bool const skipCheck) override {
-		NodeJs::invoke_hook("spell:cast", jarg("spell", spell), jarg("caster", caster), jarg("spellInfo", spellInfo), jarg("skipCheck", skipCheck));
+		NodeJs::invoke_hook("spell:cast"
+			, jprop("spell", spell), jprop("caster", caster), jprop("spellInfo", spellInfo), jprop("skipCheck", skipCheck));
 	}
 	void OnSpellPrepare(Spell* spell, Unit* caster, SpellInfo const* spellInfo) override {
-		NodeJs::invoke_hook("spell:prepare", jarg("spell", spell), jarg("caster", caster), jarg("spellInfo", spellInfo));
+		NodeJs::invoke_hook("spell:prepare"
+			, jprop("spell", spell), jprop("caster", caster), jprop("spellInfo", spellInfo));
 	}
 };
 

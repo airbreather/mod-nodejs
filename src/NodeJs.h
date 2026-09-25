@@ -10,7 +10,9 @@
 
 #include "AsyncCallbackProcessor.h"
 #include "ChatCommand.h"
+#include "CtoJ.h"
 #include "Db.h"
+#include "JBox.h"
 #include "Log.h"
 #include "MySQLConnection.h"
 #include "NodeJPropHelpers.h"
@@ -27,6 +29,7 @@ class NodeJs {
 	QueryCallbackProcessor query_processor_;
 	NodePostToEventLoopMaster * post_to_event_loop_master_ = nullptr;
 	std::vector<std::string> errors_;
+	v8::Global<v8::Function> create_hooks_;
 	v8::Global<v8::Object> acore_;
 	v8::Global<v8::Object> acore_hooks_;
 	v8::Global<v8::Function> acore_hooks_emit_;
@@ -35,6 +38,8 @@ class NodeJs {
 	std::unordered_map<std::type_index, v8::Global<v8::FunctionTemplate>> m_ac_templates;
 	std::unordered_map<std::string, v8::Global<v8::FunctionTemplate>> m_hook_arg_templates;
 	std::unordered_map<std::string, size_t> m_active_listeners;
+	std::unordered_map<std::string, std::tuple<uint64_t, v8::Global<v8::Object>, v8::Global<v8::Function>>> m_player_name_hooks;
+	std::unordered_map<ObjectGuid::LowType, std::tuple<uint64_t, v8::Global<v8::Object>, v8::Global<v8::Function>>> m_player_guid_hooks;
 	std::unordered_map<std::string, size_t> m_command_map;
 	std::vector<ChatCommandBuilderBuilderBox> m_top_level_commands;
 	std::vector<v8::Global<v8::Function>> m_command_callbacks;
@@ -121,8 +126,8 @@ public:
 		if (!(instance_is_fully_initialized() && instance()->m_active_listeners.contains(hook_name))) {
 			[[likely]] return dfault;
 		}
-		std::vector<Arg *> args_vec{& args...};
-		auto ret_arg = jarg_inout("__return", dfault);
+		std::vector<Prop *> args_vec{& args...};
+		auto ret_arg = jprop_box("__return", dfault);
 		args_vec.push_back(&ret_arg);
 		LOG_TRACE("module.nodejs", "begin hook {}", hook_name);
 		instance()->invoke_hook_(hook_name, args_vec);
@@ -142,16 +147,14 @@ public:
 		if (!(instance_is_fully_initialized() && instance()->m_active_listeners.contains(hook_name))) {
 			[[likely]] return;
 		}
-		std::vector<Arg *> args_vec{& args...};
+		std::vector<Prop *> args_vec{& args...};
 		LOG_TRACE("module.nodejs", "begin hook {}", hook_name);
 		instance()->invoke_hook_(hook_name, args_vec);
 		LOG_TRACE("module.nodejs", "end hook {}", hook_name);
 	}
 
 private:
-	v8::Local<v8::FunctionTemplate> hook_arg_template(std::string const & hook_name, const std::vector<Arg *> & args);
-	std::unordered_map<std::string, v8::Global<v8::FunctionTemplate>>::iterator hook_arg_template_rare(std::string const & hook_name, const std::vector<Arg *> & args);
-	void invoke_hook_(std::string const & hook_name, std::vector<Arg *> & args);
+	void invoke_hook_(std::string const & hook_name, std::vector<Prop *> & args);
 	static v8::Local<v8::Value> load_environment_callback(node::StartExecutionCallbackInfoWithModule const & info);
 
 	void actual_init();

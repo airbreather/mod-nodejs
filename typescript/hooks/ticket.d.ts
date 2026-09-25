@@ -1,5 +1,5 @@
 declare global {
-	interface Hooks {
+	interface GlobalHooks {
 		['ticket:create']: { readonly ticket: Acore.GmTicket; };
 		['ticket:update-last-change']: { readonly ticket: Acore.GmTicket; };
 		['ticket:close']: { readonly ticket: Acore.GmTicket; };

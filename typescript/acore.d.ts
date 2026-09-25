@@ -1,12 +1,20 @@
 import { EventEmitter } from 'node:events';
 
-type HooksConforming = {
-	[K in keyof Hooks]: [Hooks[K]];
+type ToGlobalHooks<Prefix extends string, Hooks extends object> = {
+	[K in (keyof Hooks & string) as `${Prefix}:${K}`]: Hooks[K];
+};
+
+type ObjToHookArgs<T extends object> = {
+	[K in keyof T]: [T[K]];
 };
 
 declare global {
+	type Hooks =
+		& GlobalHooks
+		& ToGlobalHooks<'player', PlayerHooks>
+		;
 	namespace Acore {
-		const hooks: EventEmitter<HooksConforming>;
+		const hooks: EventEmitter<ObjToHookArgs<Hooks>>;
 
 		function gc(): void;
 		function guidsEqual(a: ObjectGuid | undefined, b: ObjectGuid | undefined): boolean;
@@ -27,9 +35,12 @@ declare global {
 		function logFatal(filter: string, msg: string): void;
 		function runCommandAsync(cmd: string, flush?: boolean): Promise<boolean>;
 		function saveAllPlayers(): void;
-		function box<T>(val: T): Box<T>;
+		function box<T>(val: T): Acore.Box<T>;
+		function box<T>(val?: T): Acore.Box<T | undefined>;
 		function registerCommand(command: ChatCommandBuilder): void;
 		function shutdown(time: number, optionsMask: ShutdownMask, exitCode: number, reason?: string): void;
 		function hasPlayerbotsModule(): boolean;
+		function playerHooksForGuid(guid: bigint): EventEmitter<ObjToHookArgs<PlayerHooks>>;
+		function playerHooksForName(name: string): EventEmitter<ObjToHookArgs<PlayerHooks>>;
 	}
 }

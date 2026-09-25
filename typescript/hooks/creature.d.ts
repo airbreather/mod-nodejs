@@ -1,5 +1,5 @@
 declare global {
-	interface Hooks {
+	interface GlobalHooks {
 		['creature:update']: {
 			readonly creature: Acore.Creature;
 			readonly diff: Temporal.Duration;
@@ -7,7 +7,7 @@ declare global {
 		['creature:before-select-level']: {
 			readonly cInfo: Acore.CreatureTemplate;
 			readonly creature: Acore.Creature;
-			level: number;
+			readonly level: Acore.Box<number>;
 		};
 		['creature:select-level']: {
 			readonly cInfo: Acore.CreatureTemplate;
@@ -19,14 +19,14 @@ declare global {
 		['creature:can-gossip-hello']: {
 			readonly player: Acore.Player;
 			readonly creature: Acore.Creature;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['creature:can-gossip-select']: {
 			readonly player: Acore.Player;
 			readonly creature: Acore.Creature;
 			readonly sender: GossipSender;
 			readonly action: GossipAction;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['creature:can-gossip-select-code']: {
 			readonly player: Acore.Player;
@@ -34,20 +34,20 @@ declare global {
 			readonly sender: GossipSender;
 			readonly action: GossipAction;
 			readonly code: string;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['creature:can-quest-accept']: {
 			readonly player: Acore.Player;
 			readonly creature: Acore.Creature;
 			readonly quest: Acore.Quest;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['creature:can-quest-reward']: {
 			readonly player: Acore.Player;
 			readonly creature: Acore.Creature;
 			readonly quest: Acore.Quest;
 			readonly opt: number;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['creature:ffa-pvp-state-update']: {
 			readonly creature: Acore.Creature;

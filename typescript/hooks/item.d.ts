@@ -1,26 +1,26 @@
 declare global {
-	interface Hooks {
+	interface GlobalHooks {
 		['item:can-quest-accept']: {
 			readonly player: Acore.Player;
 			readonly item: Acore.Item;
 			readonly quest: Acore.Quest;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['item:can-use']: {
 			readonly player: Acore.Player;
 			readonly item: Acore.Item;
 			// readonly targets: Acore.SpellCastTargets;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['item:can-remove']: {
 			readonly player: Acore.Player;
 			readonly item: Acore.Item;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['item:can-expire']: {
 			readonly player: Acore.Player;
 			readonly proto: Acore.ItemTemplateNarrowable;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['item:gossip-select']: {
 			readonly player: Acore.Player;
