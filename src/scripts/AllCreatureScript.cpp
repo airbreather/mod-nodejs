@@ -12,22 +12,28 @@ public:
 	}
 
 	void OnAllCreatureUpdate(Creature * creature, uint32_t const diff) override {
-		NodeJs::invoke_hook("creature:update", jarg("creature", creature), jarg("diff", DurationWrapper::from_milliseconds(diff)));
+		NodeJs::invoke_hook("creature:update"
+			, jarg("creature", creature), jarg("diff", DurationWrapper::from_milliseconds(diff)));
 	}
 	void OnBeforeCreatureSelectLevel(CreatureTemplate const * cinfo, Creature * creature, uint8 & level) override {
-		NodeJs::invoke_hook("creature:before-select-level", jarg("cInfo", cinfo), jarg("creature", creature), jarg_inout("level", level));
+		NodeJs::invoke_hook("creature:before-select-level"
+			, jarg("cInfo", cinfo), jarg("creature", creature), jarg_inout("level", level));
 	}
 	void OnCreatureSelectLevel(CreatureTemplate const * cinfo, Creature * creature) override {
-		NodeJs::invoke_hook("creature:select-level", jarg("cInfo", cinfo), jarg("creature", creature));
+		NodeJs::invoke_hook("creature:select-level"
+			, jarg("cInfo", cinfo), jarg("creature", creature));
 	}
 	void OnCreatureAddWorld(Creature * creature) override {
-		NodeJs::invoke_hook("creature:add-world", jarg("creature", creature));
+		NodeJs::invoke_hook("creature:add-world"
+			, jarg("creature", creature));
 	}
 	void OnCreatureRemoveWorld(Creature * creature) override {
-		NodeJs::invoke_hook("creature:remove-world", jarg("creature", creature));
+		NodeJs::invoke_hook("creature:remove-world"
+			, jarg("creature", creature));
 	}
 	void OnCreatureSaveToDB(Creature * creature) override {
-		NodeJs::invoke_hook("creature:save-to-db", jarg("creature", creature));
+		NodeJs::invoke_hook("creature:save-to-db"
+			, jarg("creature", creature));
 	}
 	[[nodiscard]] bool CanCreatureGossipHello(Player * player, Creature * creature) override {
 		return NodeJs::invoke_hook_t("creature:can-gossip-hello", AllCreatureScript::CanCreatureGossipHello(player, creature)
@@ -50,7 +56,8 @@ public:
 			, jarg("player", player), jarg("creature", creature), jarg("quest", quest), jarg("opt", opt));
 	}
 	void OnFfaPvpStateUpdate(Creature* creature, bool const InPvp) override {
-		NodeJs::invoke_hook("creature:ffa-pvp-state-update", jarg("creature", creature), jarg("inPvp", InPvp));
+		NodeJs::invoke_hook("creature:ffa-pvp-state-update"
+			, jarg("creature", creature), jarg("inPvp", InPvp));
 	}
 
 	// CreatureAI is going to be a whole thing, I'm sure, but not right now

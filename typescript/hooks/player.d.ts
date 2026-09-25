@@ -3,7 +3,7 @@ declare global {
 		['just-died']: { readonly player: Acore.Player; };
 		['calculate-talents-points']: {
 			readonly player: Acore.Player;
-			talentPointsForLevel: number;
+			readonly talentPointsForLevel: Acore.Box<number>;
 		};
 		['released-ghost']: { readonly player: Acore.Player; };
 		['send-initial-packets-before-add-to-map']: {
@@ -54,7 +54,7 @@ declare global {
 			readonly player: Acore.Player;
 			// readonly talent: TalentEntry;
 			readonly rank: number;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['after-spec-slot-changed']: {
 			readonly player: Acore.Player;
@@ -70,7 +70,7 @@ declare global {
 		};
 		['money-changed']: {
 			readonly player: Acore.Player;
-			amount: number;
+			readonly amount: Acore.Box<number>;
 		};
 		['before-loot-money']: {
 			readonly player: Acore.Player;
@@ -78,16 +78,16 @@ declare global {
 		};
 		['give-xp']: {
 			readonly player: Acore.Player;
-			amount: number;
+			readonly amount: Acore.Box<number>;
 			readonly victim: Acore.Unit | undefined;
 			readonly xpSource: PlayerXPSource;
 		};
 		['reputation-change']: {
 			readonly player: Acore.Player;
 			readonly factionId: number;
-			standing: number;
+			readonly standing: Acore.Box<number>;
 			readonly incremental: boolean;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['reputation-rank-change']: {
 			readonly player: Acore.Player;
@@ -99,7 +99,7 @@ declare global {
 		['give-reputation']: {
 			readonly player: Acore.Player;
 			readonly factionId: number;
-			amount: number;
+			readonly amount: Acore.Box<number>;
 			readonly repSource: ReputationSource;
 		};
 		['learn-spell']: {
@@ -125,9 +125,9 @@ declare global {
 		};
 		['before-send-chat-message']: {
 			readonly player: Acore.Player;
-			type: ChatMsg;
-			lang: Language;
-			msg: string;
+			readonly type: Acore.Box<ChatMsg>;
+			readonly lang: Acore.Box<Language>;
+			readonly msg: Acore.Box<string>;
 		};
 		['emote']: {
 			readonly player: Acore.Player;
@@ -184,7 +184,7 @@ declare global {
 			readonly o: number;
 			readonly options: TeleportToOptions;
 			readonly target: Acore.Unit | undefined;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['update-faction']: { readonly player: Acore.Player; };
 		['add-to-battleground']: {
@@ -193,7 +193,7 @@ declare global {
 		};
 		['queue-random-dungeon']: {
 			readonly player: Acore.Player;
-			rDungeonId: number;
+			readonly rDungeonId: Acore.Box<number>;
 		};
 		['remove-from-battleground']: {
 			readonly player: Acore.Player;
@@ -206,7 +206,7 @@ declare global {
 		['before-achievement-complete']: {
 			readonly player: Acore.Player;
 			readonly achievement: Acore.AchievementEntry;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['criteria-progress']: {
 			readonly player: Acore.Player;
@@ -215,7 +215,7 @@ declare global {
 		['before-criteria-progress']: {
 			readonly player: Acore.Player;
 			// readonly criteria: Acore.AchievementCriteriaEntry;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['achievement-save']: {
 			readonly player: Acore.Player;
@@ -274,7 +274,7 @@ declare global {
 		['get-max-personal-arena-rating-requirement']: {
 			readonly player: Acore.Player;
 			readonly minSlot: number;
-			maxArenaRating: number;
+			readonly maxArenaRating: Acore.Box<number>;
 		};
 		['loot-item']: {
 			readonly player: Acore.Player;
@@ -307,7 +307,7 @@ declare global {
 		['can-place-auction-bid']: {
 			readonly player: Acore.Player;
 			readonly auction: Acore.Auction;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['group-roll-reward-item']: {
 			readonly player: Acore.Player;
@@ -319,30 +319,30 @@ declare global {
 		['before-open-item']: {
 			readonly player: Acore.Player;
 			readonly item: Acore.Item;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['before-quest-complete']: {
 			readonly player: Acore.Player;
 			readonly questId: number;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['quest-compute-xp']: {
 			readonly player: Acore.Player;
 			readonly quest: Acore.Quest;
-			xpValue: number;
+			readonly xpValue: Acore.Box<number>;
 		};
 		['before-durability-repair']: {
 			readonly player: Acore.Player;
 			readonly npcGuid: bigint;
 			readonly itemGuid: bigint;
-			discountMod: number;
+			readonly discountMod: Acore.Box<number>;
 			readonly guildBank: boolean;
 		};
 		['before-buy-item-from-vendor']: {
 			readonly player: Acore.Player;
 			readonly vendorGuid: bigint;
 			readonly vendorSlot: number;
-			item: number;
+			readonly item: Acore.Box<number>;
 			readonly count: number;
 			readonly bag: number;
 			readonly slot: number;
@@ -350,7 +350,7 @@ declare global {
 		['before-store-or-equip-new-item']: {
 			readonly player: Acore.Player;
 			readonly vendorSlot: number;
-			item: number;
+			readonly item: Acore.Box<number>;
 			readonly count: number;
 			readonly bag: number;
 			readonly slot: number;
@@ -373,59 +373,59 @@ declare global {
 		};
 		['after-update-max-power']: {
 			readonly player: Acore.Player;
-			power: Powers;
-			value: number;
+			readonly power: Acore.Box<Powers>;
+			readonly value: Acore.Box<number>;
 		};
 		['after-update-max-health']: {
 			readonly player: Acore.Player;
-			value: number;
+			readonly value: Acore.Box<number>;
 		};
 		['before-update-attack-power-and-damage']: {
 			readonly player: Acore.Player;
-			level: number;
-			val2: number;
+			readonly level: Acore.Box<number>;
+			readonly val2: Acore.Box<number>;
 			readonly ranged: boolean;
 		};
 		['after-update-attack-power-and-damage']: {
 			readonly player: Acore.Player;
-			level: number;
-			baseAttPower: number;
-			attPowerMod: number;
-			attPowerMultiplier: number;
+			readonly level: Acore.Box<number>;
+			readonly baseAttPower: Acore.Box<number>;
+			readonly attPowerMod: Acore.Box<number>;
+			readonly attPowerMultiplier: Acore.Box<number>;
 			readonly ranged: boolean;
 		};
 		['before-init-talent-for-level']: {
 			readonly player: Acore.Player;
-			level: number;
-			talentPointsForLevel: number;
+			readonly level: Acore.Box<number>;
+			readonly talentPointsForLevel: Acore.Box<number>;
 		};
 		['first-login']: { readonly player: Acore.Player; };
 		['set-max-level']: {
 			readonly player: Acore.Player;
-			maxPlayerLevel: number;
+			readonly maxPlayerLevel: Acore.Box<number>;
 		};
 		['can-join-in-battleground-queue']: {
 			readonly player: Acore.Player;
 			readonly battlemasterGuid: bigint | undefined;
 			readonly bgTypeId: BattlegroundTypeId;
 			readonly joinAsGroup: boolean;
-			err: GroupJoinBattlegroundResult;
-			__return: boolean;
+			readonly err: Acore.Box<GroupJoinBattlegroundResult>;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['should-be-rewarded-with-money-instead-of-exp']: {
 			readonly player: Acore.Player;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['before-temp-summon-init-stats']: {
 			readonly player: Acore.Player;
 			readonly tempSummon: Acore.TempSummon;
-			duration: Temporal.Duration;
+			readonly duration: Acore.Box<Temporal.Duration>;
 		};
 		['before-guardian-init-stats-for-level']: {
 			readonly player: Acore.Player;
 			readonly guardian: Acore.Guardian;
 			readonly cInfo: Acore.CreatureTemplate;
-			petType: PetType;
+			readonly petType: Acore.Box<PetType>;
 		};
 		['after-guardian-init-stats-for-level']: {
 			readonly player: Acore.Player;
@@ -433,10 +433,10 @@ declare global {
 		};
 		['before-load-pet-from-db']: {
 			readonly player: Acore.Player;
-			petEntry: number;
-			petNumber: number;
-			current: boolean;
-			forceLoadFromDB: boolean;
+			readonly petEntry: Acore.Box<number>;
+			readonly petNumber: Acore.Box<number>;
+			readonly current: Acore.Box<boolean>;
+			readonly forceLoadFromDB: Acore.Box<boolean>;
 		};
 		['can-join-in-arena-queue']: {
 			readonly player: Acore.Player;
@@ -445,91 +445,91 @@ declare global {
 			readonly bgTypeId: number; // BattlegroundTypeId enum in native, but clearly it's not one of those.
 			readonly joinAsGroup: boolean;
 			readonly isRated: boolean;
-			err: GroupJoinBattlegroundResult;
-			__return: boolean;
+			readonly err: Acore.Box<GroupJoinBattlegroundResult>;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['can-battle-field-port']: {
 			readonly player: Acore.Player;
 			readonly arenaType: ArenaType;
 			readonly bgTypeId: BattlegroundTypeId;
 			readonly action: number; // from a comment: enter battle 0x1, leave queue 0x0
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['can-group-invite']: {
 			readonly player: Acore.Player;
-			memberName: string;
-			__return: boolean;
+			readonly memberName: Acore.Box<string>;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['can-group-accept']: {
 			readonly player: Acore.Player;
 			readonly group: Acore.Group;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['can-sell-item']: {
 			readonly player: Acore.Player;
 			readonly item: Acore.Item;
 			readonly creature: Acore.Creature;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['can-send-mail']: {
 			readonly player: Acore.Player;
 			readonly receiverGuid: bigint;
 			readonly mailbox: bigint;
-			subject: string;
-			body: string;
+			readonly subject: Acore.Box<string>;
+			readonly body: Acore.Box<string>;
 			readonly money: number;
 			readonly cod: number;
 			readonly item: Acore.Item | undefined;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['petition-buy']: {
 			readonly player: Acore.Player;
 			readonly creature: Acore.Creature;
-			charterId: number;
-			cost: number;
-			type: CharterTypes;
+			readonly charterId: Acore.Box<number>;
+			readonly cost: Acore.Box<number>;
+			readonly type: Acore.Box<CharterTypes>;
 		};
 		['petition-show-list']: {
 			readonly player: Acore.Player;
 			readonly creature: Acore.Creature;
-			charterEntry: number;
-			charterDisplayId: number;
-			charterCost: number;
+			readonly charterEntry: Acore.Box<number>;
+			readonly charterDisplayId: Acore.Box<number>;
+			readonly charterCost: Acore.Box<number>;
 		};
 		['reward-kill-rewarder']: {
 			readonly player: Acore.Player;
 			// readonly rewarder: Acore.KillRewarder;
 			readonly isDungeon: boolean;
-			rate: number;
+			readonly rate: Acore.Box<number>;
 		};
 		['can-give-mail-reward-at-give-level']: {
 			readonly player: Acore.Player;
 			readonly level: number;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['delete-from-db']: {
 			readonly guid: bigint;
 		};
 		['can-repop-at-graveyard']: {
 			readonly player: Acore.Player;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['is-class']: {
 			readonly player: Acore.Player;
 			readonly playerClass: Classes;
 			readonly context: ClassContext;
-			__return: boolean | undefined;
+			readonly __return: Acore.Box<boolean | undefined>;
 		};
 		['get-max-skill-value']: {
 			readonly player: Acore.Player;
 			readonly skill: SkillType;
-			result: number;
+			readonly result: Acore.Box<number>;
 			readonly isPure: boolean;
 		};
 		['has-active-power-type']: {
 			readonly player: Acore.Player;
 			readonly power: Powers;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['update-gathering-skill']: {
 			readonly player: Acore.Player;
@@ -538,13 +538,13 @@ declare global {
 			readonly gray: number;
 			readonly green: number;
 			readonly yellow: number;
-			gain: number;
+			readonly gain: Acore.Box<number>;
 		};
 		['update-crafting-skill']: {
 			readonly player: Acore.Player;
 			// readonly skill: Acore.SkillLineAbilityEntry;
 			readonly currentLevel: number;
-			gain: number;
+			readonly gain: Acore.Box<number>;
 		};
 		['update-fishing-skill']: {
 			readonly player: Acore.Player;
@@ -552,37 +552,37 @@ declare global {
 			readonly zoneSkill: number;
 			readonly chance: number;
 			readonly roll: number;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['can-area-explore-and-outdoor']: {
 			readonly player: Acore.Player;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['victim-reward-before']: {
 			readonly player: Acore.Player;
 			readonly victim: Acore.Player;
-			killerTitle: number;
-			victimRank: number;
+			readonly killerTitle: Acore.Box<number>;
+			readonly victimRank: Acore.Box<number>;
 		};
 		['victim-reward-after']: {
 			readonly player: Acore.Player;
 			readonly victim: Acore.Player;
-			killerTitle: number;
-			victimRank: number;
-			honor: number;
+			readonly killerTitle: Acore.Box<number>;
+			readonly victimRank: Acore.Box<number>;
+			readonly honor: Acore.Box<number>;
 		};
 		['custom-scaling-stat-value-before']: {
 			readonly player: Acore.Player;
 			readonly proto: Acore.ItemTemplateNarrowable;
 			readonly slot: number;
 			readonly apply: boolean;
-			customScalingStatValue: number;
+			readonly customScalingStatValue: Acore.Box<number>;
 		};
 		['custom-scaling-stat-value']: {
 			readonly player: Acore.Player;
 			readonly proto: Acore.ItemTemplateNarrowable;
-			statType: Stats;
-			val: number;
+			readonly statType: Acore.Box<Stats>;
+			readonly val: Acore.Box<number>;
 			readonly itemProtoStatNumber: number;
 			readonly scalingStatValue: number;
 			// readonly ssv: Acore.ScalingStatValuesEntry;
@@ -593,7 +593,7 @@ declare global {
 			readonly apply: boolean;
 			readonly itemProtoStatNumber: number;
 			readonly statType: Stats;
-			val: number;
+			readonly val: Acore.Box<number>;
 		};
 		['apply-enchantment-item-mods-before']: {
 			readonly player: Acore.Player;
@@ -601,23 +601,23 @@ declare global {
 			readonly slot: EnchantmentSlot;
 			readonly apply: boolean;
 			readonly enchantSpellId: number;
-			enchantAmount: number;
+			readonly enchantAmount: Acore.Box<number>;
 		};
 		['apply-weapon-damage']: {
 			readonly player: Acore.Player;
 			readonly slot: number;
 			readonly proto: Acore.ItemTemplateNarrowable;
-			minDamage: number;
-			maxDamage: number;
+			readonly minDamage: Acore.Box<number>;
+			readonly maxDamage: Acore.Box<number>;
 			readonly damageIndex: number;
 		};
 		['can-armor-damage-modifier']: {
 			readonly player: Acore.Player;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['get-feral-ap-bonus']: {
 			readonly player: Acore.Player;
-			feralBonus: number;
+			readonly feralBonus: Acore.Box<number>;
 			readonly dpsMod: number;
 			readonly proto: Acore.ItemTemplateNarrowable;
 			// readonly ssv: Acore.ScalingStatValuesEntry;
@@ -628,7 +628,7 @@ declare global {
 			readonly attackType: WeaponAttackType;
 			readonly aura: Acore.AuraEffect;
 			readonly apply: boolean;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['can-apply-equip-spell']: {
 			readonly player: Acore.Player;
@@ -636,12 +636,12 @@ declare global {
 			readonly item: Acore.Item;
 			readonly apply: boolean;
 			readonly formChange: boolean;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['can-apply-equip-spells-item-set']: {
 			readonly player: Acore.Player;
 			// readonly eff: Acore.ItemSetEffect;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['can-cast-item-combat-spell']: {
 			readonly player: Acore.Player;
@@ -651,7 +651,7 @@ declare global {
 			readonly procEx: ProcFlagsHit;
 			readonly item: Acore.Item;
 			readonly proto: Acore.ItemTemplateNarrowable;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['can-cast-item-use-spell']: {
 			readonly player: Acore.Player;
@@ -659,40 +659,40 @@ declare global {
 			// readonly targets: Acore.SpellCastTargets;
 			readonly castCount: number;
 			readonly glyphIndex: number;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['apply-ammo-bonuses']: {
 			readonly player: Acore.Player;
 			readonly proto: Acore.ItemTemplateNarrowable;
-			currentAmmoDps: number;
+			readonly currentAmmoDps: Acore.Box<number>;
 		};
 		['can-equip-item']: {
 			readonly player: Acore.Player;
 			readonly slot: number;
-			dest: number;
+			readonly dest: Acore.Box<number>;
 			readonly item: Acore.Item;
 			readonly swap: boolean;
 			readonly notLoading: boolean;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['can-unequip-item']: {
 			readonly player: Acore.Player;
 			readonly pos: number;
 			readonly swap: boolean;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['can-use-item']: {
 			readonly player: Acore.Player;
 			readonly proto: Acore.ItemTemplateNarrowable;
-			result: InventoryResult;
-			__return: boolean;
+			readonly result: Acore.Box<InventoryResult>;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['can-save-equip-new-item']: {
 			readonly player: Acore.Player;
 			readonly item: Acore.Item;
 			readonly pos: number;
 			readonly update: boolean;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['can-apply-enchantment']: {
 			readonly player: Acore.Player;
@@ -701,11 +701,11 @@ declare global {
 			readonly apply: boolean;
 			readonly applyDur: boolean;
 			readonly ignoreCondition: boolean;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['get-quest-rate']: {
 			readonly player: Acore.Player;
-			result: number;
+			readonly result: Acore.Box<number>;
 		};
 		['passed-quest-killed-monster-credit']: {
 			readonly player: Acore.Player;
@@ -713,41 +713,41 @@ declare global {
 			readonly entry: number;
 			readonly realEntry: number;
 			readonly guid: bigint | undefined;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['check-item-in-slot-at-load-inventory']: {
 			readonly player: Acore.Player;
 			readonly item: Acore.Item;
 			readonly slot: number;
-			err: InventoryResult;
-			dest: number;
-			__return: boolean;
+			readonly err: Acore.Box<InventoryResult>;
+			readonly dest: Acore.Box<number>;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['not-avoid-satisfy']: {
 			readonly player: Acore.Player;
 			// readonly ar: Acore.DungeonProgressionRequirements;
 			readonly targetMap: number;
 			readonly report: boolean;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['not-visible-globally-for']: {
 			readonly player: Acore.Player;
 			readonly u: Acore.Player;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['get-arena-personal-rating']: {
 			readonly player: Acore.Player;
 			readonly slot: number;
-			result: number;
+			readonly result: Acore.Box<number>;
 		};
 		['get-arena-team-id']: {
 			readonly player: Acore.Player;
 			readonly slot: number;
-			result: number;
+			readonly result: Acore.Box<number>;
 		};
 		['is-ffa-pvp']: {
 			readonly player: Acore.Player;
-			result: boolean;
+			readonly result: Acore.Box<boolean>;
 		};
 		['ffa-pvp-state-update']: {
 			readonly player: Acore.Player;
@@ -755,25 +755,25 @@ declare global {
 		};
 		['is-pvp']: {
 			readonly player: Acore.Player;
-			result: boolean;
+			readonly result: Acore.Box<boolean>;
 		};
 		['get-max-skill-value-for-level']: {
 			readonly player: Acore.Player;
-			result: number;
+			readonly result: Acore.Box<number>;
 		};
 		['not-set-arena-team-info-field']: {
 			readonly player: Acore.Player;
 			readonly slot: number;
 			readonly type: ArenaTeamInfoType;
 			readonly value: number;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['can-join-lfg']: {
 			readonly player: Acore.Player;
 			readonly roles: LfgRoles;
 			// dungeons: ReadonlySet<number>;
 			readonly comment: string;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['can-enter-map']: {
 			readonly player: Acore.Player;
@@ -781,78 +781,78 @@ declare global {
 			// readonly instance: Acore.InstanceTemplate;
 			// readonly mapDiff: Acore.MapDifficulty;
 			readonly loginCheck: boolean;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['can-init-trade']: {
 			readonly player: Acore.Player;
 			readonly target: Acore.Player;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['can-set-trade-item']: {
 			readonly player: Acore.Player;
 			readonly tradedItem: Acore.Item;
 			readonly tradeSlot: number;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['set-server-side-visibility']: {
 			readonly player: Acore.Player;
-			type: ServerSideVisibilityType;
-			sec: AccountTypes;
+			readonly type: Acore.Box<ServerSideVisibilityType>;
+			readonly sec: Acore.Box<AccountTypes>;
 		};
 		['set-server-side-visibility-detect']: {
 			readonly player: Acore.Player;
-			type: ServerSideVisibilityType;
-			sec: AccountTypes;
+			readonly type: Acore.Box<ServerSideVisibilityType>;
+			readonly sec: Acore.Box<AccountTypes>;
 		};
 		['resurrect']: {
 			readonly player: Acore.Player;
 			readonly restorePercent: number;
-			applySickness: boolean;
+			readonly applySickness: Acore.Box<boolean>;
 		};
 		['before-choose-graveyard']: {
 			readonly player: Acore.Player;
 			readonly teamId: TeamId;
 			readonly nearCorpse: boolean;
-			graveyardOverride: number;
+			readonly graveyardOverride: Acore.Box<number>;
 		};
 		['can-use-chat']: {
 			readonly player: Acore.Player;
 			readonly type: ChatMsg;
 			readonly lang: Language;
-			msg: string;
-			__return: boolean;
+			readonly msg: Acore.Box<string>;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['can-use-chat:player']: {
 			readonly player: Acore.Player;
 			readonly type: ChatMsg;
 			readonly lang: Language;
-			msg: string;
+			readonly msg: Acore.Box<string>;
 			readonly receiver: Acore.Player;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['can-use-chat:group']: {
 			readonly player: Acore.Player;
 			readonly type: ChatMsg;
 			readonly lang: Language;
-			msg: string;
+			readonly msg: Acore.Box<string>;
 			readonly group: Acore.Group;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['can-use-chat:guild']: {
 			readonly player: Acore.Player;
 			readonly type: ChatMsg;
 			readonly lang: Language;
-			msg: string;
+			readonly msg: Acore.Box<string>;
 			readonly guild: Acore.Guild;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['can-use-chat:channel']: {
 			readonly player: Acore.Player;
 			readonly type: ChatMsg;
 			readonly lang: Language;
-			msg: string;
+			readonly msg: Acore.Box<string>;
 			readonly channel: Acore.Channel;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['learn-talents']: {
 			readonly player: Acore.Player;
@@ -878,7 +878,7 @@ declare global {
 			readonly mapId: number;
 			readonly zoneId: number;
 			readonly bySpell: Acore.SpellInfo;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['anticheat:set-can-flyby-server']: {
 			readonly player: Acore.Player;
@@ -897,30 +897,30 @@ declare global {
 		['anticheat-handle-double-jump']: {
 			readonly player: Acore.Player;
 			readonly mover: Acore.Unit;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['anticheat-check-movement-info']: {
 			readonly player: Acore.Player;
 			// readonly movementInfo: Acore.MovementInfo;
 			readonly mover: Acore.Unit;
 			readonly jump: boolean;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['can-send-error-already-looted']: {
 			readonly player: Acore.Player;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['after-creature-loot']: { readonly player: Acore.Player; };
 		['after-creature-loot-money']: { readonly player: Acore.Player; };
 		['can-update-skill']: {
 			readonly player: Acore.Player;
 			readonly skillId: SkillType;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['before-update-skill']: {
 			readonly player: Acore.Player;
 			readonly skillId: SkillType;
-			value: number;
+			readonly value: Acore.Box<number>;
 			readonly max: number;
 			readonly step: number;
 		};
@@ -942,27 +942,27 @@ declare global {
 		};
 		['can-resurrect']: {
 			readonly player: Acore.Player;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['can-give-level']: {
 			readonly player: Acore.Player;
 			readonly newLevel: number;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['send-list-inventory']: {
 			readonly player: Acore.Player;
 			readonly vendorGuid: bigint;
-			vendorEntry: number;
+			readonly vendorEntry: Acore.Box<number>;
 		};
 		['get-reputation-price-discount:by-creature']: {
 			readonly player: Acore.Player;
 			readonly creature: Acore.Creature;
-			discount: number;
+			readonly discount: Acore.Box<number>;
 		};
 		['get-reputation-price-discount']: {
 			readonly player: Acore.Player;
 			// readonly factionTemplate: Acore.FactionTemplateEntry;
-			discount: number;
+			readonly discount: Acore.Box<number>;
 		};
 		['learn-taxi-node']: {
 			readonly player: Acore.Player;
@@ -970,7 +970,7 @@ declare global {
 		};
 		['before-get-level-for-xp-gain']: {
 			readonly player: Acore.Player;
-			level: number;
+			readonly level: Acore.Box<number>;
 		};
 	}
 }

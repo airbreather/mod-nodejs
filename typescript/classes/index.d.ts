@@ -11,6 +11,7 @@ export type * from './AuraGeneratorData.d.ts';
 export type * from './BarberChairData.d.ts';
 export type * from './Battleground.d.ts';
 export type * from './BattlegroundQueue.d.ts';
+export type * from './Box.d.ts';
 export type * from './ButtonData.d.ts';
 export type * from './ByteBuffer.d.ts';
 export type * from './CameraData.d.ts';

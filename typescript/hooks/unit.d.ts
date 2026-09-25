@@ -3,34 +3,34 @@ declare global {
 		['unit:heal']: {
 			readonly healer: Acore.Unit;
 			readonly receiver: Acore.Unit;
-			amount: number;
+			readonly amount: Acore.Box<number>;
 		};
 		['unit:damage']: {
 			readonly attacker: Acore.Unit;
 			readonly victim: Acore.Unit;
-			amount: number;
+			readonly amount: Acore.Box<number>;
 		};
 		['unit:modify-periodic-damage-auras-tick']: {
 			readonly target: Acore.Unit;
 			readonly attacker: Acore.Unit;
-			amount: number;
+			readonly amount: Acore.Box<number>;
 			readonly spellInfo: Acore.SpellInfo;
 		};
 		['unit:modify-melee-damage']: {
 			readonly target: Acore.Unit;
 			readonly attacker: Acore.Unit;
-			amount: number;
+			readonly amount: Acore.Box<number>;
 		};
 		['unit:modify-spell-damage-taken']: {
 			readonly target: Acore.Unit;
 			readonly attacker: Acore.Unit;
-			amount: number;
+			readonly amount: Acore.Box<number>;
 			readonly spellInfo: Acore.SpellInfo;
 		};
 		['unit:modify-heal-received']: {
 			readonly target: Acore.Unit;
 			readonly healer: Acore.Unit;
-			amount: number;
+			readonly amount: Acore.Box<number>;
 			readonly spellInfo: Acore.SpellInfo;
 		};
 		['unit:deal-damage']: {
@@ -38,21 +38,21 @@ declare global {
 			readonly victim: Acore.Unit;
 			readonly amount: number;
 			readonly damageType: DamageEffectType;
-			__return: number;
+			readonly __return: Acore.Box<number>;
 		};
 		['unit:before-roll-melee-outcome-against']: {
 			readonly attacker: Acore.Unit;
 			readonly victim: Acore.Unit;
 			readonly attType: WeaponAttackType;
-			attackerMaxSkillValueForLevel: number;
-			victimMaxSkillValueForLevel: number;
-			attackerWeaponSkill: number;
-			victimDefenseSkill: number;
-			critChance: number;
-			missChance: number;
-			dodgeChance: number;
-			parryChance: number;
-			blockChance: number;
+			readonly attackerMaxSkillValueForLevel: Acore.Box<number>;
+			readonly victimMaxSkillValueForLevel: Acore.Box<number>;
+			readonly attackerWeaponSkill: Acore.Box<number>;
+			readonly victimDefenseSkill: Acore.Box<number>;
+			readonly critChance: Acore.Box<number>;
+			readonly missChance: Acore.Box<number>;
+			readonly dodgeChance: Acore.Box<number>;
+			readonly parryChance: Acore.Box<number>;
+			readonly blockChance: Acore.Box<number>;
 		};
 		['unit:aura-apply']: {
 			readonly unit: Acore.Unit;
@@ -66,20 +66,20 @@ declare global {
 		['unit:if-normal-reaction']: {
 			readonly unit: Acore.Unit;
 			readonly target: Acore.Unit;
-			repRank: ReputationRank;
-			__return: boolean;
+			readonly repRank: Acore.Box<ReputationRank>;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['unit:can-set-phase-mask']: {
 			readonly unit: Acore.Unit;
 			readonly newPhaseMask: number;
 			readonly update: boolean;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['unit:should-track-values-update-pos-by-index']: {
 			readonly unit: Acore.Unit;
 			readonly updateType: OBJECT_UPDATE_TYPE;
 			readonly index: number;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['unit:patch-values-update']: {
 			readonly unit: Acore.Unit;

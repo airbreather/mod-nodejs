@@ -35,7 +35,8 @@ declare global {
 		function logFatal(filter: string, msg: string): void;
 		function runCommandAsync(cmd: string, flush?: boolean): Promise<boolean>;
 		function saveAllPlayers(): void;
-		function box<T>(val: T): Box<T>;
+		function box<T>(val: T): Acore.Box<T>;
+		function box<T>(val?: T): Acore.Box<T | undefined>;
 		function registerCommand(command: ChatCommandBuilder): void;
 		function shutdown(time: number, optionsMask: ShutdownMask, exitCode: number, reason?: string): void;
 		function hasPlayerbotsModule(): boolean;

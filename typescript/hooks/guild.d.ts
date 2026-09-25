@@ -3,7 +3,7 @@ declare global {
 		['guild:add-member']: {
 			readonly guild: Acore.Guild;
 			readonly player: Acore.Player;
-			plRank: number;
+			readonly plRank: Acore.Box<number>;
 		};
 		['guild:remove-member']: {
 			readonly guild: Acore.Guild;
@@ -28,13 +28,13 @@ declare global {
 		['guild:member-withdraw-money']: {
 			readonly guild: Acore.Guild;
 			readonly player: Acore.Player;
-			amount: number;
+			readonly amount: Acore.Box<number>;
 			readonly isRepair: boolean;
 		};
 		['guild:member-deposit-money']: {
 			readonly guild: Acore.Guild;
 			readonly player: Acore.Player;
-			amount: number;
+			readonly amount: Acore.Box<number>;
 		};
 		['guild:item-move']: {
 			readonly guild: Acore.Guild;
@@ -131,7 +131,7 @@ declare global {
 			readonly player: Acore.Player | undefined;
 			readonly tabId: number;
 			readonly sendAllSlots: boolean;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 	}
 }

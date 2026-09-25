@@ -64,6 +64,7 @@ struct GameObjectTemplate;
 struct GemPropertiesEntry;
 struct GlyphPropertiesEntry;
 struct ItemTemplate;
+struct JBox;
 struct Loot;
 struct MySQLConnectionInfo;
 struct PvPDifficultyEntry;
@@ -174,6 +175,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<NodeJs *>() {
 	REGISTER_CLASS_PROP(Guild)
 	REGISTER_CLASS_PROP_SPLIT_NAMES(Guild::Member, GuildMember)
 	REGISTER_CLASS_PROP_RO(ItemTemplate)
+	REGISTER_CLASS_PROP_SPLIT_NAMES(JBox, "$$$JBOX$$$")
 	REGISTER_CLASS_PROP(Loot)
 	REGISTER_CLASS_PROP_RO(LootStore)
 	REGISTER_CLASS_PROP_RO(LootTemplate)

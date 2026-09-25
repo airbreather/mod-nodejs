@@ -7,22 +7,22 @@ declare global {
 		['pet:calculate-max-talent-points-for-level']: {
 			readonly pet: Acore.Pet;
 			readonly level: number;
-			points: number;
+			readonly points: Acore.Box<number>;
 		};
 		['pet:can-unlearn-spell-set']: {
 			readonly pet: Acore.Pet;
 			readonly level: number;
 			readonly spell: number;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['pet:can-unlearn-spell-default']: {
 			readonly pet: Acore.Pet;
 			readonly spellInfo: Acore.SpellInfo;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['pet:can-reset-talents']: {
 			readonly pet: Acore.Pet;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['pet:add-to-world']: { readonly pet: Acore.Pet; };
 	}

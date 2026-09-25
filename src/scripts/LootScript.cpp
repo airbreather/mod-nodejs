@@ -11,7 +11,8 @@ public:
 	}
 
 	void OnLootMoney(Player * player, uint32_t const gold) override {
-		NodeJs::invoke_hook("loot:money", jarg("player", player), jarg("gold", gold));
+		NodeJs::invoke_hook("loot:money"
+			, jarg("player", player), jarg("gold", gold));
 	}
 };
 

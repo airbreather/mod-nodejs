@@ -27,10 +27,12 @@ public:
 			, jarg("player", player), jarg("proto", proto));
 	}
 	void OnItemGossipSelect(Player * player, Item * item, uint32_t const sender, uint32_t const action) override {
-		NodeJs::invoke_hook("item:gossip-select", jarg("player", player), jarg("item", item), jarg("sender", sender), jarg("action", action));
+		NodeJs::invoke_hook("item:gossip-select"
+			, jarg("player", player), jarg("item", item), jarg("sender", sender), jarg("action", action));
 	}
 	void OnItemGossipSelectCode(Player * player, Item * item, uint32_t const sender, uint32_t const action, const char* code) override {
-		NodeJs::invoke_hook("item:gossip-select-code", jarg("player", player), jarg("item", item), jarg("sender", sender), jarg("action", action), jarg("code", code));
+		NodeJs::invoke_hook("item:gossip-select-code"
+			, jarg("player", player), jarg("item", item), jarg("sender", sender), jarg("action", action), jarg("code", code));
 	}
 };
 

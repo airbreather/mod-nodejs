@@ -10,14 +10,14 @@ declare global {
 		['game-object:can-gossip-hello']: {
 			readonly player: Acore.Player;
 			readonly gameObject: Acore.GameObject;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['game-object:can-gossip-select']: {
 			readonly player: Acore.Player;
 			readonly gameObject: Acore.GameObject;
 			readonly sender: GossipSender;
 			readonly action: GossipAction;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['game-object:can-gossip-select-code']: {
 			readonly player: Acore.Player;
@@ -25,20 +25,20 @@ declare global {
 			readonly sender: GossipSender;
 			readonly action: GossipAction;
 			readonly code: string;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['game-object:can-quest-accept']: {
 			readonly player: Acore.Player;
 			readonly gameObject: Acore.GameObject;
 			readonly quest: Acore.Quest;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['game-object:can-quest-reward']: {
 			readonly player: Acore.Player;
 			readonly gameObject: Acore.GameObject;
 			readonly quest: Acore.Quest;
 			readonly opt: number;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['game-object:destroyed']: {
 			readonly gameObject: Acore.GameObject;
@@ -51,7 +51,7 @@ declare global {
 		['game-object:modify-health']: {
 			readonly gameObject: Acore.GameObject;
 			readonly attackerOrHealer: Acore.Unit;
-			change: number;
+			readonly change: Acore.Box<number>;
 			readonly spellInfo: Acore.SpellInfo;
 		};
 		['game-object:loot-state-changed']: {

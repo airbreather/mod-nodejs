@@ -2,24 +2,24 @@ declare global {
 	interface GlobalHooks {
 		['spell:calc-max-duration']: {
 			readonly aura: Acore.Aura;
-			maxDuration: number;
+			readonly maxDuration: Acore.Box<number>;
 		};
 		['spell:check-cast']: {
 			readonly spell: Acore.Spell;
 			readonly strict: boolean;
-			result: SpellCastResult;
+			readonly result: Acore.Box<SpellCastResult>;
 		};
 		['spell:can-prepare']: {
 			readonly spell: Acore.Spell;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['spell:can-scaling-everything']: {
 			readonly spell: Acore.Spell;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['spell:can-select-spec-talent']: {
 			readonly spell: Acore.Spell;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['spell:scale-aura-unit-add']: {
 			readonly spell: Acore.Spell;
@@ -34,12 +34,12 @@ declare global {
 			readonly spell: Acore.Spell;
 			// targetInfo: TargetInfo;
 			readonly auraScaleMask: SpellEffIndexMask;
-			needErase: boolean;
+			readonly needErase: Acore.Box<boolean>;
 		};
 		['spell:before-aura-rank-for-level']: {
 			readonly spellInfo: Acore.SpellInfo;
 			// setting this is not working right now because of what looks like a bug in Acore.
-			latestSpellInfo: Acore.SpellInfo;
+			readonly latestSpellInfo: Acore.Box<Acore.SpellInfo>;
 			readonly level: number;
 		};
 		['spell:dummy-effect:game-object-target']: {

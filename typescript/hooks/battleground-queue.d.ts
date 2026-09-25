@@ -17,12 +17,12 @@ declare global {
 			readonly arenaType: ArenaType;
 			readonly isRated: boolean;
 			readonly arenaRating: number;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['battleground-queue:add-group']: {
 			readonly queue: Acore.BattlegroundQueue;
 			readonly gInfo: GroupQueueInfo;
-			index: number;
+			readonly index: Acore.Box<number>;
 			readonly leader: Acore.Player;
 			readonly group: Acore.Group;
 			readonly bgTypeId: BattlegroundTypeId;
@@ -39,7 +39,7 @@ declare global {
 			readonly queue: Acore.BattlegroundQueue;
 			readonly bg: Acore.Battleground;
 			readonly bracketId: number;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['battleground-queue:is-check-normal-match']: {
 			readonly queue: Acore.BattlegroundQueue;
@@ -47,14 +47,14 @@ declare global {
 			readonly bracketId: number;
 			readonly minPlayers: number;
 			readonly maxPlayers: number;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['battleground-queue:can-send-message']: {
 			readonly queue: Acore.BattlegroundQueue;
 			readonly leader: Acore.Player;
 			readonly bg: Acore.Battleground;
 			readonly bracketEntry: Acore.PvPDifficultyEntry;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['battleground-queue:before-send-join-message-arena']: {
 			readonly queue: Acore.BattlegroundQueue;
@@ -62,12 +62,12 @@ declare global {
 			readonly gInfo: GroupQueueInfo;
 			readonly bracketEntry: Acore.PvPDifficultyEntry;
 			readonly isRated: boolean;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['battleground-queue:before-send-exit-message-arena']: {
 			readonly queue: Acore.BattlegroundQueue;
 			readonly gInfo: GroupQueueInfo;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['battleground-queue:can-add-group-to-matching-pool']: {
 			readonly queue: Acore.BattlegroundQueue;
@@ -75,13 +75,13 @@ declare global {
 			readonly poolPlayerCount: number;
 			readonly bg: Acore.Battleground;
 			readonly bracketId: number;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 		['battleground-queue:get-player-matchmaking-rating']: {
 			readonly playerGuid: bigint;
 			readonly bgTypeId: BattlegroundTypeId;
-			outRating: number;
-			__return: boolean;
+			readonly outRating: Acore.Box<number>;
+			readonly __return: Acore.Box<boolean>;
 		};
 	}
 }

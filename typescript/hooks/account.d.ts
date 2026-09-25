@@ -12,7 +12,7 @@ declare global {
 			readonly accountId: number;
 			readonly race: Races;
 			readonly clazz: Classes;
-			__return: boolean;
+			readonly __return: Acore.Box<boolean>;
 		};
 	}
 }

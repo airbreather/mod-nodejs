@@ -11,11 +11,13 @@ public:
 	}
 
 	void OnInitStatsForLevel(Guardian * guardian, uint8_t petlevel) override {
-		NodeJs::invoke_hook("pet:init-stats-for-level", jarg("pet", guardian), jarg("petLevel", petlevel));
+		NodeJs::invoke_hook("pet:init-stats-for-level"
+			, jarg("pet", guardian), jarg("petLevel", petlevel));
 	}
 
 	void OnCalculateMaxTalentPointsForLevel(Pet * pet, uint8_t const level, uint8_t & points) override {
-		NodeJs::invoke_hook("pet:calculate-max-talent-points-for-level", jarg("pet", pet), jarg("level", level), jarg_inout("points", points));
+		NodeJs::invoke_hook("pet:calculate-max-talent-points-for-level"
+			, jarg("pet", pet), jarg("level", level), jarg_inout("points", points));
 	}
 
 	[[nodiscard]] bool CanUnlearnSpellSet(Pet * pet, uint32_t const level, uint32_t const spell) override {
@@ -34,7 +36,8 @@ public:
 	}
 
 	void OnPetAddToWorld(Pet * pet) override {
-		NodeJs::invoke_hook("pet:add-to-world", jarg("pet", pet));
+		NodeJs::invoke_hook("pet:add-to-world"
+			, jarg("pet", pet));
 	}
 };
 
