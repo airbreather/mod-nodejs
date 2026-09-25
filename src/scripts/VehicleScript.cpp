@@ -13,27 +13,27 @@ public:
 
 	void OnInstall(Vehicle * veh) override {
 		NodeJs::invoke_hook("vehicle:install"
-			, jarg("vehicle", veh));
+			, jprop("vehicle", veh));
 	}
 	void OnUninstall(Vehicle * veh) override {
 		NodeJs::invoke_hook("vehicle:uninstall"
-			, jarg("vehicle", veh));
+			, jprop("vehicle", veh));
 	}
 	void OnReset(Vehicle * veh) override {
 		NodeJs::invoke_hook("vehicle:reset"
-			, jarg("vehicle", veh));
+			, jprop("vehicle", veh));
 	}
 	void OnInstallAccessory(Vehicle * veh, Creature * accessory) override {
 		NodeJs::invoke_hook("vehicle:install-accessory"
-			, jarg("vehicle", veh), jarg("accessory", accessory));
+			, jprop("vehicle", veh), jprop("accessory", accessory));
 	}
 	void OnAddPassenger(Vehicle * veh, Unit * passenger, int8_t const seatId) override {
 		NodeJs::invoke_hook("vehicle:add-passenger"
-			, jarg("vehicle", veh), jarg("passenger", passenger), jarg("seatId", seatId));
+			, jprop("vehicle", veh), jprop("passenger", passenger), jprop("seatId", seatId));
 	}
 	void OnRemovePassenger(Vehicle * veh, Unit * passenger) override {
 		NodeJs::invoke_hook("vehicle:remove-passenger"
-			, jarg("vehicle", veh), jarg("passenger", passenger));
+			, jprop("vehicle", veh), jprop("passenger", passenger));
 	}
 };
 

@@ -2,13 +2,12 @@
 #define MOD_NODEJS_NODEJOBJHELPERS_H
 
 #include <string>
-#include <v8-isolate.h>
 #include <v8-local-handle.h>
+#include <v8-persistent-handle.h>
 #include <v8-value.h>
 
-#include "JtoC.h"
-
-class WorldObject;
+#include "CtoJ.h"
+#include "JBox.h"
 
 struct Prop {
 	explicit Prop(std::string const & name_init) : name(name_init) {
@@ -35,63 +34,32 @@ struct PropT : Prop {
 };
 
 template <typename T>
+struct PropMovingT : Prop {
+	T & data;
+	v8::Global<v8::Object> moved {};
+
+	PropMovingT(std::string const & name_init, T & data_init) : Prop(name_init), data(data_init) {
+	}
+
+	~PropMovingT() override = default;
+
+	[[nodiscard]] std::string const & get_name() const { return name; }
+	[[nodiscard]] v8::Local<v8::Value> val() override {
+		if (moved.IsEmpty()) {
+			moved = v8::Global<v8::Object>(v8::Isolate::GetCurrent(), jmove<JBox *>(new JBoxT(data)));
+		}
+		return moved.Get(v8::Isolate::GetCurrent());
+	}
+};
+
+template <typename T>
 PropT<T> jprop(std::string const & name, T data) {
 	return PropT<T>(name, data);
 }
 
-struct Arg : Prop {
-	explicit Arg(std::string const & name_init) : Prop(name_init) {
-	}
-
-	virtual bool try_set_val(v8::Local<v8::Value>) { return false; }
-};
-
 template <typename T>
-struct InArg : Arg {
-	T src;
-
-	InArg(std::string const & name_init, T src_init) : Arg(name_init), src(src_init) {
-	}
-
-	~InArg() override = default;
-
-	[[nodiscard]] std::string const & get_name() const { return name; }
-	[[nodiscard]] v8::Local<v8::Value> val() override {
-		return jval(src);
-	}
-	bool try_set_val(v8::Local<v8::Value> const) override {
-		return false;
-	}
-};
-
-template <typename T>
-InArg<T> jarg(std::string const & name, T data) {
-	return InArg<T>(name, data);
-}
-
-template <typename T>
-struct InOutArg : Arg {
-	T & data;
-
-	InOutArg(std::string const & name_init, T & data_init) : Arg(name_init), data(data_init) {
-	}
-
-	~InOutArg() override = default;
-
-	[[nodiscard]] std::string const & get_name() const { return name; }
-	[[nodiscard]] v8::Local<v8::Value> val() override { return jval(data); }
-	bool try_set_val(v8::Local<v8::Value> const v) override {
-		if (auto const converted = cval<T>(v)) {
-			data = *converted;
-			return true;
-		}
-		return false;
-	}
-};
-
-template <typename T>
-InOutArg<T> jarg_inout(std::string const & name, T & data) {
-	return InOutArg<T>(name, data);
+PropMovingT<T> jprop_box(std::string const & name, T & data) {
+	return PropMovingT<T>(name, data);
 }
 
 #endif //MOD_NODEJS_NODEJOBJHELPERS_H

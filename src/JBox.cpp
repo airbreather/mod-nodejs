@@ -15,16 +15,10 @@ v8::Local<v8::FunctionTemplate> jcreate_template<JBox *>() {
 		return b->getter();
 	});
 	reg_method(ft, "set", [](JBox * b, v8::Local<v8::Value> v) {
-		b->setter(v);
+		if (!b->setter(v)) {
+			v8::Isolate::GetCurrent()->ThrowError("Cannot set native value.");
+		}
 	});
 
 	return ft;
-}
-
-template <typename T>
-v8::Local<v8::Object> jbox(T & ref) {
-	return jmove(new JBox {
-		[ref] { return jval(ref); },
-		[ref] (v8::Local<v8::Value> val) { ref = cval<T>(val); }
-	});
 }

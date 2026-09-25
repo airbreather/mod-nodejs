@@ -12,23 +12,23 @@ public:
 
 	void OnTicketCreate(GmTicket * ticket) override {
 		NodeJs::invoke_hook("ticket:create"
-			, jarg("ticket", ticket));
+			, jprop("ticket", ticket));
 	}
 	void OnTicketUpdateLastChange(GmTicket * ticket) override {
 		NodeJs::invoke_hook("ticket:update-last-change"
-			, jarg("ticket", ticket));
+			, jprop("ticket", ticket));
 	}
 	void OnTicketClose(GmTicket * ticket) override {
 		NodeJs::invoke_hook("ticket:close"
-			, jarg("ticket", ticket));
+			, jprop("ticket", ticket));
 	}
 	void OnTicketStatusUpdate(GmTicket * ticket) override {
 		NodeJs::invoke_hook("ticket:status-update"
-			, jarg("ticket", ticket));
+			, jprop("ticket", ticket));
 	}
 	void OnTicketResolve(GmTicket * ticket) override {
 		NodeJs::invoke_hook("ticket:resolve"
-			, jarg("ticket", ticket));
+			, jprop("ticket", ticket));
 	}
 };
 

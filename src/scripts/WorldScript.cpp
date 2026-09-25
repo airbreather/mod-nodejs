@@ -35,7 +35,7 @@ public:
 
 	void OnShutdown() override {
 		NodeJs::invoke_hook("nodejs:before-shutdown"
-			, jarg("reloading", false));
+			, jprop("reloading", false));
 		NodeJs::invoke_hook("world:shutdown"
 			);
 		NodeJs::shutdown();
