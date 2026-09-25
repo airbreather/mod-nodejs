@@ -1,6 +1,8 @@
 declare global {
 	namespace Acore {
 		class GameObject extends WorldObject {
+			static buildSpawner(entry: number, map: ACMap, x: number, y: number, z: number, o: number): SpawnGameObjectBuilder;
+
 			readonly mapId: number;
 			readonly isSpawned: boolean;
 			readonly isTransport: boolean;
@@ -12,6 +14,7 @@ declare global {
 			readonly lootRecipient: Player | undefined;
 			// readonly lootRecipientGroupId: number; // not in the core PR yet.
 			readonly lootRecipientGroup: Group | undefined;
+			readonly template: GameObjectTemplateNarrowable;
 			goState: GOState;
 			nextAbsoluteRespawnTime: Temporal.Instant;
 			ownerGuid: ObjectGuid | undefined;

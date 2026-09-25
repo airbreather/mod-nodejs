@@ -7,6 +7,7 @@
 #include "CtoJ.h"
 #include "DurationWrapper.h"
 #include "NodePropertySystem.h"
+#include "ObjectMgr.h"
 
 JVAL_CVAL_TMPLS_RO(CreatureTemplate const)
 
@@ -15,6 +16,10 @@ v8::Local<v8::FunctionTemplate> jcreate_template<CreatureTemplate const *>() {
 	TypedTemplate<CreatureTemplate const *> const ft = jctor();
 
 	ft->SetClassName(jstr_intern("CreatureTemplate"));
+
+	reg_static_method(ft, "byId", [](uint32_t id) {
+		return sObjectMgr->GetCreatureTemplate(id);
+	});
 
 	reg_prop_ro(ft, "entry", [](CreatureTemplate const * ct) {
 		return ct->Entry;

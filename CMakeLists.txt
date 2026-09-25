@@ -84,32 +84,50 @@ list(APPEND ${PRIVATE_SOURCES} (
         src/templates/_InteropTemplates.cpp
         src/templates/AchievementEntryTemplate.cpp
         src/templates/ACObjectTemplate.cpp
+        src/templates/AreaDamageDataTemplate.cpp
         src/templates/AuctionHouseTemplate.cpp
         src/templates/AuctionTemplate.cpp
         src/templates/AuraApplicationTemplate.cpp
         src/templates/AuraEffectTemplate.cpp
+        src/templates/AuraGeneratorDataTemplate.cpp
         src/templates/AuraTemplate.cpp
+        src/templates/BarberChairDataTemplate.cpp
         src/templates/BattlegroundTemplate.cpp
+        src/templates/ButtonDataTemplate.cpp
         src/templates/ByteBufferTemplate.cpp
+        src/templates/CameraDataTemplate.cpp
+        src/templates/CapturePointDataTemplate.cpp
         src/templates/CastSpellBuilderTemplate.cpp
         src/templates/ChannelTemplate.cpp
+        src/templates/ChairDataTemplate.cpp
         src/templates/CharTitlesEntryTemplate.cpp
         src/templates/ChatCommandBuilderBuilderBoxTemplate.cpp
         src/templates/ChatHandlerTemplate.cpp
+        src/templates/ChestDataTemplate.cpp
         src/templates/ConfigTemplate.cpp
         src/templates/ConditionTemplate.cpp
         src/templates/ConditionSourceInfoTemplate.cpp
         src/templates/CorpseTemplate.cpp
         src/templates/CreatureTemplate.cpp
         src/templates/CreatureTemplateTemplate.cpp
+        src/templates/DestructibleBuildingDataTemplate.cpp
+        src/templates/DoorDataTemplate.cpp
+        src/templates/DungeonDifficultyDataTemplate.cpp
         src/templates/DynamicObjectTemplate.cpp
         src/templates/FactionEntryTemplate.cpp
+        src/templates/FishingHoleDataTemplate.cpp
+        src/templates/FlagDropDataTemplate.cpp
+        src/templates/FlagStandDataTemplate.cpp
         src/templates/GameObjectTemplate.cpp
+        src/templates/GameObjectTemplateTemplate.cpp
         src/templates/GemPropertiesEntryTemplate.cpp
+        src/templates/GenericDataTemplate.cpp
         src/templates/GlyphPropertiesEntryTemplate.cpp
         src/templates/GmTicketTemplate.cpp
         src/templates/GroupTemplate.cpp
+        src/templates/GooberDataTemplate.cpp
         src/templates/GuardianTemplate.cpp
+        src/templates/GuardPostDataTemplate.cpp
         src/templates/GuildMemberTemplate.cpp
         src/templates/GuildTemplate.cpp
         src/templates/ItemTemplate.cpp
@@ -120,7 +138,10 @@ list(APPEND ${PRIVATE_SOURCES} (
         src/templates/MailDraftTemplate.cpp
         src/templates/MailSenderTemplate.cpp
         src/templates/MapTemplate.cpp
+        src/templates/MeetingStoneDataTemplate.cpp
+        src/templates/MiniGameDataTemplate.cpp
         src/templates/MinionTemplate.cpp
+        src/templates/MoTransportDataTemplate.cpp
         src/templates/MySQLConnectionInfoTemplate.cpp
         src/templates/ObjectMgrTemplate.cpp
         src/templates/PetTemplate.cpp
@@ -128,22 +149,32 @@ list(APPEND ${PRIVATE_SOURCES} (
         src/templates/PvPDifficultyEntryTemplate.cpp
         src/templates/QueryResultFieldTemplate.cpp
         src/templates/QueryResultSetTemplate.cpp
+        src/templates/QuestGiverDataTemplate.cpp
         src/templates/QuestTemplate.cpp
         src/templates/RollTemplate.cpp
+        src/templates/SpawnCreatureBuilderTemplate.cpp
+        src/templates/SpawnGameObjectBuilderTemplate.cpp
+        src/templates/SpellcasterDataTemplate.cpp
         src/templates/SpellCastTimesEntryTemplate.cpp
         src/templates/SpellCategoryEntryTemplate.cpp
         src/templates/SpellChainNodeTemplate.cpp
         src/templates/SpellDurationEntryTemplate.cpp
         src/templates/SpellEffectInfoTemplate.cpp
+        src/templates/SpellFocusDataTemplate.cpp
         src/templates/SpellImplicitTargetInfoTemplate.cpp
         src/templates/SpellInfoTemplate.cpp
         src/templates/SpellRadiusEntryTemplate.cpp
         src/templates/SpellRangeEntryTemplate.cpp
         src/templates/SpellTemplate.cpp
+        src/templates/SummoningRitualDataTemplate.cpp
         src/templates/SummonPropertiesEntryTemplate.cpp
         src/templates/TempSummonTemplate.cpp
+        src/templates/TextDataTemplate.cpp
         src/templates/ThreatReferenceTemplate.cpp
+        src/templates/TransportDataTemplate.cpp
         src/templates/TransportTemplate.cpp
+        src/templates/TrapDataTemplate.cpp
+        src/templates/TrapDoorDataTemplate.cpp
         src/templates/UnitTemplate.cpp
         src/templates/VehicleEntryTemplate.cpp
         src/templates/VehicleTemplate.cpp
@@ -165,5 +196,7 @@ list(APPEND ${PRIVATE_SOURCES} (
         src/NodePropertySystem.cpp
         src/NodeWrappedObject.cpp
         src/PropertyImplementations.cpp
+        src/SpawnCreatureBuilder.cpp
+        src/SpawnGameObjectBuilder.cpp
         src/UnixTimestamp.cpp
 ))
