@@ -2,7 +2,6 @@
 
 #include <string>
 
-#include "NodeJPropHelpers.h"
 #include "NodeJs.h"
 
 class NODEJS_Loot : public LootScript {

@@ -1,7 +1,6 @@
 #include "GuildScript.h"
 
 #include "Guild.h"
-#include "NodeJPropHelpers.h"
 #include "NodeJs.h"
 #include "WorldSession.h"
 

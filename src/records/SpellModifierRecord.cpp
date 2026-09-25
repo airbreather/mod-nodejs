@@ -2,7 +2,6 @@
 #include <v8-local-handle.h>
 
 #include "CtoJ.h"
-#include "JtoC.h"
 #include "NodeJPropHelpers.h"
 #include "Player.h"
 #include "Util.h"

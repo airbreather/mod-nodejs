@@ -1,7 +1,6 @@
 #include "AllMapScript.h"
 
 #include "DurationWrapper.h"
-#include "NodeJPropHelpers.h"
 #include "NodeJs.h"
 
 class Map;

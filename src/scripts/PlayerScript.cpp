@@ -4,7 +4,6 @@
 #include "Group.h"
 #include "Guild.h"
 #include "LootMgr.h"
-#include "NodeJPropHelpers.h"
 #include "NodeJs.h"
 
 class NODEJS_player : public PlayerScript {

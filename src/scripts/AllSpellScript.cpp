@@ -2,7 +2,6 @@
 
 #include <string>
 
-#include "JBox.h"
 #include "NodeJs.h"
 
 class NODEJS_AllSpell : public AllSpellScript {

@@ -2,7 +2,6 @@
 
 #include <string>
 
-#include "NodeJPropHelpers.h"
 #include "NodeJs.h"
 #include "SpellAuraEffects.h"
 #include "WorldSession.h"

@@ -3,7 +3,6 @@
 #include <string>
 
 #include "DurationWrapper.h"
-#include "JBox.h"
 #include "NodeJs.h"
 
 class NODEJS_AllGameObject : public AllGameObjectScript {

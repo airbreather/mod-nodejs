@@ -2,7 +2,6 @@
 
 #include <string>
 
-#include "NodeJPropHelpers.h"
 #include "NodeJs.h"
 #include "Vehicle.h"
 

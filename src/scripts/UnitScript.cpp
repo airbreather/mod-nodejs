@@ -3,7 +3,6 @@
 #include <string>
 
 #include "DurationWrapper.h"
-#include "NodeJPropHelpers.h"
 #include "NodeJs.h"
 
 class NODEJS_Unit : public UnitScript {
