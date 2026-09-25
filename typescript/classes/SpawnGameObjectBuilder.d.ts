@@ -6,7 +6,7 @@ declare global {
 			spawn(): GameObject | undefined;
 
 			setPhaseMask(phaseMask: number): this;
-			setRotationQuat(x: number, y: number, z: number, w: number): this;
+			setRotation(x: number, y: number, z: number, w: number): this;
 			setRotationByZAxisAngle(angle: number): this;
 			setAnimationProgress(animationProgress: number): this;
 			setState(state: GOState): this;

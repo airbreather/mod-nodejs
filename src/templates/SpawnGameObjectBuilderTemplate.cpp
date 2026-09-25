@@ -16,7 +16,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<SpawnGameObjectBuilder *>() {
 		b->phase_mask = phase_mask;
 		return b;
 	});
-	reg_method(ft, "setRotationQuat", [](SpawnGameObjectBuilder * b, float x, float y, float z, float w) {
+	reg_method(ft, "setRotation", [](SpawnGameObjectBuilder * b, float x, float y, float z, float w) {
 		b->rotation = { x, y, z, w };
 		return b;
 	});

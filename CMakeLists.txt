@@ -138,8 +138,9 @@ list(APPEND ${PRIVATE_SOURCES} (
         src/templates/MailDraftTemplate.cpp
         src/templates/MailSenderTemplate.cpp
         src/templates/MapTemplate.cpp
-        src/templates/MinionTemplate.cpp
         src/templates/MeetingStoneDataTemplate.cpp
+        src/templates/MiniGameDataTemplate.cpp
+        src/templates/MinionTemplate.cpp
         src/templates/MoTransportDataTemplate.cpp
         src/templates/MySQLConnectionInfoTemplate.cpp
         src/templates/ObjectMgrTemplate.cpp

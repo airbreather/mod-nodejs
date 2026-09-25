@@ -7,7 +7,7 @@ declare global {
 			readonly level: number;
 			readonly diameter: number;
 			readonly spellId: number;
-			readonly type: number;
+			readonly type: TrapType;
 			readonly cooldown: Temporal.Duration;
 			readonly autoCloseTime: Temporal.Duration;
 			readonly startDelay: Temporal.Duration;

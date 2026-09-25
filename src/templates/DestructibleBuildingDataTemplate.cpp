@@ -10,6 +10,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<DestructibleBuildingData const 
 	TypedTemplate<DestructibleBuildingData const *> const ft = jctor();
 
 	ft->SetClassName(jstr_intern("DestructibleBuildingData"));
+
 	reg_prop_ro(ft, "intactNumHits", [](DestructibleBuildingData const * b) {
 		return b->intactNumHits;
 	});

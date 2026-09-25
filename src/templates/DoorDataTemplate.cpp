@@ -33,8 +33,8 @@ v8::Local<v8::FunctionTemplate> jcreate_template<DoorData const *>() {
 	reg_prop_ro(ft, "ignoredByPathing", [](DoorData const * d) {
 		// the only caller in core uses it as a bool, but the database has all of -1, 0, and 1.
 		// the -1 is very interesting: columns Data1 and Data6 in the database are the only two
-		// that are "int" instead of "int unsigned", but this is typed as uint32_t regardless.
-		return d->ignoredByPathing;
+		// that are "int" instead of "int unsigned", but ignoredByPathing is uint32_t regardless.
+		return static_cast<int32_t>(d->ignoredByPathing);
 	});
 
 	return ft;

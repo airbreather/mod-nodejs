@@ -7,7 +7,8 @@ declare global {
 			readonly radius: number;
 			readonly damageMin: number;
 			readonly damageMax: number;
-			readonly damageSchool: SpellSchools;
+			// this is probably SpellSchools or SpellSchoolMask? can't validate.
+			readonly damageSchool: number;
 			readonly autoCloseTime: Temporal.Duration;
 			readonly openTextId: number;
 			readonly closeTextId: number;
