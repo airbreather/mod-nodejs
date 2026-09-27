@@ -5,6 +5,10 @@ type HooksConforming = {
 };
 
 declare global {
+	export type HookFunction = {
+		[K in keyof Hooks]: (arg: Hooks[K]) => void;
+	}
+
 	namespace Acore {
 		const hooks: EventEmitter<HooksConforming>;
 

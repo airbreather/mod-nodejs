@@ -36,11 +36,6 @@ void add_global_functions(TypedTemplate<NodeJs *> const ft) {
 
 			case Db::World:
 				return NodeJs::instance()->db_query_async<Db::World>(s);
-
-#ifdef MOD_PLAYERBOTS
-			case Db::Playerbots:
-				return NodeJs::instance()->db_query_async<Db::Playerbots>(s);
-#endif
 		}
 		v8::Isolate::GetCurrent()->ThrowError("unrecognized db");
 		return jnull().As<v8::Promise>();
@@ -55,11 +50,6 @@ void add_global_functions(TypedTemplate<NodeJs *> const ft) {
 
 			case Db::World:
 				return db<Db::World>().query(s);
-
-#ifdef MOD_PLAYERBOTS
-			case Db::Playerbots:
-				return db<Db::Playerbots>().query(s);
-#endif
 		}
 		v8::Isolate::GetCurrent()->ThrowError("unrecognized db");
 		return QueryResult{};
@@ -77,12 +67,6 @@ void add_global_functions(TypedTemplate<NodeJs *> const ft) {
 			case Db::World:
 				db<Db::World>().execute_or_append(s);
 				return;
-
-#ifdef MOD_PLAYERBOTS
-			case Db::Playerbots:
-				db<Db::Playerbots>().execute_or_append(s);
-				return;
-#endif
 		}
 		v8::Isolate::GetCurrent()->ThrowError("unrecognized db");
 	});
@@ -105,12 +89,6 @@ void add_global_functions(TypedTemplate<NodeJs *> const ft) {
 			case Db::World:
 				db<Db::World>().transactional([& fn](auto const&){fn();});
 				return;
-
-#ifdef MOD_PLAYERBOTS
-			case Db::Playerbots:
-				db<Db::Playerbots>().transactional([& fn](auto const&){fn();});
-				return;
-#endif
 		}
 		v8::Isolate::GetCurrent()->ThrowError("unrecognized db");
 	});

@@ -26,13 +26,13 @@ declare global {
 			readonly player: Acore.Player;
 			readonly item: Acore.Item;
 			readonly sender: GossipSender;
-			readonly action: GossipAction;
+			readonly action: number;
 		};
 		['item:gossip-select-code']: {
 			readonly player: Acore.Player;
 			readonly item: Acore.Item;
 			readonly sender: GossipSender;
-			readonly action: GossipAction;
+			readonly action: number;
 			readonly code: string;
 		};
 	}

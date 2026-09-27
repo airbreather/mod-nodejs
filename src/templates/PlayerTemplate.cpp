@@ -1260,8 +1260,8 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 	reg_method(ft, "gossipMenuAddItem", [](Player * player, int32_t menu_item_id, uint8_t icon, std::string message, uint32_t sender, uint32_t action, std::string box_message, uint32_t box_money, std::optional<bool> coded) {
 		player->PlayerTalkClass->GetGossipMenu().AddMenuItem(menu_item_id, icon, message, sender, action, box_message, box_money, coded.value_or(false));
 	});
-	reg_method(ft, "gossipSendMenuToCreature", [](Player * player, uint32_t title_text_id, ObjectGuid creature) {
-		player->PlayerTalkClass->SendGossipMenu(title_text_id, creature);
+	reg_method(ft, "gossipSendMenu", [](Player * player, uint32_t title_text_id, ObjectGuid guid) {
+		player->PlayerTalkClass->SendGossipMenu(title_text_id, guid);
 	});
 	reg_method(ft, "gossipSendPOI", [](Player * player, uint32_t const poiId) {
 		player->PlayerTalkClass->SendPointOfInterest(poiId);
