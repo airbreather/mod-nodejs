@@ -548,9 +548,10 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 			if (auto boxed = cval<bool>((*show_in_loot)->getter())) {
 				show_in_loot_local = *boxed;
 				show_in_loot_ptr = &show_in_loot_local;
+			} else {
+				v8::Isolate::GetCurrent()->ThrowError("showInLoot must be a Box with a boolean value in it");
+				return false;
 			}
-			v8::Isolate::GetCurrent()->ThrowError("showInLoot must be a Box with a boolean value in it");
-			return false;
 		}
 		auto res = player->HasQuestForItem(item_id, exclude_quest_id.value_or(0), turn_in.value_or(false), show_in_loot_ptr);
 		if (show_in_loot) {

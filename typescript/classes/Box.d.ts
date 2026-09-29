@@ -1,7 +1,7 @@
 declare global {
 	namespace Acore {
 		class Box<T> {
-			private constructor();
+			constructor(value: T);
 
 			get(): T;
 			set(value: T): void;
