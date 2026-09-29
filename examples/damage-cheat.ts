@@ -9,7 +9,7 @@ export function installDamageCheat() {
 			return;
 		}
 		if (attacker.guid != args.victim.guid) {
-			args.amount *= 10;
+			args.amount.set(args.amount.get() * 10);
 		}
 	});
 }
