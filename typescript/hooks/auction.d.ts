@@ -1,5 +1,5 @@
 declare global {
-	interface GlobalHooks {
+	interface Hooks {
 		['auction:add-auction']: {
 			readonly ah: Acore.AuctionHouse;
 			readonly auction: Acore.Auction;

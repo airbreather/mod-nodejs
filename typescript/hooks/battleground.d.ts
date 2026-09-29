@@ -1,5 +1,5 @@
 declare global {
-	interface GlobalHooks {
+	interface Hooks {
 		['battleground:start']: { readonly bg: Acore.Battleground; };
 		['battleground:end']: {
 			readonly bg: Acore.Battleground;

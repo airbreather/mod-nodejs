@@ -1,9 +1,5 @@
 import { EventEmitter } from 'node:events';
 
-type ToGlobalHooks<Prefix extends string, Hooks extends object> = {
-	[K in (keyof Hooks & string) as `${Prefix}:${K}`]: Hooks[K];
-};
-
 type ObjToHookArgs<T extends object> = {
 	[K in keyof T]: [T[K]];
 };
@@ -12,11 +8,6 @@ declare global {
 	export type HookFunction = {
 		[K in keyof Hooks]: (arg: Hooks[K]) => void;
 	}
-
-	type Hooks =
-		& GlobalHooks
-		& ToGlobalHooks<'player', PlayerHooks>
-		;
 
 	namespace Acore {
 		const hooks: EventEmitter<ObjToHookArgs<Hooks>>;
@@ -46,7 +37,5 @@ declare global {
 		function shutdown(time: number, optionsMask: ShutdownMask, exitCode: number, reason?: string): void;
 		function hasPlayerbotsModule(): boolean;
 		function broadcastServerMessage(typ: ServerMessageType, param?: string, player?: Player): void;
-		function playerHooksForGuid(guid: bigint): EventEmitter<ObjToHookArgs<PlayerHooks>>;
-		function playerHooksForName(name: string): EventEmitter<ObjToHookArgs<PlayerHooks>>;
 	}
 }

@@ -1,5 +1,5 @@
 declare global {
-	interface GlobalHooks {
+	interface Hooks {
 		['unit:heal']: {
 			readonly healer: Acore.Unit;
 			readonly receiver: Acore.Unit;

@@ -1,5 +1,5 @@
 declare global {
-	interface GlobalHooks {
+	interface Hooks {
 		['account:login']: { readonly accountId: number; };
 		['account:before-delete']: { readonly accountId: number; };
 		['account:last-ip-update']: { readonly accountId: number; readonly ip: string; };

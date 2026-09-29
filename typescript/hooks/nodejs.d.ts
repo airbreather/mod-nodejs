@@ -1,5 +1,5 @@
 declare global {
-	interface GlobalHooks {
+	interface Hooks {
 		['nodejs:startup']: {
 			readonly persistData?: string;
 		};

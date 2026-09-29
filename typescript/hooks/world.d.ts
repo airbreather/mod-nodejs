@@ -1,5 +1,5 @@
 declare global {
-	interface GlobalHooks {
+	interface Hooks {
 		['world:startup']: object;
 		['world:shutdown']: object;
 		['world:update-early']: object;

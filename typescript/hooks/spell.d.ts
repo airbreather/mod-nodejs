@@ -1,5 +1,5 @@
 declare global {
-	interface GlobalHooks {
+	interface Hooks {
 		['spell:calc-max-duration']: {
 			readonly aura: Acore.Aura;
 			readonly maxDuration: Acore.Box<number>;

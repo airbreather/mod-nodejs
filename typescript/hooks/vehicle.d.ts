@@ -1,5 +1,5 @@
 declare global {
-	interface GlobalHooks {
+	interface Hooks {
 		['vehicle:install']: { readonly vehicle: Acore.Vehicle; };
 		['vehicle:uninstall']: { readonly vehicle: Acore.Vehicle; };
 		['vehicle:reset']: { readonly vehicle: Acore.Vehicle; };

@@ -1,5 +1,5 @@
 declare global {
-	interface GlobalHooks {
+	interface Hooks {
 		['battleground-queue:update']: {
 			readonly queue: Acore.BattlegroundQueue;
 			readonly diff: Temporal.Duration;

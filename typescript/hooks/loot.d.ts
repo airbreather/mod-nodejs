@@ -1,5 +1,5 @@
 declare global {
-	interface GlobalHooks {
+	interface Hooks {
 		['loot:money']: {
 			readonly player: Acore.Player;
 			readonly gold: number;
