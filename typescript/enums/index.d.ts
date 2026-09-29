@@ -51,7 +51,6 @@ export type * from './Expansions.d.ts';
 export type * from './GameobjectTypes.d.ts';
 export type * from './Gender.d.ts';
 export type * from './GMTicketEscalationStatus.d.ts';
-export type * from './GossipAction.d.ts';
 export type * from './GossipOptionIcon.d.ts';
 export type * from './GossipSender.d.ts';
 export type * from './GOState.d.ts';

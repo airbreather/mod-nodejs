@@ -231,13 +231,13 @@ declare global {
 			readonly player: Acore.Player;
 			readonly menuId: number;
 			readonly sender: GossipSender;
-			readonly action: GossipAction;
+			readonly action: number;
 		};
 		['gossip-select-code']: {
 			readonly player: Acore.Player;
 			readonly menuId: number;
 			readonly sender: GossipSender;
-			readonly action: GossipAction;
+			readonly action: number;
 			readonly code: string;
 		};
 		['being-charmed']: {

@@ -20,7 +20,7 @@ SPRINKLES_MERGE_BRANCHES=("Grimfeather/master" "for-mod-nodejs-on-merge-base" "f
 # it also needs to build on master, though, so don't leave that behind
 MASTER_SLUG="master"
 MASTER_BASE_BRANCH="upstream/master"
-MASTER_MERGE_BRANCHES=("for-mod-nodejs-on-merge-base" "fix-socket-file-connections")
+MASTER_MERGE_BRANCHES=("fix-socket-file-connections")
 
 # short-circuit if either rebuild would clobber an existing temporary branch
 check-branch() {

@@ -10,10 +10,6 @@ The only thing I can promise to support is what I run with, which is Linux. Here
 
 Windows has its own section below. On everything else, I can't test it myself, so you're mostly on your own.
 
-### Required Core Patch
-
-Requires core patch: azerothcore/azerothcore-wotlk#26648 for API tweaks
-
 ### Windows
 
 It took months, but it is now (at the time of writing) finally possible to build and run this on Windows:

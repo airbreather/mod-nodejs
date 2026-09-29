@@ -9,10 +9,15 @@ type ObjToHookArgs<T extends object> = {
 };
 
 declare global {
+	export type HookFunction = {
+		[K in keyof Hooks]: (arg: Hooks[K]) => void;
+	}
+
 	type Hooks =
 		& GlobalHooks
 		& ToGlobalHooks<'player', PlayerHooks>
 		;
+
 	namespace Acore {
 		const hooks: EventEmitter<ObjToHookArgs<Hooks>>;
 

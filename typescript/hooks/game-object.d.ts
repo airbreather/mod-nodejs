@@ -16,14 +16,14 @@ declare global {
 			readonly player: Acore.Player;
 			readonly gameObject: Acore.GameObject;
 			readonly sender: GossipSender;
-			readonly action: GossipAction;
+			readonly action: number;
 			readonly __return: Acore.Box<boolean>;
 		};
 		['game-object:can-gossip-select-code']: {
 			readonly player: Acore.Player;
 			readonly gameObject: Acore.GameObject;
 			readonly sender: GossipSender;
-			readonly action: GossipAction;
+			readonly action: number;
 			readonly code: string;
 			readonly __return: Acore.Box<boolean>;
 		};

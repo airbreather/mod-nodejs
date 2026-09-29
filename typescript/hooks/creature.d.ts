@@ -25,14 +25,14 @@ declare global {
 			readonly player: Acore.Player;
 			readonly creature: Acore.Creature;
 			readonly sender: GossipSender;
-			readonly action: GossipAction;
+			readonly action: number;
 			readonly __return: Acore.Box<boolean>;
 		};
 		['creature:can-gossip-select-code']: {
 			readonly player: Acore.Player;
 			readonly creature: Acore.Creature;
 			readonly sender: GossipSender;
-			readonly action: GossipAction;
+			readonly action: number;
 			readonly code: string;
 			readonly __return: Acore.Box<boolean>;
 		};
