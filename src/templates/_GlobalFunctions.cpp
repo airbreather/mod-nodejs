@@ -10,6 +10,7 @@
 #include "NodeJs.h"
 #include "NodePropertySystem.h"
 #include "UnixTimestamp.h"
+#include "WorldSessionMgr.h"
 
 void add_global_functions(TypedTemplate<NodeJs *> const ft) {
 	// don't register these as static.
@@ -175,5 +176,8 @@ void add_global_functions(TypedTemplate<NodeJs *> const ft) {
 		return true;
 #endif
 		return false;
+	});
+	reg_method(ft, "broadcastServerMessage", [](NodeJs *, ServerMessageType typ, std::optional<std::string> param, std::optional<Player *> player) {
+		WorldSessionMgr::Instance()->SendServerMessage(typ, param.value_or(""), player.value_or(nullptr));
 	});
 }
