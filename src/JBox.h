@@ -13,31 +13,30 @@ struct JBox {
 };
 
 // there are basically two types of arbitrary boxes we support here:
-// - one that we create as an owner of a value/object with a specific type
-// - one that can hold any V8-world object
-// the former can be fully generic (this), but the latter needs help (see specialization below).
+// - one that wraps a reference of a particular native type (and doesn't own it)
+// - one that can hold any value in the V8 universe (and owns it)
+// we need the former so JavaScript code can set the values of (in/)out parameters.
+// we need the latter so JavaScript code can create their own boxes on the fly.
 template <typename T>
 struct JBoxT : JBox {
-	T boxed_val;
+	T & ref;
 
-	explicit JBoxT(T val) : boxed_val(val) {
+	explicit JBoxT(T & ref) : ref(ref) {
 	}
 
 	v8::Local<v8::Value> getter() override {
-		return jval(boxed_val);
+		return jval(ref);
 	}
 
 	bool setter(v8::Local<v8::Value> val) override {
 		if (auto conv_val = cval<T>(val)) {
-			boxed_val = *conv_val;
+			ref = *conv_val;
 			return true;
 		}
 		return false;
 	}
 };
 
-// the existence of a JBoxT<v8::Local<v8::Value>> would not be a GC root for the boxed value if all
-// we had was the above generic version.
 template <>
 struct JBoxT<v8::Local<v8::Value>> : JBox {
 	v8::Global<v8::Value> boxed_val;

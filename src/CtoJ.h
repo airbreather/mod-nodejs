@@ -91,7 +91,7 @@ v8::Local<v8::Map> jmap(M const & map) {
 
 template <typename T>
 void jobj_set_tup(v8::Local<v8::Object> const data_obj, T props) {
-	std::apply([& data_obj](auto... p) { (data_obj->Set(v8::Isolate::GetCurrent()->GetCurrentContext(), jstr_intern(p.get_name()), p.val()).Check(), ...); }, props);
+	std::apply([& data_obj](auto... p) { (data_obj->Set(v8::Isolate::GetCurrent()->GetCurrentContext(), jstr_intern(p.name), p.val()).Check(), ...); }, props);
 }
 
 template <typename... Props>
