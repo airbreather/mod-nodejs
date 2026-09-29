@@ -158,9 +158,6 @@ void add_global_functions(TypedTemplate<NodeJs *> const ft) {
 	reg_method(ft, "saveAllPlayers", [](NodeJs *) {
 		ObjectAccessor::SaveAllPlayers();
 	});
-	reg_method(ft, "box", [](NodeJs *, v8::Local<v8::Value> val) {
-		return jobj(jprop("boxed", val));
-	});
 	reg_method(ft, "registerCommand", [](NodeJs *, ChatCommandBuilderBuilderBox * b) {
 		try {
 			NodeJs::instance()->reg_command(*b);

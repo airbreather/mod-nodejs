@@ -188,6 +188,7 @@ list(APPEND ${PRIVATE_SOURCES} (
         src/CtoJ.cpp
         src/Db.cpp
         src/DurationWrapper.cpp
+        src/JBox.cpp
         src/JtoC.cpp
         src/NodeCommon.cpp
         src/NodeJPropHelpers.cpp

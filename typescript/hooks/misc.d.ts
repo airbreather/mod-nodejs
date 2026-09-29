@@ -1,53 +1,53 @@
 declare global {
 	interface Hooks {
 		['misc:item-create']: {
-			readonly item: Acore.Item;
-			readonly proto: Acore.ItemTemplateNarrowable;
-			readonly owner: Acore.Player;
+			item: Acore.Item;
+			proto: Acore.ItemTemplateNarrowable;
+			owner: Acore.Player;
 		};
 		['misc:can-apply-soulbound-flag']: {
-			readonly item: Acore.Item;
-			readonly proto: Acore.ItemTemplateNarrowable;
-			__return: boolean;
+			item: Acore.Item;
+			proto: Acore.ItemTemplateNarrowable;
+			__return: Acore.Box<boolean>;
 		};
 		['misc:can-item-apply-equip-spell']: {
-			readonly player: Acore.Player;
-			readonly item: Acore.Item;
-			__return: boolean;
+			player: Acore.Player;
+			item: Acore.Item;
+			__return: Acore.Box<boolean>;
 		};
 		['misc:can-send-auction-hello']: {
-			readonly player: Acore.Player;
-			readonly guid: bigint;
-			readonly creature: Acore.Creature;
-			__return: boolean;
+			player: Acore.Player;
+			guid: bigint;
+			creature: Acore.Creature;
+			__return: Acore.Box<boolean>;
 		};
 		['misc:validate-spell-at-cast-spell']: {
-			readonly player: Acore.Player;
-			oldSpellId: number;
-			spellId: number;
-			castCount: number;
-			castFlags: number; // shrug. not clearly documented in a way I can tell
+			player: Acore.Player;
+			oldSpellId: Acore.Box<number>;
+			spellId: Acore.Box<number>;
+			castCount: Acore.Box<number>;
+			castFlags: Acore.Box<number>; // shrug. not clearly documented in a way I can tell
 		};
 		['misc:validate-spell-at-cast-spell-result']: {
-			readonly player: Acore.Player;
-			readonly mover: Acore.Unit;
-			readonly spell: Acore.Spell;
-			readonly oldSpellId: number;
-			readonly spellId: number;
+			player: Acore.Player;
+			mover: Acore.Unit;
+			spell: Acore.Spell;
+			oldSpellId: number;
+			spellId: number;
 		};
 		['misc:after-loot-template-process']: {
-			readonly loot: Acore.Loot;
-			readonly tab: Acore.LootTemplate;
-			readonly store: Acore.LootStore;
-			readonly lootOwner: Acore.Player;
-			readonly personal: boolean;
-			readonly noEmptyError: boolean;
-			readonly lootMode: LootModes;
+			loot: Acore.Loot;
+			tab: Acore.LootTemplate;
+			store: Acore.LootStore;
+			lootOwner: Acore.Player;
+			personal: boolean;
+			noEmptyError: boolean;
+			lootMode: LootModes;
 		};
 		// ['misc:instance-save']: unknown; // the one arg has no translation right now.
 		['misc:get-dialog-status']: {
-			readonly player: Acore.Player;
-			readonly questGiver: Acore.Creature | Acore.GameObject;
+			player: Acore.Player;
+			questGiver: Acore.Creature | Acore.GameObject;
 		};
 	}
 }

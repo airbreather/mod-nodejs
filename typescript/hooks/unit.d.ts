@@ -1,115 +1,115 @@
 declare global {
 	interface Hooks {
 		['unit:heal']: {
-			readonly healer: Acore.Unit;
-			readonly receiver: Acore.Unit;
-			amount: number;
+			healer: Acore.Unit;
+			receiver: Acore.Unit;
+			amount: Acore.Box<number>;
 		};
 		['unit:damage']: {
-			readonly attacker: Acore.Unit;
-			readonly victim: Acore.Unit;
-			amount: number;
+			attacker: Acore.Unit;
+			victim: Acore.Unit;
+			amount: Acore.Box<number>;
 		};
 		['unit:modify-periodic-damage-auras-tick']: {
-			readonly target: Acore.Unit;
-			readonly attacker: Acore.Unit;
-			amount: number;
-			readonly spellInfo: Acore.SpellInfo;
+			target: Acore.Unit;
+			attacker: Acore.Unit;
+			amount: Acore.Box<number>;
+			spellInfo: Acore.SpellInfo;
 		};
 		['unit:modify-melee-damage']: {
-			readonly target: Acore.Unit;
-			readonly attacker: Acore.Unit;
-			amount: number;
+			target: Acore.Unit;
+			attacker: Acore.Unit;
+			amount: Acore.Box<number>;
 		};
 		['unit:modify-spell-damage-taken']: {
-			readonly target: Acore.Unit;
-			readonly attacker: Acore.Unit;
-			amount: number;
-			readonly spellInfo: Acore.SpellInfo;
+			target: Acore.Unit;
+			attacker: Acore.Unit;
+			amount: Acore.Box<number>;
+			spellInfo: Acore.SpellInfo;
 		};
 		['unit:modify-heal-received']: {
-			readonly target: Acore.Unit;
-			readonly healer: Acore.Unit;
-			amount: number;
-			readonly spellInfo: Acore.SpellInfo;
+			target: Acore.Unit;
+			healer: Acore.Unit;
+			amount: Acore.Box<number>;
+			spellInfo: Acore.SpellInfo;
 		};
 		['unit:deal-damage']: {
-			readonly attacker: Acore.Unit;
-			readonly victim: Acore.Unit;
-			readonly amount: number;
-			readonly damageType: DamageEffectType;
-			__return: number;
+			attacker: Acore.Unit;
+			victim: Acore.Unit;
+			amount: number;
+			damageType: DamageEffectType;
+			__return: Acore.Box<number>;
 		};
 		['unit:before-roll-melee-outcome-against']: {
-			readonly attacker: Acore.Unit;
-			readonly victim: Acore.Unit;
-			readonly attType: WeaponAttackType;
-			attackerMaxSkillValueForLevel: number;
-			victimMaxSkillValueForLevel: number;
-			attackerWeaponSkill: number;
-			victimDefenseSkill: number;
-			critChance: number;
-			missChance: number;
-			dodgeChance: number;
-			parryChance: number;
-			blockChance: number;
+			attacker: Acore.Unit;
+			victim: Acore.Unit;
+			attType: WeaponAttackType;
+			attackerMaxSkillValueForLevel: Acore.Box<number>;
+			victimMaxSkillValueForLevel: Acore.Box<number>;
+			attackerWeaponSkill: Acore.Box<number>;
+			victimDefenseSkill: Acore.Box<number>;
+			critChance: Acore.Box<number>;
+			missChance: Acore.Box<number>;
+			dodgeChance: Acore.Box<number>;
+			parryChance: Acore.Box<number>;
+			blockChance: Acore.Box<number>;
 		};
 		['unit:aura-apply']: {
-			readonly unit: Acore.Unit;
-			readonly aura: Acore.Aura;
+			unit: Acore.Unit;
+			aura: Acore.Aura;
 		};
 		['unit:aura-remove']: {
-			readonly unit: Acore.Unit;
-			readonly aurApp: Acore.AuraApplication;
-			readonly mode: AuraRemoveMode;
+			unit: Acore.Unit;
+			aurApp: Acore.AuraApplication;
+			mode: AuraRemoveMode;
 		};
 		['unit:if-normal-reaction']: {
-			readonly unit: Acore.Unit;
-			readonly target: Acore.Unit;
-			repRank: ReputationRank;
-			__return: boolean;
+			unit: Acore.Unit;
+			target: Acore.Unit;
+			repRank: Acore.Box<ReputationRank>;
+			__return: Acore.Box<boolean>;
 		};
 		['unit:can-set-phase-mask']: {
-			readonly unit: Acore.Unit;
-			readonly newPhaseMask: number;
-			readonly update: boolean;
-			__return: boolean;
+			unit: Acore.Unit;
+			newPhaseMask: number;
+			update: boolean;
+			__return: Acore.Box<boolean>;
 		};
 		['unit:should-track-values-update-pos-by-index']: {
-			readonly unit: Acore.Unit;
-			readonly updateType: OBJECT_UPDATE_TYPE;
-			readonly index: number;
-			__return: boolean;
+			unit: Acore.Unit;
+			updateType: OBJECT_UPDATE_TYPE;
+			index: number;
+			__return: Acore.Box<boolean>;
 		};
 		['unit:patch-values-update']: {
-			readonly unit: Acore.Unit;
+			unit: Acore.Unit;
 			// valuesUpdateBuf: Acore.ByteBuffer;
 			// posPointers: Acore.BuildValuesCachePosPointers;
-			readonly target: Acore.Player;
+			target: Acore.Player;
 		};
 		['unit:update']: {
-			readonly unit: Acore.Unit;
-			readonly diff: Temporal.Duration;
+			unit: Acore.Unit;
+			diff: Temporal.Duration;
 		};
 		['unit:display-id-change']: {
-			readonly unit: Acore.Unit;
-			readonly displayId: number;
+			unit: Acore.Unit;
+			displayId: number;
 		};
 		['unit:enter-evade-mode']: {
-			readonly unit: Acore.Unit;
-			readonly evadeReason: EvadeReason;
+			unit: Acore.Unit;
+			evadeReason: EvadeReason;
 		};
 		['unit:enter-combat']: {
-			readonly unit: Acore.Unit;
-			readonly victim: Acore.Unit;
+			unit: Acore.Unit;
+			victim: Acore.Unit;
 		};
 		['unit:death']: {
-			readonly unit: Acore.Unit;
-			readonly killer: Acore.Unit | undefined;
+			unit: Acore.Unit;
+			killer: Acore.Unit | undefined;
 		};
 		['unit:set-shapeshift-form']: {
-			readonly unit: Acore.Unit;
-			readonly form: ShapeshiftForm;
+			unit: Acore.Unit;
+			form: ShapeshiftForm;
 		};
 	}
 }

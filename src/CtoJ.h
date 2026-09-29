@@ -91,7 +91,7 @@ v8::Local<v8::Map> jmap(M const & map) {
 
 template <typename T>
 void jobj_set_tup(v8::Local<v8::Object> const data_obj, T props) {
-	std::apply([& data_obj](auto... p) { (data_obj->Set(v8::Isolate::GetCurrent()->GetCurrentContext(), jstr_intern(p.get_name()), p.val()).Check(), ...); }, props);
+	std::apply([& data_obj](auto... p) { (data_obj->Set(v8::Isolate::GetCurrent()->GetCurrentContext(), jstr_intern(p.name), p.val()).Check(), ...); }, props);
 }
 
 template <typename... Props>
@@ -166,6 +166,18 @@ void jfill_args_impl(v8::Local<v8::Value> * vals, ArgsTuple args, std::index_seq
 template <typename... Args>
 void jfill_args(v8::Local<v8::Value> * vals, Args... args) {
 	jfill_args_impl(vals, std::make_tuple(args...), std::make_index_sequence<sizeof...(Args)>{});
+}
+
+template <typename Obj>
+requires std::is_pointer_v<Obj>
+v8::Local<v8::Object> jmove(Obj o) {
+	auto const isolate = v8::Isolate::GetCurrent();
+	auto const ctx = isolate->GetCurrentContext();
+	v8::Local<v8::Value> vals[2] = {
+		v8::External::New(isolate, o, v8::kExternalPointerTypeTagDefault),
+		v8::Number::New(isolate, OWNERSHIP_TRANSFER_MAGIC),
+	};
+	return jtemplate<Obj>()->GetFunction(ctx).ToLocalChecked()->NewInstance(ctx, 2, vals).ToLocalChecked();
 }
 
 #define JVAL_TMPL_RW(cname) \
