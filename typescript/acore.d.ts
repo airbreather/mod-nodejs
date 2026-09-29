@@ -45,6 +45,7 @@ declare global {
 		function registerCommand(command: ChatCommandBuilder): void;
 		function shutdown(time: number, optionsMask: ShutdownMask, exitCode: number, reason?: string): void;
 		function hasPlayerbotsModule(): boolean;
+		function broadcastServerMessage(typ: ServerMessageType, param?: string, player?: Player): void;
 		function playerHooksForGuid(guid: bigint): EventEmitter<ObjToHookArgs<PlayerHooks>>;
 		function playerHooksForName(name: string): EventEmitter<ObjToHookArgs<PlayerHooks>>;
 	}

@@ -131,6 +131,7 @@ export type * from './ReputationRank.d.ts';
 export type * from './ReputationSource.d.ts';
 export type * from './RollMask.d.ts';
 export type * from './RollVote.d.ts';
+export type * from './ServerMessageType.d.ts';
 export type * from './ServerSideVisibilityType.d.ts';
 export type * from './ShapeshiftForm.d.ts';
 export type * from './SheathState.d.ts';
