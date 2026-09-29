@@ -38,8 +38,6 @@ class NodeJs {
 	std::unordered_map<std::type_index, v8::Global<v8::FunctionTemplate>> m_ac_templates;
 	std::unordered_map<std::string, v8::Global<v8::FunctionTemplate>> m_hook_arg_templates;
 	std::unordered_map<std::string, size_t> m_active_listeners;
-	std::unordered_map<std::string, std::tuple<uint64_t, v8::Global<v8::Object>, v8::Global<v8::Function>>> m_player_name_hooks;
-	std::unordered_map<ObjectGuid::LowType, std::tuple<uint64_t, v8::Global<v8::Object>, v8::Global<v8::Function>>> m_player_guid_hooks;
 	std::unordered_map<std::string, size_t> m_command_map;
 	std::vector<ChatCommandBuilderBuilderBox> m_top_level_commands;
 	std::vector<v8::Global<v8::Function>> m_command_callbacks;
