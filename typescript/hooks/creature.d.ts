@@ -1,57 +1,57 @@
 declare global {
 	interface Hooks {
 		['creature:update']: {
-			readonly creature: Acore.Creature;
-			readonly diff: Temporal.Duration;
+			creature: Acore.Creature;
+			diff: Temporal.Duration;
 		};
 		['creature:before-select-level']: {
-			readonly cInfo: Acore.CreatureTemplate;
-			readonly creature: Acore.Creature;
-			readonly level: Acore.Box<number>;
+			cInfo: Acore.CreatureTemplate;
+			creature: Acore.Creature;
+			level: Acore.Box<number>;
 		};
 		['creature:select-level']: {
-			readonly cInfo: Acore.CreatureTemplate;
-			readonly creature: Acore.Creature;
+			cInfo: Acore.CreatureTemplate;
+			creature: Acore.Creature;
 		};
-		['creature:add-world']: { readonly creature: Acore.Creature; };
-		['creature:remove-world']: { readonly creature: Acore.Creature; };
-		['creature:save-to-db']: { readonly creature: Acore.Creature; };
+		['creature:add-world']: { creature: Acore.Creature; };
+		['creature:remove-world']: { creature: Acore.Creature; };
+		['creature:save-to-db']: { creature: Acore.Creature; };
 		['creature:can-gossip-hello']: {
-			readonly player: Acore.Player;
-			readonly creature: Acore.Creature;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			creature: Acore.Creature;
+			__return: Acore.Box<boolean>;
 		};
 		['creature:can-gossip-select']: {
-			readonly player: Acore.Player;
-			readonly creature: Acore.Creature;
-			readonly sender: GossipSender;
-			readonly action: number;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			creature: Acore.Creature;
+			sender: GossipSender;
+			action: number;
+			__return: Acore.Box<boolean>;
 		};
 		['creature:can-gossip-select-code']: {
-			readonly player: Acore.Player;
-			readonly creature: Acore.Creature;
-			readonly sender: GossipSender;
-			readonly action: number;
-			readonly code: string;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			creature: Acore.Creature;
+			sender: GossipSender;
+			action: number;
+			code: string;
+			__return: Acore.Box<boolean>;
 		};
 		['creature:can-quest-accept']: {
-			readonly player: Acore.Player;
-			readonly creature: Acore.Creature;
-			readonly quest: Acore.Quest;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			creature: Acore.Creature;
+			quest: Acore.Quest;
+			__return: Acore.Box<boolean>;
 		};
 		['creature:can-quest-reward']: {
-			readonly player: Acore.Player;
-			readonly creature: Acore.Creature;
-			readonly quest: Acore.Quest;
-			readonly opt: number;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			creature: Acore.Creature;
+			quest: Acore.Quest;
+			opt: number;
+			__return: Acore.Box<boolean>;
 		};
 		['creature:ffa-pvp-state-update']: {
-			readonly creature: Acore.Creature;
-			readonly inPvp: boolean;
+			creature: Acore.Creature;
+			inPvp: boolean;
 		};
 	}
 }

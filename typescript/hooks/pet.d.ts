@@ -1,30 +1,30 @@
 declare global {
 	interface Hooks {
 		['pet:init-stats-for-level']: {
-			readonly pet: Acore.Guardian;
-			readonly petLevel: number;
+			pet: Acore.Guardian;
+			petLevel: number;
 		};
 		['pet:calculate-max-talent-points-for-level']: {
-			readonly pet: Acore.Pet;
-			readonly level: number;
-			readonly points: Acore.Box<number>;
+			pet: Acore.Pet;
+			level: number;
+			points: Acore.Box<number>;
 		};
 		['pet:can-unlearn-spell-set']: {
-			readonly pet: Acore.Pet;
-			readonly level: number;
-			readonly spell: number;
-			readonly __return: Acore.Box<boolean>;
+			pet: Acore.Pet;
+			level: number;
+			spell: number;
+			__return: Acore.Box<boolean>;
 		};
 		['pet:can-unlearn-spell-default']: {
-			readonly pet: Acore.Pet;
-			readonly spellInfo: Acore.SpellInfo;
-			readonly __return: Acore.Box<boolean>;
+			pet: Acore.Pet;
+			spellInfo: Acore.SpellInfo;
+			__return: Acore.Box<boolean>;
 		};
 		['pet:can-reset-talents']: {
-			readonly pet: Acore.Pet;
-			readonly __return: Acore.Box<boolean>;
+			pet: Acore.Pet;
+			__return: Acore.Box<boolean>;
 		};
-		['pet:add-to-world']: { readonly pet: Acore.Pet; };
+		['pet:add-to-world']: { pet: Acore.Pet; };
 	}
 }
 export {};

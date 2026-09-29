@@ -1,39 +1,39 @@
 declare global {
 	interface Hooks {
 		['item:can-quest-accept']: {
-			readonly player: Acore.Player;
-			readonly item: Acore.Item;
-			readonly quest: Acore.Quest;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			item: Acore.Item;
+			quest: Acore.Quest;
+			__return: Acore.Box<boolean>;
 		};
 		['item:can-use']: {
-			readonly player: Acore.Player;
-			readonly item: Acore.Item;
-			// readonly targets: Acore.SpellCastTargets;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			item: Acore.Item;
+			// targets: Acore.SpellCastTargets;
+			__return: Acore.Box<boolean>;
 		};
 		['item:can-remove']: {
-			readonly player: Acore.Player;
-			readonly item: Acore.Item;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			item: Acore.Item;
+			__return: Acore.Box<boolean>;
 		};
 		['item:can-expire']: {
-			readonly player: Acore.Player;
-			readonly proto: Acore.ItemTemplateNarrowable;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			proto: Acore.ItemTemplateNarrowable;
+			__return: Acore.Box<boolean>;
 		};
 		['item:gossip-select']: {
-			readonly player: Acore.Player;
-			readonly item: Acore.Item;
-			readonly sender: GossipSender;
-			readonly action: number;
+			player: Acore.Player;
+			item: Acore.Item;
+			sender: GossipSender;
+			action: number;
 		};
 		['item:gossip-select-code']: {
-			readonly player: Acore.Player;
-			readonly item: Acore.Item;
-			readonly sender: GossipSender;
-			readonly action: number;
-			readonly code: string;
+			player: Acore.Player;
+			item: Acore.Item;
+			sender: GossipSender;
+			action: number;
+			code: string;
 		};
 	}
 }

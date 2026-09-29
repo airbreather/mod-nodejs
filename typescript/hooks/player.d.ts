@@ -1,976 +1,976 @@
 declare global {
 	interface Hooks {
-		['player:just-died']: { readonly player: Acore.Player; };
+		['player:just-died']: { player: Acore.Player; };
 		['player:calculate-talents-points']: {
-			readonly player: Acore.Player;
-			readonly talentPointsForLevel: Acore.Box<number>;
+			player: Acore.Player;
+			talentPointsForLevel: Acore.Box<number>;
 		};
-		['player:released-ghost']: { readonly player: Acore.Player; };
+		['player:released-ghost']: { player: Acore.Player; };
 		['player:send-initial-packets-before-add-to-map']: {
-			readonly player: Acore.Player;
-			readonly data: Acore.WorldPacket;
+			player: Acore.Player;
+			data: Acore.WorldPacket;
 		};
 		['player:battleground-desertion']: {
-			readonly player: Acore.Player;
-			readonly desertionType: BattlegroundDesertionType;
+			player: Acore.Player;
+			desertionType: BattlegroundDesertionType;
 		};
 		['player:complete-quest']: {
-			readonly player: Acore.Player;
-			readonly quest: Acore.Quest;
+			player: Acore.Player;
+			quest: Acore.Quest;
 		};
 		['player:pvp-kill']: {
-			readonly killer: Acore.Player;
-			readonly killed: Acore.Player;
+			killer: Acore.Player;
+			killed: Acore.Player;
 		};
 		['player:pvp-flag-change']: {
-			readonly player: Acore.Player;
-			readonly state: boolean;
+			player: Acore.Player;
+			state: boolean;
 		};
 		['player:creature-kill']: {
-			readonly killer: Acore.Player;
-			readonly killed: Acore.Creature;
+			killer: Acore.Player;
+			killed: Acore.Creature;
 		};
 		['player:creature-killed-by-pet']: {
-			readonly petOwner: Acore.Player;
-			readonly killed: Acore.Creature;
+			petOwner: Acore.Player;
+			killed: Acore.Creature;
 		};
 		['player:killed-by-creature']: {
-			readonly killer: Acore.Creature;
-			readonly killed: Acore.Player;
+			killer: Acore.Creature;
+			killed: Acore.Player;
 		};
 		['player:level-changed']: {
-			readonly player: Acore.Player;
-			readonly oldLevel: number;
+			player: Acore.Player;
+			oldLevel: number;
 		};
 		['player:free-talent-points-changed']: {
-			readonly player: Acore.Player;
-			readonly points: number;
+			player: Acore.Player;
+			points: number;
 		};
 		['player:talents-reset']: {
-			readonly player: Acore.Player;
-			readonly noCost: boolean;
+			player: Acore.Player;
+			noCost: boolean;
 		};
 		['player:can-learn-talent']: {
-			readonly player: Acore.Player;
-			// readonly talent: TalentEntry;
-			readonly rank: number;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			// talent: TalentEntry;
+			rank: number;
+			__return: Acore.Box<boolean>;
 		};
 		['player:after-spec-slot-changed']: {
-			readonly player: Acore.Player;
-			readonly newSlot: number;
+			player: Acore.Player;
+			newSlot: number;
 		};
 		['player:before-update']: {
-			readonly player: Acore.Player;
-			readonly diff: Temporal.Duration;
+			player: Acore.Player;
+			diff: Temporal.Duration;
 		};
 		['player:update']: {
-			readonly player: Acore.Player;
-			readonly diff: Temporal.Duration;
+			player: Acore.Player;
+			diff: Temporal.Duration;
 		};
 		['player:money-changed']: {
-			readonly player: Acore.Player;
-			readonly amount: Acore.Box<number>;
+			player: Acore.Player;
+			amount: Acore.Box<number>;
 		};
 		['player:before-loot-money']: {
-			readonly player: Acore.Player;
-			readonly loot: Acore.Loot;
+			player: Acore.Player;
+			loot: Acore.Loot;
 		};
 		['player:give-xp']: {
-			readonly player: Acore.Player;
-			readonly amount: Acore.Box<number>;
-			readonly victim: Acore.Unit | undefined;
-			readonly xpSource: PlayerXPSource;
+			player: Acore.Player;
+			amount: Acore.Box<number>;
+			victim: Acore.Unit | undefined;
+			xpSource: PlayerXPSource;
 		};
 		['player:reputation-change']: {
-			readonly player: Acore.Player;
-			readonly factionId: number;
-			readonly standing: Acore.Box<number>;
-			readonly incremental: boolean;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			factionId: number;
+			standing: Acore.Box<number>;
+			incremental: boolean;
+			__return: Acore.Box<boolean>;
 		};
 		['player:reputation-rank-change']: {
-			readonly player: Acore.Player;
-			readonly factionId: number;
-			readonly newRank: ReputationRank;
-			readonly oldRank: ReputationRank;
-			readonly increased: boolean;
+			player: Acore.Player;
+			factionId: number;
+			newRank: ReputationRank;
+			oldRank: ReputationRank;
+			increased: boolean;
 		};
 		['player:give-reputation']: {
-			readonly player: Acore.Player;
-			readonly factionId: number;
-			readonly amount: Acore.Box<number>;
-			readonly repSource: ReputationSource;
+			player: Acore.Player;
+			factionId: number;
+			amount: Acore.Box<number>;
+			repSource: ReputationSource;
 		};
 		['player:learn-spell']: {
-			readonly player: Acore.Player;
-			readonly spellId: number;
+			player: Acore.Player;
+			spellId: number;
 		};
 		['player:forgot-spell']: {
-			readonly player: Acore.Player;
-			readonly spellId: number;
+			player: Acore.Player;
+			spellId: number;
 		};
 		['player:duel-request']: {
-			readonly target: Acore.Player;
-			readonly challenger: Acore.Player;
+			target: Acore.Player;
+			challenger: Acore.Player;
 		};
 		['player:duel-start']: {
-			readonly player1: Acore.Player;
-			readonly player2: Acore.Player;
+			player1: Acore.Player;
+			player2: Acore.Player;
 		};
 		['player:duel-end']: {
-			readonly winner: Acore.Player;
-			readonly loser: Acore.Player;
-			readonly type: DuelCompleteType;
+			winner: Acore.Player;
+			loser: Acore.Player;
+			type: DuelCompleteType;
 		};
 		['player:before-send-chat-message']: {
-			readonly player: Acore.Player;
-			readonly type: Acore.Box<ChatMsg>;
-			readonly lang: Acore.Box<Language>;
-			readonly msg: Acore.Box<string>;
+			player: Acore.Player;
+			type: Acore.Box<ChatMsg>;
+			lang: Acore.Box<Language>;
+			msg: Acore.Box<string>;
 		};
 		['player:emote']: {
-			readonly player: Acore.Player;
-			readonly emote: Emote;
+			player: Acore.Player;
+			emote: Emote;
 		};
 		['player:text-emote']: {
-			readonly player: Acore.Player;
-			readonly textEmote: TextEmotes;
-			readonly emoteNum: number; // ?
-			readonly guid: bigint | undefined;
+			player: Acore.Player;
+			textEmote: TextEmotes;
+			emoteNum: number; // ?
+			guid: bigint | undefined;
 		};
 		['player:spell-cast']: {
-			readonly player: Acore.Player;
-			readonly spell: Acore.Spell;
-			readonly skipCheck: boolean;
+			player: Acore.Player;
+			spell: Acore.Spell;
+			skipCheck: boolean;
 		};
-		['player:load-from-db']: { readonly player: Acore.Player; };
-		['player:login']: { readonly player: Acore.Player; };
-		['player:before-logout']: { readonly player: Acore.Player; };
-		['player:logout']: { readonly player: Acore.Player; };
-		['player:create']: { readonly player: Acore.Player; };
+		['player:load-from-db']: { player: Acore.Player; };
+		['player:login']: { player: Acore.Player; };
+		['player:before-logout']: { player: Acore.Player; };
+		['player:logout']: { player: Acore.Player; };
+		['player:create']: { player: Acore.Player; };
 		['player:delete']: {
-			readonly guid: bigint;
-			readonly accountId: number;
+			guid: bigint;
+			accountId: number;
 		};
 		['player:failed-delete']: {
-			readonly guid: bigint;
-			readonly accountId: number;
+			guid: bigint;
+			accountId: number;
 		};
-		['player:save']: { readonly player: Acore.Player; };
+		['player:save']: { player: Acore.Player; };
 		['player:bind-to-instance']: {
-			readonly player: Acore.Player;
-			readonly difficulty: Difficulty;
-			readonly mapId: number;
-			readonly permanent: boolean;
+			player: Acore.Player;
+			difficulty: Difficulty;
+			mapId: number;
+			permanent: boolean;
 		};
 		['player:update-zone']: {
-			readonly player: Acore.Player;
-			readonly newZone: number;
-			readonly newArea: number;
+			player: Acore.Player;
+			newZone: number;
+			newArea: number;
 		};
 		['player:update-area']: {
-			readonly player: Acore.Player;
-			readonly oldArea: number;
-			readonly newArea: number;
+			player: Acore.Player;
+			oldArea: number;
+			newArea: number;
 		};
-		['player:map-changed']: { readonly player: Acore.Player; };
+		['player:map-changed']: { player: Acore.Player; };
 		['player:before-teleport']: {
-			readonly player: Acore.Player;
-			readonly mapId: number;
-			readonly x: number;
-			readonly y: number;
-			readonly z: number;
-			readonly o: number;
-			readonly options: TeleportToOptions;
-			readonly target: Acore.Unit | undefined;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			mapId: number;
+			x: number;
+			y: number;
+			z: number;
+			o: number;
+			options: TeleportToOptions;
+			target: Acore.Unit | undefined;
+			__return: Acore.Box<boolean>;
 		};
-		['player:update-faction']: { readonly player: Acore.Player; };
+		['player:update-faction']: { player: Acore.Player; };
 		['player:add-to-battleground']: {
-			readonly player: Acore.Player;
-			readonly bg: Acore.Battleground;
+			player: Acore.Player;
+			bg: Acore.Battleground;
 		};
 		['player:queue-random-dungeon']: {
-			readonly player: Acore.Player;
-			readonly rDungeonId: Acore.Box<number>;
+			player: Acore.Player;
+			rDungeonId: Acore.Box<number>;
 		};
 		['player:remove-from-battleground']: {
-			readonly player: Acore.Player;
-			readonly bg: Acore.Battleground;
+			player: Acore.Player;
+			bg: Acore.Battleground;
 		};
 		['player:achievement-complete']: {
-			readonly player: Acore.Player;
-			readonly achievement: Acore.AchievementEntry;
+			player: Acore.Player;
+			achievement: Acore.AchievementEntry;
 		};
 		['player:before-achievement-complete']: {
-			readonly player: Acore.Player;
-			readonly achievement: Acore.AchievementEntry;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			achievement: Acore.AchievementEntry;
+			__return: Acore.Box<boolean>;
 		};
 		['player:criteria-progress']: {
-			readonly player: Acore.Player;
-			// readonly criteria: Acore.AchievementCriteriaEntry;
+			player: Acore.Player;
+			// criteria: Acore.AchievementCriteriaEntry;
 		};
 		['player:before-criteria-progress']: {
-			readonly player: Acore.Player;
-			// readonly criteria: Acore.AchievementCriteriaEntry;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			// criteria: Acore.AchievementCriteriaEntry;
+			__return: Acore.Box<boolean>;
 		};
 		['player:achievement-save']: {
-			readonly player: Acore.Player;
-			readonly achId: number;
-			// readonly achiData: Acore.CompletedAchievementData;
+			player: Acore.Player;
+			achId: number;
+			// achiData: Acore.CompletedAchievementData;
 		};
 		['player:criteria-save']: {
-			readonly player: Acore.Player;
-			readonly achId: number;
-			// readonly criteriaData: Acore.CriteriaProgress;
+			player: Acore.Player;
+			achId: number;
+			// criteriaData: Acore.CriteriaProgress;
 		};
 		['player:gossip-select']: {
-			readonly player: Acore.Player;
-			readonly menuId: number;
-			readonly sender: GossipSender;
-			readonly action: number;
+			player: Acore.Player;
+			menuId: number;
+			sender: GossipSender;
+			action: number;
 		};
 		['player:gossip-select-code']: {
-			readonly player: Acore.Player;
-			readonly menuId: number;
-			readonly sender: GossipSender;
-			readonly action: number;
-			readonly code: string;
+			player: Acore.Player;
+			menuId: number;
+			sender: GossipSender;
+			action: number;
+			code: string;
 		};
 		['player:being-charmed']: {
-			readonly player: Acore.Player;
-			readonly charmer: Acore.Unit;
-			readonly oldFactionId: number;
-			readonly newFactionId: number;
+			player: Acore.Player;
+			charmer: Acore.Unit;
+			oldFactionId: number;
+			newFactionId: number;
 		};
 		['player:after-set-visible-item-slot']: {
-			readonly player: Acore.Player;
-			readonly slot: number;
-			readonly item: Acore.Item;
+			player: Acore.Player;
+			slot: number;
+			item: Acore.Item;
 		};
 		['player:after-move-item-from-inventory']: {
-			readonly player: Acore.Player;
-			readonly item: Acore.Item;
-			readonly bag: number;
-			readonly slot: number;
-			readonly update: boolean;
+			player: Acore.Player;
+			item: Acore.Item;
+			bag: number;
+			slot: number;
+			update: boolean;
 		};
 		['player:equip']: {
-			readonly player: Acore.Player;
-			readonly item: Acore.Item;
-			readonly bag: number;
-			readonly slot: number;
-			readonly update: boolean;
+			player: Acore.Player;
+			item: Acore.Item;
+			bag: number;
+			slot: number;
+			update: boolean;
 		};
 		['player:unequip']: {
-			readonly player: Acore.Player;
-			readonly item: Acore.Item;
+			player: Acore.Player;
+			item: Acore.Item;
 		};
-		['player:join-bg']: { readonly player: Acore.Player; };
-		['player:join-arena']: { readonly player: Acore.Player; };
+		['player:join-bg']: { player: Acore.Player; };
+		['player:join-arena']: { player: Acore.Player; };
 		['player:get-max-personal-arena-rating-requirement']: {
-			readonly player: Acore.Player;
-			readonly minSlot: number;
-			readonly maxArenaRating: Acore.Box<number>;
+			player: Acore.Player;
+			minSlot: number;
+			maxArenaRating: Acore.Box<number>;
 		};
 		['player:loot-item']: {
-			readonly player: Acore.Player;
-			readonly item: Acore.Item;
-			readonly count: number;
-			readonly lootGuid: bigint | undefined;
+			player: Acore.Player;
+			item: Acore.Item;
+			count: number;
+			lootGuid: bigint | undefined;
 		};
 		['player:before-fill-quest-loot-item']: {
-			readonly player: Acore.Player;
+			player: Acore.Player;
 			// TODO: this shouldn't be readonly, I think I just need to abandon the whole idea of
 			// "records" being a separate thing. "templates" are extremely easy now, and very nearly
 			// everything that can be a "record" can also be a "template"
-			readonly item: LootItem;
+			item: LootItem;
 		};
 		['player:store-new-item']: {
-			readonly player: Acore.Player;
-			readonly item: Acore.Item;
-			readonly count: number;
+			player: Acore.Player;
+			item: Acore.Item;
+			count: number;
 		};
 		['player:create-item']: {
-			readonly player: Acore.Player;
-			readonly item: Acore.Item;
-			readonly count: number;
+			player: Acore.Player;
+			item: Acore.Item;
+			count: number;
 		};
 		['player:quest-reward-item']: {
-			readonly player: Acore.Player;
-			readonly item: Acore.Item;
-			readonly count: number;
+			player: Acore.Player;
+			item: Acore.Item;
+			count: number;
 		};
 		['player:can-place-auction-bid']: {
-			readonly player: Acore.Player;
-			readonly auction: Acore.Auction;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			auction: Acore.Auction;
+			__return: Acore.Box<boolean>;
 		};
 		['player:group-roll-reward-item']: {
-			readonly player: Acore.Player;
-			readonly item: Acore.Item;
-			readonly count: number;
-			readonly voteType: RollVote;
-			readonly roll: Acore.Roll;
+			player: Acore.Player;
+			item: Acore.Item;
+			count: number;
+			voteType: RollVote;
+			roll: Acore.Roll;
 		};
 		['player:before-open-item']: {
-			readonly player: Acore.Player;
-			readonly item: Acore.Item;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			item: Acore.Item;
+			__return: Acore.Box<boolean>;
 		};
 		['player:before-quest-complete']: {
-			readonly player: Acore.Player;
-			readonly questId: number;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			questId: number;
+			__return: Acore.Box<boolean>;
 		};
 		['player:quest-compute-xp']: {
-			readonly player: Acore.Player;
-			readonly quest: Acore.Quest;
-			readonly xpValue: Acore.Box<number>;
+			player: Acore.Player;
+			quest: Acore.Quest;
+			xpValue: Acore.Box<number>;
 		};
 		['player:before-durability-repair']: {
-			readonly player: Acore.Player;
-			readonly npcGuid: bigint;
-			readonly itemGuid: bigint;
-			readonly discountMod: Acore.Box<number>;
-			readonly guildBank: boolean;
+			player: Acore.Player;
+			npcGuid: bigint;
+			itemGuid: bigint;
+			discountMod: Acore.Box<number>;
+			guildBank: boolean;
 		};
 		['player:before-buy-item-from-vendor']: {
-			readonly player: Acore.Player;
-			readonly vendorGuid: bigint;
-			readonly vendorSlot: number;
-			readonly item: Acore.Box<number>;
-			readonly count: number;
-			readonly bag: number;
-			readonly slot: number;
+			player: Acore.Player;
+			vendorGuid: bigint;
+			vendorSlot: number;
+			item: Acore.Box<number>;
+			count: number;
+			bag: number;
+			slot: number;
 		};
 		['player:before-store-or-equip-new-item']: {
-			readonly player: Acore.Player;
-			readonly vendorSlot: number;
-			readonly item: Acore.Box<number>;
-			readonly count: number;
-			readonly bag: number;
-			readonly slot: number;
-			readonly proto: Acore.ItemTemplateNarrowable;
-			readonly vendor: Acore.Creature;
-			// readonly crItem: Acore.VendorItem;
-			readonly store: boolean;
+			player: Acore.Player;
+			vendorSlot: number;
+			item: Acore.Box<number>;
+			count: number;
+			bag: number;
+			slot: number;
+			proto: Acore.ItemTemplateNarrowable;
+			vendor: Acore.Creature;
+			// crItem: Acore.VendorItem;
+			store: boolean;
 		};
 		['player:after-store-or-equip-new-item']: {
-			readonly player: Acore.Player;
-			readonly vendorSlot: number;
-			readonly item: Acore.Item;
-			readonly count: number;
-			readonly bag: number;
-			readonly slot: number;
-			readonly proto: Acore.ItemTemplateNarrowable;
-			readonly vendor: Acore.Creature;
-			// readonly crItem: Acore.VendorItem;
-			readonly store: boolean;
+			player: Acore.Player;
+			vendorSlot: number;
+			item: Acore.Item;
+			count: number;
+			bag: number;
+			slot: number;
+			proto: Acore.ItemTemplateNarrowable;
+			vendor: Acore.Creature;
+			// crItem: Acore.VendorItem;
+			store: boolean;
 		};
 		['player:after-update-max-power']: {
-			readonly player: Acore.Player;
-			readonly power: Acore.Box<Powers>;
-			readonly value: Acore.Box<number>;
+			player: Acore.Player;
+			power: Acore.Box<Powers>;
+			value: Acore.Box<number>;
 		};
 		['player:after-update-max-health']: {
-			readonly player: Acore.Player;
-			readonly value: Acore.Box<number>;
+			player: Acore.Player;
+			value: Acore.Box<number>;
 		};
 		['player:before-update-attack-power-and-damage']: {
-			readonly player: Acore.Player;
-			readonly level: Acore.Box<number>;
-			readonly val2: Acore.Box<number>;
-			readonly ranged: boolean;
+			player: Acore.Player;
+			level: Acore.Box<number>;
+			val2: Acore.Box<number>;
+			ranged: boolean;
 		};
 		['player:after-update-attack-power-and-damage']: {
-			readonly player: Acore.Player;
-			readonly level: Acore.Box<number>;
-			readonly baseAttPower: Acore.Box<number>;
-			readonly attPowerMod: Acore.Box<number>;
-			readonly attPowerMultiplier: Acore.Box<number>;
-			readonly ranged: boolean;
+			player: Acore.Player;
+			level: Acore.Box<number>;
+			baseAttPower: Acore.Box<number>;
+			attPowerMod: Acore.Box<number>;
+			attPowerMultiplier: Acore.Box<number>;
+			ranged: boolean;
 		};
 		['player:before-init-talent-for-level']: {
-			readonly player: Acore.Player;
-			readonly level: Acore.Box<number>;
-			readonly talentPointsForLevel: Acore.Box<number>;
+			player: Acore.Player;
+			level: Acore.Box<number>;
+			talentPointsForLevel: Acore.Box<number>;
 		};
-		['player:first-login']: { readonly player: Acore.Player; };
+		['player:first-login']: { player: Acore.Player; };
 		['player:set-max-level']: {
-			readonly player: Acore.Player;
-			readonly maxPlayerLevel: Acore.Box<number>;
+			player: Acore.Player;
+			maxPlayerLevel: Acore.Box<number>;
 		};
 		['player:can-join-in-battleground-queue']: {
-			readonly player: Acore.Player;
-			readonly battlemasterGuid: bigint | undefined;
-			readonly bgTypeId: BattlegroundTypeId;
-			readonly joinAsGroup: boolean;
-			readonly err: Acore.Box<GroupJoinBattlegroundResult>;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			battlemasterGuid: bigint | undefined;
+			bgTypeId: BattlegroundTypeId;
+			joinAsGroup: boolean;
+			err: Acore.Box<GroupJoinBattlegroundResult>;
+			__return: Acore.Box<boolean>;
 		};
 		['player:should-be-rewarded-with-money-instead-of-exp']: {
-			readonly player: Acore.Player;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			__return: Acore.Box<boolean>;
 		};
 		['player:before-temp-summon-init-stats']: {
-			readonly player: Acore.Player;
-			readonly tempSummon: Acore.TempSummon;
-			readonly duration: Acore.Box<Temporal.Duration>;
+			player: Acore.Player;
+			tempSummon: Acore.TempSummon;
+			duration: Acore.Box<Temporal.Duration>;
 		};
 		['player:before-guardian-init-stats-for-level']: {
-			readonly player: Acore.Player;
-			readonly guardian: Acore.Guardian;
-			readonly cInfo: Acore.CreatureTemplate;
-			readonly petType: Acore.Box<PetType>;
+			player: Acore.Player;
+			guardian: Acore.Guardian;
+			cInfo: Acore.CreatureTemplate;
+			petType: Acore.Box<PetType>;
 		};
 		['player:after-guardian-init-stats-for-level']: {
-			readonly player: Acore.Player;
-			readonly guardian: Acore.Guardian;
+			player: Acore.Player;
+			guardian: Acore.Guardian;
 		};
 		['player:before-load-pet-from-db']: {
-			readonly player: Acore.Player;
-			readonly petEntry: Acore.Box<number>;
-			readonly petNumber: Acore.Box<number>;
-			readonly current: Acore.Box<boolean>;
-			readonly forceLoadFromDB: Acore.Box<boolean>;
+			player: Acore.Player;
+			petEntry: Acore.Box<number>;
+			petNumber: Acore.Box<number>;
+			current: Acore.Box<boolean>;
+			forceLoadFromDB: Acore.Box<boolean>;
 		};
 		['player:can-join-in-arena-queue']: {
-			readonly player: Acore.Player;
-			readonly battlemasterGuid: bigint;
-			readonly arenaSlot: number;
-			readonly bgTypeId: number; // BattlegroundTypeId enum in native, but clearly it's not one of those.
-			readonly joinAsGroup: boolean;
-			readonly isRated: boolean;
-			readonly err: Acore.Box<GroupJoinBattlegroundResult>;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			battlemasterGuid: bigint;
+			arenaSlot: number;
+			bgTypeId: number; // BattlegroundTypeId enum in native, but clearly it's not one of those.
+			joinAsGroup: boolean;
+			isRated: boolean;
+			err: Acore.Box<GroupJoinBattlegroundResult>;
+			__return: Acore.Box<boolean>;
 		};
 		['player:can-battle-field-port']: {
-			readonly player: Acore.Player;
-			readonly arenaType: ArenaType;
-			readonly bgTypeId: BattlegroundTypeId;
-			readonly action: number; // from a comment: enter battle 0x1, leave queue 0x0
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			arenaType: ArenaType;
+			bgTypeId: BattlegroundTypeId;
+			action: number; // from a comment: enter battle 0x1, leave queue 0x0
+			__return: Acore.Box<boolean>;
 		};
 		['player:can-group-invite']: {
-			readonly player: Acore.Player;
-			readonly memberName: Acore.Box<string>;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			memberName: Acore.Box<string>;
+			__return: Acore.Box<boolean>;
 		};
 		['player:can-group-accept']: {
-			readonly player: Acore.Player;
-			readonly group: Acore.Group;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			group: Acore.Group;
+			__return: Acore.Box<boolean>;
 		};
 		['player:can-sell-item']: {
-			readonly player: Acore.Player;
-			readonly item: Acore.Item;
-			readonly creature: Acore.Creature;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			item: Acore.Item;
+			creature: Acore.Creature;
+			__return: Acore.Box<boolean>;
 		};
 		['player:can-send-mail']: {
-			readonly player: Acore.Player;
-			readonly receiverGuid: bigint;
-			readonly mailbox: bigint;
-			readonly subject: Acore.Box<string>;
-			readonly body: Acore.Box<string>;
-			readonly money: number;
-			readonly cod: number;
-			readonly item: Acore.Item | undefined;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			receiverGuid: bigint;
+			mailbox: bigint;
+			subject: Acore.Box<string>;
+			body: Acore.Box<string>;
+			money: number;
+			cod: number;
+			item: Acore.Item | undefined;
+			__return: Acore.Box<boolean>;
 		};
 		['player:petition-buy']: {
-			readonly player: Acore.Player;
-			readonly creature: Acore.Creature;
-			readonly charterId: Acore.Box<number>;
-			readonly cost: Acore.Box<number>;
-			readonly type: Acore.Box<CharterTypes>;
+			player: Acore.Player;
+			creature: Acore.Creature;
+			charterId: Acore.Box<number>;
+			cost: Acore.Box<number>;
+			type: Acore.Box<CharterTypes>;
 		};
 		['player:petition-show-list']: {
-			readonly player: Acore.Player;
-			readonly creature: Acore.Creature;
-			readonly charterEntry: Acore.Box<number>;
-			readonly charterDisplayId: Acore.Box<number>;
-			readonly charterCost: Acore.Box<number>;
+			player: Acore.Player;
+			creature: Acore.Creature;
+			charterEntry: Acore.Box<number>;
+			charterDisplayId: Acore.Box<number>;
+			charterCost: Acore.Box<number>;
 		};
 		['player:reward-kill-rewarder']: {
-			readonly player: Acore.Player;
-			// readonly rewarder: Acore.KillRewarder;
-			readonly isDungeon: boolean;
-			readonly rate: Acore.Box<number>;
+			player: Acore.Player;
+			// rewarder: Acore.KillRewarder;
+			isDungeon: boolean;
+			rate: Acore.Box<number>;
 		};
 		['player:can-give-mail-reward-at-give-level']: {
-			readonly player: Acore.Player;
-			readonly level: number;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			level: number;
+			__return: Acore.Box<boolean>;
 		};
 		['player:delete-from-db']: {
-			readonly guid: bigint;
+			guid: bigint;
 		};
 		['player:can-repop-at-graveyard']: {
-			readonly player: Acore.Player;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			__return: Acore.Box<boolean>;
 		};
 		['player:is-class']: {
-			readonly player: Acore.Player;
-			readonly playerClass: Classes;
-			readonly context: ClassContext;
-			readonly __return: Acore.Box<boolean | undefined>;
+			player: Acore.Player;
+			playerClass: Classes;
+			context: ClassContext;
+			__return: Acore.Box<boolean | undefined>;
 		};
 		['player:get-max-skill-value']: {
-			readonly player: Acore.Player;
-			readonly skill: SkillType;
-			readonly result: Acore.Box<number>;
-			readonly isPure: boolean;
+			player: Acore.Player;
+			skill: SkillType;
+			result: Acore.Box<number>;
+			isPure: boolean;
 		};
 		['player:has-active-power-type']: {
-			readonly player: Acore.Player;
-			readonly power: Powers;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			power: Powers;
+			__return: Acore.Box<boolean>;
 		};
 		['player:update-gathering-skill']: {
-			readonly player: Acore.Player;
-			readonly skillId: SkillType;
-			readonly current: number;
-			readonly gray: number;
-			readonly green: number;
-			readonly yellow: number;
-			readonly gain: Acore.Box<number>;
+			player: Acore.Player;
+			skillId: SkillType;
+			current: number;
+			gray: number;
+			green: number;
+			yellow: number;
+			gain: Acore.Box<number>;
 		};
 		['player:update-crafting-skill']: {
-			readonly player: Acore.Player;
-			// readonly skill: Acore.SkillLineAbilityEntry;
-			readonly currentLevel: number;
-			readonly gain: Acore.Box<number>;
+			player: Acore.Player;
+			// skill: Acore.SkillLineAbilityEntry;
+			currentLevel: number;
+			gain: Acore.Box<number>;
 		};
 		['player:update-fishing-skill']: {
-			readonly player: Acore.Player;
-			readonly skill: number;
-			readonly zoneSkill: number;
-			readonly chance: number;
-			readonly roll: number;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			skill: number;
+			zoneSkill: number;
+			chance: number;
+			roll: number;
+			__return: Acore.Box<boolean>;
 		};
 		['player:can-area-explore-and-outdoor']: {
-			readonly player: Acore.Player;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			__return: Acore.Box<boolean>;
 		};
 		['player:victim-reward-before']: {
-			readonly player: Acore.Player;
-			readonly victim: Acore.Player;
-			readonly killerTitle: Acore.Box<number>;
-			readonly victimRank: Acore.Box<number>;
+			player: Acore.Player;
+			victim: Acore.Player;
+			killerTitle: Acore.Box<number>;
+			victimRank: Acore.Box<number>;
 		};
 		['player:victim-reward-after']: {
-			readonly player: Acore.Player;
-			readonly victim: Acore.Player;
-			readonly killerTitle: Acore.Box<number>;
-			readonly victimRank: Acore.Box<number>;
-			readonly honor: Acore.Box<number>;
+			player: Acore.Player;
+			victim: Acore.Player;
+			killerTitle: Acore.Box<number>;
+			victimRank: Acore.Box<number>;
+			honor: Acore.Box<number>;
 		};
 		['player:custom-scaling-stat-value-before']: {
-			readonly player: Acore.Player;
-			readonly proto: Acore.ItemTemplateNarrowable;
-			readonly slot: number;
-			readonly apply: boolean;
-			readonly customScalingStatValue: Acore.Box<number>;
+			player: Acore.Player;
+			proto: Acore.ItemTemplateNarrowable;
+			slot: number;
+			apply: boolean;
+			customScalingStatValue: Acore.Box<number>;
 		};
 		['player:custom-scaling-stat-value']: {
-			readonly player: Acore.Player;
-			readonly proto: Acore.ItemTemplateNarrowable;
-			readonly statType: Acore.Box<Stats>;
-			readonly val: Acore.Box<number>;
-			readonly itemProtoStatNumber: number;
-			readonly scalingStatValue: number;
-			// readonly ssv: Acore.ScalingStatValuesEntry;
+			player: Acore.Player;
+			proto: Acore.ItemTemplateNarrowable;
+			statType: Acore.Box<Stats>;
+			val: Acore.Box<number>;
+			itemProtoStatNumber: number;
+			scalingStatValue: number;
+			// ssv: Acore.ScalingStatValuesEntry;
 		};
 		['player:apply-item-mods-before']: {
-			readonly player: Acore.Player;
-			readonly slot: number;
-			readonly apply: boolean;
-			readonly itemProtoStatNumber: number;
-			readonly statType: Stats;
-			readonly val: Acore.Box<number>;
+			player: Acore.Player;
+			slot: number;
+			apply: boolean;
+			itemProtoStatNumber: number;
+			statType: Stats;
+			val: Acore.Box<number>;
 		};
 		['player:apply-enchantment-item-mods-before']: {
-			readonly player: Acore.Player;
-			readonly item: Acore.Item;
-			readonly slot: EnchantmentSlot;
-			readonly apply: boolean;
-			readonly enchantSpellId: number;
-			readonly enchantAmount: Acore.Box<number>;
+			player: Acore.Player;
+			item: Acore.Item;
+			slot: EnchantmentSlot;
+			apply: boolean;
+			enchantSpellId: number;
+			enchantAmount: Acore.Box<number>;
 		};
 		['player:apply-weapon-damage']: {
-			readonly player: Acore.Player;
-			readonly slot: number;
-			readonly proto: Acore.ItemTemplateNarrowable;
-			readonly minDamage: Acore.Box<number>;
-			readonly maxDamage: Acore.Box<number>;
-			readonly damageIndex: number;
+			player: Acore.Player;
+			slot: number;
+			proto: Acore.ItemTemplateNarrowable;
+			minDamage: Acore.Box<number>;
+			maxDamage: Acore.Box<number>;
+			damageIndex: number;
 		};
 		['player:can-armor-damage-modifier']: {
-			readonly player: Acore.Player;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			__return: Acore.Box<boolean>;
 		};
 		['player:get-feral-ap-bonus']: {
-			readonly player: Acore.Player;
-			readonly feralBonus: Acore.Box<number>;
-			readonly dpsMod: number;
-			readonly proto: Acore.ItemTemplateNarrowable;
-			// readonly ssv: Acore.ScalingStatValuesEntry;
+			player: Acore.Player;
+			feralBonus: Acore.Box<number>;
+			dpsMod: number;
+			proto: Acore.ItemTemplateNarrowable;
+			// ssv: Acore.ScalingStatValuesEntry;
 		};
 		['player:can-apply-weapon-dependent-aura-damage-mod']: {
-			readonly player: Acore.Player;
-			readonly item: Acore.Item;
-			readonly attackType: WeaponAttackType;
-			readonly aura: Acore.AuraEffect;
-			readonly apply: boolean;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			item: Acore.Item;
+			attackType: WeaponAttackType;
+			aura: Acore.AuraEffect;
+			apply: boolean;
+			__return: Acore.Box<boolean>;
 		};
 		['player:can-apply-equip-spell']: {
-			readonly player: Acore.Player;
-			readonly spellInfo: Acore.SpellInfo;
-			readonly item: Acore.Item;
-			readonly apply: boolean;
-			readonly formChange: boolean;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			spellInfo: Acore.SpellInfo;
+			item: Acore.Item;
+			apply: boolean;
+			formChange: boolean;
+			__return: Acore.Box<boolean>;
 		};
 		['player:can-apply-equip-spells-item-set']: {
-			readonly player: Acore.Player;
-			// readonly eff: Acore.ItemSetEffect;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			// eff: Acore.ItemSetEffect;
+			__return: Acore.Box<boolean>;
 		};
 		['player:can-cast-item-combat-spell']: {
-			readonly player: Acore.Player;
-			readonly target: Acore.Unit;
-			readonly attType: WeaponAttackType;
-			readonly procVictim: ProcFlags;
-			readonly procEx: ProcFlagsHit;
-			readonly item: Acore.Item;
-			readonly proto: Acore.ItemTemplateNarrowable;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			target: Acore.Unit;
+			attType: WeaponAttackType;
+			procVictim: ProcFlags;
+			procEx: ProcFlagsHit;
+			item: Acore.Item;
+			proto: Acore.ItemTemplateNarrowable;
+			__return: Acore.Box<boolean>;
 		};
 		['player:can-cast-item-use-spell']: {
-			readonly player: Acore.Player;
-			readonly item: Acore.Item;
-			// readonly targets: Acore.SpellCastTargets;
-			readonly castCount: number;
-			readonly glyphIndex: number;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			item: Acore.Item;
+			// targets: Acore.SpellCastTargets;
+			castCount: number;
+			glyphIndex: number;
+			__return: Acore.Box<boolean>;
 		};
 		['player:apply-ammo-bonuses']: {
-			readonly player: Acore.Player;
-			readonly proto: Acore.ItemTemplateNarrowable;
-			readonly currentAmmoDps: Acore.Box<number>;
+			player: Acore.Player;
+			proto: Acore.ItemTemplateNarrowable;
+			currentAmmoDps: Acore.Box<number>;
 		};
 		['player:can-equip-item']: {
-			readonly player: Acore.Player;
-			readonly slot: number;
-			readonly dest: Acore.Box<number>;
-			readonly item: Acore.Item;
-			readonly swap: boolean;
-			readonly notLoading: boolean;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			slot: number;
+			dest: Acore.Box<number>;
+			item: Acore.Item;
+			swap: boolean;
+			notLoading: boolean;
+			__return: Acore.Box<boolean>;
 		};
 		['player:can-unequip-item']: {
-			readonly player: Acore.Player;
-			readonly pos: number;
-			readonly swap: boolean;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			pos: number;
+			swap: boolean;
+			__return: Acore.Box<boolean>;
 		};
 		['player:can-use-item']: {
-			readonly player: Acore.Player;
-			readonly proto: Acore.ItemTemplateNarrowable;
-			readonly result: Acore.Box<InventoryResult>;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			proto: Acore.ItemTemplateNarrowable;
+			result: Acore.Box<InventoryResult>;
+			__return: Acore.Box<boolean>;
 		};
 		['player:can-save-equip-new-item']: {
-			readonly player: Acore.Player;
-			readonly item: Acore.Item;
-			readonly pos: number;
-			readonly update: boolean;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			item: Acore.Item;
+			pos: number;
+			update: boolean;
+			__return: Acore.Box<boolean>;
 		};
 		['player:can-apply-enchantment']: {
-			readonly player: Acore.Player;
-			readonly item: Acore.Item;
-			readonly slot: number;
-			readonly apply: boolean;
-			readonly applyDur: boolean;
-			readonly ignoreCondition: boolean;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			item: Acore.Item;
+			slot: number;
+			apply: boolean;
+			applyDur: boolean;
+			ignoreCondition: boolean;
+			__return: Acore.Box<boolean>;
 		};
 		['player:get-quest-rate']: {
-			readonly player: Acore.Player;
-			readonly result: Acore.Box<number>;
+			player: Acore.Player;
+			result: Acore.Box<number>;
 		};
 		['player:passed-quest-killed-monster-credit']: {
-			readonly player: Acore.Player;
-			readonly qInfo: Acore.Quest;
-			readonly entry: number;
-			readonly realEntry: number;
-			readonly guid: bigint | undefined;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			qInfo: Acore.Quest;
+			entry: number;
+			realEntry: number;
+			guid: bigint | undefined;
+			__return: Acore.Box<boolean>;
 		};
 		['player:check-item-in-slot-at-load-inventory']: {
-			readonly player: Acore.Player;
-			readonly item: Acore.Item;
-			readonly slot: number;
-			readonly err: Acore.Box<InventoryResult>;
-			readonly dest: Acore.Box<number>;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			item: Acore.Item;
+			slot: number;
+			err: Acore.Box<InventoryResult>;
+			dest: Acore.Box<number>;
+			__return: Acore.Box<boolean>;
 		};
 		['player:not-avoid-satisfy']: {
-			readonly player: Acore.Player;
-			// readonly ar: Acore.DungeonProgressionRequirements;
-			readonly targetMap: number;
-			readonly report: boolean;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			// ar: Acore.DungeonProgressionRequirements;
+			targetMap: number;
+			report: boolean;
+			__return: Acore.Box<boolean>;
 		};
 		['player:not-visible-globally-for']: {
-			readonly player: Acore.Player;
-			readonly u: Acore.Player;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			u: Acore.Player;
+			__return: Acore.Box<boolean>;
 		};
 		['player:get-arena-personal-rating']: {
-			readonly player: Acore.Player;
-			readonly slot: number;
-			readonly result: Acore.Box<number>;
+			player: Acore.Player;
+			slot: number;
+			result: Acore.Box<number>;
 		};
 		['player:get-arena-team-id']: {
-			readonly player: Acore.Player;
-			readonly slot: number;
-			readonly result: Acore.Box<number>;
+			player: Acore.Player;
+			slot: number;
+			result: Acore.Box<number>;
 		};
 		['player:is-ffa-pvp']: {
-			readonly player: Acore.Player;
-			readonly result: Acore.Box<boolean>;
+			player: Acore.Player;
+			result: Acore.Box<boolean>;
 		};
 		['player:ffa-pvp-state-update']: {
-			readonly player: Acore.Player;
-			readonly result: boolean;
+			player: Acore.Player;
+			result: boolean;
 		};
 		['player:is-pvp']: {
-			readonly player: Acore.Player;
-			readonly result: Acore.Box<boolean>;
+			player: Acore.Player;
+			result: Acore.Box<boolean>;
 		};
 		['player:get-max-skill-value-for-level']: {
-			readonly player: Acore.Player;
-			readonly result: Acore.Box<number>;
+			player: Acore.Player;
+			result: Acore.Box<number>;
 		};
 		['player:not-set-arena-team-info-field']: {
-			readonly player: Acore.Player;
-			readonly slot: number;
-			readonly type: ArenaTeamInfoType;
-			readonly value: number;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			slot: number;
+			type: ArenaTeamInfoType;
+			value: number;
+			__return: Acore.Box<boolean>;
 		};
 		['player:can-join-lfg']: {
-			readonly player: Acore.Player;
-			readonly roles: LfgRoles;
+			player: Acore.Player;
+			roles: LfgRoles;
 			// dungeons: ReadonlySet<number>;
-			readonly comment: string;
-			readonly __return: Acore.Box<boolean>;
+			comment: string;
+			__return: Acore.Box<boolean>;
 		};
 		['player:can-enter-map']: {
-			readonly player: Acore.Player;
-			// readonly entry: Acore.MapEntry;
-			// readonly instance: Acore.InstanceTemplate;
-			// readonly mapDiff: Acore.MapDifficulty;
-			readonly loginCheck: boolean;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			// entry: Acore.MapEntry;
+			// instance: Acore.InstanceTemplate;
+			// mapDiff: Acore.MapDifficulty;
+			loginCheck: boolean;
+			__return: Acore.Box<boolean>;
 		};
 		['player:can-init-trade']: {
-			readonly player: Acore.Player;
-			readonly target: Acore.Player;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			target: Acore.Player;
+			__return: Acore.Box<boolean>;
 		};
 		['player:can-set-trade-item']: {
-			readonly player: Acore.Player;
-			readonly tradedItem: Acore.Item;
-			readonly tradeSlot: number;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			tradedItem: Acore.Item;
+			tradeSlot: number;
+			__return: Acore.Box<boolean>;
 		};
 		['player:set-server-side-visibility']: {
-			readonly player: Acore.Player;
-			readonly type: Acore.Box<ServerSideVisibilityType>;
-			readonly sec: Acore.Box<AccountTypes>;
+			player: Acore.Player;
+			type: Acore.Box<ServerSideVisibilityType>;
+			sec: Acore.Box<AccountTypes>;
 		};
 		['player:set-server-side-visibility-detect']: {
-			readonly player: Acore.Player;
-			readonly type: Acore.Box<ServerSideVisibilityType>;
-			readonly sec: Acore.Box<AccountTypes>;
+			player: Acore.Player;
+			type: Acore.Box<ServerSideVisibilityType>;
+			sec: Acore.Box<AccountTypes>;
 		};
 		['player:resurrect']: {
-			readonly player: Acore.Player;
-			readonly restorePercent: number;
-			readonly applySickness: Acore.Box<boolean>;
+			player: Acore.Player;
+			restorePercent: number;
+			applySickness: Acore.Box<boolean>;
 		};
 		['player:before-choose-graveyard']: {
-			readonly player: Acore.Player;
-			readonly teamId: TeamId;
-			readonly nearCorpse: boolean;
-			readonly graveyardOverride: Acore.Box<number>;
+			player: Acore.Player;
+			teamId: TeamId;
+			nearCorpse: boolean;
+			graveyardOverride: Acore.Box<number>;
 		};
 		['player:can-use-chat']: {
-			readonly player: Acore.Player;
-			readonly type: ChatMsg;
-			readonly lang: Language;
-			readonly msg: Acore.Box<string>;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			type: ChatMsg;
+			lang: Language;
+			msg: Acore.Box<string>;
+			__return: Acore.Box<boolean>;
 		};
 		['player:can-use-chat:player']: {
-			readonly player: Acore.Player;
-			readonly type: ChatMsg;
-			readonly lang: Language;
-			readonly msg: Acore.Box<string>;
-			readonly receiver: Acore.Player;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			type: ChatMsg;
+			lang: Language;
+			msg: Acore.Box<string>;
+			receiver: Acore.Player;
+			__return: Acore.Box<boolean>;
 		};
 		['player:can-use-chat:group']: {
-			readonly player: Acore.Player;
-			readonly type: ChatMsg;
-			readonly lang: Language;
-			readonly msg: Acore.Box<string>;
-			readonly group: Acore.Group;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			type: ChatMsg;
+			lang: Language;
+			msg: Acore.Box<string>;
+			group: Acore.Group;
+			__return: Acore.Box<boolean>;
 		};
 		['player:can-use-chat:guild']: {
-			readonly player: Acore.Player;
-			readonly type: ChatMsg;
-			readonly lang: Language;
-			readonly msg: Acore.Box<string>;
-			readonly guild: Acore.Guild;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			type: ChatMsg;
+			lang: Language;
+			msg: Acore.Box<string>;
+			guild: Acore.Guild;
+			__return: Acore.Box<boolean>;
 		};
 		['player:can-use-chat:channel']: {
-			readonly player: Acore.Player;
-			readonly type: ChatMsg;
-			readonly lang: Language;
-			readonly msg: Acore.Box<string>;
-			readonly channel: Acore.Channel;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			type: ChatMsg;
+			lang: Language;
+			msg: Acore.Box<string>;
+			channel: Acore.Channel;
+			__return: Acore.Box<boolean>;
 		};
 		['player:learn-talents']: {
-			readonly player: Acore.Player;
-			readonly talentId: number;
-			readonly talentRank: number;
-			readonly spellId: number;
+			player: Acore.Player;
+			talentId: number;
+			talentRank: number;
+			spellId: number;
 		};
 		['player:enter-combat']: {
-			readonly player: Acore.Player;
-			readonly enemy: Acore.Unit;
+			player: Acore.Player;
+			enemy: Acore.Unit;
 		};
-		['player:leave-combat']: { readonly player: Acore.Player; };
+		['player:leave-combat']: { player: Acore.Player; };
 		['player:quest-abandon']: {
-			readonly player: Acore.Player;
-			readonly questId: number;
+			player: Acore.Player;
+			questId: number;
 		};
 		['player:quest-accept']: {
-			readonly player: Acore.Player;
-			readonly quest: Acore.Quest;
+			player: Acore.Player;
+			quest: Acore.Quest;
 		};
 		['player:can-fly-in-zone']: {
-			readonly player: Acore.Player;
-			readonly mapId: number;
-			readonly zoneId: number;
-			readonly bySpell: Acore.SpellInfo;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			mapId: number;
+			zoneId: number;
+			bySpell: Acore.SpellInfo;
+			__return: Acore.Box<boolean>;
 		};
 		['player:anticheat:set-can-flyby-server']: {
-			readonly player: Acore.Player;
-			readonly apply: boolean;
+			player: Acore.Player;
+			apply: boolean;
 		};
-		['player:anticheat:set-under-ack-mount']: { readonly player: Acore.Player; };
-		['player:anticheat:set-root-ack-upd']: { readonly player: Acore.Player; };
+		['player:anticheat:set-under-ack-mount']: { player: Acore.Player; };
+		['player:anticheat:set-root-ack-upd']: { player: Acore.Player; };
 		['player:anticheat:set-jumping-by-opcode']: {
-			readonly player: Acore.Player;
-			readonly jump: boolean;
+			player: Acore.Player;
+			jump: boolean;
 		};
 		['player:anticheat:update-movement-info']: {
-			readonly player: Acore.Player;
-			// readonly movementInfo: Acore.MovementInfo;
+			player: Acore.Player;
+			// movementInfo: Acore.MovementInfo;
 		};
 		['player:anticheat-handle-double-jump']: {
-			readonly player: Acore.Player;
-			readonly mover: Acore.Unit;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			mover: Acore.Unit;
+			__return: Acore.Box<boolean>;
 		};
 		['player:anticheat-check-movement-info']: {
-			readonly player: Acore.Player;
-			// readonly movementInfo: Acore.MovementInfo;
-			readonly mover: Acore.Unit;
-			readonly jump: boolean;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			// movementInfo: Acore.MovementInfo;
+			mover: Acore.Unit;
+			jump: boolean;
+			__return: Acore.Box<boolean>;
 		};
 		['player:can-send-error-already-looted']: {
-			readonly player: Acore.Player;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			__return: Acore.Box<boolean>;
 		};
-		['player:after-creature-loot']: { readonly player: Acore.Player; };
-		['player:after-creature-loot-money']: { readonly player: Acore.Player; };
+		['player:after-creature-loot']: { player: Acore.Player; };
+		['player:after-creature-loot-money']: { player: Acore.Player; };
 		['player:can-update-skill']: {
-			readonly player: Acore.Player;
-			readonly skillId: SkillType;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			skillId: SkillType;
+			__return: Acore.Box<boolean>;
 		};
 		['player:before-update-skill']: {
-			readonly player: Acore.Player;
-			readonly skillId: SkillType;
-			readonly value: Acore.Box<number>;
-			readonly max: number;
-			readonly step: number;
+			player: Acore.Player;
+			skillId: SkillType;
+			value: Acore.Box<number>;
+			max: number;
+			step: number;
 		};
 		['player:update-skill']: {
-			readonly player: Acore.Player;
-			readonly skillId: SkillType;
-			readonly value: number;
-			readonly max: number;
-			readonly step: number;
-			readonly newValue: number;
+			player: Acore.Player;
+			skillId: SkillType;
+			value: number;
+			max: number;
+			step: number;
+			newValue: number;
 		};
 		['player:set-skill']: {
-			readonly player: Acore.Player;
-			readonly skillId: SkillType;
-			readonly value: number;
-			readonly max: number;
-			readonly step: number;
-			readonly newValue: number;
+			player: Acore.Player;
+			skillId: SkillType;
+			value: number;
+			max: number;
+			step: number;
+			newValue: number;
 		};
 		['player:can-resurrect']: {
-			readonly player: Acore.Player;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			__return: Acore.Box<boolean>;
 		};
 		['player:can-give-level']: {
-			readonly player: Acore.Player;
-			readonly newLevel: number;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			newLevel: number;
+			__return: Acore.Box<boolean>;
 		};
 		['player:send-list-inventory']: {
-			readonly player: Acore.Player;
-			readonly vendorGuid: bigint;
-			readonly vendorEntry: Acore.Box<number>;
+			player: Acore.Player;
+			vendorGuid: bigint;
+			vendorEntry: Acore.Box<number>;
 		};
 		['player:get-reputation-price-discount:by-creature']: {
-			readonly player: Acore.Player;
-			readonly creature: Acore.Creature;
-			readonly discount: Acore.Box<number>;
+			player: Acore.Player;
+			creature: Acore.Creature;
+			discount: Acore.Box<number>;
 		};
 		['player:get-reputation-price-discount']: {
-			readonly player: Acore.Player;
-			// readonly factionTemplate: Acore.FactionTemplateEntry;
-			readonly discount: Acore.Box<number>;
+			player: Acore.Player;
+			// factionTemplate: Acore.FactionTemplateEntry;
+			discount: Acore.Box<number>;
 		};
 		['player:learn-taxi-node']: {
-			readonly player: Acore.Player;
-			readonly nodeId: number;
+			player: Acore.Player;
+			nodeId: number;
 		};
 		['player:before-get-level-for-xp-gain']: {
-			readonly player: Acore.Player;
-			readonly level: Acore.Box<number>;
+			player: Acore.Player;
+			level: Acore.Box<number>;
 		};
 	}
 }

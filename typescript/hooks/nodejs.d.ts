@@ -1,11 +1,11 @@
 declare global {
 	interface Hooks {
 		['nodejs:startup']: {
-			readonly persistData?: string;
+			persistData?: string;
 		};
 		['nodejs:before-shutdown']:
-			| { readonly reloading: false; }
-			| { readonly reloading: true; readonly persistData: Acore.Box<string>; };
+			| { reloading: false; }
+			| { reloading: true; persistData: Acore.Box<string>; };
 	}
 }
 export {};

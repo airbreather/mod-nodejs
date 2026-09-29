@@ -1,67 +1,67 @@
 declare global {
 	interface Hooks {
-		['game-object:add-world']: { readonly gameObject: Acore.GameObject; };
-		['game-object:remove-world']: { readonly gameObject: Acore.GameObject; };
-		['game-object:save-to-db']: { readonly gameObject: Acore.GameObject; };
+		['game-object:add-world']: { gameObject: Acore.GameObject; };
+		['game-object:remove-world']: { gameObject: Acore.GameObject; };
+		['game-object:save-to-db']: { gameObject: Acore.GameObject; };
 		['game-object:update']: {
-			readonly gameObject: Acore.GameObject;
-			readonly diff: Temporal.Duration;
+			gameObject: Acore.GameObject;
+			diff: Temporal.Duration;
 		};
 		['game-object:can-gossip-hello']: {
-			readonly player: Acore.Player;
-			readonly gameObject: Acore.GameObject;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			gameObject: Acore.GameObject;
+			__return: Acore.Box<boolean>;
 		};
 		['game-object:can-gossip-select']: {
-			readonly player: Acore.Player;
-			readonly gameObject: Acore.GameObject;
-			readonly sender: GossipSender;
-			readonly action: number;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			gameObject: Acore.GameObject;
+			sender: GossipSender;
+			action: number;
+			__return: Acore.Box<boolean>;
 		};
 		['game-object:can-gossip-select-code']: {
-			readonly player: Acore.Player;
-			readonly gameObject: Acore.GameObject;
-			readonly sender: GossipSender;
-			readonly action: number;
-			readonly code: string;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			gameObject: Acore.GameObject;
+			sender: GossipSender;
+			action: number;
+			code: string;
+			__return: Acore.Box<boolean>;
 		};
 		['game-object:can-quest-accept']: {
-			readonly player: Acore.Player;
-			readonly gameObject: Acore.GameObject;
-			readonly quest: Acore.Quest;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			gameObject: Acore.GameObject;
+			quest: Acore.Quest;
+			__return: Acore.Box<boolean>;
 		};
 		['game-object:can-quest-reward']: {
-			readonly player: Acore.Player;
-			readonly gameObject: Acore.GameObject;
-			readonly quest: Acore.Quest;
-			readonly opt: number;
-			readonly __return: Acore.Box<boolean>;
+			player: Acore.Player;
+			gameObject: Acore.GameObject;
+			quest: Acore.Quest;
+			opt: number;
+			__return: Acore.Box<boolean>;
 		};
 		['game-object:destroyed']: {
-			readonly gameObject: Acore.GameObject;
-			readonly player: Acore.Player;
+			gameObject: Acore.GameObject;
+			player: Acore.Player;
 		};
 		['game-object:damaged']: {
-			readonly gameObject: Acore.GameObject;
-			readonly player: Acore.Player;
+			gameObject: Acore.GameObject;
+			player: Acore.Player;
 		};
 		['game-object:modify-health']: {
-			readonly gameObject: Acore.GameObject;
-			readonly attackerOrHealer: Acore.Unit;
-			readonly change: Acore.Box<number>;
-			readonly spellInfo: Acore.SpellInfo;
+			gameObject: Acore.GameObject;
+			attackerOrHealer: Acore.Unit;
+			change: Acore.Box<number>;
+			spellInfo: Acore.SpellInfo;
 		};
 		['game-object:loot-state-changed']: {
-			readonly gameObject: Acore.GameObject;
-			readonly state: LootState;
-			readonly unit: Acore.Unit;
+			gameObject: Acore.GameObject;
+			state: LootState;
+			unit: Acore.Unit;
 		};
 		['game-object:state-changed']: {
-			readonly gameObject: Acore.GameObject;
-			readonly state: GOState;
+			gameObject: Acore.GameObject;
+			state: GOState;
 		};
 	}
 }
