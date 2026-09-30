@@ -175,6 +175,7 @@ declare global {
 			summonPlayer(player: Player): void
 			dealDamage(target: Unit, amount: number, type?: DamageEffectType, spellSchoolMask?: SpellSchoolMask, spellInfo?: SpellInfo, durabilityLoss?: boolean, allowGm?: boolean, spell?: Spell): number;
 			hasUnitMovementFlag(flags: MovementFlags): boolean;
+			sendSpeedToController(type: UnitMoveType, player: Acore.Player): void;
 		}
 	}
 }

@@ -649,6 +649,9 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Unit *>() {
 	reg_method(ft, "hasUnitMovementFlag", [](Unit * u, uint32_t flag) {
 		return u->HasUnitMovementFlag(flag);
 	});
+	reg_method(ft, "sendSpeedToController", [](Unit * u, UnitMoveType type, Player * player) {
+		u->SendSpeedToController(type, player);
+	});
 
 	return ft;
 }
