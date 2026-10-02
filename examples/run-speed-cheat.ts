@@ -54,9 +54,10 @@ export function installRunSpeedCheat() {
 						} else {
 							speedup = Math.max(1, speedup * 0.95);
 						}
-						// TODO: why isn't setSpeedRate working? it's definitely setting the right flag.
-						player.setSpeed(UnitMoveType.MOVE_RUN, speedup, true);
-						player.setSpeed(UnitMoveType.MOVE_SWIM, speedup, true);
+						player.setSpeedRate(UnitMoveType.MOVE_RUN, speedup);
+						player.sendSpeedToController(UnitMoveType.MOVE_RUN, player);
+						player.setSpeedRate(UnitMoveType.MOVE_SWIM, speedup);
+						player.sendSpeedToController(UnitMoveType.MOVE_SWIM, player);
 						accelerator.modified = speedup > 1;
 					}, 400),
 				};
