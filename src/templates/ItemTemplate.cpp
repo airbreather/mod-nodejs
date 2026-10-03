@@ -39,9 +39,6 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Item *>() {
 			,player.value_or(nullptr)
 			,false
 			,random_property_id.value_or(0)
-#ifdef MOD_PLAYERBOTS
-			,temp.value_or(false)
-#endif
 		));
 	});
 

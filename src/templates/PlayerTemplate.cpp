@@ -47,6 +47,9 @@
 #include "PlayerTaxi.h"
 #include "Position.h"
 #include "QuestDef.h"
+#if MOD_PLAYERBOTS
+#include "RandomPlayerbotMgr.h"
+#endif
 #include "SharedDefines.h"
 #include "Unit.h"
 #include "UnitDefines.h"
@@ -378,7 +381,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 	});
 	reg_prop_ro(ft, "isBot", [](Player * player) {
 		#ifdef MOD_PLAYERBOTS
-			return player->GetSession()->IsBot();
+			return sRandomPlayerbotMgr.IsRandomBot(player);
 		#else
 			return false;
 		#endif
