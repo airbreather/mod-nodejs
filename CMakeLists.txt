@@ -1,12 +1,12 @@
 if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB))
   include(FetchContent)
-  message(STATUS "mod-nodejs: using libnode v26.9.0 from the GitHub release")
+  message(STATUS "mod-nodejs: using libnode v26.10.0 from the GitHub release")
   if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     FetchContent_Declare(
             nodejs_linux
 
-            URL                        https://github.com/airbreather/mod-nodejs/releases/download/v26.9.0/libnode-linux-v26.9.0.tar.zst
-            URL_HASH                   SHA256=e4056017551c9075e103ebef92eb391b89561e478ef287343a4b1ba72d22b964
+            URL                        https://github.com/airbreather/mod-nodejs/releases/download/libnode-v26.10.0/libnode-linux-v26.10.0.tar.zst
+            URL_HASH                   SHA256=3fc59ba12defa7df303ae1bf536a9cda3df59f12f2baaa5a624516d4df4aaad7
             DOWNLOAD_EXTRACT_TIMESTAMP true
     )
 
@@ -18,8 +18,8 @@ if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB))
     FetchContent_Declare(
             nodejs_win
 
-            URL                        https://github.com/airbreather/mod-nodejs/releases/download/v26.9.0/libnode-windows-v26.9.0.7z
-            URL_HASH                   SHA256=4c0dab0523f09a6c9eaedb217eb5bbc8efeaf79a837e02e37edbb1e7c9de26d3
+            URL                        https://github.com/airbreather/mod-nodejs/releases/download/libnode-v26.10.0/libnode-windows-v26.10.0.7z
+            URL_HASH                   SHA256=e3b53f7cdebb3a731e50b55024d2adf31e9ae8c064e72170bc5a449c64a3a0b7
             DOWNLOAD_EXTRACT_TIMESTAMP true
     )
 
