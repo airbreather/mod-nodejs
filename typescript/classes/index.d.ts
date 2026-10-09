@@ -1,4 +1,5 @@
 export type * from './AchievementEntry.d.ts';
+export type * from './Account.d.ts';
 export type * from './ACMap.d.ts';
 export type * from './ACObject.d.ts';
 export type * from './AreaDamageData.d.ts';

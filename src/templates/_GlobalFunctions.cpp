@@ -38,7 +38,7 @@ void add_global_functions(TypedTemplate<NodeJs *> const ft) {
 			case Db::World:
 				return NodeJs::instance()->db_query_async<Db::World>(s);
 		}
-		v8::Isolate::GetCurrent()->ThrowError("unrecognized db");
+		jthrow("unrecognized db");
 		return jnull().As<v8::Promise>();
 	});
 	reg_method(ft, "dbQuery", [](NodeJs *, Db d, std::string s) {
@@ -52,7 +52,7 @@ void add_global_functions(TypedTemplate<NodeJs *> const ft) {
 			case Db::World:
 				return db<Db::World>().query(s);
 		}
-		v8::Isolate::GetCurrent()->ThrowError("unrecognized db");
+		jthrow("unrecognized db");
 		return QueryResult{};
 	});
 	reg_method(ft, "dbNonQuery", [](NodeJs *, Db d, std::string s) {
@@ -69,7 +69,7 @@ void add_global_functions(TypedTemplate<NodeJs *> const ft) {
 				db<Db::World>().execute_or_append(s);
 				return;
 		}
-		v8::Isolate::GetCurrent()->ThrowError("unrecognized db");
+		jthrow("unrecognized db");
 	});
 	reg_method(ft, "inTransaction", [](NodeJs *, Db d, v8::Local<v8::Function> f) {
 		std::function<void()> fn = [f] {
@@ -91,7 +91,7 @@ void add_global_functions(TypedTemplate<NodeJs *> const ft) {
 				db<Db::World>().transactional([& fn](auto const&){fn();});
 				return;
 		}
-		v8::Isolate::GetCurrent()->ThrowError("unrecognized db");
+		jthrow("unrecognized db");
 	});
 	reg_method(ft, "getCurrTime", [](NodeJs *) {
 		return UnixTimestamp::from_game_time_milliseconds(getMSTime());
@@ -162,7 +162,7 @@ void add_global_functions(TypedTemplate<NodeJs *> const ft) {
 		try {
 			NodeJs::instance()->reg_command(*b);
 		} catch (std::logic_error & err) {
-			v8::Isolate::GetCurrent()->ThrowError(jstrz(err.what()));
+			jthrow(err.what());
 		}
 	});
 	reg_method(ft, "shutdown", [](NodeJs *, uint32_t time, ShutdownMask options, uint8_t exit_code, std::optional<std::string> reason) {

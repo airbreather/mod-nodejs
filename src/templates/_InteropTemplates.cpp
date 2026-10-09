@@ -52,6 +52,7 @@ class Unit;
 class Vehicle;
 class WorldObject;
 class WorldPacket;
+struct AccountWrapper;
 struct AchievementEntry;
 struct AuctionEntry;
 struct CastSpellBuilder;
@@ -129,6 +130,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<NodeJs *>() {
 #define REGISTER_CLASS_PROP(tclass) REGISTER_CLASS_PROP_SPLIT_NAMES(tclass, tclass)
 #define REGISTER_CLASS_PROP_RO(tclass) REGISTER_CLASS_PROP_SPLIT_NAMES(tclass const, tclass)
 
+	REGISTER_CLASS_PROP_SPLIT_NAMES(AccountWrapper, Account)
 	REGISTER_CLASS_PROP_RO(AchievementEntry)
 	REGISTER_CLASS_PROP_SPLIT_NAMES(Object, ACObject)
 	REGISTER_CLASS_PROP_RO(AreaDamageData)

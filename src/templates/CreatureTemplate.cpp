@@ -34,7 +34,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Creature *>() {
 	reg_static_method(ft, "buildSpawner", [](uint32_t entry, Map * map, float x, float y, float z, float o) -> v8::Local<v8::Value> {
 		auto builder = new SpawnCreatureBuilder(entry, map, { x, y, z, o });
 		if (!builder->creature_template) {
-			v8::Isolate::GetCurrent()->ThrowError("Entry does not represent a valid creature.");
+			jthrow("Entry does not represent a valid creature.");
 			return jnull();
 		}
 		return jmove(builder);

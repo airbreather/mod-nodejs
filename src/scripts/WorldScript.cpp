@@ -34,8 +34,10 @@ public:
 	}
 
 	void OnShutdown() override {
+		// pass persist_data even though we'll ignore it so that handlers won't NEED to check for it
+		std::string persist_data{};
 		NodeJs::invoke_hook("nodejs:before-shutdown"
-			, jprop("reloading", false));
+			, jprop("reloading", false), jprop_box("persistData", persist_data));
 		NodeJs::invoke_hook("world:shutdown"
 			);
 		NodeJs::shutdown();

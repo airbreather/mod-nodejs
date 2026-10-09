@@ -82,6 +82,7 @@ list(APPEND ${PRIVATE_SOURCES} (
 
         src/templates/_GlobalFunctions.cpp
         src/templates/_InteropTemplates.cpp
+        src/templates/AccountWrapperTemplate.cpp
         src/templates/AchievementEntryTemplate.cpp
         src/templates/ACObjectTemplate.cpp
         src/templates/AreaDamageDataTemplate.cpp
@@ -183,6 +184,7 @@ list(APPEND ${PRIVATE_SOURCES} (
         src/templates/WorldObjectTemplate.cpp
         src/templates/WorldPacketTemplate.cpp
 
+        src/AccountWrapper.cpp
         src/CastSpellBuilder.cpp
         src/ChatCommandBuilderBuilder.cpp
         src/CtoJ.cpp

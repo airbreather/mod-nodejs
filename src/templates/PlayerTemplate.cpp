@@ -552,7 +552,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 				show_in_loot_local = *boxed;
 				show_in_loot_ptr = &show_in_loot_local;
 			} else {
-				v8::Isolate::GetCurrent()->ThrowError("showInLoot must be a Box with a boolean value in it");
+				jthrow("showInLoot must be a Box with a boolean value in it");
 				return false;
 			}
 		}
@@ -787,7 +787,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<Player *>() {
 			if (player->GetGuildId()) {
 				player->SetRank(rank);
 			} else {
-				v8::Isolate::GetCurrent()->ThrowError("not in a guild!");
+				jthrow("not in a guild!");
 			}
 		}
 	);

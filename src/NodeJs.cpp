@@ -137,7 +137,8 @@ void NodeJs::init_instance() {
 	RUNTIME_INSTANCE = std::make_unique<NodeJs>(get_once_init_result());
 	RUNTIME_INSTANCE->actual_init();
 	RUNTIME_IS_INITIALIZED = true;
-	invoke_hook("nodejs:startup");
+	std::string persist_data{};
+	invoke_hook("nodejs:startup", jprop("reloaded", false), jprop("persistData", persist_data));
 	Acore::ChatCommands::InvalidateCommandMap();
 }
 
@@ -149,7 +150,7 @@ void NodeJs::reload_instance() {
 	RUNTIME_INSTANCE = std::make_unique<NodeJs>(get_once_init_result());
 	RUNTIME_INSTANCE->actual_init();
 	RUNTIME_IS_INITIALIZED = true;
-	invoke_hook("nodejs:startup", jprop("persistData", persist_data));
+	invoke_hook("nodejs:startup", jprop("reloaded", true), jprop("persistData", persist_data));
 	Acore::ChatCommands::InvalidateCommandMap();
 }
 

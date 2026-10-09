@@ -180,6 +180,13 @@ v8::Local<v8::Object> jmove(Obj o) {
 	return jtemplate<Obj>()->GetFunction(ctx).ToLocalChecked()->NewInstance(ctx, 2, vals).ToLocalChecked();
 }
 
+void jthrow(std::string_view err);
+
+template <std::size_t N>
+void jthrow(char const (& s)[N]) {
+	v8::Isolate::GetCurrent()->ThrowError(s);
+}
+
 #define JVAL_TMPL_RW(cname) \
 template<> \
 [[nodiscard]] v8::Local<v8::Value> jval<cname *>(cname * data) { \

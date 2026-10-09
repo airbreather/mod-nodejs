@@ -1,4 +1,5 @@
 export type * from './AccountFlags.d.ts';
+export type * from './AccountOpResult.d.ts';
 export type * from './AccountTypes.d.ts';
 export type * from './AchievementFlags.d.ts';
 export type * from './AcoreStrings.d.ts';
