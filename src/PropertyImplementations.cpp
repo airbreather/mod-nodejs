@@ -80,6 +80,7 @@ std::optional<Enum> cval_enum(v8::Local<v8::Value> const v) {
 	ENUM_JVAL_CVAL_EO(enum_type, uint32_t);
 
 ENUM_JVAL_CVAL_IP(AccountFlag)
+ENUM_JVAL_CVAL_IP(AccountOpResult)
 ENUM_JVAL_CVAL_IP(AccountTypes)
 ENUM_JVAL_CVAL_IP(AcoreStrings)
 ENUM_JVAL_CVAL_EP(ActiveStates, uint8_t)
@@ -92,11 +93,7 @@ ENUM_JVAL_CVAL_IP(AuraType)
 ENUM_JVAL_CVAL_EP(BattlegroundBracketId, uint8_t)
 ENUM_JVAL_CVAL_EP(BattlegroundDesertionType, uint8_t)
 ENUM_JVAL_CVAL_EP(BattlegroundTypeId, uint8_t)
-#ifdef MOD_PLAYERBOTS
-	ENUM_JVAL_CVAL_EP(ChatMsg, uint32_t)
-#else
-	ENUM_JVAL_CVAL_IP(ChatMsg)
-#endif
+ENUM_JVAL_CVAL_IP(ChatMsg)
 ENUM_JVAL_CVAL_EP(ClassContext, uint8_t)
 ENUM_JVAL_CVAL_IP(Classes)
 ENUM_JVAL_CVAL_EP(CombatRating, uint8_t)
@@ -116,11 +113,7 @@ ENUM_JVAL_CVAL_EC(DatabaseFieldTypes, uint8_t)
 ENUM_JVAL_CVAL_EC(Db, uint8_t)
 ENUM_JVAL_CVAL_EC(DeathState, uint8_t)
 ENUM_JVAL_CVAL_EP(Difficulty, uint8_t)
-#ifdef MOD_PLAYERBOTS
-ENUM_JVAL_CVAL_EP(DispelType, uint8_t)
-#else
 ENUM_JVAL_CVAL_IP(DispelType)
-#endif
 ENUM_JVAL_CVAL_IP(DuelCompleteType)
 ENUM_JVAL_CVAL_IP(Emote)
 ENUM_JVAL_CVAL_EP(EnchantmentSlot, uint8_t)
@@ -167,6 +160,7 @@ ENUM_JVAL_CVAL_EP(RemoveMethod, uint8_t)
 ENUM_JVAL_CVAL_EP(ReputationRank, uint8_t)
 ENUM_JVAL_CVAL_IP(ReputationSource)
 ENUM_JVAL_CVAL_EP(RollVote, uint8_t)
+ENUM_JVAL_CVAL_IP(ServerMessageType)
 ENUM_JVAL_CVAL_IP(ServerSideVisibilityType)
 ENUM_JVAL_CVAL_IP(SheathState)
 ENUM_JVAL_CVAL_EP(ShutdownMask, uint8_t)

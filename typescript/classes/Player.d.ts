@@ -297,8 +297,8 @@ declare global {
 			gossipAddQuests(source: Creature | GameObject): void;
 			gossipClearMenu(): void;
 			gossipComplete(): void;
-			gossipMenuAddItem(menuItemId: number, icon: GossipOptionIcon, message: string, sender: number, action: GossipAction, boxMessage: string, boxMoney: number, coded?: boolean): void;
-			gossipSendMenuToCreature(titleTextId: number, creature: ObjectGuid): void;
+			gossipMenuAddItem(menuItemId: number, icon: GossipOptionIcon, message: string, sender: number, action: number, boxMessage: string, boxMoney: number, coded?: boolean): void;
+			gossipSendMenu(titleTextId: number, guid: ObjectGuid): void;
 			gossipSendPOI(poiId: number): void;
 			setSkill(type: SkillType, value: number): void;
 			applyRatingMod(rating: CombatRating, value: number): void;

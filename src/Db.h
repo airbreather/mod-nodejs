@@ -15,9 +15,6 @@ enum class Db : uint8_t {
 	Character = 0,
 	Login = 1,
 	World = 2,
-#ifdef MOD_PLAYERBOTS
-	Playerbots = 3,
-#endif
 };
 
 template <Db Db>
@@ -80,10 +77,3 @@ template <>
 struct db_connection<Db::World> {
 	using type = WorldDatabaseConnection;
 };
-
-#ifdef MOD_PLAYERBOTS
-template <>
-struct db_connection<Db::Playerbots> {
-	using type = PlayerbotsDatabaseConnection;
-};
-#endif

@@ -16,7 +16,7 @@ public:
 
 private:
 	std::mutex cb_lock_;
-	uv_async_t cb_handle_{};
+	uv_async_t * cb_handle_;
 	std::vector<std::function<void()>> cb_queue_;
 
 	void run_pending_callbacks();

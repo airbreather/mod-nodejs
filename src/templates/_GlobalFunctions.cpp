@@ -10,6 +10,7 @@
 #include "NodeJs.h"
 #include "NodePropertySystem.h"
 #include "UnixTimestamp.h"
+#include "WorldSessionMgr.h"
 
 void add_global_functions(TypedTemplate<NodeJs *> const ft) {
 	// don't register these as static.
@@ -36,13 +37,8 @@ void add_global_functions(TypedTemplate<NodeJs *> const ft) {
 
 			case Db::World:
 				return NodeJs::instance()->db_query_async<Db::World>(s);
-
-#ifdef MOD_PLAYERBOTS
-			case Db::Playerbots:
-				return NodeJs::instance()->db_query_async<Db::Playerbots>(s);
-#endif
 		}
-		v8::Isolate::GetCurrent()->ThrowError("unrecognized db");
+		jthrow("unrecognized db");
 		return jnull().As<v8::Promise>();
 	});
 	reg_method(ft, "dbQuery", [](NodeJs *, Db d, std::string s) {
@@ -55,13 +51,8 @@ void add_global_functions(TypedTemplate<NodeJs *> const ft) {
 
 			case Db::World:
 				return db<Db::World>().query(s);
-
-#ifdef MOD_PLAYERBOTS
-			case Db::Playerbots:
-				return db<Db::Playerbots>().query(s);
-#endif
 		}
-		v8::Isolate::GetCurrent()->ThrowError("unrecognized db");
+		jthrow("unrecognized db");
 		return QueryResult{};
 	});
 	reg_method(ft, "dbNonQuery", [](NodeJs *, Db d, std::string s) {
@@ -77,14 +68,8 @@ void add_global_functions(TypedTemplate<NodeJs *> const ft) {
 			case Db::World:
 				db<Db::World>().execute_or_append(s);
 				return;
-
-#ifdef MOD_PLAYERBOTS
-			case Db::Playerbots:
-				db<Db::Playerbots>().execute_or_append(s);
-				return;
-#endif
 		}
-		v8::Isolate::GetCurrent()->ThrowError("unrecognized db");
+		jthrow("unrecognized db");
 	});
 	reg_method(ft, "inTransaction", [](NodeJs *, Db d, v8::Local<v8::Function> f) {
 		std::function<void()> fn = [f] {
@@ -105,14 +90,8 @@ void add_global_functions(TypedTemplate<NodeJs *> const ft) {
 			case Db::World:
 				db<Db::World>().transactional([& fn](auto const&){fn();});
 				return;
-
-#ifdef MOD_PLAYERBOTS
-			case Db::Playerbots:
-				db<Db::Playerbots>().transactional([& fn](auto const&){fn();});
-				return;
-#endif
 		}
-		v8::Isolate::GetCurrent()->ThrowError("unrecognized db");
+		jthrow("unrecognized db");
 	});
 	reg_method(ft, "getCurrTime", [](NodeJs *) {
 		return UnixTimestamp::from_game_time_milliseconds(getMSTime());
@@ -179,14 +158,11 @@ void add_global_functions(TypedTemplate<NodeJs *> const ft) {
 	reg_method(ft, "saveAllPlayers", [](NodeJs *) {
 		ObjectAccessor::SaveAllPlayers();
 	});
-	reg_method(ft, "box", [](NodeJs *, v8::Local<v8::Value> val) {
-		return jobj(jprop("boxed", val));
-	});
 	reg_method(ft, "registerCommand", [](NodeJs *, ChatCommandBuilderBuilderBox * b) {
 		try {
 			NodeJs::instance()->reg_command(*b);
 		} catch (std::logic_error & err) {
-			v8::Isolate::GetCurrent()->ThrowError(jstrz(err.what()));
+			jthrow(err.what());
 		}
 	});
 	reg_method(ft, "shutdown", [](NodeJs *, uint32_t time, ShutdownMask options, uint8_t exit_code, std::optional<std::string> reason) {
@@ -197,5 +173,8 @@ void add_global_functions(TypedTemplate<NodeJs *> const ft) {
 		return true;
 #endif
 		return false;
+	});
+	reg_method(ft, "broadcastServerMessage", [](NodeJs *, ServerMessageType typ, std::optional<std::string> param, std::optional<Player *> player) {
+		WorldSessionMgr::Instance()->SendServerMessage(typ, param.value_or(""), player.value_or(nullptr));
 	});
 }

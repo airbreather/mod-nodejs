@@ -252,3 +252,7 @@ template<>
 	v8::Local<v8::Value> obj = jobj(jprop("milliseconds", data.milliseconds));
 	return temporalDurationFrom->Call(ctx, temporalDuration, 1, &obj).ToLocalChecked();
 }
+
+void jthrow(std::string_view err) {
+	v8::Isolate::GetCurrent()->ThrowError(jstr(err));
+}

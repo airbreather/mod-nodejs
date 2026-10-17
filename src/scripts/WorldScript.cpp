@@ -21,18 +21,25 @@ public:
 		LOG_INFO("server.loading", "Starting Node.js...");
 		NodeJs::init_instance();
 		LOG_INFO("server.loading", "Started Node.js!");
-		NodeJs::invoke_hook("world:startup");
+		NodeJs::invoke_hook("world:startup"
+			);
 	}
 
 	void OnUpdate(uint32_t) override {
-		NodeJs::invoke_hook("world:update-early");
+		NodeJs::invoke_hook("world:update-early"
+			);
 		NodeJs::instance()->tick();
-		NodeJs::invoke_hook("world:update-late");
+		NodeJs::invoke_hook("world:update-late"
+			);
 	}
 
 	void OnShutdown() override {
-		NodeJs::invoke_hook("nodejs:before-shutdown", jarg("reloading", false));
-		NodeJs::invoke_hook("world:shutdown");
+		// pass persist_data even though we'll ignore it so that handlers won't NEED to check for it
+		std::string persist_data{};
+		NodeJs::invoke_hook("nodejs:before-shutdown"
+			, jprop("reloading", false), jprop_box("persistData", persist_data));
+		NodeJs::invoke_hook("world:shutdown"
+			);
 		NodeJs::shutdown();
 		node::TearDownOncePerProcess();
 	}

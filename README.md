@@ -4,12 +4,30 @@
 
 Basically just the same idea behind Eluna/ALE, but for JavaScript (Node.js, specifically) instead of Lua.
 
-Requires core patch:
-- azerothcore/azerothcore-wotlk#26648 for API tweaks
+## Building
 
-## Building natively on Windows does not work right now.
+The only thing I can promise to support is what I run with, which is Linux. Here, there should be no extra steps required for this module. [The normal process](https://www.azerothcore.org/wiki/installing-a-module) should work.
 
-I have sunk too many hours into trying to make this work on native Windows. Use containers or WSL instead.
+Windows has its own section below. On everything else, I can't test it myself, so you're mostly on your own.
+
+### Windows
+
+It took months, but it is now (at the time of writing) finally possible to build and run this on Windows:
+
+1. After building, assuming everything was done following [the official guide](https://www.azerothcore.org/wiki/windows-core-installation), you need to copy the corresponding version of `libnode.dll` to your `C:\Build\bin\RelWithDebInfo` or `C:\Build\bin\Debug` folder, just like you did with the other DLLs.
+	- You should be able to find the correct DLL at `C:\Build\_deps\nodejs_win-src\bin\Debug\libnode.dll` for Debug builds or `C:\Build\_deps\nodejs_win-src\bin\Release\libnode.dll` for RelWithDebInfo and everything else.
+	- If you have a hard time finding this file, you can always re-download the zip from [whichever release](https://github.com/airbreather/mod-nodejs/releases) it came from. It'll be in there.
+2. (Optional) Looking for `libnode.pdb` files to put next to your `libnode.dll` files? There's a `libnode-windows-pdb-*.7z` archive right next to the main one in [the main release](https://github.com/airbreather/mod-nodejs/releases). CMake doesn't download the PDBs automatically because they're huge and not everybody would benefit from them.
+
+Support for Windows is provided on a best-effort basis. It's intended to work there. At the time of writing, I've confirmed that a simple script can run correctly. I even found some bugs during the process of testing it on that platform because some different compiler behavior forced me to look harder at my code! However, I expect this to break on Windows more often than on Linux, simply because I do not test over there very frequently at all. [Open an issue](https://github.com/airbreather/mod-nodejs/issues) if something's broken, and I'll try to get to it at some point.
+
+## Usage
+
+The usual process of `mod_nodejs.conf.dist` --> `mod_nodejs.conf`. Set `NodeJs.Script` to the path to your script file that will be loaded at world startup. It can import other script files as well (or it can be a single-file bundle), there just needs to be exactly one.
+
+Published documentation for all the APIs will come later, though the TypeScript declarations exist now for you to get going. See the config file for the flags you can turn on, and [Node.js docs](https://nodejs.org/learn/getting-started/debugging) for the different ways you can connect to the debugger once it's running.
+
+See also the files under `/examples`.
 
 ## Skeleton Project
 
@@ -31,46 +49,6 @@ Declarations are built from the `./typescript` directory in this project. Instal
 `npm install -D @airbreather/mod-nodejs-types`
 
 Highly recommended: add `@airbreather/mod-nodejs-types` to your `tsconfig.json`'s `"types"` array.
-
-## Demo
-
-I recorded my screen for a demo that includes building it all from scratch after checking out the code, then using the VSCode debugger to set breakpoints and step through the random ad-hoc script file from the `examples/` directory here:
-
-[![Demo](https://i.ytimg.com/vi/Xmj0S-SFXc8/maxresdefault.jpg)](https://youtu.be/Xmj0S-SFXc8)
-
-This particular demo was recorded with several other modules and a Playerbot fork because that's what I happen to be working with in my local environment right now, but mod-nodejs can be used as the only module on a Playerbot-free setup as well.
-
-## Usage
-
-The usual process of `mod_nodejs.conf.dist` --> `mod_nodejs.conf`. Set `NodeJs.Script` to the path to your script file that will be loaded at world startup. It can import other script files as well (or it can be a single-file bundle), there just needs to be exactly one.
-
-Published documentation for all the APIs will come later, though the TypeScript declarations exist now for you to get going. See the config file for the flags you can turn on, and [Node.js docs](https://nodejs.org/learn/getting-started/debugging) for the different ways you can connect to the debugger once it's running.
-
-See also the files under `/examples`.
-
-## Building
-
-The only thing I can promise to support is what I run with, which is Linux. Here, there should be no extra steps required for this module. [The normal process](https://www.azerothcore.org/wiki/installing-a-module) should work.
-
-On Windows, I had a hard time trying to get it to work and gave up without any success.
-
-<details>
-<summary>Click to expand this section that goes over how far I got down the most promising path to making this work on Windows, but note that IT WILL NOT WORK AS-WRITTEN, so I've collapsed it by default in order to not confuse anybody.</summary>
-
-I had entertained the notion that the official builds of `node.exe`/`node.lib` might work, and I could get it to build, but it didn't get very far at runtime. Almost definitely, you need to build `libnode.dll`/`libnode.lib`, probably by running something like this in the directory where you've cloned Node.js:
-
-```
-.\vcbuild.bat release dll full-icu x64 vs2026 no-cctest nonpm
-```
-
-No matter whether you try the `node.exe` or the `libnode.dll` route, you have to do something to work around the fact that both it and AzerothCore export zlib symbols.
-
-I had started down the path of tweaking AzerothCore to let modules substitute in their own zlib implementations in azerothcore/azerothcore-wotlk#27003, and this has let me build, but something always fails.
-
-Notably, this does **NOT** seem to have anything to do with AzerothCore only supporting MSVC and Node.js 24+ only supporting Clang-CL. A minimal embedder repro on Windows also failed for me when building the repro and libnode with Clang-CL, which is the point where I threw in the towel.
-</details>
-
-On everything else, I can't test it myself, so you're mostly on your own.
 
 ## Compatibility
 

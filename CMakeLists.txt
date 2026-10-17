@@ -1,13 +1,12 @@
-if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB) OR (WIN32 AND NOT NODEJS_DLL))
+if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB))
   include(FetchContent)
+  message(STATUS "mod-nodejs: using libnode v26.10.0 from the GitHub release")
   if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    message(STATUS "Using Node.js v26.8.1 from this project's GitHub release (Linux)")
-
     FetchContent_Declare(
             nodejs_linux
 
-            URL                        https://github.com/airbreather/mod-nodejs/releases/download/libnode-linux-v26.8.1/nodejs-v26.8.1.tar.zst
-            URL_HASH                   SHA256=7fac51e9d04916f7599f48bbb83c28785ad1095519f363c05256f32ca202c780
+            URL                        https://github.com/airbreather/mod-nodejs/releases/download/libnode-v26.10.0/libnode-linux-v26.10.0.tar.zst
+            URL_HASH                   SHA256=3fc59ba12defa7df303ae1bf536a9cda3df59f12f2baaa5a624516d4df4aaad7
             DOWNLOAD_EXTRACT_TIMESTAMP true
     )
 
@@ -16,45 +15,33 @@ if ((NOT NODEJS_INCLUDE_DIR) OR (NOT NODEJS_LIB) OR (WIN32 AND NOT NODEJS_DLL))
     CU_SET_GLOBAL(NODEJS_INCLUDE_DIR "${nodejs_linux_SOURCE_DIR}/include/node")
     CU_SET_GLOBAL(NODEJS_LIB "${nodejs_linux_SOURCE_DIR}/lib/libnode.so.147")
   elseif(WIN32)
-    message(STATUS "Using Node.js v26.8.1 from this project's GitHub release (Windows)")
-
     FetchContent_Declare(
             nodejs_win
 
-            URL                        https://github.com/airbreather/mod-nodejs/releases/download/libnode-windows-v26.8.1/nodejs-v26.8.1.7z
-            URL_HASH                   SHA256=bb2146445abfd5746d8b7a3009583d84faabda8925ecd2828cdf5c7d8ccb91c9
+            URL                        https://github.com/airbreather/mod-nodejs/releases/download/libnode-v26.10.0/libnode-windows-v26.10.0.7z
+            URL_HASH                   SHA256=e3b53f7cdebb3a731e50b55024d2adf31e9ae8c064e72170bc5a449c64a3a0b7
             DOWNLOAD_EXTRACT_TIMESTAMP true
     )
 
     FetchContent_MakeAvailable(nodejs_win)
 
     CU_SET_GLOBAL(NODEJS_INCLUDE_DIR "${nodejs_win_SOURCE_DIR}/include/node")
-    CU_SET_GLOBAL(NODEJS_DLL "${nodejs_win_SOURCE_DIR}/bin/libnode.dll")
-    CU_SET_GLOBAL(NODEJS_LIB "${nodejs_win_SOURCE_DIR}/bin/libnode.lib")
+    # Debug and Release builds link to different versions of the CRT.
+    CU_SET_GLOBAL(NODEJS_LIB "$<$<CONFIG:Debug>:${nodejs_win_SOURCE_DIR}/bin/Debug/libnode.lib>$<$<CONFIG:Release,RelWithDebInfo,MinSizeRel>:${nodejs_win_SOURCE_DIR}/bin/Release/libnode.lib>")
   else()
     message(FATAL_ERROR("Linux and Windows have pre-built files available. Others (we are '${CMAKE_SYSTEM_NAME}') must figure out their own NODEJS_INCLUDE_DIR and NODEJS_LIB values. PRs to show what I should for other systems are welcome!"))
   endif()
 endif()
 
-if (WIN32 AND NOT ZLIB_IMPORT)
-    CU_SET_GLOBAL(ZLIB_IMPORT ${CMAKE_BINARY_DIR}/mod-nodejs/zlib.lib)
-    file(
-            DOWNLOAD               https://github.com/airbreather/mod-nodejs/releases/download/libnode-windows-v26.8.1/zlib.lib
-            ${ZLIB_IMPORT}
-            EXPECTED_HASH          SHA256=6784de83aa9020df38748712b1548c612ee8a046288910afb43e433febc9961b
+# Windows: the matching .dll must be copied into bin/<Config> by hand like the
+# others that the setup instructions tell users to deal with.
+if (NOT WIN32)
+    install(
+            FILES
+            ${NODEJS_LIB}
+            DESTINATION "${CMAKE_INSTALL_PREFIX}/bin"
     )
 endif()
-
-set(NODEJS_LIB_INSTALL ${NODEJS_LIB})
-if (WIN32)
-    set(NODEJS_LIB_INSTALL ${NODEJS_DLL})
-endif()
-
-install(
-        FILES
-        ${NODEJS_LIB_INSTALL}
-        DESTINATION "${CMAKE_INSTALL_PREFIX}/bin"
-)
 
 list(APPEND ${PRIVATE_SOURCES} (
         src/records/BattlegroundScoreRecord.cpp
@@ -95,34 +82,53 @@ list(APPEND ${PRIVATE_SOURCES} (
 
         src/templates/_GlobalFunctions.cpp
         src/templates/_InteropTemplates.cpp
+        src/templates/AccountWrapperTemplate.cpp
         src/templates/AchievementEntryTemplate.cpp
         src/templates/ACObjectTemplate.cpp
+        src/templates/AreaDamageDataTemplate.cpp
         src/templates/AuctionHouseTemplate.cpp
         src/templates/AuctionTemplate.cpp
         src/templates/AuraApplicationTemplate.cpp
         src/templates/AuraEffectTemplate.cpp
+        src/templates/AuraGeneratorDataTemplate.cpp
         src/templates/AuraTemplate.cpp
+        src/templates/BarberChairDataTemplate.cpp
         src/templates/BattlegroundTemplate.cpp
+        src/templates/ButtonDataTemplate.cpp
         src/templates/ByteBufferTemplate.cpp
+        src/templates/CameraDataTemplate.cpp
+        src/templates/CapturePointDataTemplate.cpp
         src/templates/CastSpellBuilderTemplate.cpp
         src/templates/ChannelTemplate.cpp
+        src/templates/ChairDataTemplate.cpp
         src/templates/CharTitlesEntryTemplate.cpp
         src/templates/ChatCommandBuilderBuilderBoxTemplate.cpp
         src/templates/ChatHandlerTemplate.cpp
+        src/templates/ChestDataTemplate.cpp
         src/templates/ConfigTemplate.cpp
         src/templates/ConditionTemplate.cpp
         src/templates/ConditionSourceInfoTemplate.cpp
         src/templates/CorpseTemplate.cpp
         src/templates/CreatureTemplate.cpp
         src/templates/CreatureTemplateTemplate.cpp
+        src/templates/DestructibleBuildingDataTemplate.cpp
+        src/templates/DoorDataTemplate.cpp
+        src/templates/DungeonDifficultyDataTemplate.cpp
         src/templates/DynamicObjectTemplate.cpp
         src/templates/FactionEntryTemplate.cpp
+        src/templates/FishingHoleDataTemplate.cpp
+        src/templates/FlagDropDataTemplate.cpp
+        src/templates/FlagStandDataTemplate.cpp
         src/templates/GameObjectTemplate.cpp
+        src/templates/GameObjectTemplateTemplate.cpp
         src/templates/GemPropertiesEntryTemplate.cpp
+        src/templates/GenericDataTemplate.cpp
         src/templates/GlyphPropertiesEntryTemplate.cpp
         src/templates/GmTicketTemplate.cpp
         src/templates/GroupTemplate.cpp
+        src/templates/GooberDataTemplate.cpp
         src/templates/GuardianTemplate.cpp
+        src/templates/GuardPostDataTemplate.cpp
         src/templates/GuildMemberTemplate.cpp
         src/templates/GuildTemplate.cpp
         src/templates/ItemTemplate.cpp
@@ -133,7 +139,10 @@ list(APPEND ${PRIVATE_SOURCES} (
         src/templates/MailDraftTemplate.cpp
         src/templates/MailSenderTemplate.cpp
         src/templates/MapTemplate.cpp
+        src/templates/MeetingStoneDataTemplate.cpp
+        src/templates/MiniGameDataTemplate.cpp
         src/templates/MinionTemplate.cpp
+        src/templates/MoTransportDataTemplate.cpp
         src/templates/MySQLConnectionInfoTemplate.cpp
         src/templates/ObjectMgrTemplate.cpp
         src/templates/PetTemplate.cpp
@@ -141,25 +150,35 @@ list(APPEND ${PRIVATE_SOURCES} (
         src/templates/PvPDifficultyEntryTemplate.cpp
         src/templates/QueryResultFieldTemplate.cpp
         src/templates/QueryResultSetTemplate.cpp
+        src/templates/QuestGiverDataTemplate.cpp
         src/templates/QuestTemplate.cpp
         src/templates/RollTemplate.cpp
+        src/templates/SpawnCreatureBuilderTemplate.cpp
+        src/templates/SpawnGameObjectBuilderTemplate.cpp
+        src/templates/SpellcasterDataTemplate.cpp
         src/templates/SpellCastTimesEntryTemplate.cpp
         src/templates/SpellCategoryEntryTemplate.cpp
         src/templates/SpellChainNodeTemplate.cpp
         src/templates/SpellDurationEntryTemplate.cpp
         src/templates/SpellEffectInfoTemplate.cpp
+        src/templates/SpellFocusDataTemplate.cpp
         src/templates/SpellImplicitTargetInfoTemplate.cpp
         src/templates/SpellInfoTemplate.cpp
         src/templates/SpellRadiusEntryTemplate.cpp
         src/templates/SpellRangeEntryTemplate.cpp
         src/templates/SpellTemplate.cpp
+        src/templates/SummoningRitualDataTemplate.cpp
         src/templates/SummonPropertiesEntryTemplate.cpp
         src/templates/TempSummonTemplate.cpp
+        src/templates/TextDataTemplate.cpp
         src/templates/ThreatReferenceTemplate.cpp
         src/templates/TrainerSpellListMessageTemplate.cpp
         src/templates/TrainerSpellListTemplate.cpp
         src/templates/TrainerSpellTemplate.cpp
+        src/templates/TransportDataTemplate.cpp
         src/templates/TransportTemplate.cpp
+        src/templates/TrapDataTemplate.cpp
+        src/templates/TrapDoorDataTemplate.cpp
         src/templates/UnitTemplate.cpp
         src/templates/VehicleEntryTemplate.cpp
         src/templates/VehicleTemplate.cpp
@@ -168,11 +187,13 @@ list(APPEND ${PRIVATE_SOURCES} (
         src/templates/WorldObjectTemplate.cpp
         src/templates/WorldPacketTemplate.cpp
 
+        src/AccountWrapper.cpp
         src/CastSpellBuilder.cpp
         src/ChatCommandBuilderBuilder.cpp
         src/CtoJ.cpp
         src/Db.cpp
         src/DurationWrapper.cpp
+        src/JBox.cpp
         src/JtoC.cpp
         src/NodeCommon.cpp
         src/NodeJPropHelpers.cpp
@@ -181,5 +202,7 @@ list(APPEND ${PRIVATE_SOURCES} (
         src/NodePropertySystem.cpp
         src/NodeWrappedObject.cpp
         src/PropertyImplementations.cpp
+        src/SpawnCreatureBuilder.cpp
+        src/SpawnGameObjectBuilder.cpp
         src/UnixTimestamp.cpp
 ))

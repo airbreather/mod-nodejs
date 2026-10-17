@@ -24,7 +24,7 @@ v8::Local<v8::FunctionTemplate> jcreate_template<MySQLConnectionInfo const *>() 
 				return WorldDatabase.GetConnectionInfo();
 
 			default:
-				v8::Isolate::GetCurrent()->ThrowError("Db not found");
+				jthrow("Db not found");
 				return nullptr;
 		}
 	});

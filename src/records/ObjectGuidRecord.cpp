@@ -60,7 +60,7 @@ template<>
 			}
 		}
 	}
-	isolate->ThrowError(jstr_intern("expected an opaque or decoded GUID"));
+	jthrow("expected an opaque or decoded GUID");
 	return std::nullopt;
 }
 

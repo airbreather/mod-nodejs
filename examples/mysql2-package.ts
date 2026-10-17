@@ -26,7 +26,6 @@ export function makeConnectionPool(db: Db) {
 export const LOGIN_DB = makeConnectionPool(Db.Login);
 export const CHARACTER_DB = makeConnectionPool(Db.Character);
 export const WORLD_DB = makeConnectionPool(Db.World);
-export const PLAYERBOTS_DB = Acore.hasPlayerbotsModule() ? makeConnectionPool(Db.Playerbots) : undefined;
 
 export function defaultConnectionPoolFor(db: Db) {
 	switch (db) {
@@ -36,8 +35,6 @@ export function defaultConnectionPoolFor(db: Db) {
 			return CHARACTER_DB;
 		case Db.World:
 			return WORLD_DB;
-		case Db.Playerbots:
-			return PLAYERBOTS_DB;
 	}
 }
 

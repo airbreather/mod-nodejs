@@ -4,16 +4,19 @@ import process from 'node:process';
 import util from 'node:util';
 
 // it's just so much more convenient to write some of this code in JavaScript.
-export function finishInit(acore, addListenerCallback, removeListenerCallback) {
-	acore.hooks = new EventEmitter().setMaxListeners(0);
+export function createHooks(addListenerCallback, removeListenerCallback) {
+	const hooks = new EventEmitter().setMaxListeners(0);
 
-	Object.freeze(acore);
-	Object.seal(acore.hooks);
+	Object.seal(hooks);
 
-	acore.hooks.on('newListener', addListenerCallback);
-	acore.hooks.on('removeListener', removeListenerCallback);
+	hooks.on('newListener', addListenerCallback);
+	hooks.on('removeListener', removeListenerCallback);
 
-	globalThis.Acore = acore;
+	return hooks;
+}
+
+export function finishInit(acore) {
+	globalThis.Acore = Object.freeze(acore);
 
 	process.on('unhandledRejection', (reason) => {
 		globalThis.Acore.logError('module.nodejs', reason instanceof Error ? reason.stack : util.inspect(reason))

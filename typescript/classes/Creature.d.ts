@@ -1,6 +1,8 @@
 declare global {
 	namespace Acore {
 		class Creature extends Unit {
+			static buildSpawner(entry: number, map: ACMap, x: number, y: number, z: number, o: number): SpawnCreatureBuilder;
+
 			// 0 for new or temporary, Acore.decodeGuid(guid)[2] otherwise.
 			readonly spawnId: number;
 			readonly template: CreatureTemplate;

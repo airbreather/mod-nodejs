@@ -35,6 +35,6 @@ export function installVendorFiddle() {
 		}
 
 		// all of the above checks passed, so send the secret vendor menu.
-		args.vendorEntry = FIDDLED_VENDOR_NEW;
+		args.vendorEntry.set(FIDDLED_VENDOR_NEW);
 	});
 }

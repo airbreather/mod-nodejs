@@ -1,32 +1,32 @@
 declare global {
 	interface Hooks {
-		['battleground:start']: { readonly bg: Acore.Battleground; };
+		['battleground:start']: { bg: Acore.Battleground; };
 		['battleground:end']: {
-			readonly bg: Acore.Battleground;
-			readonly winnerTeam: TeamId;
+			bg: Acore.Battleground;
+			winnerTeam: TeamId;
 		};
-		['battleground:create']: { readonly bg: Acore.Battleground; };
-		['battleground:destroy']: { readonly bg: Acore.Battleground; };
+		['battleground:create']: { bg: Acore.Battleground; };
+		['battleground:destroy']: { bg: Acore.Battleground; };
 		['battleground:end-reward']: {
-			readonly bg: Acore.Battleground;
-			readonly player: Acore.Player;
-			readonly winnerTeamId: TeamId;
+			bg: Acore.Battleground;
+			player: Acore.Player;
+			winnerTeamId: TeamId;
 		};
 		['battleground:update']: {
-			readonly bg: Acore.Battleground;
-			readonly diff: Temporal.Duration;
+			bg: Acore.Battleground;
+			diff: Temporal.Duration;
 		};
 		['battleground:add-player']: {
-			readonly bg: Acore.Battleground;
-			readonly player: Acore.Player;
+			bg: Acore.Battleground;
+			player: Acore.Player;
 		};
 		['battleground:before-add-player']: {
-			readonly bg: Acore.Battleground;
-			readonly player: Acore.Player;
+			bg: Acore.Battleground;
+			player: Acore.Player;
 		};
 		['battleground:remove-player-at-leave']: {
-			readonly bg: Acore.Battleground;
-			readonly player: Acore.Player;
+			bg: Acore.Battleground;
+			player: Acore.Player;
 		};
 	}
 }
